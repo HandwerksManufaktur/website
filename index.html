@@ -34,11 +34,11 @@
 <div class="mobile-menu" id="mm">
   <div class="mm-close" onclick="closeMM()">✕</div>
   <a href="#problem" onclick="closeMM()">Problem</a>
-  <a href="#services" onclick="closeMM()">Leistungen</a>
-  <a href="#projects" onclick="closeMM()">Projekte</a>
-  <a href="#about" onclick="closeMM()">Über uns</a>
-  <a href="#reviews" onclick="closeMM()">Bewertungen</a>
-  <a href="#contact" onclick="closeMM()">Kontakt</a>
+  <a href="#leistungen" onclick="closeMM()">Leistungen</a>
+  <a href="#projekte" onclick="closeMM()">Projekte</a>
+  <a href="#ueber-uns" onclick="closeMM()">Über uns</a>
+  <a href="#bewertungen" onclick="closeMM()">Bewertungen</a>
+  <a href="#kontakt" onclick="closeMM()">Kontakt</a>
 </div>
 
 <!-- NAV -->
@@ -46,17 +46,17 @@
   <a href="#" class="nav-logo"><img src="images/logo-handwerksmanufaktur.png" alt="HandwerksManufaktur"></a>
   <ul class="nav-links">
     <li><a href="#problem">Problem</a></li>
-    <li><a href="#services">Leistungen</a></li>
-    <li><a href="#projects">Projekte</a></li>
-    <li><a href="#about">Über uns</a></li>
-    <li><a href="#reviews">Bewertungen</a></li>
-    <li><a href="#contact" class="nav-cta">Jetzt starten →</a></li>
+    <li><a href="#leistungen">Leistungen</a></li>
+    <li><a href="#projekte">Projekte</a></li>
+    <li><a href="#ueber-uns">Über uns</a></li>
+    <li><a href="#bewertungen">Bewertungen</a></li>
+    <li><a href="#kontakt" class="nav-cta">Jetzt starten →</a></li>
   </ul>
   <div class="hamburger" onclick="openMM()"><span></span><span></span><span></span></div>
 </nav>
 
 <!-- HERO -->
-<div id="hero">
+<div id="start">
   <div class="hero-video">
     <video autoplay muted loop playsinline preload="auto">
       <source src="hero-video.mp4" type="video/mp4">
@@ -73,8 +73,8 @@
     </h1>
     <p class="hero-sub">Wer sich nur auf Mundpropaganda verlässt, gibt die Kontrolle ab. Ein professioneller Webauftritt bringt planbare Sichtbarkeit, bessere Projekte und einen Kanal, der liefert – egal wie der Markt läuft.</p>
     <div class="hero-btns">
-      <a href="#contact" class="btn-main">Kostenloses Erstgespräch <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></a>
-      <a href="#projects" class="btn-outline">Projekte ansehen ↓</a>
+      <a href="#kontakt" class="btn-main">Kostenloses Erstgespräch <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></a>
+      <a href="#projekte" class="btn-outline">Projekte ansehen ↓</a>
     </div>
     <div class="hero-stats">
       <div><div class="stat-num">120<em>+</em></div><div class="stat-label">Handwerksbetriebe</div></div>
@@ -228,7 +228,7 @@
 </section>
 
 <!-- SERVICES -->
-<section id="services">
+<section id="leistungen">
   <div class="reveal">
     <div class="sec-label">Leistungen</div>
     <h2>Was wir für Sie tun</h2>
@@ -245,7 +245,7 @@
 </section>
 
 <!-- PROJECTS -->
-<section class="sm-section" id="projects">
+<section class="sm-section" id="projekte">
   <div class="reveal">
     <div class="sec-label">Projekte</div>
     <h2>Ihre besten Projekte verdienen eine Bühne</h2>
@@ -316,7 +316,7 @@
 </section>
 
 <!-- ABOUT -->
-<section id="about">
+<section id="ueber-uns">
   <div class="about-layout">
     <div class="about-visual reveal">
       <img src="images/foto-noah-portrait.jpg" alt="Noah Seelau" class="about-main">
@@ -396,7 +396,7 @@
 <!-- REVIEWS -->
 
 
-<section id="reviews">
+<section id="bewertungen">
   <div class="reveal">
     <div class="sec-label">Google Bewertungen</div>
     <h2>Was unsere Kunden sagen</h2>
@@ -682,7 +682,7 @@
         <div class="mock-notify2">🔔 Neue Kontaktanfrage eingegangen</div>
       </div>
     </div>
-    <a href="#contact" class="btn-dark">Jetzt Gespräch vereinbaren <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></a>
+    <a href="#kontakt" class="btn-dark">Jetzt Gespräch vereinbaren <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></a>
   </div>
 </div>
 
@@ -719,7 +719,7 @@
 </section>
 
 <!-- CONTACT -->
-<section id="contact">
+<section id="kontakt">
   <div class="reveal">
     <div class="sec-label">Kontakt</div>
     <h2>Lassen Sie uns sprechen</h2>
@@ -736,7 +736,7 @@
     <form class="contact-form" action="https://formsubmit.co/info@die-handwerksmanufaktur.de" method="POST">
       <input type="hidden" name="_subject" value="Neue Anfrage über die Website">
       <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_next" value="https://die-handwerksmanufaktur.de/#contact">
+      <input type="hidden" name="_next" value="https://die-handwerksmanufaktur.de/#kontakt">
       <input type="text" name="_honey" style="display:none">
       <div class="form-row">
         <div class="fg"><label>Vorname *</label><input type="text" name="Vorname" placeholder="Max" required></div>
@@ -770,8 +770,8 @@
       <div class="footer-logo"><img src="images/logo-handwerksmanufaktur.png" alt="HandwerksManufaktur"></div>
       <p>Wir gestalten Webauftritte, die Handwerksbetrieben planbar neue Aufträge und echte Sichtbarkeit bringen – unabhängig von Mundpropaganda.</p>
     </div>
-    <div class="footer-col"><h5>Navigation</h5><ul><li><a href="#hero">Home</a></li><li><a href="#problem">Das Problem</a></li><li><a href="#services">Leistungen</a></li><li><a href="#projects">Projekte</a></li><li><a href="#about">Über uns</a></li><li><a href="https://shk.die-handwerksmanufaktur.de/" target="_blank" rel="noopener">SHK-Betriebe</a></li></ul></div>
-    <div class="footer-col"><h5>Leistungen</h5><ul><li><a href="#services">Webdesign</a></li><li><a href="#services">SEO</a></li><li><a href="#services">Conversion</a></li><li><a href="#services">Karriereseite</a></li><li><a href="#services">Fotografie</a></li></ul></div>
+    <div class="footer-col"><h5>Navigation</h5><ul><li><a href="#start">Home</a></li><li><a href="#problem">Das Problem</a></li><li><a href="#leistungen">Leistungen</a></li><li><a href="#projekte">Projekte</a></li><li><a href="#ueber-uns">Über uns</a></li><li><a href="https://shk.die-handwerksmanufaktur.de/" target="_blank" rel="noopener">SHK-Betriebe</a></li></ul></div>
+    <div class="footer-col"><h5>Leistungen</h5><ul><li><a href="#leistungen">Webdesign</a></li><li><a href="#leistungen">SEO</a></li><li><a href="#leistungen">Conversion</a></li><li><a href="#leistungen">Karriereseite</a></li><li><a href="#leistungen">Fotografie</a></li></ul></div>
     <div class="footer-col"><h5>Kontakt</h5><ul><li><a href="tel:+4981947174990">+49 8194 7174990</a></li><li><a href="mailto:info@die-handwerksmanufaktur.de">info@die-handwerksmanufaktur.de</a></li><li><a href="https://calendly.com/noahseelau/website-potenzial" target="_blank" rel="noopener">Gespräch buchen</a></li><li><a href="/impressum">Impressum</a></li><li><a href="/datenschutz">Datenschutz</a></li><li><a href="/agb">AGB</a></li></ul></div>
   </div>
   <div class="footer-bottom">
