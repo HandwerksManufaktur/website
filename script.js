@@ -55,16 +55,26 @@ function faq(el){
 
 // Form sub
 
-// Foto items + cards: activate on scroll – brighten & show caption
-if('IntersectionObserver' in window){
-  var fotoObs=new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if(e.isIntersecting){e.target.classList.add('in-view');}
-      else{e.target.classList.remove('in-view');}
+// Foto items + cards: activate when scrolled into center of viewport
+(function(){
+  var fotoEls=document.querySelectorAll('.foto-item,.foto-card');
+  if(!fotoEls.length) return;
+  function checkFotos(){
+    var cy=window.innerHeight/2;
+    fotoEls.forEach(function(el){
+      var r=el.getBoundingClientRect();
+      var elCenter=r.top+r.height/2;
+      var dist=Math.abs(cy-elCenter);
+      if(dist<r.height*0.8){
+        el.classList.add('in-view');
+      } else {
+        el.classList.remove('in-view');
+      }
     });
-  },{threshold:0.15,rootMargin:'0px 0px 0px 0px'});
-  document.querySelectorAll('.foto-item,.foto-card').forEach(function(el){fotoObs.observe(el);});
-}
+  }
+  window.addEventListener('scroll',checkFotos,{passive:true});
+  checkFotos();
+})();
 
 // Mobile & Tablet: observe additional elements for entrance animations
 if(window.innerWidth<=900){
