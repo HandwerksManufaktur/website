@@ -829,10 +829,9 @@ gtag('config','G-NQNECGN6HT');
       <div class="c-item"><div class="c-icon">📍</div><div><h4>Einsatzgebiet</h4><a href="#">DACH-Raum – Deutschland, Österreich, Schweiz</a></div></div>
 
     </div>
-    <form class="contact-form" action="https://api.web3forms.com/submit" method="POST">
+    <form class="contact-form" id="contactForm">
       <input type="hidden" name="access_key" value="9a4e6ba4-58e9-4782-8953-e53eed867640">
       <input type="hidden" name="subject" value="Neue Anfrage über die Website">
-      <input type="hidden" name="redirect" value="https://die-handwerksmanufaktur.de/#kontakt">
       <input type="checkbox" name="botcheck" style="display:none">
       <div class="form-row">
         <div class="fg"><label>Vorname *</label><input type="text" name="Vorname" placeholder="Max" required></div>
@@ -856,6 +855,13 @@ gtag('config','G-NQNECGN6HT');
       <div class="fg"><label>Nachricht (optional)</label><textarea name="Nachricht" placeholder="Kurz beschreiben, womit wir Ihnen helfen können..."></textarea></div>
       <button type="submit" class="form-submit">Kostenlos anfragen <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></button>
     </form>
+    <div class="form-success" id="formSuccess">
+      <div class="form-success-icon">
+        <svg viewBox="0 0 52 52" width="64" height="64"><circle cx="26" cy="26" r="25" fill="none" stroke="var(--accent)" stroke-width="2" class="success-circle"/><path fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M14.1 27.2l7.1 7.2 16.7-16.8" class="success-check"/></svg>
+      </div>
+      <h3>Anfrage erfolgreich gesendet!</h3>
+      <p>Vielen Dank für Ihr Interesse. Wir melden uns innerhalb von 48 Stunden bei Ihnen.</p>
+    </div>
   </div>
 </section>
 

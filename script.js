@@ -53,7 +53,33 @@ function faq(el){
   if(!isOpen)it.classList.add('open');
 }
 
-// Form sub
+// Form submit with animation
+(function(){
+  var form=document.getElementById('contactForm');
+  var success=document.getElementById('formSuccess');
+  if(!form||!success) return;
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var btn=form.querySelector('.form-submit');
+    btn.classList.add('sending');
+    btn.textContent='Wird gesendet...';
+    fetch('https://api.web3forms.com/submit',{
+      method:'POST',
+      body:new FormData(form)
+    }).then(function(r){return r.json();}).then(function(data){
+      if(data.success){
+        form.style.display='none';
+        success.classList.add('show');
+      } else {
+        btn.classList.remove('sending');
+        btn.textContent='Fehler – erneut versuchen';
+      }
+    }).catch(function(){
+      btn.classList.remove('sending');
+      btn.textContent='Fehler – erneut versuchen';
+    });
+  });
+})();
 
 // Foto scroll animations (mobile/tablet only – desktop uses hover)
 if(window.innerWidth<=900){
