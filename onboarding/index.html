@@ -199,7 +199,7 @@
         <div class="field"><label>Firmenname + Rechtsform <span class="req">*</span></label><input type="text" id="firmaName" placeholder="z.B. Mustermann GmbH" required></div>
         <div class="field"><label>Inhaber / Geschäftsführer <span class="req">*</span></label><input type="text" placeholder="Vor- und Nachname"></div>
       </div>
-      <div class="field"><label>Straße + Hausnummer <span class="req">*</span></label><input type="text" placeholder="z.B. Musterstraße 12"></div>
+      <div class="field"><label>Straße + Hausnummer <span class="req">*</span></label><input type="text" placeholder="z.B. Musterstraße 12" id="wd_strasse"></div>
       <div class="field-row">
         <div class="field" style="max-width:160px"><label>PLZ <span class="req">*</span></label><input type="text" placeholder="z.B. 80331"></div>
         <div class="field"><label>Ort <span class="req">*</span></label><input type="text" placeholder="z.B. München"></div>
@@ -270,6 +270,34 @@
   </div>
 </div>
 <script>
+
+// ─── Autosave ────────────────────────────────────────────────────────────────
+const SAVE_KEY = 'hwm_wd_draft';
+function saveDraft() {
+  const data = {};
+  document.querySelectorAll('input[type=text],input[type=email],input[type=tel],input[type=url],textarea,select').forEach(function(el) {
+    if (el.id) data[el.id] = el.value;
+  });
+  localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+}
+function loadDraft() {
+  try {
+    const saved = localStorage.getItem(SAVE_KEY);
+    if (!saved) return;
+    const data = JSON.parse(saved);
+    Object.entries(data).forEach(function([id, val]) {
+      const el = document.getElementById(id);
+      if (el && val) { el.value = val; el.dispatchEvent(new Event('input')); }
+    });
+  } catch(e) {}
+}
+function clearDraft() { localStorage.removeItem(SAVE_KEY); }
+document.addEventListener('input', function(e) {
+  if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'SELECT') return;
+  saveDraft();
+});
+window.addEventListener('load', loadDraft);
+
 const API_BASE='https://handwerksmanufaktur-onboarding.handwerksmanufaktur.workers.dev';
 let dsgvoChecked=false;
 function toggleDsgvo(){
@@ -355,7 +383,7 @@ if(fileStore.logo?.length){const s=addStep('Logo');setStepStatus(s,'active');awa
 if(fileStore.inhaberfoto?.length){const s=addStep('Inhaberfoto');setStepStatus(s,'active');await uploadFiles(fileStore.inhaberfoto,folderIds.inhaberfoto,s.idx);setStepStatus(s,'done');}
 if(fileStore.teamfotos?.length){const s=addStep('Teamfotos');setStepStatus(s,'active');await uploadFiles(fileStore.teamfotos,folderIds.teamfotos,s.idx);setStepStatus(s,'done');}
 for(let i=0;i<leistungen.length;i++){const key=`leistung_${i}`;if(fileStore[key]?.length){const s=addStep(leistungen[i]);setStepStatus(s,'active');await uploadFiles(fileStore[key],folderIds[key],s.idx);setStepStatus(s,'done');}}
-document.getElementById('uploadOverlay').classList.remove('visible');document.getElementById('formWrap').style.display='none';document.getElementById('successScreen').classList.add('visible');
+document.getElementById('uploadOverlay').classList.remove('visible');clearDraft();document.getElementById('formWrap').style.display='none';document.getElementById('successScreen').classList.add('visible');
 }catch(err){console.error(err);document.getElementById('uploadOverlay').classList.remove('visible');document.getElementById('submitBtn').disabled=false;alert('Fehler: '+err.message);}}
 </script>
 </body>
