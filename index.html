@@ -141,10 +141,12 @@ nav.scrolled{box-shadow:0 1px 24px rgba(60,44,20,.05);}
 }
 .nav-links a{font-size:14.5px;font-weight:500;color:var(--sub);transition:color .2s,transform .2s;}
 .nav-links a:hover{color:var(--ink);}
-.nav-cta{background:var(--ink);color:#fff!important;border-radius:999px;padding:11px 20px;font-weight:600;transition:background .25s;}
-.nav-cta:hover{background:var(--acc);}
+.nav-cta{background:var(--ink);color:#fff!important;border-radius:999px;padding:12px 26px;margin-left:6px;
+  font-weight:600;letter-spacing:-.01em;transition:background .25s,transform .2s;
+  box-shadow:0 8px 20px -12px rgba(22,19,14,.55);}
+.nav-cta:hover{background:var(--acc);transform:translateY(-1px);}
 /* 1100–860px: Menü ausdünnen, statt es zu quetschen */
-@media(max-width:1100px){.nav-links{gap:20px;}.nav-links a[href="#seo"],.nav-links a[href="#ablauf"]{display:none;}}
+@media(max-width:1100px){.nav-links{gap:20px;}}
 @media(max-width:960px){.nav-links{gap:16px;}.nav-links a{font-size:13.5px;}}
 /* ab 860px: Burger — darunter passt keine Leiste mehr ohne Gedränge */
 @media(max-width:860px){.nav-links a:not(.nav-cta){display:none;}}
@@ -532,7 +534,7 @@ body:has(.mnav.auf) #nav{background:var(--paper);}
 
 @media(max-width:860px){
   .nav-burger{display:flex;}
-  .nav-cta{padding:11px 16px!important;font-size:13.5px;}
+  .nav-cta{padding:12px 20px!important;font-size:13.5px;margin-left:0;}
   /* Anfrage-Knopf steht im Menue, nicht doppelt in der Leiste */
   .nav-links{display:none;}
 }
@@ -555,6 +557,20 @@ body:has(.mnav.auf) #nav{background:var(--paper);}
   .wview{height:auto!important;aspect-ratio:4/3;}
   .wview img.wimg{position:absolute;inset:0;width:100%;height:100%!important;object-fit:cover;object-position:center top;animation:none!important;}
 }
+
+/* Verweis auf die beiden Leistungsseiten */
+#hebel{padding:0 0 5rem;}
+.hebel-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.hebel{display:block;background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:34px 32px;transition:transform .4s var(--ease),box-shadow .4s,border-color .3s;}
+.hebel:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:var(--acc);}
+.h-eyebrow{font-size:13px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--faint);}
+.hebel h3{font-size:26px;font-weight:800;letter-spacing:-.03em;margin:10px 0 12px;color:var(--ink);}
+.hebel p{font-size:15.5px;line-height:1.65;color:var(--sub);}
+.h-mehr{display:inline-flex;align-items:center;gap:7px;margin-top:18px;font-size:15px;
+  font-weight:600;color:var(--acc-deep);min-height:44px;}
+@media(max-width:860px){.hebel-grid{grid-template-columns:1fr;gap:14px;}#hebel{padding-bottom:3rem;}
+  .hebel{padding:26px 22px;}.hebel h3{font-size:22px;}}
 
 /* ═══════ MOBIL & TABLET — Durchgang 23.08.2026 ═══════ */
 
@@ -698,11 +714,9 @@ body:has(.mnav.auf) #nav{background:var(--paper);}
   <a href="#hero" class="nav-logo"><img src="/images/logo-handwerksmanufaktur.png" alt="HandwerksManufaktur" width="884" height="282"></a>
   <div class="nav-links">
       <a href="#arbeiten">Arbeiten</a>
+      <a href="#fotos">Shootings</a>
       <a href="#leistungen">Leistungen</a>
-      <a href="#seo">Google-Ergebnisse</a>
-      <a href="#ablauf">Ablauf</a>
-      <a href="#stimmen">Stimmen</a>
-      <a href="#faq">Fragen</a>
+      <a href="#studio">Über uns</a>
       <a href="#kontakt" class="nav-cta">Projekt anfragen</a>
     </div>
     <button class="nav-burger" id="navBurger" aria-label="Menü öffnen" aria-expanded="false" onclick="toggleMenu()"><span></span><span></span></button>
@@ -711,12 +725,9 @@ body:has(.mnav.auf) #nav{background:var(--paper);}
 <div class="mnav-bd" id="mnavBd" onclick="toggleMenu(0)" hidden></div>
 <div class="mnav" id="mnav" hidden>
   <a href="#arbeiten" onclick="toggleMenu(0)">Arbeiten</a>
+  <a href="#fotos" onclick="toggleMenu(0)">Shootings</a>
   <a href="#leistungen" onclick="toggleMenu(0)">Leistungen</a>
-  <a href="#seo" onclick="toggleMenu(0)">Google-Ergebnisse</a>
   <a href="#studio" onclick="toggleMenu(0)">Über uns</a>
-  <a href="#ablauf" onclick="toggleMenu(0)">Ablauf</a>
-  <a href="#stimmen" onclick="toggleMenu(0)">Stimmen</a>
-  <a href="#faq" onclick="toggleMenu(0)">Fragen</a>
   <div class="mnav-foot">
     <a href="#kontakt" class="mnav-cta" onclick="toggleMenu(0)">Projekt anfragen</a>
     <a href="tel:+4981947174990" class="mnav-tel">Anrufen · +49 8194 7174990</a>
@@ -931,6 +942,28 @@ body:has(.mnav.auf) #nav{background:var(--paper);}
   </div>
 </section>
 
+<!-- ═══════ ZWEI LEISTUNGSSEITEN ═══════
+     Noah, 08.09.2026: zwei eigene Seiten zum Mitschicken. Auf der Startseite
+     stehen sie als Verweis, nicht im Hauptmenü — das bleibt bei fünf Zielen. -->
+<section id="hebel">
+  <div class="wrap">
+    <div class="hebel-grid">
+      <a class="hebel reveal" href="/neukundengewinnung/">
+        <span class="h-eyebrow">Für volle Bücher</span>
+        <h3>Neukundengewinnung</h3>
+        <p>Anzeigen im Umkreis, Filterfragen vor der Anfrage, Anfragen direkt in dein Postfach. Mit Fallstudie: 21 Bad-Anfragen in zwei Monaten.</p>
+        <span class="h-mehr">Ansehen <span class="wpfeil">↗</span></span>
+      </a>
+      <a class="hebel reveal" href="/mitarbeitergewinnung/">
+        <span class="h-eyebrow">Für volle Werkstatt</span>
+        <h3>Mitarbeitergewinnung</h3>
+        <p>Deine Stelle dort, wo die Guten abends sind. Mit Fallstudie: 25 Bewerbungen in vier Wochen, Stelle besetzt.</p>
+        <span class="h-mehr">Ansehen <span class="wpfeil">↗</span></span>
+      </a>
+    </div>
+  </div>
+</section>
+
 <!-- ═══════ NIGHT: ÜBER UNS ═══════ -->
 <section id="studio">
   <div class="wrap">
@@ -1090,7 +1123,7 @@ body:has(.mnav.auf) #nav{background:var(--paper);}
   <div class="wrap">
     <div class="k-card reveal">
       <div class="k-head">
-        <h2>Bereit für <span class="rot" id="rot"><span class="on">mehr Aufträge?</span><span>neue Fachkräfte?</span><span>Sichtbarkeit bei Google?</span><span>bessere Projekte?</span></span></h2>
+        <h2>Bereit für <span class="rot" id="rot"><span class="on">mehr Aufträge?</span><span>neue Fachkräfte?</span><span>mehr Sichtbarkeit?</span><span>bessere Projekte?</span></span></h2>
         <p>In 15 Minuten klären wir, wo dein Betrieb online steht und was sich mit einem neuen Auftritt ändern würde. Kostenlos und unverbindlich.</p>
       </div>
       <div class="k-grid">
@@ -1142,7 +1175,7 @@ body:has(.mnav.auf) #nav{background:var(--paper);}
     <div class="f-in">
       <img src="/images/logo-handwerksmanufaktur.png" alt="HandwerksManufaktur" width="884" height="282" loading="lazy" decoding="async">
       <span>© 2026 HandwerksManufaktur.<span class="f-rechte"> Alle Rechte vorbehalten.</span></span>
-      <div class="f-links"><a href="/impressum">Impressum</a><a href="/datenschutz">Datenschutz</a><a href="/agb">AGB</a></div>
+      <div class="f-links"><a href="/neukundengewinnung/">Neukundengewinnung</a><a href="/mitarbeitergewinnung/">Mitarbeitergewinnung</a><a href="/impressum">Impressum</a><a href="/datenschutz">Datenschutz</a><a href="/agb">AGB</a></div>
     </div>
   </div>
 </footer>
