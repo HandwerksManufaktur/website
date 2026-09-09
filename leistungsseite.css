@@ -132,42 +132,34 @@ p{font-size:16.5px;line-height:1.7;color:var(--sub);}
 .lp-schritt p{font-size:15px;}
 
 
-/* ── Ablauf mit Bild je Schritt (Noah, 09.09.2026: „das mit dem ‚Wir kommen in
-   den Betrieb, Anzeigen laufen im Umkreis, Anfragen landen im Postfach' kann
-   man ja krass visualisieren"). Vorher standen dort vier Textspalten, die wie
-   die drei Karten darüber aussahen — zweimal dasselbe Muster untereinander. */
-.lp-weg{display:grid;gap:18px;margin-top:46px;}
-.lp-weg-schritt{display:grid;grid-template-columns:1fr 1fr;gap:0;overflow:hidden;
-  border-radius:var(--r-lg);background:var(--night2);border:1px solid var(--night-line);}
-.lp-weg-schritt:nth-child(even) .lp-weg-bild{order:2;}
-.lp-weg-bild{position:relative;min-height:260px;}
-.lp-weg-bild img{width:100%;height:100%;object-fit:cover;display:block;}
-.lp-weg-text{padding:36px 34px;display:flex;flex-direction:column;justify-content:center;}
-.lp-weg-nr{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;
-  border-radius:50%;background:rgba(224,164,92,.16);color:#E0A45C;font-size:15px;font-weight:700;
-  margin-bottom:14px;}
-.lp-weg-text h3{color:#fff;font-size:21px;margin-bottom:10px;}
-.lp-weg-text p{font-size:15.5px;}
+/* ── Icon am Schritt (Noah, 09.09.2026: „Ich habe nur gesagt, dass du ein paar
+   Icons dahin machen sollst"). Vorher standen dort die Ziffern 01–04, danach
+   vier grosse Fotobloecke mit 1/2/3/4 — beides zaehlte direkt unter den drei
+   Karten darueber ein zweites Mal. Jetzt traegt das Icon den Schritt allein. */
+.s-icon{display:block;width:26px;height:26px;color:#E0A45C;margin-bottom:12px;}
+.s-icon svg{width:100%;height:100%;display:block;}
 
 /* Zahlen mit Zeichen davor — wie auf der SHK-Seite */
 .fs-zahl .sym{display:block;font-size:20px;line-height:1;margin-bottom:8px;}
 
-/* Bilderband statt Funnel-Screenshot */
-.lp-band{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:38px;}
-.lp-band figure{margin:0;}
-.lp-band img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:var(--r-md);
-  border:1px solid var(--line);}
-.lp-band figcaption{margin-top:8px;font-size:13.5px;color:var(--faint);}
-@media(max-width:1024px){
-  .lp-weg-schritt{grid-template-columns:1fr;}
-  .lp-weg-schritt:nth-child(even) .lp-weg-bild{order:0;}
-  .lp-weg-bild{min-height:220px;aspect-ratio:16/9;}
-  .lp-weg-text{padding:26px 24px;}
-  .lp-band{grid-template-columns:1fr 1fr;}
-}
+/* ── Kundenfotos laufen durch (Noah, 09.09.2026: „ich wollte, dass die Bilder
+   von Kunden durchlaufen"). 🔴 Kein Name unter dem Bild — die Kunden werden
+   hier nicht benannt. Gleiche Mechanik wie das Fotoband der Startseite. */
+.lp-fotoband{display:flex;overflow:hidden;margin-top:44px;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);}
+.lp-fotoband-t{display:flex;gap:16px;padding:0 8px;flex-shrink:0;
+  animation:lp-lauf 78s linear infinite;}
+.lp-fotoband:hover .lp-fotoband-t{animation-play-state:paused;}
+@keyframes lp-lauf{to{transform:translateX(-100%);}}
+.lp-fotoband img{width:250px;height:320px;flex-shrink:0;object-fit:cover;display:block;
+  border-radius:var(--r-md);border:1px solid var(--line);}
 @media(max-width:680px){
-  .lp-weg-bild{aspect-ratio:4/3;min-height:0;}
-  .lp-band{gap:10px;}
+  .lp-fotoband-t{gap:12px;padding:0 6px;}
+  .lp-fotoband img{width:196px;height:250px;}
+}
+@media(prefers-reduced-motion:reduce){
+  .lp-fotoband-t{animation:none;}
 }
 
 /* ── Fallstudie ────────────────────────────────────────────────────────── */
