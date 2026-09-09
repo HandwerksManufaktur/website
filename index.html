@@ -562,7 +562,10 @@ body:has(.mnav.auf) #nav{background:var(--paper);}
 #hebel{padding:0 0 5rem;}
 .hebel-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
 .hebel{display:block;background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);
-  padding:34px 32px;transition:transform .4s var(--ease),box-shadow .4s,border-color .3s;}
+  padding:0 0 30px;overflow:hidden;transition:transform .4s var(--ease),box-shadow .4s,border-color .3s;}
+.h-bild{margin-bottom:24px;}
+.h-bild img{width:100%;aspect-ratio:3/2;object-fit:cover;object-position:center 30%;display:block;}
+.hebel .h-eyebrow,.hebel h3,.hebel p,.hebel .h-mehr{margin-left:32px;margin-right:32px;}
 .hebel:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:var(--acc);}
 .h-eyebrow{font-size:13px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--faint);}
 .hebel h3{font-size:26px;font-weight:800;letter-spacing:-.03em;margin:10px 0 12px;color:var(--ink);}
@@ -570,7 +573,9 @@ body:has(.mnav.auf) #nav{background:var(--paper);}
 .h-mehr{display:inline-flex;align-items:center;gap:7px;margin-top:18px;font-size:15px;
   font-weight:600;color:var(--acc-deep);min-height:44px;}
 @media(max-width:860px){.hebel-grid{grid-template-columns:1fr;gap:14px;}#hebel{padding-bottom:3rem;}
-  .hebel{padding:26px 22px;}.hebel h3{font-size:22px;}}
+  .hebel{padding:0 0 24px;}.hebel h3{font-size:22px;}
+  .hebel .h-eyebrow,.hebel h3,.hebel p,.hebel .h-mehr{margin-left:22px;margin-right:22px;}
+  .h-bild{margin-bottom:18px;}}
 
 /* ═══════ MOBIL & TABLET — Durchgang 23.08.2026 ═══════ */
 
@@ -949,12 +954,14 @@ body:has(.mnav.auf) #nav{background:var(--paper);}
   <div class="wrap">
     <div class="hebel-grid">
       <a class="hebel reveal" href="/neukundengewinnung/">
+        <div class="h-bild"><img src="/assets/fallstudie/senftleben-team.jpg" alt="Team von Senftleben Haustechnik" loading="lazy" width="1200" height="800"></div>
         <span class="h-eyebrow">Für volle Bücher</span>
         <h3>Neukundengewinnung</h3>
         <p>Anzeigen im Umkreis, Filterfragen vor der Anfrage, Anfragen direkt in dein Postfach. Mit Fallstudie: 21 Bad-Anfragen in zwei Monaten.</p>
         <span class="h-mehr">Ansehen <span class="wpfeil">↗</span></span>
       </a>
       <a class="hebel reveal" href="/mitarbeitergewinnung/">
+        <div class="h-bild"><img src="/assets/fallstudie/ess-team-jubel.jpg" alt="Team von Erwin Schmidt &amp; Sohn" loading="lazy" width="1600" height="1067"></div>
         <span class="h-eyebrow">Für volle Werkstatt</span>
         <h3>Mitarbeitergewinnung</h3>
         <p>Deine Stelle dort, wo die Guten abends sind. Mit Fallstudie: 25 Bewerbungen in vier Wochen, Stelle besetzt.</p>

@@ -105,8 +105,8 @@ p{font-size:16.5px;line-height:1.7;color:var(--sub);}
   background:radial-gradient(ellipse at 50% 20%,rgba(200,135,58,.11),transparent 58%),
              radial-gradient(ellipse at 30% 60%,rgba(200,160,110,.12),transparent 52%);}
 .lp-hero-bild{margin-top:56px;}
-.lp-hero-bild img{width:100%;border-radius:var(--r-lg);object-fit:cover;aspect-ratio:16/8;
-  box-shadow:var(--shadow);}
+.lp-hero-bild img{width:100%;border-radius:var(--r-lg);object-fit:cover;aspect-ratio:16/9;
+  object-position:center 26%;box-shadow:var(--shadow);}
 
 /* ── Blöcke ────────────────────────────────────────────────────────────── */
 .lp-blk{padding:6rem 0;}
@@ -121,7 +121,7 @@ p{font-size:16.5px;line-height:1.7;color:var(--sub);}
 .lp-karte{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);
   padding:28px 26px;transition:transform .4s var(--ease),box-shadow .4s;}
 .lp-karte:hover{transform:translateY(-4px);box-shadow:var(--shadow);}
-.k-num{font-family:var(--serif);font-style:italic;font-size:26px;color:var(--acc);margin-bottom:12px;}
+.k-strich{width:34px;height:3px;border-radius:2px;background:var(--acc);margin-bottom:16px;}
 .lp-karte h3{margin-bottom:8px;}
 .lp-karte p{font-size:15.5px;}
 
@@ -130,6 +130,45 @@ p{font-size:16.5px;line-height:1.7;color:var(--sub);}
 .s-num{font-family:var(--serif);font-style:italic;font-size:24px;color:#E0A45C;display:block;margin-bottom:10px;}
 .lp-schritt h3{color:#fff;margin-bottom:8px;font-size:17.5px;}
 .lp-schritt p{font-size:15px;}
+
+
+/* ── Ablauf mit Bild je Schritt (Noah, 09.09.2026: „das mit dem ‚Wir kommen in
+   den Betrieb, Anzeigen laufen im Umkreis, Anfragen landen im Postfach' kann
+   man ja krass visualisieren"). Vorher standen dort vier Textspalten, die wie
+   die drei Karten darüber aussahen — zweimal dasselbe Muster untereinander. */
+.lp-weg{display:grid;gap:18px;margin-top:46px;}
+.lp-weg-schritt{display:grid;grid-template-columns:1fr 1fr;gap:0;overflow:hidden;
+  border-radius:var(--r-lg);background:var(--night2);border:1px solid var(--night-line);}
+.lp-weg-schritt:nth-child(even) .lp-weg-bild{order:2;}
+.lp-weg-bild{position:relative;min-height:260px;}
+.lp-weg-bild img{width:100%;height:100%;object-fit:cover;display:block;}
+.lp-weg-text{padding:36px 34px;display:flex;flex-direction:column;justify-content:center;}
+.lp-weg-nr{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;
+  border-radius:50%;background:rgba(224,164,92,.16);color:#E0A45C;font-size:15px;font-weight:700;
+  margin-bottom:14px;}
+.lp-weg-text h3{color:#fff;font-size:21px;margin-bottom:10px;}
+.lp-weg-text p{font-size:15.5px;}
+
+/* Zahlen mit Zeichen davor — wie auf der SHK-Seite */
+.fs-zahl .sym{display:block;font-size:20px;line-height:1;margin-bottom:8px;}
+
+/* Bilderband statt Funnel-Screenshot */
+.lp-band{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:38px;}
+.lp-band figure{margin:0;}
+.lp-band img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:var(--r-md);
+  border:1px solid var(--line);}
+.lp-band figcaption{margin-top:8px;font-size:13.5px;color:var(--faint);}
+@media(max-width:1024px){
+  .lp-weg-schritt{grid-template-columns:1fr;}
+  .lp-weg-schritt:nth-child(even) .lp-weg-bild{order:0;}
+  .lp-weg-bild{min-height:220px;aspect-ratio:16/9;}
+  .lp-weg-text{padding:26px 24px;}
+  .lp-band{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:680px){
+  .lp-weg-bild{aspect-ratio:4/3;min-height:0;}
+  .lp-band{gap:10px;}
+}
 
 /* ── Fallstudie ────────────────────────────────────────────────────────── */
 .fs-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;margin-top:44px;align-items:start;}
