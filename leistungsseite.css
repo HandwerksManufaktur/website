@@ -140,37 +140,55 @@ p{font-size:16.5px;line-height:1.7;color:var(--sub);}
 .s-icon svg{width:100%;height:100%;display:block;}
 
 /* Zahlen mit Zeichen davor — wie auf der SHK-Seite */
-.fs-zahl .sym{display:block;font-size:20px;line-height:1;margin-bottom:8px;}
+/* Die Zeichen sitzen in einem gleich grossen runden Feld — nebeneinander sind
+   Emoji sonst unterschiedlich schwer (Umschlag zart, gruener Haken massiv). */
+.fs-zahl .sym{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;
+  background:var(--acc-soft);font-size:17px;line-height:1;margin-bottom:12px;}
 
 /* ── Kundenfotos laufen durch (Noah, 09.09.2026: „ich wollte, dass die Bilder
-   von Kunden durchlaufen"). 🔴 Kein Name unter dem Bild — die Kunden werden
-   hier nicht benannt. Gleiche Mechanik wie das Fotoband der Startseite. */
-.lp-fotoband{display:flex;overflow:hidden;margin-top:44px;
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
-  mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);}
-.lp-fotoband-t{display:flex;gap:16px;padding:0 8px;flex-shrink:0;
-  animation:lp-lauf 78s linear infinite;}
+   von Kunden durchlaufen", dann: „die Fotos muessen auch ein bisschen breiter
+   sein" und „nur Bilder verwenden, auf denen man alle Personen sieht").
+   🔴 Deshalb 16/10 statt 4/5: aus einer 3:2-Aufnahme geht dabei fast nichts
+   verloren, waehrend das Hochformat Koepfe abgeschnitten hat. Hochformat-Quellen
+   (irlbacher-buero, irlbacher-team-van, sussmann-anzeige) sind raus.
+   🔴 Kein Name unter dem Bild — die Kunden werden hier nicht benannt.
+   Das Band steht OBEN, direkt hinter dem Hero, und nur einmal auf der Seite. */
+.lp-bandblock{padding:60px 0 0;}
+.lp-fotoband{display:flex;overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);}
+.lp-fotoband-t{display:flex;gap:18px;padding:0 9px;flex-shrink:0;
+  animation:lp-lauf 96s linear infinite;}
 .lp-fotoband:hover .lp-fotoband-t{animation-play-state:paused;}
 @keyframes lp-lauf{to{transform:translateX(-100%);}}
-.lp-fotoband img{width:250px;height:320px;flex-shrink:0;object-fit:cover;display:block;
+.lp-fotoband img{width:430px;aspect-ratio:16/10;flex-shrink:0;object-fit:cover;display:block;
   border-radius:var(--r-md);border:1px solid var(--line);}
-@media(max-width:680px){
-  .lp-fotoband-t{gap:12px;padding:0 6px;}
-  .lp-fotoband img{width:196px;height:250px;}
-}
-@media(prefers-reduced-motion:reduce){
-  .lp-fotoband-t{animation:none;}
-}
+
+/* ── Kundenvideos, vier nebeneinander (Noah, 09.09.2026: „eine Sektion, wo die
+   vier Videos von vier Kunden durchlaufen, vier Videos nebeneinander").
+   Volle Breite, natives 16/9 — nicht beschneiden, aus demselben Grund wie oben.
+   Geladen und gestartet werden sie erst, wenn sie im Bild sind (leistungsseite.js). */
+/* 🔴 Auf die Breite des Textes gesetzt, nicht randlos: sonst beginnt die
+   Videoreihe links vor der Ueberschrift und die Sektion wirkt verrutscht. */
+.lp-videoband{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;
+  max-width:1200px;margin:44px auto 0;padding:0 clamp(16px,4vw,34px);}
+.lp-vid{position:relative;border-radius:var(--r-md);overflow:hidden;
+  border:1px solid var(--night-line);background:var(--night2);}
+.lp-vid video{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;}
 
 /* ── Fallstudie ────────────────────────────────────────────────────────── */
 .fs-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;margin-top:44px;align-items:start;}
 .fs-text p+p{margin-top:14px;}
-.fs-zahlen{display:flex;gap:14px;margin-top:30px;flex-wrap:wrap;}
-.fs-zahl{flex:1 1 150px;background:var(--card);border:1px solid var(--line);
+/* 🔴 Die Zahlen stehen als eigene Reihe UNTER dem Raster, nicht in der linken
+   Spalte. Vorher war die linke Spalte dadurch deutlich hoeher als das Video und
+   das Zitat hing allein unten links (Noah: „Die Sektionen sind asymmetrisch …
+   der ist einfach komplett unten drunter"). */
+.fs-zahlen{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px;}
+.fs-zahl{background:var(--card);border:1px solid var(--line);
   border-radius:var(--r-md);padding:18px 20px;}
 .fs-zahl .z{display:block;font-size:30px;font-weight:800;letter-spacing:-.03em;color:var(--ink);}
 .fs-zahl .l{display:block;font-size:13.5px;color:var(--faint);margin-top:4px;line-height:1.4;}
-.fs-zitat{margin-top:28px;padding-left:20px;border-left:2.5px solid var(--acc);
+.fs-zitat{margin-top:26px;padding-left:20px;border-left:2.5px solid var(--acc);
   font-size:19px;line-height:1.55;font-weight:500;color:var(--ink);}
 .fs-zitat cite{display:block;margin-top:12px;font-style:normal;font-size:14px;color:var(--faint);}
 .fs-zitat cite strong{color:var(--sub);}
@@ -181,13 +199,21 @@ p{font-size:16.5px;line-height:1.7;color:var(--sub);}
 .fs-bilder img{width:100%;border-radius:var(--r-md);object-fit:cover;aspect-ratio:3/2;border:1px solid var(--line);}
 
 /* ── Liste ─────────────────────────────────────────────────────────────── */
-.lp-liste{list-style:none;margin-top:38px;display:grid;gap:14px;max-width:820px;}
+/* Vier Punkte in zwei Reihen — ein 820-px-Streifen unter einer Reihe aus vier
+   Videos sitzt sonst links in der Ecke. */
+.lp-liste{list-style:none;margin-top:38px;display:grid;gap:14px;
+  grid-template-columns:1fr 1fr;align-items:start;}
 .lp-liste li{position:relative;padding:18px 20px 18px 52px;background:var(--card);
   border:1px solid var(--line);border-radius:var(--r-md);font-size:16px;line-height:1.6;color:var(--sub);}
 .lp-liste li::before{content:"✓";position:absolute;left:20px;top:18px;width:20px;height:20px;
   display:grid;place-items:center;border-radius:50%;background:var(--acc-soft);
   color:var(--acc-deep);font-size:12.5px;font-weight:700;}
 .lp-liste strong{color:var(--ink);font-weight:650;}
+
+/* Liste auf dunklem Grund — sie sitzt jetzt in derselben Sektion wie die Videos. */
+.lp-dunkel .lp-liste li{background:var(--night2);border-color:var(--night-line);color:var(--night-sub);}
+.lp-dunkel .lp-liste strong{color:#fff;}
+.lp-dunkel .lp-liste li::before{background:rgba(224,164,92,.16);color:#E0A45C;}
 
 /* ── FAQ ───────────────────────────────────────────────────────────────── */
 .lp-faq{max-width:820px;}
@@ -227,6 +253,9 @@ footer{padding:0 0 46px;}
 /* ── Breiten ───────────────────────────────────────────────────────────── */
 @media(max-width:1024px){
   .lp-schritte{grid-template-columns:1fr 1fr;gap:22px;}
+  .lp-videoband{grid-template-columns:1fr 1fr;gap:14px;}
+  .lp-liste{grid-template-columns:1fr;}
+  .lp-fotoband img{width:340px;}
   .fs-grid{grid-template-columns:1fr;gap:32px;}
   .fs-video{order:-1;}
   .lp-blk{padding:4.5rem 0;}
@@ -244,6 +273,10 @@ footer{padding:0 0 46px;}
   .lp-hero{padding-top:104px;}
   .lp-hero-bild{margin-top:38px;}
   .lp-hero-bild img{aspect-ratio:4/3;}
+  .lp-fotoband img{width:260px;}
+  .lp-fotoband-t{gap:12px;padding:0 6px;}
+  .lp-bandblock{padding:40px 0 0;}
+  .fs-zahlen{grid-template-columns:1fr;}
   .lp-blk{padding:3.4rem 0;}
   .lp-schritte{grid-template-columns:1fr;gap:18px;}
   .lp-ctas{flex-direction:column;align-items:stretch;}
@@ -266,3 +299,25 @@ footer{padding:0 0 46px;}
   html{scroll-behavior:auto;}
   *{animation-duration:.01ms!important;transition-duration:.01ms!important;}
 }
+
+
+/* ── Zugaenglichkeit: die drei Signale, die Apple getrennt behandelt ────────
+   Weniger Bewegung heisst nicht keine Rueckmeldung, sondern eine ruhigere.
+   Weniger Transparenz heisst: das Material wird fest statt milchig.
+   Mehr Kontrast heisst: klare Kante statt zarter Linie. */
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  .lp-fotoband-t{animation:none;}
+  *,*::before,*::after{transition-duration:.01ms!important;}
+}
+@media(prefers-reduced-transparency:reduce){
+  #nav,#nav.scrolled{background:var(--paper);backdrop-filter:none;-webkit-backdrop-filter:none;}
+}
+@media(prefers-contrast:more){
+  :root{--line:#B9AE96;--line2:#B9AE96;--sub:#3B372F;--faint:#5A5449;}
+  .lp-karte,.fs-zahl,.faq-item,.lp-liste li{border-width:1.5px;}
+}
+
+/* Rueckmeldung kommt beim Druecken, nicht erst beim Loslassen. */
+.faq-q:active,.nav-cta:active,.f-links a:active{transform:scale(.985);}
+.faq-q,.nav-cta{transition:transform .1s ease-out;}

@@ -51,3 +51,28 @@ function faq(el){
   document.querySelectorAll('.faq-item.open').forEach(function(f){ f.classList.remove('open'); });
   if(!offen) it.classList.add('open');
 }
+
+/* Kundenvideos: erst laden, wenn sie im Bild sind — vier Clips sind rund 2,5 MB,
+   die soll niemand mitschleppen, der nie so weit scrollt. Wer weniger Bewegung
+   eingestellt hat, bekommt das Standbild statt der Schleife. */
+(function(){
+  var ruhig = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var vids = document.querySelectorAll('.lp-vid video[data-quelle]');
+  if(!vids.length) return;
+  function laden(v){
+    if(v.dataset.geladen) return;
+    v.dataset.geladen = '1';
+    var q = document.createElement('source');
+    q.src = v.dataset.quelle; q.type = 'video/mp4';
+    v.appendChild(q); v.load();
+    if(!ruhig) v.play().catch(function(){});
+  }
+  if(!('IntersectionObserver' in window)){ vids.forEach(laden); return; }
+  var beobachter = new IntersectionObserver(function(eintraege){
+    eintraege.forEach(function(e){
+      if(e.isIntersecting){ laden(e.target); }
+      else if(e.target.dataset.geladen && !e.target.paused){ e.target.pause(); }
+    });
+  }, { rootMargin: '200px 0px' });
+  vids.forEach(function(v){ beobachter.observe(v); });
+})();
