@@ -104,9 +104,9 @@ p{font-size:16.5px;line-height:1.7;color:var(--sub);}
   width:1100px;height:640px;pointer-events:none;
   background:radial-gradient(ellipse at 50% 20%,rgba(200,135,58,.11),transparent 58%),
              radial-gradient(ellipse at 30% 60%,rgba(200,160,110,.12),transparent 52%);}
-.lp-hero-bild{margin-top:56px;}
-.lp-hero-bild img{width:100%;border-radius:var(--r-lg);object-fit:cover;aspect-ratio:16/9;
-  object-position:center 26%;box-shadow:var(--shadow);}
+/* 🔴 Kein einzelnes grosses Hero-Foto mehr (Noah, 09.09.2026: „das eine grosse Bild …
+   sieht ein bisschen so aus, als waeren wir dann die Firma Senftleben. Da mach lieber
+   zwei so Bildstreifen"). Statt eines Betriebs laufen jetzt vier durchs Bild. */
 
 /* ── Blöcke ────────────────────────────────────────────────────────────── */
 .lp-blk{padding:6rem 0;}
@@ -153,12 +153,15 @@ p{font-size:16.5px;line-height:1.7;color:var(--sub);}
    (irlbacher-buero, irlbacher-team-van, sussmann-anzeige) sind raus.
    🔴 Kein Name unter dem Bild — die Kunden werden hier nicht benannt.
    Das Band steht OBEN, direkt hinter dem Hero, und nur einmal auf der Seite. */
-.lp-bandblock{padding:60px 0 0;}
+.lp-bandblock{padding:52px 0 0;display:grid;gap:18px;}
 .lp-fotoband{display:flex;overflow:hidden;
   -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
   mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);}
 .lp-fotoband-t{display:flex;gap:18px;padding:0 9px;flex-shrink:0;
   animation:lp-lauf 96s linear infinite;}
+/* Der zweite Streifen laeuft andersherum und langsamer — zwei gleich laufende
+   Baender uebereinander lesen sich als ein einziges, breites Band. */
+.lp-fotoband.rueck .lp-fotoband-t{animation-direction:reverse;animation-duration:112s;}
 .lp-fotoband:hover .lp-fotoband-t{animation-play-state:paused;}
 @keyframes lp-lauf{to{transform:translateX(-100%);}}
 .lp-fotoband img{width:430px;aspect-ratio:16/10;flex-shrink:0;object-fit:cover;display:block;
@@ -170,11 +173,14 @@ p{font-size:16.5px;line-height:1.7;color:var(--sub);}
    Geladen und gestartet werden sie erst, wenn sie im Bild sind (leistungsseite.js). */
 /* 🔴 Auf die Breite des Textes gesetzt, nicht randlos: sonst beginnt die
    Videoreihe links vor der Ueberschrift und die Sektion wirkt verrutscht. */
-.lp-videoband{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;
-  max-width:1200px;margin:44px auto 0;padding:0 clamp(16px,4vw,34px);}
-.lp-vid{position:relative;border-radius:var(--r-md);overflow:hidden;
-  border:1px solid var(--night-line);background:var(--night2);}
-.lp-vid video{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;}
+.lp-videoband{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;
+  max-width:1200px;margin:40px auto 0;padding:0 clamp(16px,4vw,34px);}
+.lp-vid{margin:0;}
+.lp-vid video{width:100%;aspect-ratio:9/16;object-fit:cover;display:block;
+  border-radius:var(--r-md);border:1px solid var(--night-line);background:var(--night2);}
+.lp-vid figcaption{margin-top:10px;text-align:center;font-size:13.5px;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;color:#E0A45C;}
+.lp-vor{max-width:760px;margin-top:20px;}
 
 /* ── Fallstudie ────────────────────────────────────────────────────────── */
 .fs-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;margin-top:44px;align-items:start;}
@@ -216,10 +222,14 @@ p{font-size:16.5px;line-height:1.7;color:var(--sub);}
 .lp-dunkel .lp-liste li::before{background:rgba(224,164,92,.16);color:#E0A45C;}
 
 /* ── FAQ ───────────────────────────────────────────────────────────────── */
-.lp-faq{max-width:820px;}
+/* 🔴 Die Fragen standen als 820-px-Streifen links, rechts daneben blieb ein Drittel
+   der Seite leer (Noah, 09.09.2026: „So ist das eingeengt, und da steht dann da
+   irgendwie so leer mit drin"). Jetzt zwei Spalten ueber die volle Breite. */
+.lp-faq .faq-item{margin-top:0;}
+.faq-liste{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start;margin-top:38px;}
 .faq-item{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);
   margin-top:12px;overflow:hidden;}
-.faq-item:first-of-type{margin-top:38px;}
+
 .faq-q{display:flex;align-items:center;justify-content:space-between;gap:16px;
   padding:18px 22px;font-size:16.5px;font-weight:650;cursor:pointer;min-height:60px;}
 .faq-q .pm{flex-shrink:0;width:26px;height:26px;display:grid;place-items:center;border-radius:50%;
@@ -253,8 +263,16 @@ footer{padding:0 0 46px;}
 /* ── Breiten ───────────────────────────────────────────────────────────── */
 @media(max-width:1024px){
   .lp-schritte{grid-template-columns:1fr 1fr;gap:22px;}
-  .lp-videoband{grid-template-columns:1fr 1fr;gap:14px;}
+  /* 🔴 Fünf Hochformate lassen sich nicht in 2 oder 3 Spalten legen, ohne dass die
+     letzte Reihe halb leer bleibt. Unter 1024 px wird die Reihe deshalb zum
+     seitlich schiebbaren Streifen — kein Rest, und auf dem Handy die natürliche
+     Geste. */
+  .lp-videoband{display:flex;overflow-x:auto;gap:14px;scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  .lp-videoband::-webkit-scrollbar{display:none;}
+  .lp-vid{flex:0 0 min(52vw,240px);scroll-snap-align:center;}
   .lp-liste{grid-template-columns:1fr;}
+  .faq-liste{grid-template-columns:1fr;}
   .lp-fotoband img{width:340px;}
   .fs-grid{grid-template-columns:1fr;gap:32px;}
   .fs-video{order:-1;}
@@ -271,9 +289,8 @@ footer{padding:0 0 46px;}
 }
 @media(max-width:680px){
   .lp-hero{padding-top:104px;}
-  .lp-hero-bild{margin-top:38px;}
-  .lp-hero-bild img{aspect-ratio:4/3;}
   .lp-fotoband img{width:260px;}
+  .lp-bandblock{gap:12px;}
   .lp-fotoband-t{gap:12px;padding:0 6px;}
   .lp-bandblock{padding:40px 0 0;}
   .fs-zahlen{grid-template-columns:1fr;}
