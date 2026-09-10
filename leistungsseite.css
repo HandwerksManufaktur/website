@@ -242,9 +242,11 @@ p{font-size:16.5px;line-height:1.7;color:var(--sub);}
 .faq-tel:hover{color:var(--acc-deep);border-color:var(--acc);}
 .faq-mensch{display:flex;align-items:center;gap:14px;margin-top:30px;padding:14px 20px 14px 14px;
   background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);}
-/* 🔴 Kein Kreis: die Quelle ist quadratisch, der Kreis schneidet den Kopf oben flach ab.
-   Abgerundetes Quadrat laesst das Portrait ganz. */
-.faq-mensch img{width:66px;height:66px;flex-shrink:0;border-radius:16px;object-fit:cover;
+/* 🔴 Das richtige Portrait ist `images/foto-noah-portrait-rund.png` — es ist bereits als
+   Kreis angelegt (schwarze Ecken, kein Alpha), deshalb gehoert hier border-radius:50% hin:
+   die Maske faellt genau auf den Bildkreis, nichts vom Kopf wird abgeschnitten.
+   🔴 `assets/team-noah.jpg` ist NICHT das Portrait — die Aufnahme entstand auf Zakynthos. */
+.faq-mensch img{width:66px;height:66px;flex-shrink:0;border-radius:50%;object-fit:cover;
   background:var(--paper2);}
 .faq-mensch b{display:block;font-size:15px;font-weight:700;}
 .faq-mensch span{display:block;margin-top:2px;font-size:13.5px;line-height:1.45;color:var(--faint);}
