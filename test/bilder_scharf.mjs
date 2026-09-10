@@ -9,6 +9,9 @@
       (Auf der Startseite sass die Ueberschrift buendig am Kartenrand, alles andere
       32 px eingerueckt — Noah: „Neukundengewinnung steht dann irgendwie ganz links.")
    5. Zwei Spalten nebeneinander duerfen sich um hoechstens 25 % unterscheiden.
+   6. Jede Seite mit Kontaktblock hat einen Terminlink, und der antwortet.
+      (Noah, 10.09.2026: „der Calendly-Link ist tatsaechlich auch nicht drin … unten
+      kann man sich auch nirgendwo einen Termin buchen.")
       (In der Fallstudie war die linke Spalte 1,9-mal so hoch wie das Video, weil
       die Zahlen darin standen — Noah: „Die Sektionen sind asymmetrisch.")
    Lauf:  node test/bilder_scharf.mjs            (Server auf 8811 muss laufen)
@@ -19,6 +22,7 @@ import { chromium } from '/Users/noahs/Documents/CEO-GPT/system/apps/audit/node_
 const BASIS = process.env.BASIS || 'http://localhost:8811';
 const SEITEN = ['/', '/neukundengewinnung/', '/mitarbeitergewinnung/',
                 '/impressum/', '/datenschutz/', '/agb/', '/onboarding/'];
+const MIT_TERMIN = ['/', '/neukundengewinnung/', '/mitarbeitergewinnung/'];
 const SCHIEF = 140;   // px Unterschied zwischen linkem und rechtem Rand
 const MINDEST = 1.5;
 const KUNDEN = /Senftleben|Irlbacher|Erwin Schmidt|Sussmann|Wohner|Klass/i;
@@ -36,6 +40,7 @@ const AUSNAHMEN_LAYOUT = {
 const AUSNAHMEN = { '/assets/work/nachher-wohner.jpg': '1,43x — Ganzseiten-Screenshot, Neuaufnahme aendert den Showcase' };
 const selbsttest = process.argv.includes('--selbsttest');
 
+const gefundeneTermine = new Set();
 const b = await chromium.launch();
 const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
 let fehler = [];
@@ -57,6 +62,7 @@ for (const s of SEITEN) {
     if (kind) kind.style.minHeight = (g.children[1].getBoundingClientRect().height * 1.4) + 'px';
     const k = document.querySelector('.hebel h3, .lp-karte h3, .faq-item .faq-q');
     if (k) k.style.marginLeft = '-30px';
+    document.querySelectorAll('a[href*="calendly"]').forEach(a => a.removeAttribute('href'));
     const f = document.querySelector('.wrap > ul, .wrap > .faq-liste, .wrap > div[class]');
     if (f) { f.style.maxWidth = '340px'; f.style.marginRight = 'auto'; f.style.display = 'grid'; f.style.minHeight = '200px'; }
   });
@@ -122,11 +128,17 @@ for (const s of SEITEN) {
       if (a && b && Math.max(a, b) / Math.min(a, b) > 1.25)
         raus.push({ art: 'asymmetrisch', links: Math.round(a), rechts: Math.round(b) });
     }
+    for (const a of document.querySelectorAll('a[href*="calendly"]'))
+      raus.push({ art: 'terminlink', url: a.getAttribute('href') });
     for (const c of document.querySelectorAll('figcaption'))
       if (k.test(c.textContent)) raus.push({ art: 'kundenname', text: c.textContent.trim() });
     return raus;
   }, { MINDEST, KUNDENQ: KUNDEN.source, SCHIEF });
-  funde.forEach(f => {
+  const termine = funde.filter(f => f.art === 'terminlink').map(f => f.url);
+  if (MIT_TERMIN.includes(s) && !termine.length)
+    fehler.push({ seite: s, art: 'kein Terminlink', hinweis: 'Seite mit Kontaktblock ohne Calendly-Link' });
+  termine.forEach(u => gefundeneTermine.add(u));
+  funde.filter(f => f.art !== 'terminlink').forEach(f => {
     const lay = AUSNAHMEN_LAYOUT[s + '|' + f.art];
     if (lay) { console.log('  … bewusste Ausnahme:', s, f.art, '—', lay); return; }
     if (AUSNAHMEN[f.src]) { console.log('  … bewusste Ausnahme:', f.src, '—', AUSNAHMEN[f.src]); return; }
@@ -137,11 +149,22 @@ await b.close();
 
 if (selbsttest) {
   const u = fehler.some(f => f.art === 'unscharf'), a = fehler.some(f => f.art === 'asymmetrisch'),
-        e = fehler.some(f => f.art === 'eingeengt'), b = fehler.some(f => f.art === 'nicht buendig');
+        e = fehler.some(f => f.art === 'eingeengt'), b = fehler.some(f => f.art === 'nicht buendig'),
+        t = fehler.some(f => f.art === 'kein Terminlink');
   console.log('Selbsttest — unscharf:', u ? '✅' : '❌', '· asymmetrisch:', a ? '✅' : '❌',
-              '· eingeengt:', e ? '✅' : '❌', '· nicht buendig:', b ? '✅' : '❌');
-  process.exit(u && a && e && b ? 0 : 1);
+              '· eingeengt:', e ? '✅' : '❌', '· nicht buendig:', b ? '✅' : '❌',
+              '· Terminlink fehlt:', t ? '✅' : '❌');
+  process.exit(u && a && e && b && t ? 0 : 1);
 }
+/* Ein Terminlink, der ins Leere zeigt, ist schlimmer als keiner. */
+for (const u of gefundeneTermine) {
+  try {
+    const a = await fetch(u, { redirect: 'follow' });
+    if (!a.ok) fehler.push({ art: 'Terminlink antwortet nicht', url: u, status: a.status });
+  } catch (e) { fehler.push({ art: 'Terminlink nicht erreichbar', url: u, fehler: String(e) }); }
+}
+if (!selbsttest) console.log('  … Terminlinks geprüft:', [...gefundeneTermine].join(' · ') || 'keine');
+
 if (fehler.length) { console.log('❌ ' + fehler.length + ' Befund(e):'); fehler.forEach(f => console.log('  ', JSON.stringify(f))); process.exit(1); }
 console.log('✅ ' + SEITEN.length + ' Seiten: Bilder mindestens ' + MINDEST + '× so breit wie ihr Slot, '
-  + 'keine Kundennamen unter Fotos, keine eingeengten Blöcke, Kartenzeilen bündig, Spalten im Lot.');
+  + 'keine Kundennamen unter Fotos, keine eingeengten Blöcke, Kartenzeilen bündig, Spalten im Lot, Terminlinks erreichbar.');

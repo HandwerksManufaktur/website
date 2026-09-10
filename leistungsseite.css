@@ -281,7 +281,13 @@ p{font-size:16.5px;line-height:1.7;color:var(--sub);}
 .lp-kcard h2{font-size:clamp(28px,3.8vw,44px);font-weight:800;letter-spacing:-.03em;
   position:relative;z-index:2;}
 .lp-kcard p{color:var(--night-sub);max-width:520px;margin:16px auto 0;position:relative;z-index:2;}
+/* 🔴 In der dunklen Karte ist `btn-ink` unsichtbar: --ink und --night sind derselbe
+   Wert (#16130E). Der Hauptknopf muss hier hell sein (Noah, 10.09.2026: „unten kann
+   man sich auch nirgendwo einen Termin buchen" — man SAH den Knopf nicht). */
+.lp-kcard .btn-ink{background:#fff;color:var(--ink);}
+.lp-kcard .btn-ink:hover{background:var(--acc);color:#fff;}
 .lp-kcard .lp-ctas{justify-content:center;position:relative;z-index:2;}
+.lp-kfuss{position:relative;z-index:2;margin-top:18px;font-size:14px;color:var(--night-sub);}
 
 /* ── Footer ────────────────────────────────────────────────────────────── */
 footer{padding:0 0 46px;}

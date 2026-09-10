@@ -141,10 +141,15 @@ nav.scrolled{box-shadow:0 1px 24px rgba(60,44,20,.05);}
 }
 .nav-links a{font-size:14.5px;font-weight:500;color:var(--sub);transition:color .2s,transform .2s;}
 .nav-links a:hover{color:var(--ink);}
-.nav-cta{background:var(--ink);color:#fff!important;border-radius:999px;padding:12px 26px;margin-left:6px;
+/* 🔴 Selektor MIT `.nav-links` davor: `.nav-links a` (0,1,1) schlaegt sonst `.nav-cta`
+   (0,1,0) und der Knopf bekam `padding:11px 4px` — der Text klebte links und rechts an
+   der Pille (Noah, 08.09. auf den Leistungsseiten, 10.09.2026 hier: „Der Button sieht
+   oben immer noch schlecht aus"). Auf den Leistungsseiten haelt das `!important`. */
+.nav-links a.nav-cta{background:var(--ink);color:#fff!important;border-radius:999px;
+  padding:11px 26px;margin:0 0 0 18px;display:inline-flex;align-items:center;
   font-weight:600;letter-spacing:-.01em;transition:background .25s,transform .2s;
   box-shadow:0 8px 20px -12px rgba(22,19,14,.55);}
-.nav-cta:hover{background:var(--acc);transform:translateY(-1px);}
+.nav-links a.nav-cta:hover{background:var(--acc);transform:translateY(-1px);}
 /* 1100–860px: Menü ausdünnen, statt es zu quetschen */
 @media(max-width:1100px){.nav-links{gap:20px;}}
 @media(max-width:960px){.nav-links{gap:16px;}.nav-links a{font-size:13.5px;}}
@@ -1134,13 +1139,14 @@ body:has(.mnav.auf) #nav{background:var(--paper);}
     <div class="k-card reveal">
       <div class="k-head">
         <h2>Bereit für <span class="rot" id="rot"><span class="on">mehr Aufträge?</span><span>neue Fachkräfte?</span><span>mehr Sichtbarkeit?</span><span>bessere Projekte?</span></span></h2>
-        <p>In 15 Minuten klären wir, wo dein Betrieb online steht und was sich mit einem neuen Auftritt ändern würde. Kostenlos und unverbindlich.</p>
+        <p>In 30 Minuten klären wir, wo dein Betrieb online steht und was sich mit einem neuen Auftritt ändern würde. Kostenlos und unverbindlich.</p>
       </div>
       <div class="k-grid">
         <div>
           <div class="ci"><div class="ci-ic">📞</div><div><div class="ci-l">Telefon</div><div class="ci-m"><a href="tel:+4981947174990">+49 8194 7174990</a></div><div class="ci-s">Mo–Fr, 8:00–18:00 Uhr</div></div></div>
           <div class="ci"><div class="ci-ic">✉️</div><div><div class="ci-l">E-Mail</div><div class="ci-m"><a href="mailto:info@die-handwerksmanufaktur.de">info@die-handwerksmanufaktur.de</a></div><div class="ci-s">Antwort innerhalb von 24h</div></div></div>
           <div class="ci"><div class="ci-ic">📍</div><div><div class="ci-l">Einsatzgebiet</div><div class="ci-m">DACH-Raum</div><div class="ci-s">Deutschland, Österreich, Schweiz</div></div></div>
+          <div class="ci"><div class="ci-ic">📅</div><div><div class="ci-l">Termin</div><div class="ci-m"><a href="https://calendly.com/noahseelau/website-potenzial" target="_blank" rel="noopener">Zeit aussuchen</a></div><div class="ci-s">Potenzialanalyse zur Website · 30 Minuten</div></div></div>
         </div>
         <div class="form-card">
           <form id="contactForm">
