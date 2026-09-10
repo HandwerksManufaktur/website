@@ -568,7 +568,10 @@ body:has(.mnav.auf) #nav{background:var(--paper);}
 .hebel .h-eyebrow,.hebel h3,.hebel p,.hebel .h-mehr{margin-left:32px;margin-right:32px;}
 .hebel:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:var(--acc);}
 .h-eyebrow{font-size:13px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--faint);}
-.hebel h3{font-size:26px;font-weight:800;letter-spacing:-.03em;margin:10px 0 12px;color:var(--ink);}
+/* 🔴 margin-TOP/BOTTOM einzeln, nie die Kurzform: `margin:10px 0 12px` setzte den
+   32-px-Einzug aus der Zeile darueber wieder auf 0, und nur die Ueberschrift klebte
+   am Kartenrand (Noah, 10.09.2026: „Neukundengewinnung steht dann irgendwie ganz links"). */
+.hebel h3{font-size:26px;font-weight:800;letter-spacing:-.03em;margin-top:10px;margin-bottom:12px;color:var(--ink);}
 .hebel p{font-size:15.5px;line-height:1.65;color:var(--sub);}
 .h-mehr{display:inline-flex;align-items:center;gap:7px;margin-top:18px;font-size:15px;
   font-weight:600;color:var(--acc-deep);min-height:44px;}

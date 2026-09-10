@@ -227,6 +227,27 @@ p{font-size:16.5px;line-height:1.7;color:var(--sub);}
    irgendwie so leer mit drin"). Jetzt zwei Spalten ueber die volle Breite. */
 .lp-faq .faq-item{margin-top:0;}
 .faq-liste{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start;margin-top:38px;}
+
+/* 🔴 Die Fragen-Sektion lief unten leer aus und hatte keinen Anker (Noah, 10.09.2026:
+   „ein bisschen langweilig … unten ein bisschen leer … da kannst du doch eigentlich
+   noch irgendwas rein machen"). Aufbau jetzt wie auf der Startseite: links Anrede,
+   Telefonnummer und Gesicht, rechts die Fragen in EINER Spalte. */
+.faq-layout{display:grid;grid-template-columns:1fr 1.35fr;gap:64px;align-items:start;}
+.faq-layout .faq-liste{grid-template-columns:1fr;margin-top:0;}
+.faq-head{position:sticky;top:118px;}
+.faq-sub{margin-top:16px;font-size:16.5px;}
+.faq-tel{display:inline-flex;align-items:center;gap:8px;margin-top:22px;font-size:16.5px;
+  font-weight:650;border-bottom:1.5px solid var(--line2);padding-bottom:4px;min-height:44px;
+  transition:color .2s,border-color .2s;}
+.faq-tel:hover{color:var(--acc-deep);border-color:var(--acc);}
+.faq-mensch{display:flex;align-items:center;gap:14px;margin-top:30px;padding:14px 20px 14px 14px;
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);}
+/* 🔴 Kein Kreis: die Quelle ist quadratisch, der Kreis schneidet den Kopf oben flach ab.
+   Abgerundetes Quadrat laesst das Portrait ganz. */
+.faq-mensch img{width:66px;height:66px;flex-shrink:0;border-radius:16px;object-fit:cover;
+  background:var(--paper2);}
+.faq-mensch b{display:block;font-size:15px;font-weight:700;}
+.faq-mensch span{display:block;margin-top:2px;font-size:13.5px;line-height:1.45;color:var(--faint);}
 .faq-item{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);
   margin-top:12px;overflow:hidden;}
 
@@ -273,6 +294,8 @@ footer{padding:0 0 46px;}
   .lp-vid{flex:0 0 min(52vw,240px);scroll-snap-align:center;}
   .lp-liste{grid-template-columns:1fr;}
   .faq-liste{grid-template-columns:1fr;}
+  .faq-layout{grid-template-columns:1fr;gap:34px;}
+  .faq-head{position:static;}
   .lp-fotoband img{width:340px;}
   .fs-grid{grid-template-columns:1fr;gap:32px;}
   .fs-video{order:-1;}
