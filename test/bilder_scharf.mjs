@@ -27,6 +27,12 @@ const KUNDEN = /Senftleben|Irlbacher|Erwin Schmidt|Sussmann|Wohner|Klass/i;
    Scroll-Animation. In doppelter Aufloesung neu aufgenommen ist die Live-Seite
    inzwischen 9735 statt 5300 px hoch — das Bild zeigt dann etwas anderes und die
    Animation laeuft anders. Neu aufnehmen ist eine eigene Entscheidung von Noah. */
+/* Layout-Ausnahmen: Seite + Art. Wie oben gilt — eintragen mit Grund, nie die
+   Schwelle senken. */
+const AUSNAHMEN_LAYOUT = {
+  '/|asymmetrisch': 'Startseiten-Fragen: die linke Spalte ist sticky und läuft beim Scrollen mit, '
+                  + 'sie darf kürzer sein als die Fragenliste — so seit 08/2026 abgenommen',
+};
 const AUSNAHMEN = { '/assets/work/nachher-wohner.jpg': '1,43x — Ganzseiten-Screenshot, Neuaufnahme aendert den Showcase' };
 const selbsttest = process.argv.includes('--selbsttest');
 
@@ -41,8 +47,14 @@ for (const s of SEITEN) {
   if (selbsttest) await p.evaluate(() => {           // alle drei Fehler einbauen
     const i = [...document.querySelectorAll('img')].find(x => x.naturalWidth > 60);
     if (i) i.style.width = (i.naturalWidth * 2) + 'px';
-    const g = document.querySelector('.fs-grid');
-    if (g) g.children[0].style.height = (g.children[1].getBoundingClientRect().height * 2) + 'px';
+    /* Auf .faq-layout einbauen, nicht auf .fs-grid: dessen Spalten sind per
+       align-items:stretch immer gleich hoch, dort kann der Fehler gar nicht auftreten. */
+    /* Auf .faq-layout einbauen, nicht auf .fs-grid: dessen Spalten sind per
+       align-items:stretch immer gleich hoch. Und den INHALT verlaengern, nicht die
+       Box — gemessen wird die Inhaltshoehe. */
+    const g = document.querySelector('.faq-layout') || document.querySelector('.fs-grid');
+    const kind = g && g.children[0].lastElementChild;
+    if (kind) kind.style.minHeight = (g.children[1].getBoundingClientRect().height * 1.4) + 'px';
     const k = document.querySelector('.hebel h3, .lp-karte h3, .faq-item .faq-q');
     if (k) k.style.marginLeft = '-30px';
     const f = document.querySelector('.wrap > ul, .wrap > .faq-liste, .wrap > div[class]');
@@ -95,8 +107,18 @@ for (const s of SEITEN) {
         raus.push({ art: 'nicht buendig', karte: karte.tagName + '.' + String(karte.className).split(' ')[0],
                     kanten });
     }
-    for (const g of document.querySelectorAll('.fs-grid')) {
-      const [a, b] = [...g.children].map(c => c.getBoundingClientRect().height);
+    /* 🔴 Gemessen wird die INHALTShoehe (oberste Kante des ersten bis unterste des
+       letzten Kindes), nicht die Boxhoehe: bei `align-items:stretch` waeren beide
+       Spalten immer gleich gross und die Pruefung damit blind. */
+    const inhalt = el => {
+      const k = [...el.children].filter(c => c.getBoundingClientRect().height > 4);
+      if (!k.length) return el.getBoundingClientRect().height;
+      const o = Math.min(...k.map(c => c.getBoundingClientRect().top));
+      const u = Math.max(...k.map(c => c.getBoundingClientRect().bottom));
+      return u - o;
+    };
+    for (const g of document.querySelectorAll('.fs-grid, .faq-layout')) {
+      const [a, b] = [...g.children].map(inhalt);
       if (a && b && Math.max(a, b) / Math.min(a, b) > 1.25)
         raus.push({ art: 'asymmetrisch', links: Math.round(a), rechts: Math.round(b) });
     }
@@ -105,6 +127,8 @@ for (const s of SEITEN) {
     return raus;
   }, { MINDEST, KUNDENQ: KUNDEN.source, SCHIEF });
   funde.forEach(f => {
+    const lay = AUSNAHMEN_LAYOUT[s + '|' + f.art];
+    if (lay) { console.log('  … bewusste Ausnahme:', s, f.art, '—', lay); return; }
     if (AUSNAHMEN[f.src]) { console.log('  … bewusste Ausnahme:', f.src, '—', AUSNAHMEN[f.src]); return; }
     fehler.push({ seite: s, ...f });
   });

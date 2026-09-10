@@ -183,7 +183,12 @@ p{font-size:16.5px;line-height:1.7;color:var(--sub);}
 .lp-vor{max-width:760px;margin-top:20px;}
 
 /* ── Fallstudie ────────────────────────────────────────────────────────── */
-.fs-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;margin-top:44px;align-items:start;}
+/* 🔴 Beide Spalten gleich hoch, der Text verteilt sich darin (Noah hat die Asymmetrie
+   zweimal gemeldet). Seit das Senftleben-Video 4:3 ist, waere die Videospalte sonst
+   77 px hoeher als der Text daneben. */
+.fs-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;margin-top:44px;align-items:stretch;}
+.fs-text{display:flex;flex-direction:column;justify-content:space-between;}
+.fs-text > *:first-child{margin-top:0;}
 .fs-text p+p{margin-top:14px;}
 /* 🔴 Die Zahlen stehen als eigene Reihe UNTER dem Raster, nicht in der linken
    Spalte. Vorher war die linke Spalte dadurch deutlich hoeher als das Video und
@@ -198,8 +203,12 @@ p{font-size:16.5px;line-height:1.7;color:var(--sub);}
   font-size:19px;line-height:1.55;font-weight:500;color:var(--ink);}
 .fs-zitat cite{display:block;margin-top:12px;font-style:normal;font-size:14px;color:var(--faint);}
 .fs-zitat cite strong{color:var(--sub);}
-.fs-video video{width:100%;border-radius:var(--r-lg);background:var(--night);
-  aspect-ratio:16/9;object-fit:cover;box-shadow:var(--shadow);}
+/* 🔴 Kein festes 16/9 mehr: das Senftleben-Testimonial trug einen einbelichteten
+   dunklen Rahmen und liegt jetzt beschnitten als 4:3 vor (Noah, 10.09.2026: „warum ist
+   hinter dem Testimonial so ein schwarzer Rand … cleaner, wenn da nur das Testimonial
+   ist"). Das ESS-Video ist 16:9. Jedes Video behaelt sein eigenes Verhaeltnis. */
+.fs-video video{width:100%;height:auto;border-radius:var(--r-lg);background:var(--night);
+  display:block;box-shadow:var(--shadow);}
 .fs-vidnote{margin-top:10px;font-size:13.5px;color:var(--faint);}
 .fs-bilder{display:grid;grid-template-columns:1.3fr 1fr;gap:18px;margin-top:38px;}
 .fs-bilder img{width:100%;border-radius:var(--r-md);object-fit:cover;aspect-ratio:3/2;border:1px solid var(--line);}
