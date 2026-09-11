@@ -117,13 +117,23 @@ p{font-size:16.5px;line-height:1.7;color:var(--sub);}
 .lp-dunkel .eyebrow{color:#E0A45C;}
 .lp-dunkel .eyebrow .dot{background:#E0A45C;}
 
-.lp-drei{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:44px;}
-.lp-karte{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);
-  padding:28px 26px;transition:transform .4s var(--ease),box-shadow .4s;}
-.lp-karte:hover{transform:translateY(-4px);box-shadow:var(--shadow);}
-.k-strich{width:34px;height:3px;border-radius:2px;background:var(--acc);margin-bottom:16px;}
-.lp-karte h3{margin-bottom:8px;}
-.lp-karte p{font-size:15.5px;}
+/* ── „Woran es haengt" — drei Zeilen statt drei Karten ──────────────────
+   Noah, 11.09.2026: „diese sektion ist design-maessig absolut haesslich."
+   Dritte Ansage zu diesem Block, also verworfen statt nachgebessert: keine
+   Kaesten, kein Strich, kein Schatten. Eine redaktionelle Liste auf getoentem
+   Grund — Haarlinie, grosse Aussage links, ruhiger Satz rechts. Inhalt statt
+   Behaelter. */
+.h-kopf,.h-zeile{display:grid;grid-template-columns:minmax(0,.42fr) minmax(0,.58fr);
+  gap:0 clamp(24px,4vw,64px);align-items:start;}
+.h-kopf{padding-bottom:clamp(32px,3.6vw,46px);}
+.h-kopf h2{margin:0;}
+.h-kopf .h-intro{font-size:17px;line-height:1.6;color:var(--sub);margin:0;
+  align-self:end;padding-bottom:6px;}
+.lp-hang{border-top:1px solid var(--line);}
+.h-zeile{padding:clamp(24px,2.6vw,34px) 0;border-bottom:1px solid var(--line);}
+.h-zeile h3{font-size:clamp(19px,2vw,23px);line-height:1.24;letter-spacing:-.015em;
+  margin:0;text-wrap:balance;}
+.h-zeile p{font-size:16px;line-height:1.62;color:var(--sub);margin:0;}
 
 .lp-schritte{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;margin-top:46px;}
 .lp-schritt{border-top:1px solid var(--night-line);padding-top:22px;}
@@ -325,7 +335,11 @@ footer{padding:0 0 46px;}
   .nav-burger{display:flex;}
   .nav-links{display:none;}
   .nav-cta{padding:12px 20px!important;font-size:13.5px;margin-left:0!important;}
-  .lp-drei{grid-template-columns:1fr;gap:14px;}
+  .h-kopf,.h-zeile{grid-template-columns:1fr;gap:9px;}
+  .h-kopf{padding-bottom:26px;}
+  .h-kopf .h-intro{padding-bottom:0;margin-top:14px;font-size:16px;}
+  .h-zeile{padding:22px 0;}
+  .h-zeile p{font-size:15.5px;}
 }
 @media(max-width:680px){
   .lp-hero{padding-top:104px;}
@@ -372,7 +386,8 @@ footer{padding:0 0 46px;}
 }
 @media(prefers-contrast:more){
   :root{--line:#B9AE96;--line2:#B9AE96;--sub:#3B372F;--faint:#5A5449;}
-  .lp-karte,.fs-zahl,.faq-item,.lp-liste li{border-width:1.5px;}
+  .fs-zahl,.faq-item,.lp-liste li{border-width:1.5px;}
+  .lp-hang,.h-zeile{border-color:var(--ink);}
 }
 
 /* Rueckmeldung kommt beim Druecken, nicht erst beim Loslassen. */
