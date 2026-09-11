@@ -76,3 +76,5 @@ function faq(el){
   }, { rootMargin: '200px 0px' });
   vids.forEach(function(v){ beobachter.observe(v); });
 })();
+
+window.__lebt = true;

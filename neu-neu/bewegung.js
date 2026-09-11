@@ -305,3 +305,5 @@
     document.head.appendChild(s);
   }
 })();
+
+window.__lebt = true;

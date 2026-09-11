@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
+  <script>document.documentElement.classList.add('js');setTimeout(function(){if(window.__lebt)return;document.documentElement.classList.remove('js');document.querySelectorAll('main *,section *').forEach(function(e){if(getComputedStyle(e).opacity==='0'&&!e.closest('[hidden],dialog,.mnav,.modal,.overlay'))e.style.opacity='1'})},3000)</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Webdesign für Handwerksbetriebe – Websites, die Aufträge bringen | HandwerksManufaktur</title>
@@ -717,6 +718,11 @@ body:has(.mnav.auf) #nav{background:var(--paper);}
   .svc-item{opacity:1!important;transform:none!important;}
   .svc-item::before{transform:scaleY(1)!important;}
 }
+
+/* 🔴 Sicherheitsnetz (11.09.2026): ohne html.js ist alles sofort sichtbar — sonst
+   bleibt die Seite leer, wenn das Skript nicht durchkommt (Blocker, Fehler, Netz).
+   Genau das war der Fall auf der Wohner-Seite. */
+html:not(.js) .reveal,html:not(.js) .stagger,html:not(.js) .word,html:not(.js) .wimg,html:not(.js) .wcard,html:not(.js) .serp,html:not(.js) .step,html:not(.js) .work-head,html:not(.js) .hebel,html:not(.js) .band-card,html:not(.js) .rev,html:not(.js) .proc-step,html:not(.js) .c-item,html:not(.js) .svc,html:not(.js) .proj-feat,html:not(.js) .proj-sm,html:not(.js) .faq-item{opacity:1!important;transform:none!important;}
 </style>
 </head>
 <body>

@@ -132,3 +132,5 @@ if(window.innerWidth<=900){
     io.observe(el);
   });
 }
+
+window.__lebt = true;
