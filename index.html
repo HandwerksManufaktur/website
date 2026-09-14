@@ -1221,7 +1221,7 @@ var io=new IntersectionObserver(function(es){
       io.unobserve(e.target);
     }
   });
-},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+},{threshold:0,rootMargin:'400px 0px 400px 0px'});
 document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
 document.querySelectorAll('.stagger').forEach(function(el,i){el.dataset.delay=(i%6)*80;io.observe(el);});
 
