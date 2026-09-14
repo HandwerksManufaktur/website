@@ -37,7 +37,10 @@ const AUSNAHMEN_LAYOUT = {
   '/|asymmetrisch': 'Startseiten-Fragen: die linke Spalte ist sticky und läuft beim Scrollen mit, '
                   + 'sie darf kürzer sein als die Fragenliste — so seit 08/2026 abgenommen',
 };
-const AUSNAHMEN = { '/assets/work/nachher-wohner.jpg': '1,43x — Ganzseiten-Screenshot, Neuaufnahme aendert den Showcase' };
+/* Keine Ausnahmen mehr: der Wohner-Screenshot ist am 14.09.2026 mit 1000 px neu
+   aufgenommen worden (vorher 900 px = 1,43x) — und dabei fiel auf, dass er mit
+   nicht ausgeloesten Reveals aufgenommen war: 22 % der Bildhoehe waren weiss. */
+const AUSNAHMEN = {};
 const selbsttest = process.argv.includes('--selbsttest');
 
 const gefundeneTermine = new Set();
