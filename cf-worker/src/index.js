@@ -177,7 +177,7 @@ async function sendNotification(env, firmaName, serviceType, driveLink, formData
     method: 'POST',
     headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      from: 'Onboarding <onboarding@die-handwerksmanufaktur.de>',
+      from: 'Onboarding <onboarding@handwerksmanufaktur.digital>',
       to: [env.NOTIFY_EMAIL],
       subject: `Neues Onboarding: ${firmaName} (${typ})${missing.length ? ` — ${missing.length} Punkte offen` : ''}`,
       html,
