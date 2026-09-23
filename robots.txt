@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /cdn-cgi/
 
-Sitemap: https://die-handwerksmanufaktur.de/sitemap.xml
+Sitemap: https://handwerksmanufaktur.digital/sitemap.xml

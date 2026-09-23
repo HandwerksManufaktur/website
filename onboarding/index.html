@@ -374,7 +374,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
             <div class="hint" style="margin-bottom:10px">Sobald Mitarbeiter auf Fotos oder Videos zu sehen sind, brauchen wir von ihnen eine unterschriebene Einwilligung. Trage die Namen ein — wir erzeugen euch daraus das fertige Formular auf euren Briefkopf.</div>
             <textarea id="wdMitarbeiterNamen" placeholder="Ein Name pro Zeile:&#10;Max Mustermann&#10;Erika Musterfrau" style="min-height:92px"></textarea>
             <button type="button" class="choice-btn" style="width:auto;margin-top:10px" onclick="oeffneEinwilligung()">📄 Formular öffnen &amp; drucken</button>
-            <div class="hint" style="margin-top:10px">Unterschriebene Formulare könnt ihr hier direkt hochladen — oder später per Mail an info@die-handwerksmanufaktur.de nachreichen.</div>
+            <div class="hint" style="margin-top:10px">Unterschriebene Formulare könnt ihr hier direkt hochladen — oder später per Mail an info@handwerksmanufaktur.digital nachreichen.</div>
             <div class="upload-zone" style="margin-top:8px" ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="handleDrop(event,this,'einwPreview','einwilligungen')"><input type="file" accept="image/*,.pdf,.heic,.heif" multiple onchange="handleFiles(this.files,'einwPreview','einwilligungen')"><div class="upload-icon">⬆</div><div class="upload-title"><span>Unterschriebene Einwilligungen</span> hochladen</div><div class="upload-sub">Scan oder Foto · PDF, JPG, PNG</div></div>
             <div class="upload-preview" id="einwPreview"></div>
           </div>
@@ -397,11 +397,11 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
           <div class="divider"></div>
           <div class="dsgvo-box" onclick="toggleDsgvo()">
             <div class="dsgvo-check" id="dsgvoBox"></div>
-            <div class="dsgvo-text">Ich habe die <a href="https://die-handwerksmanufaktur.de/datenschutz/" target="_blank">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten zu. <span style="color:var(--accent)">*</span></div>
+            <div class="dsgvo-text">Ich habe die <a href="https://handwerksmanufaktur.digital/datenschutz/" target="_blank">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten zu. <span style="color:var(--accent)">*</span></div>
           </div>
           <div class="dsgvo-box" onclick="toggleBildrechte()" style="margin-top:10px">
             <div class="dsgvo-check" id="bildrechteBox"></div>
-            <div class="dsgvo-text">Ich erkläre für unseren Betrieb: Die HandwerksManufaktur darf die bei uns angefertigten Foto- und Videoaufnahmen, unseren Firmennamen und unser Logo sowie Kundenstimmen, die wir abgeben (z.B. Bewertungen, Interviews, Videos), als Referenz verwenden (z.B. Website, Portfolio, Präsentationen, Social Media). Ich stelle sicher, dass alle abgebildeten Personen – insbesondere unsere Mitarbeiter – vor den Aufnahmen eingewilligt haben, und stelle die HandwerksManufaktur von Ansprüchen Dritter frei. Details siehe <a href="https://die-handwerksmanufaktur.de/agb/" target="_blank">§ 17 AGB</a>. <span style="color:var(--accent)">*</span></div>
+            <div class="dsgvo-text">Ich erkläre für unseren Betrieb: Die HandwerksManufaktur darf die bei uns angefertigten Foto- und Videoaufnahmen, unseren Firmennamen und unser Logo sowie Kundenstimmen, die wir abgeben (z.B. Bewertungen, Interviews, Videos), als Referenz verwenden (z.B. Website, Portfolio, Präsentationen, Social Media). Ich stelle sicher, dass alle abgebildeten Personen – insbesondere unsere Mitarbeiter – vor den Aufnahmen eingewilligt haben, und stelle die HandwerksManufaktur von Ansprüchen Dritter frei. Details siehe <a href="https://handwerksmanufaktur.digital/agb/" target="_blank">§ 17 AGB</a>. <span style="color:var(--accent)">*</span></div>
           </div>
           <div style="margin-top:10px;padding:13px 16px;background:rgba(30,154,208,.07);border:1px solid rgba(30,154,208,.28);border-radius:10px;font-size:13.5px;line-height:1.55">
             <b>📄 Vorlage für euer Team</b><br>
@@ -757,7 +757,7 @@ function updateEinwLink() {
   const a = document.getElementById('einwLink');
   if (!a) return;
   const fn = (document.getElementById('firmaName') || {}).value || '';
-  a.href = 'https://die-handwerksmanufaktur.de/einwilligung/' + (fn.trim() ? '?betrieb=' + encodeURIComponent(fn.trim()) : '');
+  a.href = 'https://handwerksmanufaktur.digital/einwilligung/' + (fn.trim() ? '?betrieb=' + encodeURIComponent(fn.trim()) : '');
 }
 function toggleBildrechte() {
   bildrechteChecked = !bildrechteChecked;
