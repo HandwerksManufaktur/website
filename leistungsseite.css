@@ -13,7 +13,7 @@
   --acc:#C8873A; --acc-deep:#8A5C14; --acc-soft:#F6EFE2;
   --night:#16130E; --night2:#211C15; --night-sub:#B5AEA0; --night-line:rgba(255,255,255,.1);
   --serif:"Instrument Serif",Georgia,serif;
-  --r-md:16px; --r-lg:22px;
+  --r-md:16px; --r-lg:22px; --r-xs:12px;
   --ease:cubic-bezier(.22,1,.36,1);
   --shadow:0 18px 40px -24px rgba(22,19,14,.35);
 }
@@ -31,16 +31,21 @@ section{scroll-margin-top:92px;}
 /* ── Navigation (wie auf der Startseite) ───────────────────────────────── */
 #nav{position:fixed;top:0;left:0;right:0;z-index:400;display:flex;align-items:center;
   justify-content:space-between;padding:14px clamp(16px,4vw,34px);
-  background:rgba(250,247,241,.72);backdrop-filter:blur(20px) saturate(160%);
-  -webkit-backdrop-filter:blur(20px) saturate(160%);
-  border-bottom:1px solid transparent;transition:background .3s,border-color .3s;}
-#nav.scrolled{border-bottom-color:var(--line);background:rgba(250,247,241,.9);}
+  background:rgba(250,247,241,.72);backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  border-bottom:none;transition:background .3s;}
+#nav.scrolled{background:rgba(250,247,241,.8);box-shadow:0 1px 24px rgba(60,44,20,.05);}
+/* R12 Material — weiche Scroll-Kante statt Trennlinie */
+#nav::after{content:"";position:absolute;left:0;right:0;top:100%;height:22px;pointer-events:none;
+  background:linear-gradient(to bottom,rgba(250,247,241,.5),rgba(250,247,241,0));opacity:0;transition:opacity .4s var(--ease);}
+#nav.scrolled::after{opacity:1;}
 .nav-logo{display:inline-flex;align-items:center;min-height:44px;}
 .nav-logo img{height:30px!important;width:auto;filter:invert(1) hue-rotate(180deg) brightness(.2);}
 .nav-links{display:flex;align-items:center;gap:24px;}
-.nav-links a{font-size:14.5px;font-weight:500;color:var(--sub);padding:11px 4px;margin:-11px 4px;
-  min-height:44px;display:inline-flex;align-items:center;transition:color .2s;}
-.nav-links a:hover{color:var(--ink);}
+.nav-links a{font-size:14.5px;font-weight:500;color:var(--ink);opacity:.72;letter-spacing:.005em;padding:11px 4px;margin:-11px 4px;
+  min-height:44px;display:inline-flex;align-items:center;transition:opacity .2s,transform .1s ease-out;}
+.nav-links a:hover{opacity:1;}
+.nav-links a:active{transform:scale(.97);}
 .nav-cta{background:var(--ink);color:#fff!important;border-radius:999px;
   padding:12px 26px!important;margin-left:6px!important;font-weight:600;
   box-shadow:0 8px 20px -12px rgba(22,19,14,.55);transition:background .25s,transform .2s;}
@@ -58,8 +63,9 @@ section{scroll-margin-top:92px;}
   border-bottom:1px solid var(--line);padding:6px 20px calc(20px + env(safe-area-inset-bottom));
   display:flex;flex-direction:column;max-height:calc(100dvh - var(--navh,60px));overflow-y:auto;
   box-shadow:0 24px 48px -24px rgba(22,19,14,.35);
-  opacity:0;transform:translateY(-10px);pointer-events:none;
-  transition:opacity .25s var(--ease),transform .25s var(--ease);}
+  opacity:0;transform:translateY(-8px) scale(.98);transform-origin:top right;pointer-events:none;
+  background:rgba(250,247,241,.92);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);
+  transition:opacity .3s var(--ease),transform .3s var(--ease);}
 .mnav.auf{opacity:1;transform:none;pointer-events:auto;}
 .mnav>a{padding:13px 4px;font-size:16.5px;font-weight:600;color:var(--ink);
   border-bottom:1px solid var(--line2);min-height:48px;display:flex;align-items:center;}
@@ -84,8 +90,11 @@ p{font-size:16.5px;line-height:1.7;color:var(--sub);}
 .lead{font-size:clamp(17px,1.6vw,20px);line-height:1.65;color:var(--sub);max-width:620px;margin-top:22px;}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;
   padding:15px 28px;border-radius:999px;font-size:15.5px;font-weight:600;cursor:pointer;
-  border:1.5px solid transparent;transition:background .25s,border-color .25s,transform .2s,color .25s;}
-.btn:active{transform:scale(.97);}
+  border:1.5px solid transparent;transition:background .25s,border-color .25s,transform .3s var(--ease),color .25s;position:relative;overflow:hidden;isolation:isolate;}
+.btn:hover{transform:translateY(-2px);}
+.btn:active{transform:scale(.97);transition-duration:.1s;}
+.btn::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.22) 50%,transparent 70%);transform:translateX(-120%);transition:transform .6s var(--ease);pointer-events:none;z-index:-1;}
+.btn:hover::after{transform:translateX(120%);}
 .btn-ink{background:var(--ink);color:#fff;}
 .btn-ink:hover{background:var(--acc-deep);}
 .btn-ghost{border-color:var(--line);color:var(--ink);}
@@ -153,7 +162,8 @@ p{font-size:16.5px;line-height:1.7;color:var(--sub);}
 /* Die Zeichen sitzen in einem gleich grossen runden Feld — nebeneinander sind
    Emoji sonst unterschiedlich schwer (Umschlag zart, gruener Haken massiv). */
 .fs-zahl .sym{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;
-  background:var(--acc-soft);font-size:17px;line-height:1;margin-bottom:12px;}
+  background:var(--acc-soft);color:var(--acc-deep);line-height:1;margin-bottom:12px;}
+.fs-zahl .sym .ik{width:17px;height:17px;}
 
 /* ── Kundenfotos laufen durch (Noah, 09.09.2026: „ich wollte, dass die Bilder
    von Kunden durchlaufen", dann: „die Fotos muessen auch ein bisschen breiter
@@ -403,3 +413,19 @@ img.fs-ref2-logo[width][height]{height:34px;width:auto;margin-bottom:16px;}   /*
 /* Rueckmeldung kommt beim Druecken, nicht erst beim Loslassen. */
 .faq-q:active,.nav-cta:active,.f-links a:active{transform:scale(.985);}
 .faq-q,.nav-cta{transition:transform .1s ease-out;}
+
+/* ═══════ Apple-Runde 26.09.2026 (apple-design + Drive-Designregeln) ═══════ */
+:focus-visible{outline:3px solid var(--acc);outline-offset:3px;border-radius:6px;}
+.ik{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:none;display:inline-block;vertical-align:-.15em;}
+.faq-tel .ik{width:17px;height:17px;color:var(--acc-deep);}
+/* R15: kleine Schrift leicht positiv tracken */
+.fs-vidnote,.fs-zahl .l,.lp-proof,.lp-vid figcaption,.fs-zitat cite,.eyebrow,.f-in,.f-links a{letter-spacing:.01em;}
+/* R10: Tap-Ziele 44 px */
+.f-links a,.faq-tel{display:inline-flex;align-items:center;min-height:44px;gap:8px;}
+.f-links a{padding:0 4px;margin:-8px -4px;}
+.nav-logo:active{opacity:.7;transition:opacity .1s;}
+.mnav>a:active,.mnav-foot a:active,.faq-tel:active{transform:scale(.96);transition:transform .1s ease-out;}
+@media(prefers-reduced-transparency:reduce){#nav,.mnav{background:var(--paper)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}#nav::after{display:none;}}
+@media(prefers-reduced-motion:reduce){.btn::after{display:none;}.mnav{transform:none!important;}}
+.f-links a{min-width:44px;justify-content:center;}
+a.faq-tel[href^="tel:"]:not(.mnav-tel){display:inline-flex;padding:0;min-height:44px;}

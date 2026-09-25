@@ -52,7 +52,7 @@
   --acc:#C8873A; --acc-deep:#A6712E; --acc-soft:#F5EBD9;
   --night:#161310; --night2:#211D17; --night-line:#332D24; --night-sub:#A79C8A;
   --f:'Inter',sans-serif; --serif:'Instrument Serif',serif;
-  --r-lg:28px; --r-md:20px; --r-sm:14px;
+  --r-lg:28px; --r-md:20px; --r-sm:14px; --r-xs:12px;
   --ease:cubic-bezier(.22,1,.36,1);
   --shadow-lg:0 30px 90px rgba(60,44,20,.16);
   --shadow-md:0 12px 36px rgba(60,44,20,.09);
@@ -88,7 +88,9 @@ h2.d em,.serif-it{font-family:var(--serif);font-style:italic;font-weight:400;let
 .stagger{opacity:0;transform:translateY(18px);transition:opacity .8s var(--ease),transform .8s var(--ease);}
 .stagger.vis{opacity:1;transform:none;}
 
-.btn{display:inline-flex;align-items:center;gap:10px;border-radius:999px;padding:16px 28px;font-size:15.5px;font-weight:600;letter-spacing:-.01em;cursor:pointer;border:none;transition:transform .3s var(--ease),box-shadow .3s,background .25s,color .25s;}
+.btn{display:inline-flex;align-items:center;gap:10px;border-radius:999px;padding:16px 28px;font-size:15.5px;font-weight:600;letter-spacing:-.01em;cursor:pointer;border:none;transition:transform .3s var(--ease),box-shadow .3s,background .25s,color .25s;position:relative;overflow:hidden;isolation:isolate;}
+.btn::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.22) 50%,transparent 70%);transform:translateX(-120%);transition:transform .6s var(--ease);pointer-events:none;z-index:-1;}
+.btn:hover::after{transform:translateX(120%);}
 
 /* R1 Reaktion — Feedback auf pointer-down, 100ms, kein Warten auf click */
 .btn:active,.nav-cta:active,.mini:active,.vcard:active,.sw:active{transform:scale(.97);transition:transform 100ms ease-out;}
@@ -109,7 +111,7 @@ h2.d em,.serif-it{font-family:var(--serif);font-style:italic;font-weight:400;let
 .split .word .accent,.split em{font-family:var(--serif);font-style:italic;font-weight:400;}
 
 /* ═══════ NAV ═══════ */
-#nav{position:fixed;top:0;left:0;right:0;z-index:400;display:flex;align-items:center;justify-content:space-between;padding:16px 34px;background:rgba(250,247,241,.6);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border-bottom:none;transition:transform .4s cubic-bezier(.22,1,.36,1),box-shadow .4s,background .3s;}
+#nav{position:fixed;top:0;left:0;right:0;z-index:400;display:flex;align-items:center;justify-content:space-between;padding:16px 34px;background:rgba(250,247,241,.6);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border-bottom:none;transition:transform .4s cubic-bezier(.22,1,.36,1),box-shadow .4s,background .3s;}
 #nav.hide{transform:translateY(-110%);}
 #nav.scrolled{border-bottom-color:var(--line);}
 .nav-logo img{height:30px!important;width:auto;filter:invert(1) hue-rotate(180deg) brightness(.2);}
@@ -127,7 +129,7 @@ nav.scrolled{box-shadow:0 1px 24px rgba(60,44,20,.05);}
 .nav-links a[href^="#"]{position:relative;}
 .nav-links a[href^="#"]::after{content:"";position:absolute;left:4px;right:4px;bottom:4px;height:2px;border-radius:1px;
   background:var(--acc);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease);}
-.nav-links a.hier{color:var(--ink);}
+.nav-links a.hier{opacity:1;}
 .nav-links a.hier::after{transform:scaleX(1);}
 
 /* R16 Feedback — Formularfelder melden inline, nicht erst beim Absenden */
@@ -140,8 +142,9 @@ nav.scrolled{box-shadow:0 1px 24px rgba(60,44,20,.05);}
 @media(max-width:680px){
   .nav-links a,.f-links a,.footer a{min-height:44px;display:inline-flex;align-items:center;}
 }
-.nav-links a{font-size:14.5px;font-weight:500;color:var(--sub);transition:color .2s,transform .2s;}
-.nav-links a:hover{color:var(--ink);}
+.nav-links a{font-size:14.5px;font-weight:500;color:var(--ink);opacity:.72;letter-spacing:.005em;transition:opacity .2s,transform .1s ease-out;}
+.nav-links a:hover{opacity:1;}
+.nav-links a:active{transform:scale(.97);}
 /* 🔴 Selektor MIT `.nav-links` davor: `.nav-links a` (0,1,1) schlaegt sonst `.nav-cta`
    (0,1,0) und der Knopf bekam `padding:11px 4px` — der Text klebte links und rechts an
    der Pille (Noah, 08.09. auf den Leistungsseiten, 10.09.2026 hier: „Der Button sieht
@@ -177,7 +180,7 @@ nav.scrolled{box-shadow:0 1px 24px rgba(60,44,20,.05);}
 .vclip video{width:100%;height:100%;object-fit:cover;display:block;}
 .vclip-shade{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,8,5,.55) 0%,transparent 40%);}
 .vclip-cap{position:absolute;left:0;right:0;bottom:34px;text-align:center;}
-.vclip-cap span{display:inline-block;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-radius:10px;padding:11px 20px;font-size:14px;font-weight:600;color:var(--ink);box-shadow:var(--shadow-md);}
+.vclip-cap span{display:inline-block;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-radius:var(--r-xs);padding:12px 20px;font-size:14px;font-weight:600;color:var(--ink);box-shadow:var(--shadow-md);}
 @media(max-width:700px){.vclip{height:60vh;clip-path:inset(0 6% round 18px);}}
 
 
@@ -216,7 +219,7 @@ nav.scrolled{box-shadow:0 1px 24px rgba(60,44,20,.05);}
 #arbeiten{padding:7.5rem 0 60px;}
 .work-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;}
 .work-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:52px;}
-.wcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;transition:transform .45s var(--ease),box-shadow .45s;}
+.wcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;transition:transform .4s var(--ease),box-shadow .4s;}
 .wcard:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);}
 .wview{height:330px;overflow:hidden;position:relative;background:var(--paper);}
 .wimg{width:100%;display:block;position:absolute;top:0;left:0;opacity:0;transition:opacity .4s;}
@@ -236,13 +239,13 @@ nav.scrolled{box-shadow:0 1px 24px rgba(60,44,20,.05);}
   82%,92%{object-position:center 92%;}
   99%,100%{object-position:center 2%;}
 }
-.winfo{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;}
+.winfo{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;}
 .wname{font-size:16.5px;font-weight:600;letter-spacing:-.015em;color:var(--ink);display:inline-flex;align-items:center;gap:6px;min-height:44px;}
 a.wname .wpfeil{color:var(--sub);font-weight:500;transition:color .2s,transform .2s;}
 a.wname:hover{color:var(--acc-deep);}
 a.wname:hover .wpfeil{color:var(--acc-deep);transform:translate(2px,-2px);}
 .wtag{font-size:13px;color:var(--faint);margin-top:2px;}
-.wtog{font-size:13px;font-weight:600;padding:9px 16px;border-radius:10px;border:1.5px solid var(--line2);background:transparent;color:var(--sub);cursor:pointer;transition:background .25s,border-color .25s,color .25s,transform .2s;}
+.wtog{font-size:13px;font-weight:600;padding:8px 16px;border-radius:var(--r-xs);border:1.5px solid var(--line2);background:transparent;color:var(--sub);cursor:pointer;transition:background .25s,border-color .25s,color .25s,transform .2s;}
 .wtog:hover,.wtog.on{border-color:var(--acc);color:var(--acc);}
 .work-more{text-align:center;margin-top:44px;}
 .show{display:grid;grid-template-columns:1.3fr 1fr;gap:64px;align-items:center;padding:4.5rem 0;}
@@ -254,14 +257,14 @@ a.wname:hover .wpfeil{color:var(--acc-deep);transform:translate(2px,-2px);}
 .show-txt h3 em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--acc);}
 .show-txt p{font-size:16px;color:var(--sub);max-width:440px;}
 .show-actions{display:flex;align-items:center;gap:18px;margin-top:24px;}
-.show-hint{font-size:12.5px;color:var(--faint);}
+.show-hint{font-size:13px;color:var(--faint);}
 .mini-head{margin-top:64px;font-size:13.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--faint);}
 /* 🔴 Die Projekte laufen (Noah, 08.09.2026). Vorher standen 16 Kacheln in einem
    starren 4er-Raster; jetzt ein Band, das von selbst weiterrückt, sich wischen
    lässt und stehen bleibt, sobald jemand es anfasst. */
 .werk-kopf{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;}
 .werk-pfeile{display:flex;gap:8px;}
-.werk-pfeile button{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--line2);
+.werk-pfeile button{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--line2);
   background:transparent;color:var(--sub);font-size:15px;line-height:1;cursor:pointer;
   display:grid;place-items:center;transition:border-color .25s,color .25s,background .25s;}
 .werk-pfeile button:hover{border-color:var(--acc);color:var(--acc-deep);background:var(--acc-soft);}
@@ -274,7 +277,7 @@ a.wname:hover .wpfeil{color:var(--acc-deep);transform:translate(2px,-2px);}
 .wtxt{min-width:0;}
 .wtag{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
   color:var(--faint);margin-bottom:3px;}
-.mini-grid .winfo{padding:13px 16px;}
+.mini-grid .winfo{padding:12px 16px;}
 .mini-grid .wname{font-size:14px;}
 @media(max-width:980px){.show{grid-template-columns:1fr;gap:30px;padding:3rem 0;}.show.rev .show-media{order:0;}.show.rev .show-txt{order:1;}}
 @media(max-width:560px){.mini-grid>.wcard{flex-basis:82vw;}}
@@ -285,8 +288,8 @@ a.wname:hover .wpfeil{color:var(--acc-deep);transform:translate(2px,-2px);}
 .serp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:52px;}
 .serp{position:relative;background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);padding:24px;transition:transform .4s var(--ease),box-shadow .4s;}
 .serp:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);}
-.serp-badge{position:absolute;top:18px;right:18px;background:var(--acc-soft);color:var(--acc-deep);font-size:12.5px;font-weight:700;border-radius:100px;padding:5px 12px;}
-.serp-q{display:flex;align-items:center;gap:10px;background:var(--paper);border:1.5px solid var(--line2);border-radius:100px;padding:11px 18px;font-size:15px;font-weight:500;color:var(--ink);margin-bottom:18px;max-width:calc(100% - 76px);}
+.serp-badge{position:absolute;top:18px;right:18px;background:var(--acc-soft);color:var(--acc-deep);font-size:13px;font-weight:700;border-radius:999px;padding:4px 12px;}
+.serp-q{display:flex;align-items:center;gap:10px;background:var(--paper);border:1.5px solid var(--line2);border-radius:999px;padding:12px 16px;font-size:15px;font-weight:500;color:var(--ink);margin-bottom:18px;max-width:calc(100% - 76px);}
 .serp-q svg{width:16px;height:16px;color:var(--faint);flex-shrink:0;}
 .serp-r{padding:4px 6px;}
 .serp-r+.serp-r{margin-top:10px;border-top:1px solid var(--line);padding-top:12px;}
@@ -301,12 +304,12 @@ a.wname:hover .wpfeil{color:var(--acc-deep);transform:translate(2px,-2px);}
 .svc-layout{display:grid;grid-template-columns:1fr 1.15fr;gap:80px;align-items:start;}
 .svc-sticky{position:sticky;top:120px;}
 .svc-flow{border-top:1.5px solid var(--line2);}
-.svc-item{position:relative;display:flex;gap:26px;padding:36px 12px;border-bottom:1.5px solid var(--line2);opacity:.3;transform:translateX(14px);transition:opacity .5s var(--ease),transform .5s var(--ease);}
+.svc-item{position:relative;display:flex;gap:24px;padding:32px 12px;border-bottom:1.5px solid var(--line2);opacity:.3;transform:translateX(14px);transition:opacity .5s var(--ease),transform .5s var(--ease);}
 .svc-item::before{content:"";position:absolute;left:-1px;top:24%;bottom:24%;width:2.5px;border-radius:2px;background:linear-gradient(180deg,var(--acc),transparent);transform:scaleY(0);transform-origin:top;transition:transform .7s var(--ease) .12s;}
 .svc-item.act{opacity:1;transform:none;}
 .svc-item.act::before{transform:scaleY(1);}
 .si-wrap{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:8px;}
-.si-ic{width:52px;height:52px;border-radius:15px;background:var(--acc-soft);color:var(--acc-deep);display:flex;align-items:center;justify-content:center;transition:transform .5s var(--ease),box-shadow .5s var(--ease),background .5s var(--ease);}
+.si-ic{width:52px;height:52px;border-radius:var(--r-sm);background:var(--acc-soft);color:var(--acc-deep);display:flex;align-items:center;justify-content:center;transition:transform .5s var(--ease),box-shadow .5s var(--ease),background .5s var(--ease);}
 .si-ic svg{width:24px;height:24px;}
 .si-ic svg *{transition:stroke-dashoffset 1.1s var(--ease) .15s;}
 .svc-item.act .si-ic{transform:scale(1.1) rotate(-4deg);box-shadow:0 12px 28px -12px rgba(200,135,58,.5);background:linear-gradient(135deg,var(--acc-soft),rgba(200,135,58,.22));}
@@ -318,17 +321,17 @@ a.wname:hover .wpfeil{color:var(--acc-deep);transform:translate(2px,-2px);}
 
 /* ═══════ NIGHT: Über uns + Zahlen ═══════ */
 #studio{padding:2rem 0 120px;}
-.night{background:var(--night);color:#fff;border-radius:var(--r-lg);padding:76px 64px;position:relative;overflow:hidden;}
+.night{background:var(--night);color:#fff;border-radius:var(--r-lg);padding:72px 64px;position:relative;overflow:hidden;}
 .night::before{content:"";position:absolute;top:-160px;right:-120px;width:560px;height:560px;background:radial-gradient(circle,rgba(200,135,58,.17),transparent 62%);pointer-events:none;}
 .night-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:60px;align-items:stretch;position:relative;z-index:2;}
 .night h2{font-weight:700;letter-spacing:-.035em;font-size:clamp(30px,3.8vw,48px);line-height:1.06;}
 .night h2 em{font-family:var(--serif);font-style:italic;font-weight:400;color:#E0A45C;}
 .night p{color:var(--night-sub);font-size:16px;margin-top:18px;}
 .night p strong{color:#fff;font-weight:600;}
-.founder{display:flex;gap:16px;align-items:center;background:var(--night2);border:1px solid var(--night-line);border-radius:var(--r-md);padding:18px 22px;margin-top:28px;}
+.founder{display:flex;gap:16px;align-items:center;background:var(--night2);border:1px solid var(--night-line);border-radius:var(--r-md);padding:16px 24px;margin-top:28px;}
 .founder img{width:56px;height:56px;border-radius:50%;object-fit:cover;}
 .founder .n{font-weight:600;font-size:15.5px;color:#fff;}
-.founder .r{font-size:12.5px;color:var(--acc);font-weight:600;margin:1px 0 4px;}
+.founder .r{font-size:13px;color:var(--acc);font-weight:600;margin:1px 0 4px;}
 .founder .q{font-size:13.5px;color:var(--night-sub);font-style:italic;margin:0;}
 .night-vis{position:relative;display:flex;min-height:100%;}
 .night-vis img{border-radius:var(--r-md);width:100%;height:100%;min-height:340px;object-fit:cover;object-position:72% 38%;}
@@ -342,7 +345,7 @@ a.wname:hover .wpfeil{color:var(--acc-deep);transform:translate(2px,-2px);}
 /* ═══════ TEAM ═══════ */
 #team{padding:0 0 120px;}
 .team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:52px;max-width:980px;margin-left:auto;margin-right:auto;}
-.tcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);padding:34px 28px;text-align:center;transition:transform .4s var(--ease),box-shadow .4s;}
+.tcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);padding:32px 24px;text-align:center;transition:transform .4s var(--ease),box-shadow .4s;}
 .tcard:hover{transform:translateY(-5px);box-shadow:var(--shadow-md);}
 .tphoto{width:92px;height:92px;border-radius:50%;object-fit:cover;margin:0 auto 18px;}
 .tavatar{width:92px;height:92px;border-radius:50%;background:var(--acc-soft);color:var(--acc-deep);font-family:var(--serif);font-style:italic;font-size:40px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;}
@@ -354,7 +357,7 @@ a.wname:hover .wpfeil{color:var(--acc-deep);transform:translate(2px,-2px);}
 /* ═══════ ABLAUF ═══════ */
 #ablauf{padding:0 0 110px;}
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:56px;counter-reset:step;border-top:1.5px solid var(--line2);}
-.step{padding:30px 28px 6px 0;position:relative;border-right:1.5px solid var(--line);margin-right:28px;}
+.step{padding:32px 24px 8px 0;position:relative;border-right:1.5px solid var(--line);margin-right:28px;}
 .step:last-child{border-right:none;margin-right:0;}
 .step::before{counter-increment:step;content:counter(step,decimal-leading-zero);font-family:var(--serif);font-style:italic;font-size:34px;color:var(--acc);display:block;}
 .step h3{font-size:17.5px;font-weight:700;letter-spacing:-.02em;margin:14px 0 8px;}
@@ -391,21 +394,21 @@ a.wname:hover .wpfeil{color:var(--acc-deep);transform:translate(2px,-2px);}
 #stimmen{padding:7rem 0 120px;overflow:hidden;}
 #stimmen .wrap{position:relative;}
 .rev-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:48px;}
-.score{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);padding:14px 22px;box-shadow:var(--shadow-md);}
+.score{display:flex;align-items:center;gap:16px;background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);padding:16px 24px;box-shadow:var(--shadow-md);}
 .score .n{font-weight:800;font-size:36px;letter-spacing:-.03em;}
 .score .stars{color:#F5A623;font-size:15px;letter-spacing:1.5px;}
-.score small{display:block;font-size:12.5px;color:var(--sub);margin-top:2px;}
+.score small{display:block;font-size:13px;color:var(--sub);margin-top:2px;}
 .rmarq{display:flex;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);}
 .rmarq+.rmarq{margin-top:18px;}
 .rmarq-t{display:flex;gap:18px;padding:6px 9px;flex-shrink:0;animation:marq 85s linear infinite;}
 .rmarq.rev2 .rmarq-t{animation-direction:reverse;animation-duration:95s;}
 .rmarq:hover .rmarq-t{animation-play-state:paused;}
-.rc{flex:0 0 390px;background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);padding:24px 26px;}
+.rc{flex:0 0 390px;background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);padding:24px;}
 .rc-h{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
 .rc-av{width:40px;height:40px;border-radius:50%;background:var(--acc-soft);color:var(--acc-deep);font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .rc-nm{font-weight:600;font-size:14.5px;line-height:1.25;}
-.rc-rl{font-size:12.5px;color:var(--faint);}
-.rc-st{color:#F5A623;font-size:12.5px;letter-spacing:1.5px;margin-bottom:8px;}
+.rc-rl{font-size:13px;color:var(--faint);}
+.rc-st{color:#F5A623;font-size:13px;letter-spacing:1.5px;margin-bottom:8px;}
 .rc-tx{font-size:14px;color:var(--sub);line-height:1.55;}
 .rmore{text-align:center;margin-top:36px;font-size:14.5px;color:var(--sub);}
 .rmore a{color:var(--acc-deep);font-weight:600;border-bottom:1.5px solid rgba(200,135,58,.4);}
@@ -426,11 +429,11 @@ a.wname:hover .wpfeil{color:var(--acc-deep);transform:translate(2px,-2px);}
 .faq-a{display:grid;grid-template-rows:0fr;overflow:hidden;transition:grid-template-rows .4s var(--ease);}
 .faq-a>*{min-height:0;overflow:hidden;}
 .faq-item.open .faq-a{grid-template-rows:1fr;}
-.faq-inner p{padding:0 24px 22px;font-size:14.5px;color:var(--sub);}
+.faq-inner p{padding:0 24px 24px;font-size:14.5px;color:var(--sub);}
 
 /* ═══════ KONTAKT ═══════ */
 #kontakt{padding:0 0 100px;}
-.k-card{background:var(--night);color:#fff;border-radius:var(--r-lg);padding:76px 64px;position:relative;overflow:hidden;}
+.k-card{background:var(--night);color:#fff;border-radius:var(--r-lg);padding:72px 64px;position:relative;overflow:hidden;}
 .k-card::before{content:"";position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:900px;height:520px;background:radial-gradient(ellipse,rgba(200,135,58,.18),transparent 60%);pointer-events:none;}
 .k-head{text-align:center;position:relative;z-index:2;}
 .k-head h2{font-weight:700;letter-spacing:-.035em;font-size:clamp(34px,4.6vw,58px);line-height:1.05;}
@@ -441,17 +444,17 @@ a.wname:hover .wpfeil{color:var(--acc-deep);transform:translate(2px,-2px);}
 .k-grid{display:grid;grid-template-columns:1fr 1.35fr;gap:52px;margin-top:60px;position:relative;z-index:2;align-items:start;}
 .ci{display:flex;gap:15px;align-items:flex-start;padding:1rem 0;border-bottom:1px solid var(--night-line);}
 .ci:last-child{border:none;}
-.ci-ic{font-size:19px;width:44px;height:44px;flex-shrink:0;border-radius:12px;background:var(--night2);border:1px solid var(--night-line);display:flex;align-items:center;justify-content:center;}
-.ci-l{font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--night-sub);}
+.ci-ic{width:44px;height:44px;flex-shrink:0;border-radius:var(--r-xs);color:#E0A45C;background:var(--night2);border:1px solid var(--night-line);display:flex;align-items:center;justify-content:center;}
+.ci-l{font-size:13px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--night-sub);}
 .ci-m{font-size:15.5px;font-weight:600;margin:3px 0 2px;color:#fff;}
 .ci-m a{border-bottom:1px dashed var(--night-line);}
 .ci-m a:hover{color:#E0A45C;border-color:var(--acc);}
 .ci-s{font-size:13px;color:var(--night-sub);}
-.form-card{background:#fff;border-radius:var(--r-md);padding:36px;color:var(--ink);box-shadow:0 30px 80px rgba(0,0,0,.35);}
+.form-card{background:#fff;border-radius:var(--r-md);padding:32px;color:var(--ink);box-shadow:0 30px 80px rgba(0,0,0,.35);}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 .fg{margin-bottom:14px;}
-.fg label{display:block;font-size:12.5px;font-weight:600;color:var(--sub);margin-bottom:6px;}
-.fg input,.fg select,.fg textarea{width:100%;background:var(--paper);border:1.5px solid var(--line);border-radius:12px;padding:13px 15px;font-family:var(--f);font-size:16px;color:var(--ink);transition:border-color .25s,box-shadow .25s;}
+.fg label{display:block;font-size:13px;font-weight:600;color:var(--sub);margin-bottom:6px;}
+.fg input,.fg select,.fg textarea{width:100%;background:var(--paper);border:1.5px solid var(--line);border-radius:var(--r-xs);padding:12px 16px;font-family:var(--f);font-size:16px;color:var(--ink);transition:border-color .25s,box-shadow .25s;}
 .fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px rgba(200,135,58,.13);}
 .fg textarea{resize:vertical;min-height:88px;}
 .fsub{width:100%;justify-content:center;margin-top:2px;}
@@ -471,7 +474,7 @@ footer{padding:2rem 0 40px;color:var(--sub);}
 
 
 @media(prefers-reduced-transparency:reduce){
-  #nav{background:var(--paper)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
+  #nav,.mnav{background:var(--paper)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
   #nav::after{display:none;}
   .glass,[style*="backdrop-filter"]{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
 }
@@ -486,6 +489,7 @@ footer{padding:2rem 0 40px;color:var(--sub);}
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}
   .reveal,.stagger,.o1,.o2,.o3,.o4,.o5{opacity:1!important;transform:none!important;}
   .marq-t,.fmarq-t,.rmarq-t{animation:none!important;transform:none!important;}
+  .btn::after{display:none;}.mnav{transform:none!important;}
   .vclip{clip-path:none!important;}
   .kin-row{transform:none!important;}
   html{scroll-behavior:auto;}
@@ -510,7 +514,7 @@ footer{padding:2rem 0 40px;color:var(--sub);}
   /* Praxis-Fotos: kleinere Karten, ~2 sichtbar */
   .fcard{width:172px;height:220px;}
   .fcard.fsmall{width:160px;height:204px;}
-  .fname{font-size:12px;left:10px;bottom:8px;}
+  .fname{font-size:13px;left:10px;bottom:8px;}
   .fmarq-t{gap:12px;padding:0 6px;}
 }
 
@@ -529,8 +533,9 @@ body:has(.mnav.auf) #nav{background:var(--paper);}
   border-bottom:1px solid var(--line);padding:6px 20px calc(20px + env(safe-area-inset-bottom));
   display:flex;flex-direction:column;max-height:calc(100dvh - var(--navh,60px));overflow-y:auto;
   box-shadow:0 24px 48px -24px rgba(22,19,14,.35);
-  opacity:0;transform:translateY(-10px);pointer-events:none;
-  transition:opacity .25s var(--ease),transform .25s var(--ease);}
+  opacity:0;transform:translateY(-8px) scale(.98);transform-origin:top right;pointer-events:none;
+  background:rgba(250,247,241,.92);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);
+  transition:opacity .3s var(--ease),transform .3s var(--ease);}
 .mnav.auf{opacity:1;transform:none;pointer-events:auto;}
 .mnav>a{padding:13px 4px;font-size:16.5px;font-weight:600;letter-spacing:-.015em;color:var(--ink);border-bottom:1px solid var(--line2);min-height:48px;display:flex;align-items:center;}
 .mnav-foot{display:flex;flex-direction:column;gap:10px;margin-top:16px;}
@@ -673,7 +678,7 @@ body:has(.mnav.auf) #nav{background:var(--paper);}
   #hero .hero-ctas .btn{width:100%;justify-content:center;}
   /* Projekt-Kacheln: Name und Schalter mit Luft, Schalter nicht dominant */
   .mini-grid .winfo{gap:10px;}
-  .mini-grid .wtog{font-size:12.5px;padding:8px 13px;flex:0 0 auto;}
+  .mini-grid .wtog{font-size:13px;padding:8px 12px;flex:0 0 auto;}
   /* Wechselnde Schlusszeile darf umbrechen statt aus dem Bild zu laufen */
   .rot span{white-space:normal;}
   /* Bewertungskarten bekommen denselben Seitenrand wie der Rest */
@@ -723,6 +728,31 @@ body:has(.mnav.auf) #nav{background:var(--paper);}
    bleibt die Seite leer, wenn das Skript nicht durchkommt (Blocker, Fehler, Netz).
    Genau das war der Fall auf der Wohner-Seite. */
 html:not(.js) .reveal,html:not(.js) .stagger,html:not(.js) .word{opacity:1!important;transform:none!important;}
+
+/* ═══════ Apple-Runde 26.09.2026 (apple-design + Drive-Designregeln) ═══════ */
+:focus-visible{outline:3px solid var(--acc);outline-offset:3px;border-radius:6px;}
+/* R15: kleine Schrift leicht positiv tracken */
+.band-label,.wtag,.show-hint,.wtog,.vlabel,.fname,.serp-u,.serp-note,.tbio,.step p,.rc-rl,.rc-st,.rmore,.ci-l,.ci-s,.founder .r,.founder .q,.score small,.fg label,.nstat .l,.hero-proof,.serp-badge,.vclip-cap span,.mini-head,.show-kicker,.h-eyebrow,.f-in{letter-spacing:.01em;}
+/* R1: Feedback beim Runterdrücken — 100 ms, auf allem, was man anfasst */
+.wcard:active,.hebel:active,.serp:active,.tcard:active{transform:scale(.985);transition-duration:.1s;}
+.wtog:active,.werk-pfeile button:active,.f-links a:active,.mnav>a:active,.faq-tel:active,.rmore a:active,a.wname:active,.ci-m a:active,.mnav-foot a:active,.nav-burger:active span{transform:scale(.96);transition-duration:.1s;}
+.nav-logo:active{opacity:.7;transition:opacity .1s;}
+.faq-q{transition:background .2s;}
+.faq-q:active{background:var(--paper);}
+/* R10: Tap-Ziele 44 px — Fußlinks, Telefon, Bewertungslink */
+.nav-logo{display:inline-flex;align-items:center;min-height:44px;}
+.f-links a,.faq-tel,.rmore a,a.wname{display:inline-flex;align-items:center;min-height:44px;}
+.f-links a{padding:0 4px;margin:-8px -4px;}
+.faq-tel{gap:8px;}
+/* Icons statt Emojis (Drive) */
+.ik{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:none;display:inline-block;vertical-align:-.15em;}
+.ci-ic .ik{width:20px;height:20px;}
+.faq-tel .ik{width:17px;height:17px;color:var(--acc-deep);}
+.fok .ic .ik{width:28px;height:28px;}
+.f-links a{min-width:44px;justify-content:center;}
+.ci-m a{display:inline-flex;align-items:center;min-height:44px;margin:-10px 0;border-bottom:0;text-decoration:underline;text-decoration-style:dashed;text-decoration-color:var(--night-line);text-underline-offset:4px;}
+.ci-m a:hover{text-decoration-color:var(--acc);}
+a.faq-tel[href^="tel:"]:not(.mnav-tel){display:inline-flex;padding:0;min-height:44px;}
 </style>
 </head>
 <body>
@@ -1125,7 +1155,7 @@ html:not(.js) .reveal,html:not(.js) .stagger,html:not(.js) .word{opacity:1!impor
         <div class="eyebrow"><span class="dot"></span>Bevor du fragst</div>
         <h2 class="d" style="margin-top:18px;">Häufige <em>Fragen.</em></h2>
         <p class="sec-sub">Alles andere klären wir im Erstgespräch, ohne Fachchinesisch.</p>
-        <a href="tel:+4981947174990" class="faq-tel">📞 +49 8194 7174990</a>
+        <a href="tel:+4981947174990" class="faq-tel"><svg class="ik" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>+49 8194 7174990</a>
       </div>
     <div class="faq-list reveal">
       <div class="faq-item"><div class="faq-q" onclick="faq(this)">Was kostet eine neue Website?<span class="pm">+</span></div><div class="faq-a"><div class="faq-inner"><p>Die Kosten hängen vom Umfang ab. Im kostenlosen Erstgespräch bekommst du ein Angebot mit allen Posten im Klartext. Wir arbeiten mit Betrieben jeder Größe.</p></div></div></div>
@@ -1149,10 +1179,10 @@ html:not(.js) .reveal,html:not(.js) .stagger,html:not(.js) .word{opacity:1!impor
       </div>
       <div class="k-grid">
         <div>
-          <div class="ci"><div class="ci-ic">📞</div><div><div class="ci-l">Telefon</div><div class="ci-m"><a href="tel:+4981947174990">+49 8194 7174990</a></div><div class="ci-s">Mo–Fr, 8:00–18:00 Uhr</div></div></div>
-          <div class="ci"><div class="ci-ic">✉️</div><div><div class="ci-l">E-Mail</div><div class="ci-m"><a href="mailto:info@handwerksmanufaktur.digital">info@handwerksmanufaktur.digital</a></div><div class="ci-s">Antwort innerhalb von 24h</div></div></div>
-          <div class="ci"><div class="ci-ic">📍</div><div><div class="ci-l">Einsatzgebiet</div><div class="ci-m">DACH-Raum</div><div class="ci-s">Deutschland, Österreich, Schweiz</div></div></div>
-          <div class="ci"><div class="ci-ic">📅</div><div><div class="ci-l">Termin</div><div class="ci-m"><a href="https://calendly.com/noahseelau/website-potenzial" target="_blank" rel="noopener">Zeit aussuchen</a></div><div class="ci-s">Potenzialanalyse zur Website · 30 Minuten</div></div></div>
+          <div class="ci"><div class="ci-ic"><svg class="ik" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div><div class="ci-l">Telefon</div><div class="ci-m"><a href="tel:+4981947174990">+49 8194 7174990</a></div><div class="ci-s">Mo–Fr, 8:00–18:00 Uhr</div></div></div>
+          <div class="ci"><div class="ci-ic"><svg class="ik" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></div><div><div class="ci-l">E-Mail</div><div class="ci-m"><a href="mailto:info@handwerksmanufaktur.digital">info@handwerksmanufaktur.digital</a></div><div class="ci-s">Antwort innerhalb von 24h</div></div></div>
+          <div class="ci"><div class="ci-ic"><svg class="ik" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div><div><div class="ci-l">Einsatzgebiet</div><div class="ci-m">DACH-Raum</div><div class="ci-s">Deutschland, Österreich, Schweiz</div></div></div>
+          <div class="ci"><div class="ci-ic"><svg class="ik" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg></div><div><div class="ci-l">Termin</div><div class="ci-m"><a href="https://calendly.com/noahseelau/website-potenzial" target="_blank" rel="noopener">Zeit aussuchen</a></div><div class="ci-s">Potenzialanalyse zur Website · 30 Minuten</div></div></div>
         </div>
         <div class="form-card">
           <form id="contactForm">
@@ -1170,19 +1200,19 @@ html:not(.js) .reveal,html:not(.js) .stagger,html:not(.js) .word{opacity:1!impor
             </div>
             <div class="fg"><label>Was suchst du?</label>
               <select name="Interesse">
-                <option>🌐 Neue Website</option>
-                <option>🔄 Website-Update / Relaunch</option>
-                <option>🔍 SEO &amp; Google Sichtbarkeit</option>
-                <option>📈 Auftragsgewinnung</option>
-                <option>🚀 Alles oben genannte</option>
-                <option>💬 Sonstiges (siehe Beschreibung)</option>
+                <option>Neue Website</option>
+                <option>Website-Update / Relaunch</option>
+                <option>SEO &amp; Google Sichtbarkeit</option>
+                <option>Auftragsgewinnung</option>
+                <option>Alles oben genannte</option>
+                <option>Sonstiges (siehe Beschreibung)</option>
               </select>
             </div>
             <div class="fg"><label>Nachricht (optional)</label><textarea name="Nachricht" placeholder="Erzähl uns kurz von deinem Betrieb ..."></textarea></div>
             <button type="submit" class="btn btn-acc fsub">Kostenlos anfragen →</button>
           </form>
           <div class="fok" id="formSuccess">
-            <div class="ic">✓</div>
+            <div class="ic"><svg class="ik" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg></div>
             <h3>Anfrage gesendet!</h3>
             <p>Danke für dein Interesse. Wir melden uns innerhalb von 48 Stunden.</p>
           </div>
@@ -1232,6 +1262,7 @@ document.querySelectorAll('.stagger').forEach(function(el,i){el.dataset.delay=(i
   var base=innerWidth<=700?6:12;
   function tick(){
     var r=clip.getBoundingClientRect();
+    if(r.bottom<-40||r.top>innerHeight+40){requestAnimationFrame(tick);return;}
     var p=Math.max(0,Math.min(1,(innerHeight-r.top)/(innerHeight*0.85)));
     var inset=base*(1-p), radius=22*(1-p*0.6);
     clip.style.clipPath='inset(0 '+inset+'% round '+radius+'px)';
