@@ -686,7 +686,7 @@ body:has(.mnav.auf) #nav{background:var(--paper);}
   /* Kontaktzeilen: der gestrichelte Unterstrich lag als border-bottom 11 px
      tiefer und lief quer durch die Zeile darunter. Als text-decoration klebt
      er am Text, die Trefferflaeche bleibt trotzdem gross. */
-  .ci-m a{display:inline-block;padding:9px 0;border-bottom:0;
+  .ci-m a{display:inline-flex;align-items:center;min-height:44px;padding:0;margin:-10px 0;border-bottom:0;
     text-decoration:underline;text-decoration-style:dashed;
     text-decoration-color:var(--night-line);text-underline-offset:4px;}
   .ci-m a:hover{text-decoration-color:var(--acc);}
