@@ -1,3 +1,6 @@
+// Gerüst (Subtasks + Checklisten) liegt in pipeline_geruest.json — dieselbe Datei liest
+// system/scripts/onboarding_geruest.py und trägt nach, was hier im 30-s-Nachlauf abbricht.
+import GERUEST from "./pipeline_geruest.json";
 // ============================================================
 // ClickUp Integration — Onboarding Form → ClickUp Tasks
 // ------------------------------------------------------------
@@ -112,55 +115,10 @@ const NOAH_USER_ID = 188597937;
 
 // === Subtask-Vorlage Performance Projekte ===
 // dueToday: Due Date = Tag des Onboarding-Eingangs
-const PIPELINE_SUBTASKS = [
-  { name: 'Onboarding versenden',                    dueToday: true },
-  { name: 'Shooting-Termin vereinbaren',             dueToday: true },
-  { name: 'Rechnung schicken',                       dueToday: true },
-  { name: 'Kick-Off Call durchführen' },
-  { name: 'Skripte schreiben und schicken' },
-  { name: 'Facebook Business Profile einrichten' },
-  { name: 'Videos cutten lassen' },
-  { name: 'Funnel erstellen' },
-  { name: 'Werbeanzeigenmanager + Copies aufsetzen' },
-  { name: 'Review mit Kunde durchführen' },
-  { name: 'Kampagne live schalten' },
-];
+const PIPELINE_SUBTASKS = GERUEST.subtasks;
 
 // === Checklisten-Vorlage Performance Projekte ===
-const PIPELINE_CHECKLISTS = [
-  { name: '🎬 Video & Content', items: [
-    'Videos auf Rechtschreibfehler geprüft',
-    'Schnitte & Untertitel korrekt',
-    'Bildmaterial vom Shooting gesichtet',
-  ]},
-  { name: '🌐 Funnel / Landing Page', items: [
-    'Impressum hinterlegt',
-    'Funnel-Tracking aktiviert',
-    'Facebook-Pixel verbunden',
-    'Datenschutzerklärung hinterlegt + an Kunden-Datenspeicherung angepasst',
-    'Mobile-Ansicht & Ladezeit geprüft',
-    'Danke-Seite eingerichtet',
-    'Perspective mit Facebook verbunden',
-  ]},
-  { name: '📧 Kommunikation & Automation', items: [
-    'Lead-Routing getestet (Test-Lead durchgeschickt)',
-    'E-Mail-Weiterleitung im Panel bestätigt',
-    'Auto-Nachricht nach Kontaktabgabe individuell gestaltet',
-  ]},
-  { name: '📱 Facebook / Werbeanzeigen', items: [
-    'Werbekonto + Zahlungsmethode eingerichtet',
-    'Copies & Creatives final',
-    'Zielgruppe definiert',
-  ]},
-  { name: '✅ Pre-Go-Live', items: [
-    'Alles mit Kunde durchgesprochen + Freigabe eingeholt',
-    'Tracking final getestet',
-  ]},
-  { name: '🚀 Nach Go-Live', items: [
-    'Recruiting',
-    'Review-Call vereinbaren',
-  ]},
-];
+const PIPELINE_CHECKLISTS = GERUEST.checklisten;
 
 // ============================================================
 // Helpers

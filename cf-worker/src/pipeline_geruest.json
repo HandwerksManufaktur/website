@@ -1,0 +1,93 @@
+{
+  "_hinweis": "Eine Wahrheit fuer das Geruest jedes Performance-Projekt-Tasks. Gelesen vom Onboarding-Worker (clickup.js) UND von system/scripts/onboarding_geruest.py, das fehlende Teile nachtraegt.",
+  "subtasks": [
+    {
+      "name": "Onboarding versenden",
+      "dueToday": true
+    },
+    {
+      "name": "Shooting-Termin vereinbaren",
+      "dueToday": true
+    },
+    {
+      "name": "Rechnung schicken",
+      "dueToday": true
+    },
+    {
+      "name": "Kick-Off Call durchführen"
+    },
+    {
+      "name": "Skripte schreiben und schicken"
+    },
+    {
+      "name": "Facebook Business Profile einrichten"
+    },
+    {
+      "name": "Videos cutten lassen"
+    },
+    {
+      "name": "Funnel erstellen"
+    },
+    {
+      "name": "Werbeanzeigenmanager + Copies aufsetzen"
+    },
+    {
+      "name": "Review mit Kunde durchführen"
+    },
+    {
+      "name": "Kampagne live schalten"
+    }
+  ],
+  "checklisten": [
+    {
+      "name": "🎬 Video & Content",
+      "items": [
+        "Videos auf Rechtschreibfehler geprüft",
+        "Schnitte & Untertitel korrekt",
+        "Bildmaterial vom Shooting gesichtet"
+      ]
+    },
+    {
+      "name": "🌐 Funnel / Landing Page",
+      "items": [
+        "Impressum hinterlegt",
+        "Funnel-Tracking aktiviert",
+        "Facebook-Pixel verbunden",
+        "Datenschutzerklärung hinterlegt + an Kunden-Datenspeicherung angepasst",
+        "Mobile-Ansicht & Ladezeit geprüft",
+        "Danke-Seite eingerichtet",
+        "Perspective mit Facebook verbunden"
+      ]
+    },
+    {
+      "name": "📧 Kommunikation & Automation",
+      "items": [
+        "Lead-Routing getestet (Test-Lead durchgeschickt)",
+        "E-Mail-Weiterleitung im Panel bestätigt",
+        "Auto-Nachricht nach Kontaktabgabe individuell gestaltet"
+      ]
+    },
+    {
+      "name": "📱 Facebook / Werbeanzeigen",
+      "items": [
+        "Werbekonto + Zahlungsmethode eingerichtet",
+        "Copies & Creatives final",
+        "Zielgruppe definiert"
+      ]
+    },
+    {
+      "name": "✅ Pre-Go-Live",
+      "items": [
+        "Alles mit Kunde durchgesprochen + Freigabe eingeholt",
+        "Tracking final getestet"
+      ]
+    },
+    {
+      "name": "🚀 Nach Go-Live",
+      "items": [
+        "Recruiting",
+        "Review-Call vereinbaren"
+      ]
+    }
+  ]
+}
