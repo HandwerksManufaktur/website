@@ -5,27 +5,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Website Onboarding – HandwerksManufaktur</title>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#FAF7F1">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Cpath fill=%27%2316130E%27 d=%27M8.044,44.103 L30.286,29.275 L30.286,96 L8.044,96 Z M42.418,18.828 L64.659,4 L64.659,96 L42.418,96 L42.418,69.381 L35.341,72.747 L35.341,58.256 L42.418,53.538 Z M69.714,18.828 L91.956,4 L91.956,96 L69.714,96 Z%27/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#111111;--surface:#1a1a1a;--surface2:#222222;--border:#2e2e2e;
-  --accent:#D4860A;--accent-hover:#e8960b;--accent-dim:rgba(212,134,10,0.1);
-  --text:#ffffff;--muted:#d8d8d8;--label:#ffffff;
-  --radius:4px;--font-head:'Barlow Condensed',sans-serif;--font-body:'Barlow',sans-serif;
+  /* Fassung C (seit 26.09.2026, firma/branding/logo/): Tinte · Papier · Weiß */
+  --bg:#FAF7F1;--surface:#FFFFFF;--surface2:#FAF7F1;--border:#DED7C8;--border-strong:#C9C0AE;
+  --accent:#16130E;--accent-hover:#3A352C;--accent-dim:#F1ECE2;--on-accent:#FAF7F1;
+  --text:#16130E;--muted:#6B6355;--label:#16130E;--ok:#2E7D4F;--err:#B3261E;
+  --radius:12px;--font-head:'Archivo','Inter',system-ui,sans-serif;--font-body:'Inter',system-ui,-apple-system,sans-serif;
 }
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-weight:300;min-height:100vh}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-weight:400;min-height:100vh}
 
 /* HEADER */
 .header{background:var(--bg);border-bottom:1px solid var(--border);padding:20px 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
-.header-logo{display:flex;align-items:center;gap:10px;font-family:var(--font-head);font-weight:700;font-size:15px;letter-spacing:0.5px;text-transform:uppercase;line-height:1.2}
-.logo-bars{display:flex;gap:3px;align-items:flex-end}
-.logo-bars span{display:block;width:4px;background:var(--accent)}
-.logo-bars span:nth-child(1){height:12px}
-.logo-bars span:nth-child(2){height:18px}
-.logo-bars span:nth-child(3){height:10px}
-.header-badge{border:1px solid var(--border);border-radius:2px;padding:6px 14px;font-family:var(--font-head);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--label)}
+.header-logo{display:flex;align-items:center;gap:10px;font-family:var(--font-head);font-weight:700;font-size:15px;line-height:1.2}
+.header-badge{border:1px solid var(--border);border-radius:2px;padding:6px 14px;font-family:var(--font-head);font-size:13px;font-weight:600;color:var(--label)}
 
 /* PROGRESS */
 .progress-bar{height:2px;background:var(--border)}
@@ -34,17 +34,17 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
 /* STEP DOTS */
 .step-dots{display:flex;align-items:center;justify-content:center;padding:26px 24px 0;max-width:760px;margin:0 auto}
 .step-dot-wrap{display:flex;flex-direction:column;align-items:center;gap:5px;z-index:1;min-width:44px}
-.step-dot{width:28px;height:28px;border-radius:2px;background:var(--surface);border:1px solid var(--border);color:var(--muted);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:all 0.3s;font-family:var(--font-head);letter-spacing:0.5px}
-.step-dot.done{background:var(--accent);border-color:var(--accent);color:#000}
-.step-dot.active{background:var(--accent);border-color:var(--accent);color:#000;box-shadow:0 0 0 3px rgba(212,134,10,0.2)}
-.step-dot-label{font-size:9px;color:var(--muted);font-weight:700;letter-spacing:0.5px;text-align:center;white-space:nowrap;text-transform:uppercase;font-family:var(--font-head);transition:color 0.3s}
+.step-dot{width:28px;height:28px;border-radius:2px;background:var(--surface);border:1px solid var(--border);color:var(--muted);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:all 0.3s;font-family:var(--font-head);}
+.step-dot.done{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.step-dot.active{background:var(--accent);border-color:var(--accent);color:var(--on-accent);box-shadow:0 0 0 3px rgba(22,19,14,0.2)}
+.step-dot-label{font-size:13px;color:var(--muted);font-weight:700;text-align:center;white-space:nowrap;font-family:var(--font-head);transition:color 0.3s}
 .step-dot-wrap.active .step-dot-label{color:var(--accent)}
 .step-connector{flex:1;height:1px;background:var(--border);margin-bottom:20px;transition:background 0.3s;min-width:8px}
 .step-connector.done{background:var(--accent)}
 
 /* MOTIVATION BANNER */
 .motiv-wrap{max-width:760px;margin:18px auto 0;padding:0 24px}
-.motiv-inner{background:var(--accent-dim);border:1px solid rgba(212,134,10,0.25);border-radius:var(--radius);padding:13px 18px;display:flex;align-items:center;gap:12px;animation:fadeUp 0.4s ease both}
+.motiv-inner{background:var(--accent-dim);border:1px solid rgba(22,19,14,0.25);border-radius:var(--radius);padding:13px 18px;display:flex;align-items:center;gap:12px;animation:fadeUp 0.4s ease both}
 .motiv-emoji{font-size:20px;flex-shrink:0}
 .motiv-text{font-size:13px;color:var(--label);line-height:1.45;font-weight:400}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
@@ -58,7 +58,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
 /* STEP CARD */
 .step-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:10px}
 .card-head{padding:22px 26px 18px;border-bottom:1px solid var(--border)}
-.card-title{font-family:var(--font-head);font-size:22px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text);margin-bottom:3px}
+.card-title{font-family:var(--font-head);font-size:22px;font-weight:800;color:var(--text);margin-bottom:3px}
 .card-sub{font-size:13px;color:var(--muted);line-height:1.5}
 .card-body{padding:22px 26px}
 
@@ -66,24 +66,24 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
 .fg{display:grid;gap:16px}
 .fr{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .field{display:flex;flex-direction:column;gap:8px}
-.field label{font-family:var(--font-head);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--label)}
+.field label{font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--label)}
 .field label .req{color:var(--accent);margin-left:2px}
-.field input,.field select,.field textarea{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-body);font-size:14px;font-weight:300;padding:13px 16px;outline:none;transition:border-color 0.15s,background 0.15s;width:100%}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);background:rgba(212,134,10,0.03)}
+.field input,.field select,.field textarea{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-body);font-size:14px;font-weight:400;padding:13px 16px;outline:none;transition:border-color 0.15s,background 0.15s;width:100%}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);background:rgba(22,19,14,0.03)}
 .field textarea{resize:vertical;min-height:90px;line-height:1.6}
-.field input::placeholder,.field textarea::placeholder{color:#8c8c8c}
-.hint{font-size:12px;color:var(--muted);display:flex;gap:6px;line-height:1.5}
+.field input::placeholder,.field textarea::placeholder{color:#8E8677}
+.hint{font-size:13px;color:var(--muted);display:flex;gap:6px;line-height:1.5}
 .hint::before{content:'→';color:var(--accent);flex-shrink:0}
 .divider{height:1px;background:var(--border);margin:4px 0}
 
 /* TOGGLE */
 .toggle-field{display:flex;align-items:center;justify-content:space-between;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:15px 18px;cursor:pointer;user-select:none;gap:16px;transition:border-color 0.15s}
-.toggle-field:hover{border-color:#444}
-.toggle-field label{font-size:14px;color:var(--text);cursor:pointer;font-weight:300}
+.toggle-field:hover{border-color:var(--border-strong)}
+.toggle-field label{font-size:14px;color:var(--text);cursor:pointer;font-weight:400}
 .toggle{width:46px;height:26px;background:var(--border);border-radius:2px;position:relative;transition:background 0.2s;flex-shrink:0}
-.toggle::after{content:'';position:absolute;width:20px;height:20px;background:#555;top:3px;left:3px;transition:transform 0.2s,background 0.2s;border-radius:1px}
+.toggle::after{content:'';position:absolute;width:20px;height:20px;background:#B8AF9E;top:3px;left:3px;transition:transform 0.2s,background 0.2s;border-radius:1px}
 .toggle.on{background:var(--accent)}
-.toggle.on::after{transform:translateX(20px);background:#000}
+.toggle.on::after{transform:translateX(20px);background:var(--on-accent)}
 .conditional{display:none}
 .conditional.visible{display:block}
 .cond-section{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-top:8px}
@@ -91,38 +91,38 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
 /* ÖFFNUNGSZEITEN */
 .oeff-grid{display:grid;gap:8px}
 .oeff-row{display:grid;grid-template-columns:110px 1fr 1fr auto;gap:10px;align-items:center}
-.oeff-row .day-label{font-family:var(--font-head);font-size:13px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;color:var(--label)}
+.oeff-row .day-label{font-family:var(--font-head);font-size:13px;font-weight:600;color:var(--label)}
 .oeff-row input[type="time"]{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-body);font-size:13px;padding:10px 12px;outline:none;transition:border-color 0.15s}
 .oeff-row input[type="time"]:focus{border-color:var(--accent)}
 .oeff-row input[type="time"]:disabled{opacity:0.25}
 .day-toggle{width:36px;height:20px;background:var(--border);border-radius:2px;position:relative;transition:background 0.2s;cursor:pointer;flex-shrink:0}
-.day-toggle::after{content:'';position:absolute;width:14px;height:14px;background:#555;top:3px;left:3px;transition:transform 0.2s;border-radius:1px}
+.day-toggle::after{content:'';position:absolute;width:14px;height:14px;background:#B8AF9E;top:3px;left:3px;transition:transform 0.2s;border-radius:1px}
 .day-toggle.on{background:var(--accent)}
-.day-toggle.on::after{transform:translateX(16px);background:#000}
+.day-toggle.on::after{transform:translateX(16px);background:var(--on-accent)}
 
 /* LEISTUNGEN */
 .leistung-item{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:12px;position:relative}
 .leistung-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.leistung-num{font-family:var(--font-head);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent)}
+.leistung-num{font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--accent)}
 .remove-leistung{background:transparent;border:1px solid var(--border);border-radius:var(--radius);color:var(--muted);cursor:pointer;width:28px;height:28px;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
-.remove-leistung:hover{border-color:#ff4444;color:#ff4444}
-.leistung-name{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-head);font-size:16px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;padding:13px 16px;outline:none;transition:border-color 0.15s;margin-bottom:14px}
+.remove-leistung:hover{border-color:var(--err);color:var(--err)}
+.leistung-name{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-head);font-size:16px;font-weight:700;padding:13px 16px;outline:none;transition:border-color 0.15s;margin-bottom:14px}
 .leistung-name:focus{border-color:var(--accent)}
-.leistung-name::placeholder{color:var(--muted);text-transform:none;font-weight:300;font-size:14px}
+.leistung-name::placeholder{color:var(--muted);text-transform:none;font-weight:400;font-size:14px}
 .stichpunkte{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
 .stichpunkt-row{display:flex;gap:8px;align-items:center}
 .stichpunkt-bullet{color:var(--accent);font-size:16px;flex-shrink:0;font-weight:900}
-.stichpunkt-row input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-body);font-size:13px;font-weight:300;padding:10px 13px;outline:none;transition:border-color 0.15s}
+.stichpunkt-row input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-body);font-size:13px;font-weight:400;padding:10px 13px;outline:none;transition:border-color 0.15s}
 .stichpunkt-row input:focus{border-color:var(--accent)}
 .stichpunkt-row input::placeholder{color:var(--muted)}
 .btn-remove-sp{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:16px;padding:2px 6px;transition:color 0.2s;flex-shrink:0}
-.btn-remove-sp:hover{color:#ff4444}
-.btn-add-sp{background:transparent;border:none;color:var(--muted);font-family:var(--font-head);font-weight:700;font-size:11px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;padding:4px 0;transition:color 0.2s}
+.btn-remove-sp:hover{color:var(--err)}
+.btn-add-sp{background:transparent;border:none;color:var(--muted);font-family:var(--font-head);font-weight:700;font-size:13px;cursor:pointer;padding:4px 0;transition:color 0.2s}
 .btn-add-sp:hover{color:var(--accent)}
-.add-leistung{width:100%;background:transparent;border:1px dashed var(--border);border-radius:var(--radius);color:var(--muted);font-family:var(--font-head);font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;padding:15px;cursor:pointer;transition:all 0.2s;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:10px}
+.add-leistung{width:100%;background:transparent;border:1px dashed var(--border);border-radius:var(--radius);color:var(--muted);font-family:var(--font-head);font-weight:700;font-size:13px;padding:15px;cursor:pointer;transition:all 0.2s;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:10px}
 .add-leistung:hover{border-color:var(--accent);color:var(--accent)}
 .leistung-upload{margin-top:14px}
-.leistung-upload-label{font-family:var(--font-head);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--label);display:block;margin-bottom:10px}
+.leistung-upload-label{font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--label);display:block;margin-bottom:10px}
 
 /* UPLOADS */
 .foto-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -132,68 +132,60 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
 .upload-icon{font-size:20px;margin-bottom:8px;opacity:0.5}
 .upload-title{font-size:13px;color:var(--text)}
 .upload-title span{color:var(--accent);text-decoration:underline}
-.upload-sub{font-size:11px;color:var(--muted);margin-top:3px}
+.upload-sub{font-size:13px;color:var(--muted);margin-top:3px}
 .upload-preview{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.preview-chip{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:3px 8px;font-size:11px;color:var(--label);display:flex;gap:6px;align-items:center}
+.preview-chip{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:3px 8px;font-size:13px;color:var(--label);display:flex;gap:6px;align-items:center}
 .chip-remove{cursor:pointer;color:var(--muted);font-size:13px}
-.chip-remove:hover{color:#ff4444}
+.chip-remove:hover{color:var(--err)}
 
 /* CHOICE BTNS */
 .choice-btns{display:flex;gap:10px;margin-bottom:12px}
-.choice-btn{flex:1;background:transparent;border:1px solid var(--border);border-radius:var(--radius);color:var(--muted);font-family:var(--font-head);font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;padding:12px;cursor:pointer;transition:all 0.2s}
+.choice-btn{flex:1;background:transparent;border:1px solid var(--border);border-radius:var(--radius);color:var(--muted);font-family:var(--font-head);font-weight:700;font-size:13px;padding:12px;cursor:pointer;transition:all 0.2s}
 .choice-btn:hover{border-color:var(--accent);color:var(--accent)}
 .choice-btn.active-yes{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
-.choice-btn.active-no{border-color:#b0b0b0;color:#b0b0b0;background:rgba(255,255,255,0.03)}
+.choice-btn.active-no{border-color:#6B6355;color:#6B6355;background:rgba(22,19,14,0.03)}
 
 /* DSGVO */
 .dsgvo-box{display:flex;align-items:flex-start;gap:12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;cursor:pointer;transition:border-color 0.15s}
-.dsgvo-box:hover{border-color:#444}
+.dsgvo-box:hover{border-color:var(--border-strong)}
 .dsgvo-check{width:20px;height:20px;border:2px solid var(--border);border-radius:2px;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
 .dsgvo-check.on{background:var(--accent);border-color:var(--accent)}
-.dsgvo-text{font-size:13px;color:#888;line-height:1.5}
+.dsgvo-text{font-size:13px;color:var(--muted);line-height:1.5}
 .dsgvo-text a{color:var(--accent);text-decoration:none}
 
 /* CHECKLIST */
-.checklist-note{background:var(--accent-dim);border:1px solid rgba(212,134,10,0.25);border-left:3px solid var(--accent);border-radius:var(--radius);padding:16px 18px}
-.checklist-note h4{font-family:var(--font-head);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.checklist-note{background:var(--accent-dim);border:1px solid rgba(22,19,14,0.25);border-left:3px solid var(--accent);border-radius:var(--radius);padding:16px 18px}
+.checklist-note h4{font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--accent);margin-bottom:10px}
 .checklist-note ul{list-style:none;display:grid;gap:6px}
 .checklist-note li{font-size:13px;color:var(--label);display:flex;align-items:flex-start;gap:8px}
 .checklist-note li::before{content:'→';color:var(--accent);font-weight:700;flex-shrink:0}
 
 /* NAVIGATION */
 .wizard-nav{position:fixed;bottom:0;left:0;right:0;background:var(--bg);border-top:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;z-index:50}
-.nav-info{font-size:11px;color:var(--muted);text-align:center;line-height:1.3;font-family:var(--font-head);letter-spacing:0.5px;text-transform:uppercase}
+.nav-info{font-size:13px;color:var(--muted);text-align:center;line-height:1.3;font-family:var(--font-head);}
 .nav-info strong{font-size:16px;font-weight:700;color:var(--text);display:block;font-family:var(--font-head)}
-.btn-back{background:transparent;border:1px solid var(--border);border-radius:var(--radius);color:var(--label);font-family:var(--font-head);font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:12px 22px;cursor:pointer;transition:all 0.2s}
+.btn-back{background:transparent;border:1px solid var(--border);border-radius:var(--radius);color:var(--label);font-family:var(--font-head);font-size:13px;font-weight:700;padding:12px 22px;cursor:pointer;transition:all 0.2s}
 .btn-back:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
 .btn-back:disabled{opacity:0.25;cursor:not-allowed}
-.btn-next{background:var(--accent);border:none;border-radius:var(--radius);color:#000;font-family:var(--font-head);font-size:13px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:12px 28px;cursor:pointer;transition:all 0.2s}
+.btn-next{background:var(--accent);border:none;border-radius:var(--radius);color:var(--on-accent);font-family:var(--font-head);font-size:13px;font-weight:800;padding:12px 28px;cursor:pointer;transition:all 0.2s}
 .btn-next:hover{background:var(--accent-hover)}
-.btn-finish{background:var(--accent);border:none;border-radius:var(--radius);color:#000;font-family:var(--font-head);font-size:13px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:12px 28px;cursor:pointer;transition:all 0.2s}
+.btn-finish{background:var(--accent);border:none;border-radius:var(--radius);color:var(--on-accent);font-family:var(--font-head);font-size:13px;font-weight:800;padding:12px 28px;cursor:pointer;transition:all 0.2s}
 .btn-finish:hover{background:var(--accent-hover)}
 
 /* UPLOAD OVERLAY */
 .upload-overlay{display:none;position:fixed;inset:0;background:var(--bg);z-index:200;flex-direction:column;align-items:center;justify-content:center;padding:40px;text-align:center}
 .upload-overlay.visible{display:flex}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
-@keyframes logoBounce{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.4)}}
-.upload-logo-bars{display:flex;gap:5px;align-items:flex-end;margin-bottom:28px}
-.upload-logo-bars span{display:block;width:6px;border-radius:1px;background:var(--accent)}
-.upload-logo-bars span:nth-child(1){height:14px;animation:logoBounce 1s ease-in-out 0s infinite}
-.upload-logo-bars span:nth-child(2){height:22px;animation:logoBounce 1s ease-in-out 0.15s infinite}
-.upload-logo-bars span:nth-child(3){height:12px;animation:logoBounce 1s ease-in-out 0.3s infinite}
-.upload-logo-bars span:nth-child(4){height:18px;animation:logoBounce 1s ease-in-out 0.1s infinite}
-.upload-logo-bars span:nth-child(5){height:10px;animation:logoBounce 1s ease-in-out 0.25s infinite}
 .upload-steps{display:flex;flex-direction:column;gap:10px;width:min(400px,80vw);text-align:left;margin-top:20px}
 .upload-step{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);transition:all 0.3s}
 .upload-step.active{border-color:var(--accent)}
-.upload-step.done{border-color:#2ecd6f;opacity:0.7}
-.step-icon{width:24px;height:24px;border:1px solid var(--border);border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:12px;font-family:var(--font-head);font-weight:700;flex-shrink:0;transition:all 0.3s}
+.upload-step.done{border-color:var(--ok);opacity:0.7}
+.step-icon{width:24px;height:24px;border:1px solid var(--border);border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:13px;font-family:var(--font-head);font-weight:700;flex-shrink:0;transition:all 0.3s}
 .upload-step.active .step-icon{border-color:var(--accent);color:var(--accent);animation:pulse 1s infinite}
-.upload-step.done .step-icon{border-color:#2ecd6f;background:#2ecd6f;color:#000}
-.step-label{font-family:var(--font-head);font-size:13px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:var(--text)}
-.step-sub{font-size:11px;color:var(--muted);margin-top:2px}
-.step-progress{font-family:var(--font-head);font-size:12px;color:var(--accent);margin-left:auto;font-weight:700}
+.upload-step.done .step-icon{border-color:var(--ok);background:var(--ok);color:var(--on-accent)}
+.step-label{font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--text)}
+.step-sub{font-size:13px;color:var(--muted);margin-top:2px}
+.step-progress{font-family:var(--font-head);font-size:13px;color:var(--accent);margin-left:auto;font-weight:700}
 
 /* SUCCESS */
 .success-screen{display:none;position:fixed;inset:0;z-index:300;background:var(--bg);flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px}
@@ -208,15 +200,57 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
   .card-head,.card-body{padding:18px}
   .oeff-row{grid-template-columns:80px 1fr 1fr auto}
 }
+/* ── Fassung C: Form und Schrift ── */
+body{-webkit-font-smoothing:antialiased;font-size:15px}
+.header{background:rgba(250,247,241,.92);-webkit-backdrop-filter:saturate(1.4) blur(10px);backdrop-filter:saturate(1.4) blur(10px);padding:16px 40px}
+.header-logo img{display:block;height:37px;width:auto}
+.header-badge{border-radius:999px;font-family:var(--font-body);font-size:13px;font-weight:600;padding:7px 14px;background:var(--surface)}
+.progress-bar{height:3px}
+.step-dot{border-radius:999px;font-family:var(--font-body);font-size:13px;font-weight:600}
+.step-dot.active{box-shadow:0 0 0 4px rgba(22,19,14,.12)}
+.step-dot-label{font-family:var(--font-body);font-size:13px;font-weight:500}
+.step-dot-wrap.active .step-dot-label{font-weight:600}
+.motiv-inner{border:1px solid var(--border)}
+.motiv-text{font-size:14px}
+.step-card{box-shadow:0 1px 2px rgba(22,19,14,.04),0 8px 28px rgba(22,19,14,.05)}
+.card-title{font-size:24px;font-weight:800;letter-spacing:-.015em;line-height:1.15}
+.card-sub{font-size:14px;color:var(--muted)}
+.field label,.toggle-field label,.leistung-upload-label,.checklist-note h4{font-family:var(--font-body);font-size:13px;font-weight:600;color:var(--label)}
+.checklist-note{border-left:3px solid var(--accent)}
+.field input,.field select,.field textarea{font-size:15px;border-radius:10px}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);background:#fff}
+.leistung-num{font-family:var(--font-body);font-size:13px;font-weight:600}
+.leistung-name{font-size:17px;font-weight:800;letter-spacing:-.01em;border-radius:10px}
+.toggle,.day-toggle{border-radius:999px}
+.toggle::after,.day-toggle::after{border-radius:999px}
+.btn-back,.btn-next,.btn-finish,.choice-btn,.add-leistung,.btn-add-sp{font-family:var(--font-body);font-size:15px;font-weight:600;border-radius:999px;min-height:44px}
+.btn-next,.btn-finish{padding:12px 30px}
+.btn-next:hover,.btn-finish:hover{background:var(--accent-hover)}
+.btn-add-sp{min-height:0;font-size:13px}
+.nav-info{font-family:var(--font-body);font-size:13px}
+.nav-info strong{font-family:var(--font-head);font-weight:800}
+.wizard-nav{background:rgba(250,247,241,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.oeff-row .day-label{font-family:var(--font-body);font-size:14px;font-weight:600}
+.upload-signet{width:52px;height:57px;margin-bottom:28px;overflow:visible}
+.upload-signet path{fill:var(--accent);transform-box:fill-box;transform-origin:50% 100%;animation:saeule 1.1s var(--ease,cubic-bezier(.2,.7,.2,1)) infinite}
+.upload-signet path:nth-child(2){animation-delay:.14s}
+.upload-signet path:nth-child(3){animation-delay:.28s}
+@keyframes saeule{0%,100%{transform:scaleY(1)}45%{transform:scaleY(.72)}}
+@media (prefers-reduced-motion:reduce){.upload-signet path{animation:none}.step,.motiv-inner{animation:none}}
+.step-label{font-family:var(--font-body);font-weight:600}
+.hinweis-box{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;font-size:14px;line-height:1.6;color:var(--text)}
+.hinweis-leise{display:inline-block;margin-top:8px;color:var(--muted)}
+.step-dot-wrap.klickbar{cursor:pointer}
+.step-dot-wrap.klickbar:hover .step-dot{box-shadow:0 0 0 4px rgba(22,19,14,.12)}
+.step-dot-wrap.klickbar:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:8px}
+.field input.feld-fehlt{border-color:var(--err)}
+@media(max-width:600px){.header{padding:12px 16px}.header-logo img{height:30px}.header-badge{font-size:13px;padding:6px 11px}.card-title{font-size:21px}}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="header-logo">
-    <div class="logo-bars"><span></span><span></span><span></span></div>
-    Handwerks<br>Manufaktur
-  </div>
+  <a class="header-logo" href="https://handwerksmanufaktur.digital/" aria-label="HandwerksManufaktur"><img src="/assets/logo-hm-quer-schwarz.svg" alt="HandwerksManufaktur" width="137" height="37"></a>
   <div class="header-badge">Website Onboarding</div>
 </div>
 <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
@@ -226,23 +260,23 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
 <div class="motiv-wrap">
   <div class="motiv-inner" id="motivBanner">
     <div class="motiv-emoji" id="motivEmoji">👋</div>
-    <div class="motiv-text" id="motivText">Schön, dass du dabei bist! Fangen wir mit den Unternehmensdaten an.</div>
+    <div class="motiv-text" id="motivText">Schön, dass ihr dabei seid! Fangen wir mit den Unternehmensdaten an.</div>
   </div>
 </div>
 
 <!-- UPLOAD OVERLAY -->
 <div class="upload-overlay" id="uploadOverlay">
-  <div class="upload-logo-bars"><span></span><span></span><span></span><span></span><span></span></div>
-  <div style="font-family:var(--font-head);font-size:32px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin-bottom:8px">Wir richten alles ein</div>
-  <div style="font-size:14px;color:var(--muted);margin-bottom:24px;line-height:1.5">Deine Google Drive-Ordnerstruktur wird angelegt…</div>
+  <svg class="upload-signet" viewBox="0 0 83 91" aria-hidden="true"><path d="M0,39.667 L22,25 L22,91 L0,91 Z"/><path d="M34,14.667 L56,0 L56,91 L34,91 L34,64.67 L27,68 L27,53.667 L34,49 Z"/><path d="M61,14.667 L83,0 L83,91 L61,91 Z"/></svg>
+  <div style="font-family:var(--font-head);font-size:32px;font-weight:800;color:var(--text);margin-bottom:8px">Wir richten alles ein</div>
+  <div style="font-size:14px;color:var(--muted);margin-bottom:24px;line-height:1.5">Eure Google-Drive-Ordner werden angelegt…</div>
   <div class="upload-steps" id="uploadSteps"></div>
 </div>
 
 <!-- SUCCESS -->
 <div class="success-screen" id="successScreen">
   <div style="font-size:56px;margin-bottom:20px">🎉</div>
-  <div style="font-family:var(--font-head);font-size:52px;font-weight:900;text-transform:uppercase;letter-spacing:1px;line-height:0.9;margin-bottom:16px">Formular<br><span style="color:var(--accent)">eingegangen.</span></div>
-  <p style="color:var(--muted);font-size:15px;line-height:1.7;max-width:400px">Deine Daten sind bei uns.</p>
+  <div style="font-family:var(--font-head);font-size:52px;font-weight:900;line-height:0.9;margin-bottom:16px">Formular<br><span style="color:var(--accent)">eingegangen.</span></div>
+  <p style="color:var(--muted);font-size:15px;line-height:1.7;max-width:400px">Eure Daten sind bei uns.</p>
 </div>
 
 <!-- WIZARD -->
@@ -252,13 +286,13 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
   <div class="step active" id="step-company">
     <div class="step-card">
       <div class="card-head">
-        <div class="card-title">🏢 Dein Betrieb</div>
-        <div class="card-sub">Grundlegende Infos zu deinem Unternehmen.</div>
+        <div class="card-title">🏢 Euer Betrieb</div>
+        <div class="card-sub">Die Stammdaten eures Betriebs — sie landen im Impressum und in der Kontaktseite.</div>
       </div>
       <div class="card-body">
         <div class="fg">
           <div class="checklist-note">
-            <h4>Was du bereit haben solltest</h4>
+            <h4>Das solltet ihr griffbereit haben</h4>
             <ul>
               <li>Logo-Datei (PNG, SVG oder PDF – transparent bevorzugt)</li>
               <li>Inhaberfoto &amp; Teamfotos (falls vorhanden)</li>
@@ -267,8 +301,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
               <li>Konto-E-Mail eures Domain- &amp; Website-Hosters</li>
             </ul>
           </div>
-          <div style="background:var(--accent-dim);border:1.5px solid var(--accent);border-radius:8px;padding:12px 15px;font-size:12.5px;line-height:1.55;color:var(--text)">
-            <strong>Bevor ihr loslegt:</strong> Ihr müsst nicht alles perfekt vorbereitet haben. Wenn ihr bei einem Feld nicht wisst, was reinkommt — einfach leer lassen. Bei den Fotos ladet ihr am besten direkt hoch, was ihr gerade da habt; die müssen nicht perfekt sein. Und falls etwas noch fehlt: Schickt das Formular am Ende trotzdem ab — nachreichen geht jederzeit.
+          <div class="hinweis-box">
+            <strong>Bevor ihr loslegt:</strong> Ihr müsst nicht alles perfekt vorbereitet haben. Wenn ihr bei einem Feld nicht wisst, was reinkommt — einfach leer lassen. Bei den Fotos ladet ihr am besten direkt hoch, was ihr gerade da habt; die müssen nicht perfekt sein. Und falls etwas noch fehlt: Schickt das Formular am Ende trotzdem ab — nachreichen geht jederzeit.<br><span class="hinweis-leise">💾 Euer Stand wird auf diesem Gerät automatisch gespeichert — ihr könnt jederzeit pausieren und später weitermachen.</span>
           </div>
           <div class="divider"></div>
           <div class="fr">
@@ -310,6 +344,11 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
           <div class="field"><label>Was macht euch besonders? <span class="req">*</span></label><textarea id="wdBesonders" placeholder="z.B. Familienbetrieb seit 3 Generationen, feste Stammkunden, schnelle Reaktionszeiten..."></textarea></div>
           <div class="toggle-field" onclick="toggleCond('web-toggle','web-cond')"><label>Gibt es eine bestehende Website?</label><div class="toggle" id="web-toggle"></div></div>
           <div class="conditional" id="web-cond"><div class="cond-section"><div class="field"><label>Link zur alten Website</label><input type="url" id="wdAltWeb" placeholder="https://..."></div></div></div>
+          <div class="divider"></div>
+          <div class="fr">
+            <div class="field"><label>Wo liegt eure Domain?</label><input type="text" id="wdHoster" placeholder="z.B. IONOS, Strato, All-inkl — oder „weiß ich nicht“"><div class="hint">Der Anbieter, bei dem ihr die Rechnung für die Domain bekommt.</div></div>
+            <div class="field"><label>Login-E-Mail bei diesem Anbieter</label><input type="email" id="wdHosterMail" placeholder="z.B. info@eure-firma.de"><div class="hint">Bitte kein Passwort eintragen — den Zugang klären wir kurz im Call.</div></div>
+          </div>
         </div>
       </div>
     </div>
@@ -336,7 +375,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
     <div class="step-card">
       <div class="card-head">
         <div class="card-title">🏗️ Leistungen</div>
-        <div class="card-sub">Trag jede Leistung ein, füge Stichpunkte hinzu und lade die Fotos direkt dazu hoch.</div>
+        <div class="card-sub">Tragt jede Leistung ein, ergänzt ein paar Stichpunkte und ladet die Fotos direkt dazu hoch — jede Leistung bekommt eine eigene Unterseite.</div>
       </div>
       <div class="card-body">
         <div id="leistungenList"></div>
@@ -350,10 +389,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
     <div class="step-card">
       <div class="card-head">
         <div class="card-title">📸 Fotos & Logo</div>
-        <div class="card-sub">Lade dein Logo und die Fotos hoch – je mehr, desto besser für das Design.</div>
+        <div class="card-sub">Ladet euer Logo und eure Fotos hoch — je mehr echtes Material, desto besser wird die Website.</div>
       </div>
       <div class="card-body">
-        <div style="background:var(--accent-dim);border:1.5px solid var(--accent);border-radius:8px;padding:12px 15px;margin-bottom:18px;font-size:12.5px;line-height:1.55;color:var(--text)">
+        <div class="hinweis-box" style="margin-bottom:18px">
           <strong>Wichtig:</strong> Die Fotos müssen nicht perfekt sein — ladet einfach hoch, was ihr gerade da habt. Je mehr Material wir haben, desto besser wird eure Website. Und falls gerade etwas fehlt: Schickt das Formular trotzdem ab — fehlende Fotos könnt ihr später einfach in der Google Drive nachreichen.
         </div>
         <div class="fg">
@@ -388,7 +427,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
     <div class="step-card">
       <div class="card-head">
         <div class="card-title">🏁 Fast fertig!</div>
-        <div class="card-sub">Nur noch ein paar letzte Infos, dann bist du durch.</div>
+        <div class="card-sub">Nur noch ein paar letzte Infos, dann seid ihr durch.</div>
       </div>
       <div class="card-body">
         <div class="fg">
@@ -403,13 +442,13 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
             <div class="dsgvo-check" id="bildrechteBox"></div>
             <div class="dsgvo-text">Ich erkläre für unseren Betrieb: Die HandwerksManufaktur darf die bei uns angefertigten Foto- und Videoaufnahmen, unseren Firmennamen und unser Logo sowie Kundenstimmen, die wir abgeben (z.B. Bewertungen, Interviews, Videos), als Referenz verwenden (z.B. Website, Portfolio, Präsentationen, Social Media). Ich stelle sicher, dass alle abgebildeten Personen – insbesondere unsere Mitarbeiter – vor den Aufnahmen eingewilligt haben, und stelle die HandwerksManufaktur von Ansprüchen Dritter frei. Details siehe <a href="https://handwerksmanufaktur.digital/agb/" target="_blank">§ 17 AGB</a>. <span style="color:var(--accent)">*</span></div>
           </div>
-          <div style="margin-top:10px;padding:13px 16px;background:rgba(30,154,208,.07);border:1px solid rgba(30,154,208,.28);border-radius:10px;font-size:13.5px;line-height:1.55">
+          <div style="margin-top:10px;padding:13px 16px;background:var(--accent-dim);border:1px solid var(--border);border-radius:var(--radius);font-size:13.5px;line-height:1.55">
             <b>📄 Vorlage für euer Team</b><br>
             Damit ihr die Einwilligungen sauber dokumentiert habt, stellen wir euch eine fertige Vorlage bereit — ausdrucken, beim Fototermin unterschreiben lassen, bei euch aufbewahren.<br>
-            <a href="#" id="einwLink" target="_blank" rel="noopener" style="display:inline-block;margin-top:7px;font-weight:600">→ Einwilligungs-Vorlage öffnen (mit eurem Betriebsnamen)</a>
+            <a href="#" id="einwLink" target="_blank" rel="noopener" style="display:inline-block;margin-top:7px;font-weight:600;color:var(--accent)">→ Einwilligungs-Vorlage öffnen (mit eurem Betriebsnamen)</a>
           </div>
-          <div style="background:var(--accent-dim);border:1px solid rgba(212,134,10,0.18);border-radius:var(--radius);padding:14px 16px;font-size:13px;color:var(--label);line-height:1.6">
-            Nach dem Absenden legen wir automatisch deine Google Drive-Ordnerstruktur an – dann geht's los!
+          <div style="background:var(--accent-dim);border:1px solid rgba(22,19,14,0.18);border-radius:var(--radius);padding:14px 16px;font-size:13px;color:var(--label);line-height:1.6">
+            Nach dem Absenden legen wir automatisch eure Google-Drive-Ordner an — dann geht's los.
           </div>
         </div>
       </div>
@@ -428,7 +467,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
 <script>
 // === CONFIG ===
 const STEP_MESSAGES = {
-  'step-company':    { emoji: '👋', text: 'Schön, dass du dabei bist! Fangen wir mit den Unternehmensdaten an.' },
+  'step-company':    { emoji: '👋', text: 'Schön, dass ihr dabei seid! Fangen wir mit den Unternehmensdaten an.' },
   'step-firma':      { emoji: '💡', text: 'Super! Jetzt noch ein paar Worte über euren Betrieb.' },
   'step-zeiten':     { emoji: '🕐', text: 'Fast die Hälfte! Wann seid ihr für eure Kunden erreichbar?' },
   'step-leistungen': { emoji: '🏗️', text: 'Weiter so! Welche Leistungen bietet ihr an?' },
@@ -461,6 +500,7 @@ function renderDots() {
     lbl.className = 'step-dot-label';
     lbl.textContent = STEP_LABELS[sid] || '';
     wrap.appendChild(dot); wrap.appendChild(lbl);
+    if (isDone) { wrap.classList.add('klickbar'); wrap.setAttribute('role','button'); wrap.tabIndex = 0; wrap.title = 'Zu „' + (STEP_LABELS[sid] || '') + '“ springen'; wrap.onclick = function(){ currentIdx = i; showStep(i); }; wrap.onkeydown = function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); currentIdx = i; showStep(i); } }; }
     c.appendChild(wrap);
   });
   document.getElementById('progressFill').style.width = (currentIdx / (stepSeq.length - 1) * 100) + '%';
@@ -562,6 +602,7 @@ function loadDraft() {
 }
 function clearDraft() { localStorage.removeItem(SAVE_KEY); }
 document.addEventListener('input', function(e) {
+  if (e.target.classList) e.target.classList.remove('feld-fehlt');
   if (['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)) saveDraft();
 });
 // Schalter (day-toggle, hr/web/team-toggle, Team-Ja/Nein) sind Divs und feuern kein input-Event
@@ -676,7 +717,7 @@ function handleFiles(files, previewId, storeKey) {
     c.className = 'preview-chip';
     const s = f.size > 1048576 ? (f.size / 1048576).toFixed(1) + 'MB' : Math.round(f.size / 1024) + 'KB';
     c.innerHTML = '<span>' + (f.name.length > 22 ? f.name.slice(0,20) + '…' : f.name) + '</span>' +
-      '<span style="color:var(--muted);font-size:10px">' + s + '</span>' +
+      '<span style="color:var(--muted);font-size:13px">' + s + '</span>' +
       '<span class="chip-remove">×</span>';
     c.querySelector('.chip-remove').addEventListener('click', function() { removeStoredFile(storeKey, f); c.remove(); });
     p.appendChild(c);
@@ -729,7 +770,7 @@ function toggleDsgvo() {
   const box = document.getElementById('dsgvoBox');
   if (!box) return;
   box.classList.toggle('on', dsgvoChecked);
-  box.innerHTML = dsgvoChecked ? '<span style="color:#000;font-size:12px;font-weight:700">✓</span>' : '';
+  box.innerHTML = dsgvoChecked ? '<span style="color:var(--on-accent);font-size:13px;font-weight:700">✓</span>' : '';
 }
 
 // === EINWILLIGUNGS-FORMULAR ===
@@ -741,7 +782,7 @@ function mitarbeiterNamen() {
 function oeffneEinwilligung() {
   var betrieb = (document.getElementById('firmaName').value || '').trim();
   if (!betrieb) {
-    alert('Bitte trage zuerst im Schritt „Betrieb" euren Firmennamen ein — das Formular läuft auf euren Namen.');
+    alert('Bitte tragt zuerst im Schritt „Betrieb" euren Firmennamen ein — das Formular läuft auf euren Namen.');
     return;
   }
   var url = '/einwilligung/?betrieb=' + encodeURIComponent(betrieb);
@@ -765,7 +806,7 @@ function toggleBildrechte() {
   const box = document.getElementById('bildrechteBox');
   if (!box) return;
   box.classList.toggle('on', bildrechteChecked);
-  box.innerHTML = bildrechteChecked ? '<span style="color:#000;font-size:12px;font-weight:700">✓</span>' : '';
+  box.innerHTML = bildrechteChecked ? '<span style="color:var(--on-accent);font-size:13px;font-weight:700">✓</span>' : '';
 }
 
 // === UPLOAD HELPERS ===
@@ -852,6 +893,8 @@ function collectFormData() {
   add('Was macht euch besonders?', val('wdBesonders'));
   add('Bestehende Website', tog('web-toggle') ? 'Ja' : 'Nein');
   if (tog('web-toggle')) add('  Link zur alten Website', val('wdAltWeb'));
+  add('Domain liegt bei', val('wdHoster'));
+  add('Login-E-Mail beim Domain-Anbieter', val('wdHosterMail'));
 
   // ── ÖFFNUNGSZEITEN ──
   section('ÖFFNUNGSZEITEN');
@@ -925,6 +968,7 @@ function collectMissing(leistungen) {
   chk('wdTelefon', 'Telefon');
   chk('wdWasMacht', 'Text: Was macht ihr genau?');
   chk('wdBesonders', 'Text: Was macht euch besonders?');
+  chk('wdHoster', 'Domain-Anbieter (für den Livegang)');
   document.querySelectorAll('.leistung-item').forEach(function(item, i) {
     var nameEl = item.querySelector('.leistung-name');
     var name = (nameEl && nameEl.value ? nameEl.value : '').trim() || ('Leistung ' + (i + 1));
@@ -967,9 +1011,9 @@ async function safeUpload(label, files, folderId) {
 
 async function submitForm() {
   const firmaName = document.getElementById('firmaName').value.trim();
-  if (!firmaName) { alert('Bitte Firmennamen eingeben.'); return; }
-  if (!dsgvoChecked) { alert('Bitte stimme zuerst der Datenschutzerklärung zu.'); return; }
-  if (!bildrechteChecked) { alert('Bitte bestätige noch die Erklärung zu Bildrechten und Referenznutzung.'); return; }
+  if (!firmaName) { currentIdx = 0; showStep(0); setTimeout(function(){ var f = document.getElementById('firmaName'); f.focus(); f.classList.add('feld-fehlt'); }, 350); alert('Bitte tragt noch euren Firmennamen ein — ohne ihn können wir den Drive-Ordner nicht anlegen.'); return; }
+  if (!dsgvoChecked) { alert('Bitte stimmt zuerst der Datenschutzerklärung zu.'); return; }
+  if (!bildrechteChecked) { alert('Bitte bestätigt noch die Erklärung zu Bildrechten und Referenznutzung.'); return; }
   const leistungItems = [...document.querySelectorAll('.leistung-item')].map(function(el) {
     const nameEl = el.querySelector('.leistung-name');
     return { name: (nameEl && nameEl.value ? nameEl.value : '').trim() || 'Leistung', key: el.dataset.uploadKey };
@@ -984,7 +1028,7 @@ async function submitForm() {
     if (!createdFolders) {
       const s1 = addStep('Ordnerstruktur wird erstellt');
       setStepStatus(s1, 'active');
-      const r = await fetch(API_BASE + '/create-folders', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ firmaName, leistungen, serviceType: 'webdesign', formData: collectFormData(), missing: collectMissing(leistungen), clientV: 4 }) });
+      const r = await fetch(API_BASE + '/create-folders', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ firmaName, leistungen, serviceType: 'webdesign', formData: collectFormData(), missing: collectMissing(leistungen), clientV: 5 }) });
       const { folderIds, error } = await r.json();
       if (error) throw new Error(error);
       createdFolders = folderIds;
