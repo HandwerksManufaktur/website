@@ -218,7 +218,25 @@ function buildStellenText(formData) {
   }).join('');
 }
 
-function buildDescription(formData, driveLink) {
+// Welche Texte nur zu EINER Performance-Linie gehören. Bei Recruiting + Leadgen bekommt jeder
+// Projekt-Task nur seine eigenen (Noah, 27.09.2026: „trenn die Texte in den ClickUp-Tasks“ —
+// vorher standen die Arbeitgeber-Vorteile auch im Leadgen-Task und die Auftragswerte im
+// Recruiting-Task). Kundendatenbank und Website-Projekte bekommen weiter alles (linie leer).
+const NUR_RECRUITING = new Set([
+  'Was macht euch als Arbeitgeber besonders?', 'Betriebsvorteile', 'Einsatzgebiet / Radius',
+]);
+const NUR_LEADGEN = new Set([
+  'Dienstleistung / Produkt', 'Durchschnittlicher Auftragswert', 'Einzugsgebiet / Radius',
+  'Aktuelle Auslastung Badsanierung / Monat', 'Aktuelle Auslastung Wärmepumpen / Monat',
+  'Erfolgsziel nach der Laufzeit', 'Wer kontaktiert Leads?',
+]);
+export function gehoertZuLinie(key, linie) {
+  if (linie === 'Recruiting') return !NUR_LEADGEN.has(key);
+  if (linie === 'Leadgen')    return !NUR_RECRUITING.has(key);
+  return true;
+}
+
+export function buildDescription(formData, driveLink, linie) {
   const longTextKeys = [
     'Was macht ihr genau? (2–3 Sätze)',
     'Was macht ihr genau?',
@@ -246,6 +264,7 @@ function buildDescription(formData, driveLink) {
   ];
   const parts = [];
   for (const k of longTextKeys) {
+    if (!gehoertZuLinie(k, linie)) continue;
     const v = formData[k];
     if (v) parts.push(`**${k}:**\n${v}`);
   }
@@ -465,7 +484,7 @@ export async function createClickUpTasks({ token, firmaName, serviceType, formDa
         name: `${firmaName} - ${linie}`,
         status: '🆕 Neuer Kunde',
         custom_item_id: TASK_TYPE_PROJECT,
-        description: description + (isRecruiting ? stellenText : ''),
+        description: buildDescription(formData, driveLink, linie) + (isRecruiting ? stellenText : ''),
         assignees: [NOAH_USER_ID],
         custom_fields: ppFields,
       });
