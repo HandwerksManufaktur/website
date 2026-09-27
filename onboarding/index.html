@@ -94,7 +94,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-we
 .oeff-row .day-label{font-family:var(--font-head);font-size:13px;font-weight:600;color:var(--label)}
 .oeff-row input[type="time"]{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-body);font-size:13px;padding:10px 12px;outline:none;transition:border-color 0.15s}
 .oeff-row input[type="time"]:focus{border-color:var(--accent)}
-.oeff-row input[type="time"]:disabled{opacity:0.25}
+.oeff-row input[type="time"]:disabled{visibility:hidden}
+/* Geschlossene Tage: statt leerer bzw. in Safari „12:30“-Platzhalter ein klares Wort (27.09.2026) */
+.oeff-row:has(input[type="time"]:disabled) .day-label::after{content:"geschlossen";display:block;font-family:var(--font-body);font-weight:400;font-size:13px;color:var(--muted)}
 .day-toggle{width:36px;height:20px;background:var(--border);border-radius:2px;position:relative;transition:background 0.2s;cursor:pointer;flex-shrink:0}
 .day-toggle::after{content:'';position:absolute;width:14px;height:14px;background:#B8AF9E;top:3px;left:3px;transition:transform 0.2s;border-radius:1px}
 .day-toggle.on{background:var(--accent)}
