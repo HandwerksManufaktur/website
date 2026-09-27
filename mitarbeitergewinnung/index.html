@@ -39,15 +39,22 @@
 <link rel="stylesheet" href="/leistungsseite.css">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
+{"@type":"ProfessionalService","@id":"https://handwerksmanufaktur.digital/#organization","name":"HandwerksManufaktur","url":"https://handwerksmanufaktur.digital/"},
 {"@type":"Service","@id":"https://handwerksmanufaktur.digital/mitarbeitergewinnung/#service",
 "name":"Mitarbeitergewinnung für Handwerksbetriebe","serviceType":"Recruiting-Kampagnen",
 "description":"Recruiting-Kampagnen für Handwerksbetriebe: Anzeigen im Umkreis mit Fotos aus dem Betrieb, Bewerbungsstrecke mit Filterfragen, Bewerber landen direkt im Postfach.",
-"provider":{"@type":"ProfessionalService","name":"HandwerksManufaktur","url":"https://handwerksmanufaktur.digital/"},
+"provider":{"@id":"https://handwerksmanufaktur.digital/#organization"},
 "areaServed":[{"@type":"Country","name":"Germany"},{"@type":"Country","name":"Austria"},{"@type":"Country","name":"Switzerland"}]},
-{"@type":"WebPage","@id":"https://handwerksmanufaktur.digital/mitarbeitergewinnung/#webpage",
+{"@type":"WebPage","@id":"https://handwerksmanufaktur.digital/mitarbeitergewinnung/#webpage","isPartOf":{"@id":"https://handwerksmanufaktur.digital/#website"},
 "url":"https://handwerksmanufaktur.digital/mitarbeitergewinnung/","name":"Mitarbeitergewinnung für Handwerksbetriebe","inLanguage":"de-DE",
 "about":{"@id":"https://handwerksmanufaktur.digital/mitarbeitergewinnung/#service"}}
 ]}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "@id": "https://handwerksmanufaktur.digital/mitarbeitergewinnung/#breadcrumb", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Startseite", "item": "https://handwerksmanufaktur.digital/"}, {"@type": "ListItem", "position": 2, "name": "Mitarbeitergewinnung für Handwerksbetriebe", "item": "https://handwerksmanufaktur.digital/mitarbeitergewinnung/"}]}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "FAQPage", "@id": "https://handwerksmanufaktur.digital/mitarbeitergewinnung/#faq", "mainEntity": [{"@type": "Question", "name": "Wie lange dauert es bis zur ersten Bewerbung?", "acceptedAnswer": {"@type": "Answer", "text": "Nach dem Shooting brauchen wir rund zwei Wochen bis zum Start. Die ersten Bewerbungen kommen meist in den ersten Tagen, sobald die Anzeigen laufen."}}, {"@type": "Question", "name": "Was kostet das?", "acceptedAnswer": {"@type": "Answer", "text": "Das hängt von Umfang und Werbebudget ab. Im kostenlosen Erstgespräch bekommst du ein Angebot mit allen Posten im Klartext."}}, {"@type": "Question", "name": "Muss ich selbst vor die Kamera?", "acceptedAnswer": {"@type": "Answer", "text": "Es hilft, weil Bewerber sehen wollen, für wen sie arbeiten. Pflicht ist es nicht: Es geht auch mit deinen Leuten und Aufnahmen aus dem Betrieb."}}, {"@type": "Question", "name": "Wir sind kein SHK-Betrieb. Geht das trotzdem?", "acceptedAnswer": {"@type": "Answer", "text": "Ja. Wir arbeiten mit Zimmereien, Metallbauern, Schreinereien, Dachdeckern, Bauunternehmen und Elektrobetrieben. Der Weg ist derselbe, nur die Fragen und Bilder ändern sich."}}, {"@type": "Question", "name": "Was mache ich mit Bewerbern, die nicht passen?", "acceptedAnswer": {"@type": "Answer", "text": "Die meisten sortieren die Filterfragen vorher aus. Wer trotzdem durchkommt, steht mit seinen Antworten im Postfach — du siehst in einer Minute, ob sich der Anruf lohnt."}}]}
 </script>
 </head>
 <body>
@@ -106,15 +113,15 @@
         <img src="/assets/fallstudie/senftleben-drohne.webp" alt="Betriebsgelände mit der Fahrzeugflotte von oben" loading="lazy" width="430" height="269">
       </div>
       <div class="lp-fotoband-t" aria-hidden="true">
-        <img src="/assets/fallstudie/senftleben-team.webp" alt="" loading="lazy" width="430" height="269">
-        <img src="/assets/fallstudie/sussmann-patrick-mirjana.webp" alt="" loading="lazy" width="430" height="269">
-        <img src="/assets/fallstudie/erwin-schmidt-team.webp" alt="" loading="lazy" width="430" height="269">
-        <img src="/assets/fallstudie/irlbacher-zwei.webp" alt="" loading="lazy" width="430" height="269">
-        <img src="/assets/fallstudie/senftleben-drei-lager.webp" alt="" loading="lazy" width="430" height="269">
-        <img src="/assets/fallstudie/sussmann-team.webp" alt="" loading="lazy" width="430" height="269">
-        <img src="/assets/fallstudie/ess-zwei-monteure.webp" alt="" loading="lazy" width="430" height="269">
-        <img src="/assets/fallstudie/irlbacher-van.webp" alt="" loading="lazy" width="430" height="269">
-        <img src="/assets/fallstudie/senftleben-drohne.webp" alt="" loading="lazy" width="430" height="269">
+        <img src="/assets/fallstudie/senftleben-team.webp" alt="Team von Senftleben Haustechnik beim Fotoshooting im Betrieb" loading="lazy" width="430" height="269">
+        <img src="/assets/fallstudie/sussmann-patrick-mirjana.webp" alt="Patrick und Mirjana Sussmann, Sussmann GmbH" loading="lazy" width="430" height="269">
+        <img src="/assets/fallstudie/erwin-schmidt-team.webp" alt="Team von Erwin Schmidt &amp; Sohn" loading="lazy" width="430" height="269">
+        <img src="/assets/fallstudie/irlbacher-zwei.webp" alt="Zwei Mitarbeiter von Irlbacher Haustechnik" loading="lazy" width="430" height="269">
+        <img src="/assets/fallstudie/senftleben-drei-lager.webp" alt="Drei Mitarbeiter von Senftleben Haustechnik im Lager" loading="lazy" width="430" height="269">
+        <img src="/assets/fallstudie/sussmann-team.webp" alt="Team der Sussmann GmbH" loading="lazy" width="430" height="269">
+        <img src="/assets/fallstudie/ess-zwei-monteure.webp" alt="Zwei Monteure von Erwin Schmidt &amp; Sohn" loading="lazy" width="430" height="269">
+        <img src="/assets/fallstudie/irlbacher-van.webp" alt="Firmenfahrzeug von Irlbacher Haustechnik" loading="lazy" width="430" height="269">
+        <img src="/assets/fallstudie/senftleben-drohne.webp" alt="Drohnenaufnahme des Betriebs Senftleben Haustechnik" loading="lazy" width="430" height="269">
       </div>
     </div>
     <div class="lp-fotoband rueck">
@@ -131,16 +138,16 @@
         <img src="/assets/fallstudie/ess-betrieb.webp" alt="Betriebsgelände mit Firmenwagen von oben" loading="lazy" width="430" height="269">
       </div>
       <div class="lp-fotoband-t" aria-hidden="true">
-        <img src="/assets/fallstudie/sussmann-speicher.webp" alt="" loading="lazy" width="430" height="269">
-        <img src="/assets/fallstudie/senftleben-team-tragen.webp" alt="" loading="lazy" width="430" height="269">
-        <img src="/assets/fallstudie/erwin-schmidt-van.webp" alt="" loading="lazy" width="430" height="269">
-        <img src="/assets/fallstudie/irlbacher-regal.webp" alt="" loading="lazy" width="430" height="269">
-        <img src="/assets/fallstudie/sussmann-lager.webp" alt="" loading="lazy" width="430" height="269">
-        <img src="/assets/fallstudie/ess-team-lachen.webp" alt="" loading="lazy" width="430" height="269">
-        <img src="/assets/fallstudie/erwin-schmidt-monteur.webp" alt="" loading="lazy" width="430" height="269">
-        <img src="/assets/fallstudie/senftleben-lager.webp" alt="" loading="lazy" width="430" height="269">
-        <img src="/assets/fallstudie/irlbacher-werkstatt.webp" alt="" loading="lazy" width="430" height="269">
-        <img src="/assets/fallstudie/ess-betrieb.webp" alt="" loading="lazy" width="430" height="269">
+        <img src="/assets/fallstudie/sussmann-speicher.webp" alt="Speicher-Installation der Sussmann GmbH" loading="lazy" width="430" height="269">
+        <img src="/assets/fallstudie/senftleben-team-tragen.webp" alt="Team von Senftleben Haustechnik beim Tragen eines Geräts" loading="lazy" width="430" height="269">
+        <img src="/assets/fallstudie/erwin-schmidt-van.webp" alt="Firmenfahrzeug von Erwin Schmidt &amp; Sohn" loading="lazy" width="430" height="269">
+        <img src="/assets/fallstudie/irlbacher-regal.webp" alt="Lagerregal bei Irlbacher Haustechnik" loading="lazy" width="430" height="269">
+        <img src="/assets/fallstudie/sussmann-lager.webp" alt="Lager der Sussmann GmbH" loading="lazy" width="430" height="269">
+        <img src="/assets/fallstudie/ess-team-lachen.webp" alt="Team von Erwin Schmidt &amp; Sohn" loading="lazy" width="430" height="269">
+        <img src="/assets/fallstudie/erwin-schmidt-monteur.webp" alt="Monteur von Erwin Schmidt &amp; Sohn" loading="lazy" width="430" height="269">
+        <img src="/assets/fallstudie/senftleben-lager.webp" alt="Lager von Senftleben Haustechnik" loading="lazy" width="430" height="269">
+        <img src="/assets/fallstudie/irlbacher-werkstatt.webp" alt="Werkstatt von Irlbacher Haustechnik" loading="lazy" width="430" height="269">
+        <img src="/assets/fallstudie/ess-betrieb.webp" alt="Betriebsgelände von Erwin Schmidt &amp; Sohn" loading="lazy" width="430" height="269">
       </div>
     </div>
 </section>

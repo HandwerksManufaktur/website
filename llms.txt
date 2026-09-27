@@ -23,10 +23,13 @@
 - Website: https://handwerksmanufaktur.digital/
 - E-Mail: info@handwerksmanufaktur.digital
 - Telefon: +49 8194 7174990
+- Instagram: https://www.instagram.com/handwerks.manufaktur/
 
 ## Seiten
 
 - [Startseite](https://handwerksmanufaktur.digital/): Leistungen, Referenzprojekte, Ablauf, Kundenstimmen, FAQ
+- [Neukundengewinnung](https://handwerksmanufaktur.digital/neukundengewinnung/): Auftragskampagnen für Handwerksbetriebe — Anzeigen im Umkreis, Filterfragen, Anfragen direkt ins Postfach, mit Fallstudie
+- [Mitarbeitergewinnung](https://handwerksmanufaktur.digital/mitarbeitergewinnung/): Recruiting-Kampagnen für Handwerksbetriebe — Stellen dort zeigen, wo Fachkräfte abends sind, mit Fallstudie
 - [Impressum](https://handwerksmanufaktur.digital/impressum/)
 - [Datenschutzerklärung](https://handwerksmanufaktur.digital/datenschutz/)
 - [AGB](https://handwerksmanufaktur.digital/agb/)
