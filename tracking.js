@@ -42,13 +42,13 @@ function ereignis(name, daten) {
 /* ---- Aussehen: Tinte/Papier wie die Seite, eigene Klassen mit Präfix ---- */
 var css = '.hmc{position:fixed;left:16px;right:16px;bottom:16px;z-index:9999;max-width:560px;margin-left:auto;background:#FAF7F1;color:#16130E;'
   + 'border-radius:22px;padding:20px 22px;font:15px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;'
-  + 'box-shadow:0 0 0 1px rgba(22,19,14,.08),0 24px 60px -18px rgba(22,19,14,.45);opacity:0;transform:translateY(16px);transition:opacity .3s,transform .3s}'
+  + 'box-shadow:0 0 0 1px rgba(22,19,14,.08),0 24px 60px -18px rgba(22,19,14,.45);opacity:0;transform:translateY(16px);transition:opacity .25s,transform .25s}'
   + '.hmc.da{opacity:1;transform:none}.hmc p{margin:0;font-size:14.5px;letter-spacing:.01em}.hmc b{display:block;font-size:16px;margin-bottom:4px;letter-spacing:-.01em}'
-  + '.hmc a{color:inherit;text-decoration:underline;text-underline-offset:3px}.hmc-k{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}'
-  + '.hmc-k button{flex:1 1 180px;min-height:48px;border-radius:999px;font-weight:600;font-size:15px;line-height:1;font-family:inherit;cursor:pointer;border:0;transition:transform .1s,background .2s}'
+  + '.hmc a{color:inherit;text-decoration:underline;text-underline-offset:3px}.hmc a:active{opacity:.7}.hmc-k{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}'
+  + '.hmc-k button{flex:1 1 180px;min-height:48px;border-radius:999px;font-weight:600;font-size:15px;line-height:1;font-family:inherit;cursor:pointer;border:0;transition:transform .1s,background .2s,color .2s}'
   + '.hmc-k button:active{transform:scale(.97)}.hmc-n{background:transparent;color:#16130E;box-shadow:inset 0 0 0 2px #16130E}.hmc-n:hover{background:#16130E;color:#FAF7F1}'
   + '.hmc-j{background:#16130E;color:#FAF7F1}.hmc-j:hover{background:#2d2820}'
-  + '.hmc-link{background:none;border:0;padding:0;margin-left:16px;min-height:44px;font:inherit;color:inherit;opacity:.85;cursor:pointer;text-decoration:none}.hmc-link:hover{opacity:1;text-decoration:underline}'
+  + '.hmc-link{background:none;border:0;padding:0;margin-left:16px;min-height:44px;font:inherit;color:inherit;opacity:.85;cursor:pointer;text-decoration:none}.hmc-link:hover{opacity:1;text-decoration:underline}.hmc-link:active{opacity:.6}'
   + '@media(max-width:760px){.hmc{left:12px;right:12px;bottom:12px;padding:18px}}@media(prefers-reduced-motion:reduce){.hmc{transition:none}}';
 var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
 
