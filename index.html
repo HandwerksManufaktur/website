@@ -202,8 +202,9 @@ nav.scrolled{box-shadow:0 1px 24px rgba(60,44,20,.05);}
 .hero-proof{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:26px;font-size:14.5px;color:var(--sub);flex-wrap:wrap;}
 .hero-proof .stars{color:#F5A623;letter-spacing:1px;}
 .hero-proof b{color:var(--ink);font-weight:600;}
-.o1,.o2,.o3,.o4,.o5{opacity:0;animation:rise .95s var(--ease) forwards;}
-.o1{animation-delay:.15s;}.o2{animation-delay:.3s;}.o3{animation-delay:.5s;}.o4{animation-delay:.68s;}.o5{animation-delay:.9s;}
+/* 🔴 Tempo 27.09.2026: Einstieg in .4 s statt .95 s mit .5 s Verzug — der Untertitel ist das LCP-Element, Google zählte bis zu 1,5 s Einblenden mit. Hausregel Übergänge ≤ 0,4 s. */
+.o1,.o2,.o3,.o4,.o5{opacity:0;animation:rise .4s var(--ease) forwards;}
+.o1{animation-delay:0s;}.o2{animation-delay:.06s;}.o3{animation-delay:.12s;}.o4{animation-delay:.18s;}.o5{animation-delay:.24s;}
 @keyframes rise{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:none;}}
 /* Video-Stage: Apple-Scroll-Expand (Clip weitet sich beim Scrollen) */
 .video-stage{position:relative;z-index:2;width:100%;margin:70px auto 0;}
