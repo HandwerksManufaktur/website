@@ -1069,5 +1069,182 @@ showStep(0);
 
 window.__lebt = true;
 </script>
+<script>
+window.UX_CFG = {
+  art: 'webdesign', minuten: 'ca. 15 Minuten', foto: '/assets/team-noah.jpg',
+  willkommen: 'Hier sammeln wir alles, was wir für eure neue Website brauchen: Stammdaten, Leistungen, Fotos und euer Logo.',
+  fotosStep: 'step-fotos', leistStep: 'step-leistungen', fotoLeistStep: 'step-leistungen',
+  map: { 'Domain-Anbieter': 'step-firma' },
+  danach: ['<b>Heute:</b> Eure Angaben und Fotos liegen in eurem Google-Drive-Ordner — wir sichten alles.',
+           '<b>Innerhalb von 24 Stunden:</b> Noah meldet sich, falls noch etwas fehlt.',
+           '<b>Danach:</b> Wir bauen euren ersten Entwurf und zeigen ihn euch im Termin.']
+};
+</script>
+<!-- ── UX-Schicht Onboarding (27.09.2026): Seitenleiste, Willkommen, Übersicht vor dem Absenden, Weiter-Ziele ── -->
+<style>
+:root{--ux-r:16px}
+.step-card,.hinweis-box,.checklist-note,.motiv-inner{border-radius:16px}
+.ux-willkommen{position:fixed;inset:0;z-index:400;background:rgba(10,10,10,.42);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px}
+.ux-willkommen.offen{display:flex}
+.ux-w-karte{background:#fff;border-radius:var(--ux-r);max-width:520px;width:100%;padding:36px 34px 30px;box-shadow:0 30px 90px rgba(0,0,0,.25);animation:uxHoch .45s cubic-bezier(.22,1,.36,1) both}
+@keyframes uxHoch{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
+.ux-w-karte img.ux-logo{height:34px;width:auto;display:block;margin-bottom:26px}
+.ux-w-karte h2{font-family:var(--font-head);font-weight:800;font-size:30px;letter-spacing:-.02em;line-height:1.1;color:var(--ink,var(--text));margin-bottom:10px}
+.ux-w-karte p.ux-w-sub{font-size:15px;line-height:1.6;color:var(--muted);margin-bottom:22px}
+.ux-w-liste{list-style:none;display:grid;gap:12px;margin-bottom:24px}
+.ux-w-liste li{display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.5;color:var(--ink,var(--text))}
+.ux-w-liste li span:first-child{font-size:20px;line-height:1.2;flex:none;width:26px;text-align:center}
+.ux-w-liste li b{font-weight:600}
+.ux-w-person{display:flex;align-items:center;gap:12px;padding:14px 0 22px;border-top:1px solid var(--line,var(--border));font-size:14px;line-height:1.45;color:var(--muted)}
+.ux-w-person img{width:44px;height:44px;border-radius:50%;object-fit:cover;object-position:50% 25%;flex:none}
+.ux-w-person b{color:var(--ink,var(--text));font-weight:600}
+.ux-w-person a{color:var(--ink,var(--text));font-weight:600}
+.ux-los{width:100%;min-height:52px;border:0;border-radius:999px;background:var(--ink,var(--accent));color:#fff;font-family:var(--font-body);font-size:16px;font-weight:600;cursor:pointer;transition:transform .15s,box-shadow .2s}
+.ux-los:hover{box-shadow:0 12px 28px rgba(0,0,0,.22);transform:translateY(-1px)}
+.ux-los:active{transform:scale(.98)}
+.ux-meta{display:none}
+.ux-hilfe{display:flex;align-items:center;gap:12px;background:var(--card,var(--surface));border:1px solid var(--line,var(--border));border-radius:var(--ux-r);padding:14px 16px}
+.ux-hilfe img{width:46px;height:46px;border-radius:50%;object-fit:cover;object-position:50% 25%;flex:none}
+.ux-hilfe div{font-size:14px;line-height:1.45;color:var(--muted)}
+.ux-hilfe b{display:block;color:var(--ink,var(--text));font-weight:600}
+.ux-hilfe a{color:var(--ink,var(--text));font-weight:600;text-decoration:none;border-bottom:1px solid currentColor}
+.ux-hilfe-mobil{max-width:760px;margin:0 auto;padding:0 24px 120px}
+.ux-check{border:1px solid var(--line,var(--border));border-radius:var(--ux-r);overflow:hidden;margin-bottom:22px}
+.ux-check-kopf{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 18px;background:var(--surface);font-weight:600;font-size:15px;color:var(--ink,var(--text))}
+.ux-check-kopf span{font-weight:500;font-size:14px;color:var(--muted)}
+.ux-zeile{display:flex;align-items:flex-start;gap:12px;padding:13px 18px;border-top:1px solid var(--line,var(--border))}
+.ux-zeile .ux-status{flex:none;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;margin-top:1px}
+.ux-zeile.ok .ux-status{background:#E5F2EA;color:#1F6B41}
+.ux-zeile.offen .ux-status{background:#FDF0E0;color:#9A4B0B}
+.ux-zeile .ux-text{flex:1;min-width:0;font-size:14px;line-height:1.5;color:var(--muted)}
+.ux-zeile .ux-text b{display:block;color:var(--ink,var(--text));font-weight:600;font-size:15px}
+.ux-sprung{flex:none;min-height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--line,var(--border));background:#fff;color:var(--ink,var(--text));font-family:var(--font-body);font-size:14px;font-weight:600;cursor:pointer}
+.ux-sprung:hover{border-color:var(--ink,var(--text))}
+.ux-check-fuss{padding:13px 18px;border-top:1px solid var(--line,var(--border));font-size:14px;line-height:1.5;color:var(--muted)}
+.ux-weiter{list-style:none;display:grid;gap:10px;margin:22px auto 0;max-width:420px;text-align:left}
+.ux-weiter li{display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.5;color:var(--muted)}
+.ux-weiter li b{color:var(--ink,var(--text));font-weight:600}
+.ux-weiter li span:first-child{flex:none;width:26px;height:26px;border-radius:50%;background:var(--ink,var(--accent));color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.field:has(.req) :is(input[type=text],input[type=email],input[type=tel],input[type=url],textarea):not(:placeholder-shown):not(:focus){border-color:#9CC9AE}
+@media (min-width:1100px){
+  .ux-shell{display:grid;grid-template-columns:250px 730px;gap:56px;justify-content:center;padding:0 32px;align-items:start}
+  .ux-aside{position:sticky;top:96px;padding-top:34px;display:flex;flex-direction:column;gap:22px}
+  .ux-aside .step-dots{flex-direction:column;align-items:stretch;justify-content:flex-start;padding:0;max-width:none;margin:0}
+  .ux-aside .step-dot-wrap{flex-direction:row;gap:12px;align-items:center;min-width:0;padding:3px 0}
+  .ux-aside .step-dot-label{display:block;font-size:15px;text-align:left}
+  .ux-aside .step-connector{flex:none;width:2px;height:16px;min-width:0;margin:1px 0 1px 14px}
+  .ux-meta{display:grid;gap:8px;font-size:14px;color:var(--muted);padding-left:2px}
+  .ux-main .motiv-wrap,.ux-main .wizard-wrap{max-width:none;padding-left:0;padding-right:0}
+  .ux-main .motiv-wrap{margin-top:34px}
+  .ux-hilfe-mobil{display:none}
+  .wizard-nav{padding-left:calc((100vw - 1036px) / 2 + 306px);padding-right:calc((100vw - 1036px) / 2)}
+}
+@media (max-width:1099px){.ux-aside .ux-hilfe{display:none}}
+.ux-hilfe a,.ux-w-person a{white-space:nowrap}
+.btn-back,.btn-next,.btn-finish{white-space:nowrap}
+.ux-zeile{flex-wrap:wrap}
+@media (max-width:600px){.ux-zeile .ux-text{flex-basis:calc(100% - 36px)}.ux-sprung{margin-left:36px}.btn-back,.btn-next,.btn-finish{padding:11px 18px}.btn-back{padding:11px 14px}.wizard-nav{padding:12px 16px;gap:10px}.ux-w-karte{padding:28px 22px 22px}.ux-w-karte h2{font-size:26px}}
+@media (prefers-reduced-motion:reduce){.ux-w-karte{animation:none}}
+</style>
+<div class="ux-willkommen" id="uxWillkommen" role="dialog" aria-modal="true" aria-labelledby="uxWTitel">
+  <div class="ux-w-karte">
+    <img class="ux-logo" src="/assets/logo-hm-quer-schwarz.svg" alt="HandwerksManufaktur" width="124" height="34">
+    <h2 id="uxWTitel">Willkommen an Bord 👋</h2>
+    <p class="ux-w-sub" id="uxWSub"></p>
+    <ul class="ux-w-liste">
+      <li><span>⏱️</span><span><b id="uxWZeit"></b> — am besten am Rechner, am Handy geht's auch.</span></li>
+      <li><span>💾</span><span><b>Euer Stand wird gespeichert.</b> Ihr könnt jederzeit pausieren und später weitermachen.</span></li>
+      <li><span>✅</span><span><b>Nicht alles da? Kein Problem.</b> Schickt trotzdem ab — Fehlendes reicht ihr einfach nach.</span></li>
+    </ul>
+    <div class="ux-w-person"><img id="uxWFoto" alt="Noah Seelau" width="44" height="44"><span><b>Noah Seelau</b> — bei Fragen einfach anrufen: <a href="tel:+4981947174990">08194 7174990</a></span></div>
+    <button type="button" class="ux-los" id="uxLos">Los geht's →</button>
+  </div>
+</div>
+<script>
+(function(){
+  var C = window.UX_CFG || {};
+  var START_KEY = 'hwm-ob-start-' + (C.art || 'x');
+  function hatStand(){ try { return !!localStorage.getItem(SAVE_KEY) || !!localStorage.getItem(START_KEY); } catch(e){ return true; } }
+  // ── Aufbau: Seitenleiste links, Formular rechts ──
+  var dots = document.getElementById('stepDots'), motiv = document.querySelector('.motiv-wrap'), wiz = document.getElementById('wizardWrap');
+  var shell = document.createElement('div'); shell.className = 'ux-shell';
+  var aside = document.createElement('aside'); aside.className = 'ux-aside'; aside.setAttribute('aria-label','Fortschritt');
+  var main = document.createElement('div'); main.className = 'ux-main';
+  dots.parentNode.insertBefore(shell, dots);
+  aside.appendChild(dots);
+  var meta = document.createElement('div'); meta.className = 'ux-meta';
+  meta.innerHTML = '<span>⏱️ ' + (C.minuten || 'ca. 15 Minuten') + '</span><span>💾 Stand wird automatisch gespeichert</span>';
+  aside.appendChild(meta);
+  var hilfeHTML = '<img src="' + C.foto + '" alt="Noah Seelau" width="46" height="46" loading="lazy"><div><b>Fragen beim Ausfüllen?</b>Noah hilft euch: <a href="tel:+4981947174990">08194 7174990</a></div>';
+  var hilfe = document.createElement('div'); hilfe.className = 'ux-hilfe'; hilfe.innerHTML = hilfeHTML; aside.appendChild(hilfe);
+  main.appendChild(motiv); main.appendChild(wiz);
+  shell.appendChild(aside); shell.appendChild(main);
+  var hm = document.createElement('div'); hm.className = 'ux-hilfe-mobil'; hm.innerHTML = '<div class="ux-hilfe">' + hilfeHTML + '</div>';
+  shell.parentNode.insertBefore(hm, shell.nextSibling);
+  // ── Willkommen (nur beim ersten Öffnen) ──
+  var w = document.getElementById('uxWillkommen');
+  document.getElementById('uxWSub').textContent = C.willkommen || '';
+  document.getElementById('uxWZeit').textContent = (C.minuten || 'ca. 15 Minuten').replace(/^ca\./,'Ca.');
+  document.getElementById('uxWFoto').src = C.foto;
+  function zu(){ w.classList.remove('offen'); try { localStorage.setItem(START_KEY,'1'); } catch(e){} var f = document.querySelector('.step.active input, .step.active textarea'); if (f && window.innerWidth > 700) f.focus(); }
+  document.getElementById('uxLos').onclick = zu;
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && w.classList.contains('offen')) zu(); });
+  if (!hatStand()) w.classList.add('offen');
+  // ── Übersicht vor dem Absenden ──
+  function schrittVon(lbl){
+    var m = C.map || {};
+    for (var k in m) if (lbl.indexOf(k) === 0) return m[k];
+    if (/^Stichpunkte zu Leistung/.test(lbl)) return C.leistStep;
+    if (/^Fotos zu Leistung/.test(lbl)) return C.fotoLeistStep;
+    if (/Logo|foto/i.test(lbl)) return C.fotosStep;
+    var t = lbl.replace(/^Text:\s*/,'').toLowerCase();
+    var labels = document.querySelectorAll('.step .field label');
+    for (var i = 0; i < labels.length; i++) {
+      var lt = labels[i].textContent.replace('*','').trim().toLowerCase();
+      if (lt && (lt.indexOf(t) === 0 || t.indexOf(lt) === 0)) return labels[i].closest('.step').id;
+    }
+    return null;
+  }
+  var ruecksprung = false;
+  function uebersicht(){
+    var last = stepSeq[stepSeq.length - 1], karte = document.querySelector('#' + last + ' .card-body');
+    if (!karte) return;
+    var box = document.getElementById('uxCheck');
+    if (!box) { box = document.createElement('div'); box.id = 'uxCheck'; box.className = 'ux-check'; karte.insertBefore(box, karte.firstChild); }
+    var fehlt = [];
+    try { fehlt = collectMissing(C.leistungen ? C.leistungen() : []); } catch(e) {}
+    var jeSchritt = {};
+    fehlt.forEach(function(l){ var s = schrittVon(l) || C.fotosStep; (jeSchritt[s] = jeSchritt[s] || []).push(l.replace(/^Text:\s*/,'').replace(/^Stichpunkte zu Leistung: (.*)$/,'Stichpunkte ($1)').replace(/^Fotos zu Leistung: (.*)$/,'Fotos ($1)').replace(/ \(Datei\)$/,'')); });
+    var offen = 0, html = '';
+    stepSeq.slice(0, -1).forEach(function(sid, i){
+      var liste = jeSchritt[sid] || []; offen += liste.length;
+      var name = (document.querySelector('#' + sid + ' .card-title') || {}).textContent || STEP_LABELS[sid];
+      html += '<div class="ux-zeile ' + (liste.length ? 'offen' : 'ok') + '"><span class="ux-status">' + (liste.length ? liste.length : '✓') + '</span>'
+        + '<div class="ux-text"><b>' + name + '</b>' + (liste.length ? 'Offen: ' + liste.join(' · ') : 'Vollständig') + '</div>'
+        + (liste.length ? '<button type="button" class="ux-sprung" data-i="' + i + '">Ergänzen</button>' : '') + '</div>';
+    });
+    box.innerHTML = '<div class="ux-check-kopf">📋 Euer Stand<span>' + (offen ? offen + ' Punkte offen' : 'Alles Wichtige ist drin') + '</span></div>' + html
+      + '<div class="ux-check-fuss">' + (offen ? 'Ihr könnt trotzdem absenden — was fehlt, reicht ihr einfach später nach.' : 'Perfekt — jetzt nur noch unten zustimmen und absenden.') + '</div>';
+    box.querySelectorAll('.ux-sprung').forEach(function(b){ b.onclick = function(){ ruecksprung = true; currentIdx = +b.dataset.i; showStep(currentIdx); }; });
+  }
+  // ── showStep erweitern: Weiter-Ziel nennen, Rücksprung zur Übersicht ──
+  var _show = showStep;
+  showStep = function(idx){
+    _show(idx);
+    var last = stepSeq.length - 1, btn = document.getElementById('btnNext');
+    if (idx === last) { ruecksprung = false; uebersicht(); return; }
+    if (ruecksprung) { btn.textContent = 'Zur Übersicht ✓'; btn.onclick = function(){ currentIdx = last; showStep(last); }; return; }
+    if (window.innerWidth >= 600) btn.textContent = 'Weiter: ' + (STEP_LABELS[stepSeq[idx + 1]] || '') + ' →';
+  };
+  // ── Nach dem Absenden: so geht's weiter ──
+  var ok = document.getElementById('successScreen');
+  if (ok && C.danach) {
+    var ul = document.createElement('ul'); ul.className = 'ux-weiter';
+    ul.innerHTML = C.danach.map(function(t, i){ return '<li><span>' + (i + 1) + '</span><span>' + t + '</span></li>'; }).join('');
+    ok.appendChild(ul);
+  }
+  if (stepSeq.length) showStep(currentIdx);
+})();
+</script>
 </body>
 </html>
