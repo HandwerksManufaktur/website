@@ -602,7 +602,6 @@ small,.fussnote,.klein,.brot,.etikett,.name,.herkunft,.marke-s,.lb-fuss small,.d
 .galerie .reihe{display:flex;gap:var(--gap)}
 .galerie figure{position:relative;flex:var(--verh) 1 0;min-width:0;border-radius:var(--radius);overflow:hidden;background:var(--papier-3)}
 .galerie .reihe.kurz figure{flex:0 1 calc(var(--verh) * 240px)}
-.galerie figure{max-width:400px}
 .galerie img{width:100%;height:auto;aspect-ratio:var(--verh);object-fit:cover;transition:transform .6s var(--ease)}
 .galerie figure:hover img{transform:scale(1.04)}
 .galerie figcaption{position:absolute;left:12px;bottom:12px;font-size:13px;font-weight:600;padding:6px 10px;border-radius:var(--pille);background:rgba(22,19,14,.72);color:var(--papier)}
@@ -2835,3 +2834,6 @@ html.rd-offen{overflow:hidden}
 .hero-klein.mit-rechner .hk-rechner{color:var(--tinte)}
 .hero-klein.mit-rechner h1{font-size:clamp(38px,5vw,66px)}
 .hero-klein.mit-rechner .lead{margin-top:16px;max-width:52ch}.hero-klein.mit-rechner .hero-fakten{margin-top:22px}
+
+/* Runde 18: Galerie ohne Beschnitt — Reihen gleich hoch über das echte Seitenverhältnis */
+.galerie figure{max-width:none;background:none;align-self:flex-start}.galerie img{height:auto;display:block}
