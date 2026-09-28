@@ -2837,3 +2837,26 @@ html.rd-offen{overflow:hidden}
 
 /* Runde 18: Galerie ohne Beschnitt — Reihen gleich hoch über das echte Seitenverhältnis */
 .galerie figure{max-width:none;background:none;align-self:flex-start}.galerie img{height:auto;display:block}
+
+/* ---- Runde 18b: weitere Fälle gestapelt, gleiche Karte wie die Fallstudie ---- */
+.fall-stapel{display:grid;gap:12px;margin-top:clamp(16px,2vw,24px)}
+.fz-titel{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tinte-3);margin:6px 0 2px}
+.fz{background:var(--papier);border-radius:var(--radius);box-shadow:0 0 0 1px rgba(22,19,14,.06);padding:clamp(16px,2vw,24px) var(--pad);display:grid;grid-template-columns:1fr;gap:12px;align-items:center;transition:transform .25s var(--ease),box-shadow .25s var(--ease)}
+.fz:hover{transform:translateY(-2px);box-shadow:0 0 0 1px rgba(22,19,14,.1),0 20px 40px -24px rgba(22,19,14,.3)}
+@media (min-width:860px){.fz{grid-template-columns:minmax(0,1fr) minmax(0,.9fr) minmax(0,1.3fr)}}
+.fz-wer{display:flex;align-items:center;gap:14px;min-width:0}
+.fz-logo{flex:none;display:grid;place-items:center;width:96px;height:56px;border-radius:12px;background:#fff;box-shadow:inset 0 0 0 1px rgba(22,19,14,.06);padding:8px}
+.fz-logo.dunkel{background:var(--tinte)}
+.fz-logo img{max-width:100%;max-height:100%;object-fit:contain}
+.fz-wer small{display:grid;font-size:13.5px;color:var(--tinte-3);line-height:1.35}.fz-wer small b{font-size:15px;color:var(--tinte)}
+.fz-zahl{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.fz-zahl .nr{font-size:clamp(36px,3.6vw,48px);font-weight:900;letter-spacing:-.04em;line-height:1;color:var(--tinte)}
+.fz-vor{font-size:15px;font-weight:700;color:var(--bronze-tief,#8A5A22)}
+.fz-einheit{font-size:15px;font-weight:700;color:var(--tinte-2)}
+.fz p{font-size:15px;color:var(--tinte-2);line-height:1.5}
+/* Rechner nur über den Knopf: mittige, symmetrische Zeile */
+.rechner-knopf-sek .rk{display:grid;justify-items:center;text-align:center;gap:12px;max-width:760px;margin:0 auto}
+.rk > .ic{width:52px;height:52px;border-radius:14px;background:var(--bronze-hauch,#F3E4D0);color:var(--bronze-tief,#8A5A22);display:grid;place-items:center}
+.rk > .ic svg,.rk-knopf .ic svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.rk-knopf{margin-top:8px}.rk-knopf .ic{width:22px;height:22px;display:inline-grid}
+.rk small{font-size:14px;color:var(--tinte-3)}

@@ -36,8 +36,8 @@ if (intro) {
   else {
     requestAnimationFrame(() => intro.classList.add('los'));
     // Runde 9: Linie, drei Balken (zack, zack, zack), Schriftzug. Steht bei 1,8 s, dann weg.
-    setTimeout(() => { intro.classList.add('verschwindet'); try { sessionStorage.setItem('hm-intro', '1'); } catch (e) {} }, 2350);
-    setTimeout(() => intro.remove(), 3000);
+    setTimeout(() => { intro.classList.add('verschwindet'); try { sessionStorage.setItem('hm-intro', '1'); } catch (e) {} }, 1550); // Runde 18: kürzer (LCP mobil 3,9 s lag am Intro)
+    setTimeout(() => intro.remove(), 2150);
   }
 }
 
