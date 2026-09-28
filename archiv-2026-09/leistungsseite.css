@@ -1,0 +1,431 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Leistungsseiten (/mitarbeitergewinnung/ · /neukundengewinnung/)
+   Helles Haus-Design der Startseite: Paper · Ink · Bronze, Inter + Instrument
+   Serif. Bewusst eine eigene Datei statt Copy-Paste in beide Seiten — was hier
+   geändert wird, gilt für beide.
+   Die Mobil-Regeln sind die vom 23.08.2026 gelernten: Burger ab 860 px,
+   Tap-Flächen 44 px, kein Text unter 13 px, Bilder mit festem Verhältnis.
+   ═══════════════════════════════════════════════════════════════════════════ */
+:root{
+  --paper:#FAF7F1; --paper2:#F4EFE4; --card:#fff;
+  --ink:#16130E; --sub:#57524A; --faint:#8E8778;
+  --line:#E7DFCE; --line2:#EDE5D6;
+  --acc:#C8873A; --acc-deep:#8A5C14; --acc-soft:#F6EFE2;
+  --night:#16130E; --night2:#211C15; --night-sub:#B5AEA0; --night-line:rgba(255,255,255,.1);
+  --serif:"Instrument Serif",Georgia,serif;
+  --r-md:16px; --r-lg:22px; --r-xs:12px;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --shadow:0 18px 40px -24px rgba(22,19,14,.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--paper);color:var(--ink);
+  font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+img{max-width:100%;}
+img[width][height]{height:auto;}
+a{color:inherit;text-decoration:none;}
+section{scroll-margin-top:92px;}
+.wrap{max-width:1200px;margin:0 auto;padding:0 clamp(16px,4vw,34px);}
+
+/* ── Navigation (wie auf der Startseite) ───────────────────────────────── */
+#nav{position:fixed;top:0;left:0;right:0;z-index:400;display:flex;align-items:center;
+  justify-content:space-between;padding:14px clamp(16px,4vw,34px);
+  background:rgba(250,247,241,.72);backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  border-bottom:none;transition:background .3s;}
+#nav.scrolled{background:rgba(250,247,241,.8);box-shadow:0 1px 24px rgba(60,44,20,.05);}
+/* R12 Material — weiche Scroll-Kante statt Trennlinie */
+#nav::after{content:"";position:absolute;left:0;right:0;top:100%;height:22px;pointer-events:none;
+  background:linear-gradient(to bottom,rgba(250,247,241,.5),rgba(250,247,241,0));opacity:0;transition:opacity .4s var(--ease);}
+#nav.scrolled::after{opacity:1;}
+.nav-logo{display:inline-flex;align-items:center;min-height:44px;}
+.nav-logo img{height:30px!important;width:auto;filter:invert(1) hue-rotate(180deg) brightness(.2);}
+.nav-links{display:flex;align-items:center;gap:24px;}
+.nav-links a{font-size:14.5px;font-weight:500;color:var(--ink);opacity:.72;letter-spacing:.005em;padding:11px 4px;margin:-11px 4px;
+  min-height:44px;display:inline-flex;align-items:center;transition:opacity .2s,transform .1s ease-out;}
+.nav-links a:hover{opacity:1;}
+.nav-links a:active{transform:scale(.97);}
+.nav-cta{background:var(--ink);color:#fff!important;border-radius:999px;
+  padding:12px 26px!important;margin-left:6px!important;font-weight:600;
+  box-shadow:0 8px 20px -12px rgba(22,19,14,.55);transition:background .25s,transform .2s;}
+.nav-cta:hover{background:var(--acc);transform:translateY(-1px);}
+.nav-burger{display:none;width:44px;height:44px;border:0;background:transparent;cursor:pointer;
+  flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:0;}
+.nav-burger span{display:block;width:20px;height:2px;background:var(--ink);border-radius:2px;
+  transition:transform .3s var(--ease);}
+.nav-burger[aria-expanded="true"] span:first-child{transform:translateY(3.5px) rotate(45deg);}
+.nav-burger[aria-expanded="true"] span:last-child{transform:translateY(-3.5px) rotate(-45deg);}
+.mnav-bd{position:fixed;inset:0;z-index:398;background:rgba(22,19,14,.45);
+  opacity:0;pointer-events:none;transition:opacity .3s var(--ease);}
+.mnav-bd.auf{opacity:1;pointer-events:auto;}
+.mnav{position:fixed;top:var(--navh,60px);left:0;right:0;z-index:399;background:var(--paper);
+  border-bottom:1px solid var(--line);padding:6px 20px calc(20px + env(safe-area-inset-bottom));
+  display:flex;flex-direction:column;max-height:calc(100dvh - var(--navh,60px));overflow-y:auto;
+  box-shadow:0 24px 48px -24px rgba(22,19,14,.35);
+  opacity:0;transform:translateY(-8px) scale(.98);transform-origin:top right;pointer-events:none;
+  background:rgba(250,247,241,.92);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);
+  transition:opacity .3s var(--ease),transform .3s var(--ease);}
+.mnav.auf{opacity:1;transform:none;pointer-events:auto;}
+.mnav>a{padding:13px 4px;font-size:16.5px;font-weight:600;color:var(--ink);
+  border-bottom:1px solid var(--line2);min-height:48px;display:flex;align-items:center;}
+.mnav-foot{display:flex;flex-direction:column;gap:10px;margin-top:16px;}
+.mnav-foot a{display:flex;align-items:center;justify-content:center;min-height:52px;
+  border-radius:999px;font-size:15.5px;font-weight:600;}
+.mnav .mnav-cta{background:var(--ink);color:#fff;}
+.mnav .mnav-tel{border:1.5px solid var(--line2);color:var(--ink);}
+body:has(.mnav.auf) #nav{background:var(--paper);}
+
+/* ── Bausteine ─────────────────────────────────────────────────────────── */
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:13.5px;font-weight:600;
+  letter-spacing:.02em;color:var(--acc-deep);}
+.eyebrow .dot{width:22px;height:2px;border-radius:2px;background:var(--acc);}
+h1{font-size:clamp(38px,6.4vw,74px);font-weight:800;letter-spacing:-.035em;line-height:1.02;
+  margin-top:20px;}
+h1 em,h2.d em,.lp-kcard h2 em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--acc);}
+h2.d{font-size:clamp(30px,4.4vw,52px);font-weight:800;letter-spacing:-.03em;line-height:1.06;
+  margin-top:18px;}
+h3{font-size:19px;font-weight:700;letter-spacing:-.02em;}
+p{font-size:16.5px;line-height:1.7;color:var(--sub);}
+.lead{font-size:clamp(17px,1.6vw,20px);line-height:1.65;color:var(--sub);max-width:620px;margin-top:22px;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;
+  padding:15px 28px;border-radius:999px;font-size:15.5px;font-weight:600;cursor:pointer;
+  border:1.5px solid transparent;transition:background .25s,border-color .25s,transform .3s var(--ease),color .25s;position:relative;overflow:hidden;isolation:isolate;}
+.btn:hover{transform:translateY(-2px);}
+.btn:active{transform:scale(.97);transition-duration:.1s;}
+.btn::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.22) 50%,transparent 70%);transform:translateX(-120%);transition:transform .6s var(--ease);pointer-events:none;z-index:-1;}
+.btn:hover::after{transform:translateX(120%);}
+.btn-ink{background:var(--ink);color:#fff;}
+.btn-ink:hover{background:var(--acc-deep);}
+.btn-ghost{border-color:var(--line);color:var(--ink);}
+.btn-ghost:hover{border-color:var(--acc);color:var(--acc-deep);}
+.btn-hell{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.28);color:#fff;}
+.btn-hell:hover{background:rgba(255,255,255,.18);}
+.lp-ctas{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap;}
+.lp-proof{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:26px;
+  font-size:14.5px;color:var(--faint);}
+.lp-proof b{color:var(--ink);font-weight:700;}
+.stars{color:#E8A33D;letter-spacing:.06em;}
+
+/* ── Hero ──────────────────────────────────────────────────────────────── */
+.lp-hero{padding:132px 0 0;position:relative;overflow:hidden;}
+.lp-hero::before{content:"";position:absolute;top:-200px;left:50%;transform:translateX(-50%);
+  width:1100px;height:640px;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 20%,rgba(200,135,58,.11),transparent 58%),
+             radial-gradient(ellipse at 30% 60%,rgba(200,160,110,.12),transparent 52%);}
+/* 🔴 Kein einzelnes grosses Hero-Foto mehr (Noah, 09.09.2026: „das eine grosse Bild …
+   sieht ein bisschen so aus, als waeren wir dann die Firma Senftleben. Da mach lieber
+   zwei so Bildstreifen"). Statt eines Betriebs laufen jetzt vier durchs Bild. */
+
+/* ── Blöcke ────────────────────────────────────────────────────────────── */
+.lp-blk{padding:6rem 0;}
+.lp-grau{background:var(--paper2);}
+.lp-dunkel{background:var(--night);color:#fff;}
+.lp-dunkel h2.d{color:#fff;}
+.lp-dunkel p{color:var(--night-sub);}
+.lp-dunkel .eyebrow{color:#E0A45C;}
+.lp-dunkel .eyebrow .dot{background:#E0A45C;}
+
+/* ── „Woran es haengt" — drei Zeilen statt drei Karten ──────────────────
+   Noah, 11.09.2026: „diese sektion ist design-maessig absolut haesslich."
+   Dritte Ansage zu diesem Block, also verworfen statt nachgebessert: keine
+   Kaesten, kein Strich, kein Schatten. Eine redaktionelle Liste auf getoentem
+   Grund — Haarlinie, grosse Aussage links, ruhiger Satz rechts. Inhalt statt
+   Behaelter. */
+.h-kopf,.h-zeile{display:grid;grid-template-columns:minmax(0,.42fr) minmax(0,.58fr);
+  gap:0 clamp(24px,4vw,64px);align-items:start;}
+.h-kopf{padding-bottom:clamp(32px,3.6vw,46px);}
+.h-kopf h2{margin:0;}
+.h-kopf .h-intro{font-size:17px;line-height:1.6;color:var(--sub);margin:0;
+  align-self:end;padding-bottom:6px;}
+.lp-hang{border-top:1px solid var(--line);}
+.h-zeile{padding:clamp(24px,2.6vw,34px) 0;border-bottom:1px solid var(--line);}
+.h-zeile h3{font-size:clamp(19px,2vw,23px);line-height:1.24;letter-spacing:-.015em;
+  margin:0;text-wrap:balance;}
+.h-zeile p{font-size:16px;line-height:1.62;color:var(--sub);margin:0;}
+
+.lp-schritte{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;margin-top:46px;}
+.lp-schritt{border-top:1px solid var(--night-line);padding-top:22px;}
+.s-num{font-family:var(--serif);font-style:italic;font-size:24px;color:#E0A45C;display:block;margin-bottom:10px;}
+.lp-schritt h3{color:#fff;margin-bottom:8px;font-size:17.5px;}
+.lp-schritt p{font-size:15px;}
+
+
+/* ── Icon am Schritt (Noah, 09.09.2026: „Ich habe nur gesagt, dass du ein paar
+   Icons dahin machen sollst"). Vorher standen dort die Ziffern 01–04, danach
+   vier grosse Fotobloecke mit 1/2/3/4 — beides zaehlte direkt unter den drei
+   Karten darueber ein zweites Mal. Jetzt traegt das Icon den Schritt allein. */
+.s-icon{display:block;width:26px;height:26px;color:#E0A45C;margin-bottom:12px;}
+.s-icon svg{width:100%;height:100%;display:block;}
+
+/* Zahlen mit Zeichen davor — wie auf der SHK-Seite */
+/* Die Zeichen sitzen in einem gleich grossen runden Feld — nebeneinander sind
+   Emoji sonst unterschiedlich schwer (Umschlag zart, gruener Haken massiv). */
+.fs-zahl .sym{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;
+  background:var(--acc-soft);color:var(--acc-deep);line-height:1;margin-bottom:12px;}
+.fs-zahl .sym .ik{width:17px;height:17px;}
+
+/* ── Kundenfotos laufen durch (Noah, 09.09.2026: „ich wollte, dass die Bilder
+   von Kunden durchlaufen", dann: „die Fotos muessen auch ein bisschen breiter
+   sein" und „nur Bilder verwenden, auf denen man alle Personen sieht").
+   🔴 Deshalb 16/10 statt 4/5: aus einer 3:2-Aufnahme geht dabei fast nichts
+   verloren, waehrend das Hochformat Koepfe abgeschnitten hat. Hochformat-Quellen
+   (irlbacher-buero, irlbacher-team-van, sussmann-anzeige) sind raus.
+   🔴 Kein Name unter dem Bild — die Kunden werden hier nicht benannt.
+   Das Band steht OBEN, direkt hinter dem Hero, und nur einmal auf der Seite. */
+.lp-bandblock{padding:52px 0 0;display:grid;gap:18px;}
+.lp-fotoband{display:flex;overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);}
+.lp-fotoband-t{display:flex;gap:18px;padding:0 9px;flex-shrink:0;
+  animation:lp-lauf 96s linear infinite;}
+/* Der zweite Streifen laeuft andersherum und langsamer — zwei gleich laufende
+   Baender uebereinander lesen sich als ein einziges, breites Band. */
+.lp-fotoband.rueck .lp-fotoband-t{animation-direction:reverse;animation-duration:112s;}
+.lp-fotoband:hover .lp-fotoband-t{animation-play-state:paused;}
+@keyframes lp-lauf{to{transform:translateX(-100%);}}
+.lp-fotoband img{width:430px;aspect-ratio:16/10;flex-shrink:0;object-fit:cover;display:block;
+  border-radius:var(--r-md);border:1px solid var(--line);}
+
+/* ── Kundenvideos, vier nebeneinander (Noah, 09.09.2026: „eine Sektion, wo die
+   vier Videos von vier Kunden durchlaufen, vier Videos nebeneinander").
+   Volle Breite, natives 16/9 — nicht beschneiden, aus demselben Grund wie oben.
+   Geladen und gestartet werden sie erst, wenn sie im Bild sind (leistungsseite.js). */
+/* 🔴 Auf die Breite des Textes gesetzt, nicht randlos: sonst beginnt die
+   Videoreihe links vor der Ueberschrift und die Sektion wirkt verrutscht. */
+.lp-videoband{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;
+  max-width:1200px;margin:40px auto 0;padding:0 clamp(16px,4vw,34px);}
+.lp-vid{margin:0;}
+.lp-vid video{width:100%;aspect-ratio:9/16;object-fit:cover;display:block;
+  border-radius:var(--r-md);border:1px solid var(--night-line);background:var(--night2);}
+.lp-vid figcaption{margin-top:10px;text-align:center;font-size:13.5px;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;color:#E0A45C;}
+.lp-vor{max-width:760px;margin-top:20px;}
+
+/* ── Fallstudie ────────────────────────────────────────────────────────── */
+/* 🔴 Beide Spalten gleich hoch, der Text verteilt sich darin (Noah hat die Asymmetrie
+   zweimal gemeldet). Seit das Senftleben-Video 4:3 ist, waere die Videospalte sonst
+   77 px hoeher als der Text daneben. */
+.fs-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;margin-top:44px;align-items:stretch;}
+.fs-text{display:flex;flex-direction:column;justify-content:space-between;}
+.fs-text > *:first-child{margin-top:0;}
+.fs-text p+p{margin-top:14px;}
+/* 🔴 Die Zahlen stehen als eigene Reihe UNTER dem Raster, nicht in der linken
+   Spalte. Vorher war die linke Spalte dadurch deutlich hoeher als das Video und
+   das Zitat hing allein unten links (Noah: „Die Sektionen sind asymmetrisch …
+   der ist einfach komplett unten drunter"). */
+.fs-zahlen{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px;}
+.fs-zahl{background:var(--card);border:1px solid var(--line);
+  border-radius:var(--r-md);padding:18px 20px;}
+.fs-zahl .z{display:block;font-size:30px;font-weight:800;letter-spacing:-.03em;color:var(--ink);}
+.fs-zahl .l{display:block;font-size:13.5px;color:var(--faint);margin-top:4px;line-height:1.4;}
+.fs-zitat{margin-top:26px;padding-left:20px;border-left:2.5px solid var(--acc);
+  font-size:19px;line-height:1.55;font-weight:500;color:var(--ink);}
+.fs-zitat cite{display:block;margin-top:12px;font-style:normal;font-size:14px;color:var(--faint);}
+.fs-zitat cite strong{color:var(--sub);}
+/* 🔴 Kein festes 16/9 mehr: das Senftleben-Testimonial trug einen einbelichteten
+   dunklen Rahmen und liegt jetzt beschnitten als 4:3 vor (Noah, 10.09.2026: „warum ist
+   hinter dem Testimonial so ein schwarzer Rand … cleaner, wenn da nur das Testimonial
+   ist"). Das ESS-Video ist 16:9. Jedes Video behaelt sein eigenes Verhaeltnis. */
+.fs-video video{width:100%;height:auto;border-radius:var(--r-lg);background:var(--night);
+  display:block;box-shadow:var(--shadow);}
+.fs-vidnote{margin-top:10px;font-size:13.5px;color:var(--faint);}
+.fs-bilder{display:grid;grid-template-columns:1.3fr 1fr;gap:18px;margin-top:38px;}
+.fs-bilder img{width:100%;border-radius:var(--r-md);object-fit:cover;aspect-ratio:3/2;border:1px solid var(--line);}
+
+/* ── Liste ─────────────────────────────────────────────────────────────── */
+/* Vier Punkte in zwei Reihen — ein 820-px-Streifen unter einer Reihe aus vier
+   Videos sitzt sonst links in der Ecke. */
+.lp-liste{list-style:none;margin-top:38px;display:grid;gap:14px;
+  grid-template-columns:1fr 1fr;align-items:start;}
+.lp-liste li{position:relative;padding:18px 20px 18px 52px;background:var(--card);
+  border:1px solid var(--line);border-radius:var(--r-md);font-size:16px;line-height:1.6;color:var(--sub);}
+.lp-liste li::before{content:"✓";position:absolute;left:20px;top:18px;width:20px;height:20px;
+  display:grid;place-items:center;border-radius:50%;background:var(--acc-soft);
+  color:var(--acc-deep);font-size:12.5px;font-weight:700;}
+.lp-liste strong{color:var(--ink);font-weight:650;}
+
+/* Liste auf dunklem Grund — sie sitzt jetzt in derselben Sektion wie die Videos. */
+.lp-dunkel .lp-liste li{background:var(--night2);border-color:var(--night-line);color:var(--night-sub);}
+.lp-dunkel .lp-liste strong{color:#fff;}
+.lp-dunkel .lp-liste li::before{background:rgba(224,164,92,.16);color:#E0A45C;}
+
+/* ── FAQ ───────────────────────────────────────────────────────────────── */
+/* 🔴 Die Fragen standen als 820-px-Streifen links, rechts daneben blieb ein Drittel
+   der Seite leer (Noah, 09.09.2026: „So ist das eingeengt, und da steht dann da
+   irgendwie so leer mit drin"). Jetzt zwei Spalten ueber die volle Breite. */
+.lp-faq .faq-item{margin-top:0;}
+.faq-liste{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start;margin-top:38px;}
+
+/* 🔴 Die Fragen-Sektion lief unten leer aus und hatte keinen Anker (Noah, 10.09.2026:
+   „ein bisschen langweilig … unten ein bisschen leer … da kannst du doch eigentlich
+   noch irgendwas rein machen"). Aufbau jetzt wie auf der Startseite: links Anrede,
+   Telefonnummer und Gesicht, rechts die Fragen in EINER Spalte. */
+.faq-layout{display:grid;grid-template-columns:1fr 1.35fr;gap:64px;align-items:start;}
+.faq-layout .faq-liste{grid-template-columns:1fr;margin-top:0;}
+.faq-head{position:sticky;top:118px;}
+.faq-sub{margin-top:16px;font-size:16.5px;}
+.faq-tel{display:inline-flex;align-items:center;gap:8px;margin-top:22px;font-size:16.5px;
+  font-weight:650;border-bottom:1.5px solid var(--line2);padding-bottom:4px;min-height:44px;
+  transition:color .2s,border-color .2s;}
+.faq-tel:hover{color:var(--acc-deep);border-color:var(--acc);}
+.faq-mensch{display:flex;align-items:center;gap:14px;margin-top:30px;padding:14px 20px 14px 14px;
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);}
+/* 🔴 Das richtige Portrait ist `images/foto-noah-portrait-rund.png` — es ist bereits als
+   Kreis angelegt (schwarze Ecken, kein Alpha), deshalb gehoert hier border-radius:50% hin:
+   die Maske faellt genau auf den Bildkreis, nichts vom Kopf wird abgeschnitten.
+   🔴 `assets/team-noah.jpg` ist NICHT das Portrait — die Aufnahme entstand auf Zakynthos. */
+.faq-mensch img{width:66px;height:66px;flex-shrink:0;border-radius:50%;object-fit:cover;
+  background:var(--paper2);}
+.faq-mensch b{display:block;font-size:15px;font-weight:700;}
+.faq-mensch span{display:block;margin-top:2px;font-size:13.5px;line-height:1.45;color:var(--faint);}
+.faq-item{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);
+  margin-top:12px;overflow:hidden;}
+
+.faq-q{display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:18px 22px;font-size:16.5px;font-weight:650;cursor:pointer;min-height:60px;}
+.faq-q .pm{flex-shrink:0;width:26px;height:26px;display:grid;place-items:center;border-radius:50%;
+  background:var(--acc-soft);color:var(--acc-deep);font-size:15px;transition:transform .3s var(--ease);}
+.faq-item.open .faq-q .pm{transform:rotate(45deg);}
+.faq-a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s var(--ease);}
+.faq-item.open .faq-a{grid-template-rows:1fr;}
+.faq-inner{overflow:hidden;}
+.faq-inner p{padding:0 22px 20px;font-size:15.5px;}
+
+/* ── Kontakt ───────────────────────────────────────────────────────────── */
+.lp-kcard{background:var(--night);color:#fff;border-radius:var(--r-lg);
+  padding:64px clamp(24px,5vw,64px);text-align:center;position:relative;overflow:hidden;}
+.lp-kcard::before{content:"";position:absolute;top:-180px;left:50%;transform:translateX(-50%);
+  width:800px;height:460px;pointer-events:none;
+  background:radial-gradient(ellipse,rgba(200,135,58,.2),transparent 60%);}
+.lp-kcard h2{font-size:clamp(28px,3.8vw,44px);font-weight:800;letter-spacing:-.03em;
+  position:relative;z-index:2;}
+.lp-kcard p{color:var(--night-sub);max-width:520px;margin:16px auto 0;position:relative;z-index:2;}
+/* 🔴 In der dunklen Karte ist `btn-ink` unsichtbar: --ink und --night sind derselbe
+   Wert (#16130E). Der Hauptknopf muss hier hell sein (Noah, 10.09.2026: „unten kann
+   man sich auch nirgendwo einen Termin buchen" — man SAH den Knopf nicht). */
+.lp-kcard .btn-ink{background:#fff;color:var(--ink);}
+.lp-kcard .btn-ink:hover{background:var(--acc);color:#fff;}
+.lp-kcard .lp-ctas{justify-content:center;position:relative;z-index:2;}
+.lp-kfuss{position:relative;z-index:2;margin-top:18px;font-size:14px;color:var(--night-sub);}
+
+/* ── Footer ────────────────────────────────────────────────────────────── */
+footer{padding:0 0 46px;}
+.f-in{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  border-top:1px solid var(--line);padding-top:28px;font-size:14px;color:var(--faint);}
+.f-in img{height:26px!important;width:auto;filter:invert(1) hue-rotate(180deg) brightness(.2);opacity:.85;}
+.f-links{display:flex;gap:20px;flex-wrap:wrap;}
+.f-links a{color:var(--faint);padding:11px 2px;margin:-11px 2px;display:inline-block;}
+.f-links a:hover{color:var(--acc-deep);}
+
+/* ── Breiten ───────────────────────────────────────────────────────────── */
+@media(max-width:1024px){
+  .lp-schritte{grid-template-columns:1fr 1fr;gap:22px;}
+  /* 🔴 Fünf Hochformate lassen sich nicht in 2 oder 3 Spalten legen, ohne dass die
+     letzte Reihe halb leer bleibt. Unter 1024 px wird die Reihe deshalb zum
+     seitlich schiebbaren Streifen — kein Rest, und auf dem Handy die natürliche
+     Geste. */
+  .lp-videoband{display:flex;overflow-x:auto;gap:14px;scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  .lp-videoband::-webkit-scrollbar{display:none;}
+  .lp-vid{flex:0 0 min(52vw,240px);scroll-snap-align:center;}
+  .lp-liste{grid-template-columns:1fr;}
+  .faq-liste{grid-template-columns:1fr;}
+  .faq-layout{grid-template-columns:1fr;gap:34px;}
+  .faq-head{position:static;}
+  .lp-fotoband img{width:340px;}
+  .fs-grid{grid-template-columns:1fr;gap:32px;}
+  .fs-video{order:-1;}
+  .lp-blk{padding:4.5rem 0;}
+  /* ohne Maus brauchen alle Links eine Flaeche, die der Daumen trifft */
+  .f-links a,.lp-liste a{padding:11px 2px;}
+}
+@media(max-width:860px){
+  .nav-links a:not(.nav-cta){display:none;}
+  .nav-burger{display:flex;}
+  .nav-links{display:none;}
+  .nav-cta{padding:12px 20px!important;font-size:13.5px;margin-left:0!important;}
+  .h-kopf,.h-zeile{grid-template-columns:1fr;gap:9px;}
+  .h-kopf{padding-bottom:26px;}
+  .h-kopf .h-intro{padding-bottom:0;margin-top:14px;font-size:16px;}
+  .h-zeile{padding:22px 0;}
+  .h-zeile p{font-size:15.5px;}
+}
+@media(max-width:680px){
+  .lp-hero{padding-top:104px;}
+  .lp-fotoband img{width:260px;}
+  .lp-bandblock{gap:12px;}
+  .lp-fotoband-t{gap:12px;padding:0 6px;}
+  .lp-bandblock{padding:40px 0 0;}
+  .fs-zahlen{grid-template-columns:1fr;}
+  .lp-blk{padding:3.4rem 0;}
+  .lp-schritte{grid-template-columns:1fr;gap:18px;}
+  .lp-ctas{flex-direction:column;align-items:stretch;}
+  .lp-ctas .btn{width:100%;}
+  .fs-zahlen{gap:10px;}
+  .fs-zahl{flex-basis:100%;display:flex;align-items:baseline;gap:12px;padding:14px 18px;}
+  .fs-zahl .z{font-size:26px;}
+  .fs-zahl .l{margin-top:0;}
+  .fs-bilder{grid-template-columns:1fr;}
+  .fs-zitat{font-size:17px;}
+  .lp-kcard{padding:44px 22px;border-radius:0;}
+  #kontakt .wrap{padding-left:0;padding-right:0;}
+  .f-in{flex-direction:column;align-items:center;text-align:center;gap:16px;padding-top:26px;}
+  .f-in img{height:32px!important;opacity:1;}
+  .f-in span{font-size:13.5px;}
+  .f-rechte{display:none;}
+  .f-links{justify-content:center;gap:18px;}
+}
+
+/* ── Zweite Referenz (Sussmann) unter der Fallstudie ── */
+.fs-ref2{margin-top:40px;display:grid;grid-template-columns:1.15fr 1fr;gap:36px;align-items:center;padding:32px 36px;background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow-md);}
+img.fs-ref2-logo[width][height]{height:34px;width:auto;margin-bottom:16px;}   /* schlägt img[width][height]{height:auto} der Hauptseite */
+.fs-ref2 h3{margin-top:10px;font-size:clamp(24px,2.6vw,32px);font-weight:700;letter-spacing:-.03em;line-height:1.08;}
+.fs-ref2 h3 em{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:0;color:var(--acc);}
+.fs-ref2 p{margin-top:12px;color:var(--sub);font-size:16px;line-height:1.6;}
+.fs-ref2-zahlen{margin-top:0;grid-template-columns:1fr;gap:12px;}
+@media(max-width:860px){.fs-ref2{grid-template-columns:1fr;gap:22px;padding:24px 22px;}}
+
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  *{animation-duration:.01ms!important;transition-duration:.01ms!important;}
+}
+
+
+/* ── Zugaenglichkeit: die drei Signale, die Apple getrennt behandelt ────────
+   Weniger Bewegung heisst nicht keine Rueckmeldung, sondern eine ruhigere.
+   Weniger Transparenz heisst: das Material wird fest statt milchig.
+   Mehr Kontrast heisst: klare Kante statt zarter Linie. */
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  .lp-fotoband-t{animation:none;}
+  *,*::before,*::after{transition-duration:.01ms!important;}
+}
+@media(prefers-reduced-transparency:reduce){
+  #nav,#nav.scrolled{background:var(--paper);backdrop-filter:none;-webkit-backdrop-filter:none;}
+}
+@media(prefers-contrast:more){
+  :root{--line:#B9AE96;--line2:#B9AE96;--sub:#3B372F;--faint:#5A5449;}
+  .fs-zahl,.faq-item,.lp-liste li{border-width:1.5px;}
+  .lp-hang,.h-zeile{border-color:var(--ink);}
+}
+
+/* Rueckmeldung kommt beim Druecken, nicht erst beim Loslassen. */
+.faq-q:active,.nav-cta:active,.f-links a:active{transform:scale(.985);}
+.faq-q,.nav-cta{transition:transform .1s ease-out;}
+
+/* ═══════ Apple-Runde 26.09.2026 (apple-design + Drive-Designregeln) ═══════ */
+:focus-visible{outline:3px solid var(--acc);outline-offset:3px;border-radius:6px;}
+.ik{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:none;display:inline-block;vertical-align:-.15em;}
+.faq-tel .ik{width:17px;height:17px;color:var(--acc-deep);}
+/* R15: kleine Schrift leicht positiv tracken */
+.fs-vidnote,.fs-zahl .l,.lp-proof,.lp-vid figcaption,.fs-zitat cite,.eyebrow,.f-in,.f-links a{letter-spacing:.01em;}
+/* R10: Tap-Ziele 44 px */
+.f-links a,.faq-tel{display:inline-flex;align-items:center;min-height:44px;gap:8px;}
+.f-links a{padding:0 4px;margin:-8px -4px;}
+.nav-logo:active{opacity:.7;transition:opacity .1s;}
+.mnav>a:active,.mnav-foot a:active,.faq-tel:active{transform:scale(.96);transition:transform .1s ease-out;}
+@media(prefers-reduced-transparency:reduce){#nav,.mnav{background:var(--paper)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}#nav::after{display:none;}}
+@media(prefers-reduced-motion:reduce){.btn::after{display:none;}.mnav{transform:none!important;}}
+.f-links a{min-width:44px;justify-content:center;}
+a.faq-tel[href^="tel:"]:not(.mnav-tel){display:inline-flex;padding:0;min-height:44px;}
