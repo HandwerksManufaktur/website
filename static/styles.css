@@ -3004,3 +3004,37 @@ html.rd-offen{overflow:hidden}
 .rg-stopp .btn.btn-bronze{background:var(--papier);color:var(--tinte);box-shadow:none}
 .rg-stopp .btn.btn-bronze:hover{background:var(--bronze-hell);color:var(--tinte)}
 .rg-stopp .btn.btn-bronze svg{color:var(--bronze-tief)}
+/* Impressum: Foto kleiner (Noah, 29.09.2026) */
+.imp-kopf{grid-template-columns:140px 1fr}
+@media (max-width:640px){.imp-kopf{grid-template-columns:110px 1fr;gap:18px}}
+
+/* Funnel-Bühne: Anzeige mittig, Funnels links/rechts (29.09.2026) */
+.fb-buehne{display:grid;grid-template-columns:1fr 1.15fr 1fr;align-items:center;gap:clamp(18px,3vw,48px);max-width:1040px;margin:clamp(32px,4vw,56px) auto 0}
+.fb-buehne figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:12px}
+.fb-buehne figcaption{font-size:14px;font-weight:600;color:var(--tinte-3);text-align:center}
+.fb-phone .fb-schirm{width:100%;max-width:250px;aspect-ratio:9/19;border-radius:34px;border:8px solid var(--tinte);background:var(--tinte);overflow:hidden;box-shadow:0 30px 60px -30px rgba(22,19,14,.45)}
+.fb-phone img{width:100%;height:100%;object-fit:cover;object-position:50% 0%;animation:fb-lauf 26s ease-in-out infinite alternate;display:block}
+.fb-r img{animation-delay:-9s}
+@keyframes fb-lauf{0%,12%{object-position:50% 0%}88%,100%{object-position:50% 100%}}
+.fb-l{transform:translateY(24px) rotate(-3deg)}
+.fb-r{transform:translateY(24px) rotate(3deg)}
+.fb-video video{width:100%;max-width:300px;aspect-ratio:9/16;object-fit:cover;border-radius:var(--radius);background:#000;box-shadow:0 40px 80px -30px rgba(22,19,14,.55);display:block}
+.fb-schritte{list-style:none;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,24px);max-width:1040px;margin:clamp(40px,5vw,64px) auto 0}
+.fb-schritte li{border-radius:var(--radius);background:var(--papier-2);padding:22px 22px 20px;transition:transform var(--schnell),box-shadow var(--schnell)}
+.fb-schritte li:hover{transform:translateY(-3px);box-shadow:0 18px 36px -24px rgba(22,19,14,.35)}
+.fb-nr{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--bronze);color:var(--tinte);font-weight:800;font-size:15px;margin-bottom:12px}
+.fb-schritte b{display:block;font-size:18px;letter-spacing:-.01em;color:var(--tinte);margin-bottom:6px}
+.fb-schritte p{margin:0;font-size:15.5px;line-height:1.55;color:var(--tinte-2)}
+@media (max-width:900px){
+  .fb-buehne{grid-template-columns:1fr 1fr;gap:16px}
+  .fb-video{grid-column:1/-1;order:-1}
+  .fb-video video{max-width:260px}
+  .fb-l,.fb-r{transform:none}
+  .fb-phone .fb-schirm{max-width:180px;border-width:6px;border-radius:26px}
+  .fb-schritte{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){.fb-phone img{animation:none}}
+.fb-l,.fb-r{transform:translateY(24px)}
+.fb-l .fb-schirm{transform:rotate(-3deg)}
+.fb-r .fb-schirm{transform:rotate(3deg)}
+@media (max-width:900px){.fb-l,.fb-r,.fb-l .fb-schirm,.fb-r .fb-schirm{transform:none}}
