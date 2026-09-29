@@ -85,6 +85,8 @@ document.addEventListener('click', e => {
 }, { capture: true });
 // Runde 18: Lead erst zählen, wenn die Anfrage wirklich angekommen ist (/static/main.js schickt „hwm:lead" nach dem Versand)
 document.addEventListener('hwm:lead', e => ereignis('generate_lead', e.detail || {}));
+// 🎁 Aktionsseite /konzept (29.09.2026): eigenes Ereignis mit Kanal (Code aus ?code=), nur mit Einwilligung wie alles hier
+document.addEventListener('hwm:konzept', e => ereignis('konzept_anfrage', e.detail || {}));
 
 /* ---- Seiten-Zähler OHNE Cookies (29.09.2026) ----
    🔴 Noah: „bau da überall nen tracker rein … welche seiten aufrufe bekommen … wo die leute drauf drücken, wie viele, woher".
@@ -103,7 +105,10 @@ if (echt && !test) {
   let ref = 'direkt';
   try {
     const q = new URLSearchParams(location.search);
-    if (q.get('utm_source')) ref = 'utm:' + q.get('utm_source');
+    // 🎁 ?code=KLEINANZEIGEN (Aktionsseite /konzept) zählt als Herkunft → Aufrufe je Kanal ohne Cookie
+    const kanal = (q.get('code') || q.get('c') || '').toUpperCase().replace(/[^A-Z0-9-]/g, '').slice(0, 30);
+    if (kanal) ref = 'code:' + kanal;
+    else if (q.get('utm_source')) ref = 'utm:' + q.get('utm_source');
     else if (document.referrer) { const h = new URL(document.referrer).hostname.replace(/^www\./, ''); if (h && h !== location.hostname) ref = h; }
   } catch (x) {}
   senden('v', { r: ref });

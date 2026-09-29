@@ -3,6 +3,7 @@
  */
 
 import { createClickUpTasks, addPipelineExtrasForTask } from './clickup.js';
+import { handleKonzeptAnfrage } from './konzept.js';
 
 const FOLDER_IDS = {
   webdesign: '0AEItEqlPzyB0Uk9PVA',
@@ -351,6 +352,8 @@ export default {
 
     try {
       const p = url.pathname;
+      // 🎁 Aktionsseite /konzept (29.09.2026): Anfrage → Close-Lead + Mails + D1 (src/konzept.js)
+      if (p === '/konzept-anfrage') return handleKonzeptAnfrage(request, env);
       if (p === '/create-folders'  || p === '/api/create-folders')  return handleCreateFolders(request, env, ctx);
       // Subtasks + Checklisten für EINEN Projekt-Task. Bewusst ein eigener Request:
       // bei zwei Projekt-Tasks (Recruiting + Leadgen) reichte die Laufzeit eines einzigen

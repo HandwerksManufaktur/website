@@ -13,3 +13,11 @@ service = "handwerksmanufaktur-onboarding"
 # Secrets werden per CLI gesetzt – niemals hier eintragen:
 # wrangler secret put GOOGLE_CLIENT_EMAIL
 # wrangler secret put GOOGLE_PRIVATE_KEY
+
+# 🎁 Konzept-Anfragen (29.09.2026): jede Anfrage von /konzept landet zusätzlich in der run-db
+# (Tabelle konzept_anfragen, Schema in system/apps/run/schema.sql) — Datenbasis „Anfragen je Kanal".
+# Secrets dafür: CLOSE_API_KEY, KONZEPT_SALT (RESEND_API_KEY ist schon gesetzt).
+[[d1_databases]]
+binding = "RUN_DB"
+database_name = "run-db"
+database_id = "cf95c7ba-86cb-4923-9be7-63eb7e3f50aa"

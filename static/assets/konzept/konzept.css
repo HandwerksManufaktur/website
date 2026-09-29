@@ -1,0 +1,47 @@
+/* 🎁 Aktionsseite /konzept (29.09.2026) — nur diese Seite lädt das. Formular-Grundform wie .sf-form
+   (Kontaktseite), aber eigene Klasse .ka-form: main.js hängt an JEDES form.sf-form den Drei-Schritt-Versand. */
+.ka-sek{background:var(--papier-2)}
+.ka-raster{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(28px,4vw,64px);align-items:start}
+.ka-text h2{font-size:clamp(30px,3.4vw,46px);letter-spacing:-.03em;line-height:1.05;margin:10px 0 14px}
+.ka-text .lead{margin:0 0 22px}
+.ka-danach{list-style:none;padding:0;margin:0 0 24px;display:grid;gap:14px}
+.ka-danach li{display:grid;grid-template-columns:36px 1fr;gap:14px;align-items:start}
+.ka-danach b{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--tinte);color:var(--papier);font-size:15px}
+.ka-danach strong{display:block;font-size:17px;letter-spacing:-.01em}
+.ka-danach span{color:var(--tinte-2);font-size:15.5px;line-height:1.45}
+.ka-belege{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:15px;color:var(--tinte-2)}
+.ka-belege b{color:var(--tinte)}
+.ka-belege .stern{color:var(--bronze)}
+.ka-form{background:var(--papier);color:var(--tinte);border-radius:var(--radius);padding:clamp(20px,2.6vw,32px);display:grid;gap:16px;width:100%;box-shadow:0 0 0 1px rgba(22,19,14,.08),0 30px 60px -34px rgba(22,19,14,.45);scroll-margin-top:100px}
+.ka-form .sf-balken i{transform:scaleX(.14)}
+.ka-form .sf-frage{display:block}
+.ka-form .sf-zeile input,.ka-feld{flex:1;min-width:0;width:100%;font:inherit;font-size:17px;padding:14px 16px;min-height:56px;border-radius:var(--radius-klein);border:1.5px solid var(--linie);background:#fff;color:var(--tinte)}
+.ka-form input:focus{outline:none;border-color:var(--bronze)}
+.ka-form input.fehlt{border-color:#B23A2A}
+.ka-knoepfe{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.ka-knoepfe .btn{min-height:52px}
+.ka-knoepfe .btn-tinte{flex:1 1 auto;justify-content:center}
+.ka-leise{min-height:48px;padding:12px 18px;border-radius:var(--pille);background:transparent;border:0;box-shadow:inset 0 0 0 1.5px var(--linie);font:inherit;font-size:15.5px;font-weight:600;color:var(--tinte-2);cursor:pointer;transition:box-shadow var(--schnell),color var(--schnell),transform 100ms}
+.ka-leise:hover{box-shadow:inset 0 0 0 1.5px var(--tinte-3);color:var(--tinte)}
+.ka-leise:active,.ka-drop:active{transform:scale(.98)}
+.ka-hilfe{font-size:14.5px;color:var(--tinte-2);margin:0;line-height:1.45}
+.ka-fehler{color:#B23A2A;font-size:14.5px;font-weight:600;margin:0}
+.ka-drop{position:relative;display:grid;place-items:center;gap:6px;text-align:center;min-height:132px;padding:18px;border-radius:var(--radius-klein);border:1.5px dashed var(--tinte-4);background:#fff;cursor:pointer;transition:border-color var(--schnell),background var(--schnell),transform 100ms}
+.ka-drop:hover,.ka-drop.ueber{border-color:var(--bronze);background:var(--bronze-hauch)}
+.ka-drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.ka-drop b{font-size:16.5px}
+.ka-drop small{font-size:14px;color:var(--tinte-2)}
+.ka-drop.hat{border-style:solid;border-color:var(--tinte)}
+.ka-drop:focus-within{outline:2px solid var(--bronze);outline-offset:2px}
+.ka-code-chip{display:inline-flex;align-items:center;gap:8px;align-self:start;justify-self:start;padding:8px 14px;border-radius:var(--pille);background:var(--bronze-hauch);color:var(--bronze-tief);font-weight:700;font-size:14.5px}
+.ka-recht{font-size:13.5px;color:var(--tinte-2);margin:0;line-height:1.45}
+.ka-recht a{text-decoration:underline}
+.ka-fertig{display:grid;gap:12px;padding:6px 0}
+.ka-fertig h3{font-size:clamp(24px,2.4vw,30px);letter-spacing:-.025em;line-height:1.1;margin:0}
+.ka-fertig p{margin:0;color:var(--tinte-2)}
+.ka-fertig .btn{justify-self:start}
+.ka-bot{position:absolute!important;left:-9999px!important;width:1px;height:1px;overflow:hidden}
+.ka-refs .projekte{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:900px){.ka-raster{grid-template-columns:1fr}.ka-refs .projekte{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.ka-refs .projekte{grid-template-columns:1fr}.ka-knoepfe .btn,.ka-knoepfe .ka-leise{flex:1 1 100%;justify-content:center}.ka-fertig .btn{justify-self:stretch;justify-content:center}}
+@media (prefers-reduced-motion:reduce){.ka-drop,.ka-leise{transition:none}}

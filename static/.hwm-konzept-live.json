@@ -1,5 +1,5 @@
 {
- "stand": "2026-09-29T19:17:39",
+ "stand": "2026-09-29T19:46:01",
  "seiten": [
   "ausgelastet-trotzdem-werbung/index.html",
   "bei-google-gefunden-werden-handwerker/index.html",
@@ -15,6 +15,7 @@
   "impressum/index.html",
   "index.html",
   "kontakt/index.html",
+  "konzept/index.html",
   "kosten-mitarbeitergewinnung-social-media/index.html",
   "mitarbeitergewinnung/index.html",
   "muessen-handwerker-auf-instagram/index.html",
@@ -321,6 +322,8 @@
   "static/assets/img/work/web/nachher-12.webp",
   "static/assets/img/work/web/nachher-14.webp",
   "static/assets/img/work/web/nachher-8.webp",
+  "static/assets/konzept/konzept.css",
+  "static/assets/konzept/konzept.js",
   "static/assets/vid/baureize.mp4",
   "static/assets/vid/benjamin-schirm.mp4",
   "static/assets/vid/cs-metall.mp4",
