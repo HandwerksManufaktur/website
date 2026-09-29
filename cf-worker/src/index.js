@@ -343,6 +343,41 @@ async function handleUploadChunk(request, env) {
   throw new Error(`Chunk upload failed ${res.status}: ${txt}`);
 }
 
+/* ---------------- Interner Mailweg für andere Worker (angebot-worker) ---------------- */
+function gleichZeit(a, b) {
+  if (typeof a !== 'string' || typeof b !== 'string' || !a || a.length !== b.length) return false;
+  let d = 0;
+  for (let i = 0; i < a.length; i++) d |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return d === 0;
+}
+async function handleInternMail(request, env) {
+  if (!env.INTERN_MAIL_SECRET || !gleichZeit(request.headers.get('x-intern-mail-secret') || '', env.INTERN_MAIL_SECRET)) {
+    return new Response('Not found', { status: 404, headers: CORS });
+  }
+  if (!env.RESEND_API_KEY) return jsonResp({ error: 'RESEND_API_KEY fehlt' }, 500);
+  const b = await request.json().catch(() => null);
+  if (!b || !b.subject || !(b.html || b.text) || !b.to) return jsonResp({ error: 'from, to, subject, html/text nötig' }, 400);
+  const from = String(b.from || '');
+  if (!/@handwerksmanufaktur\.digital>?$/.test(from)) return jsonResp({ error: 'Absender nicht erlaubt' }, 400);
+  const liste = (x) => (Array.isArray(x) ? x : x ? [x] : []).map(String).slice(0, 10);
+  const body = { from, to: liste(b.to), subject: String(b.subject).slice(0, 300) };
+  if (b.reply_to) body.reply_to = b.reply_to;
+  if (b.cc) body.cc = liste(b.cc);
+  if (b.bcc) body.bcc = liste(b.bcc);
+  if (b.html) body.html = String(b.html);
+  if (b.text) body.text = String(b.text);
+  if (Array.isArray(b.attachments) && b.attachments.length) {
+    body.attachments = b.attachments.slice(0, 5).map((a) => ({ filename: String(a.filename || 'anhang.pdf'), content: String(a.content || '') }));
+  }
+  const r = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  const txt = await r.text();
+  return new Response(txt, { status: r.ok ? 200 : 502, headers: { ...CORS, 'Content-Type': 'application/json' } });
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
@@ -353,6 +388,10 @@ export default {
     try {
       const p = url.pathname;
       // 🎁 Aktionsseite /konzept (29.09.2026): Anfrage → Close-Lead + Mails + D1 (src/konzept.js)
+      // ✉️ Interner Mailweg (30.09.2026): der angebot-worker hat keinen Resend-Schlüssel und
+      // schickt seine Mails über dieses Service-Binding. Nur mit INTERN_MAIL_SECRET, nur von
+      // @handwerksmanufaktur.digital — sonst wäre das ein offenes Mail-Relay.
+      if (p === '/intern/mail') return handleInternMail(request, env);
       if (p === '/konzept-anfrage') return handleKonzeptAnfrage(request, env);
       if (p === '/create-folders'  || p === '/api/create-folders')  return handleCreateFolders(request, env, ctx);
       // Subtasks + Checklisten für EINEN Projekt-Task. Bewusst ein eigener Request:
