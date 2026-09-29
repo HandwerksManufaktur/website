@@ -74,3 +74,33 @@
   });
   zeig(0, false);
 })();
+
+/* 🎁 Geschenk-Fenster (30.09.2026, Noah: „wenn die kurz auf der Seite sind, dann ploppt es auf … nach 15 Sekunden").
+   Geht auf, sobald der Besucher 15 s auf der Seite ist UND mindestens einmal gescrollt hat — einmal je Sitzung.
+   Danach bleibt unten links ein kleiner Knopf, der es wieder öffnet. Nie beim Laden, nie zweimal ungefragt. */
+(() => {
+  const d = document.querySelector('dialog.lp-geschenk'); if (!d) return;
+  const knopf = document.querySelector('.lg-knopf');
+  const MERK = 'hwm-geschenk';
+  const gesehen = () => { try { return sessionStorage.getItem(MERK) === '1'; } catch (e) { return false; } };
+  const merken = () => { try { sessionStorage.setItem(MERK, '1'); } catch (e) {} };
+  const auf = (quelle) => {
+    if (d.open) return;
+    d.showModal(); d.classList.add('an'); merken();
+    document.dispatchEvent(new CustomEvent('hwm:geschenk', { detail: { quelle } }));
+  };
+  const zu = () => { d.classList.remove('an'); d.close(); knopf.hidden = false; };
+  d.querySelector('.lg-zu').addEventListener('click', zu);
+  d.addEventListener('cancel', e => { e.preventDefault(); zu(); });
+  d.addEventListener('click', e => { if (e.target === d) zu(); });
+  d.querySelector('.lg-los').addEventListener('click', () => {
+    d.querySelector('.lg-auf').hidden = true; const f = d.querySelector('.lg-form'); f.hidden = false;
+    const b = f.querySelector('.lp-wahl button, input.ka-feld'); if (b) b.focus({ preventScroll: true });
+  });
+  knopf.addEventListener('click', () => auf('knopf'));
+  if (gesehen()) { knopf.hidden = false; return; }
+  let gescrollt = false, zeitUm = false;
+  const pruef = () => { if (gescrollt && zeitUm && !gesehen()) auf('automatisch'); };
+  addEventListener('scroll', () => { if (scrollY > 200) { gescrollt = true; pruef(); } }, { passive: true });
+  setTimeout(() => { zeitUm = true; pruef(); }, 15000);
+})();
