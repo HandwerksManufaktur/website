@@ -3038,3 +3038,7 @@ html.rd-offen{overflow:hidden}
 .fb-l .fb-schirm{transform:rotate(-3deg)}
 .fb-r .fb-schirm{transform:rotate(3deg)}
 @media (max-width:900px){.fb-l,.fb-r,.fb-l .fb-schirm,.fb-r .fb-schirm{transform:none}}
+/* Zitat unter den Wegen: Bezug vor dem Zitat, Foto statt Symbol (29.09.2026) */
+.wege-ende .we-wer{margin:0 0 6px;font-size:14px;color:var(--tinte-3)}
+.we-gesicht{width:64px;height:64px;border-radius:50%;object-fit:cover;object-position:50% 25%}
+.kt-haken{display:none}
