@@ -2974,3 +2974,6 @@ html.rd-offen{overflow:hidden}
 @media (max-width:640px){.fuss .oben:has(.fuss-rg){grid-template-columns:1fr}}
 .rg-karte.gross h3{color:var(--papier)}
 .rg-gruppe .rg-kat{display:none}
+.rg-shk{margin-top:clamp(40px,4vw,56px);padding:20px 24px;border-radius:var(--radius);background:var(--papier-2)}
+.rg-shk b{display:block;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--bronze-tief);margin-bottom:10px}
+.rg-shk ul{list-style:none;padding:0;margin:0;gap:8px}
