@@ -2633,7 +2633,7 @@ a.team-karte{color:inherit;text-decoration:none}
 .rd-danke p{color:var(--tinte-3);margin:8px 0 18px}
 html.rd-offen{overflow:hidden}
 .rd-radar{text-align:center;padding:4px 0 2px}
-.rd-radar svg{width:200px;height:200px;display:block;margin:0 auto 14px}
+.rd-radar>svg{width:200px;height:200px;display:block;margin:0 auto 14px}  /* 🔴 29.09.2026: „.rd-radar svg" traf auch den Pfeil im Weiter-Knopf → Knopf 242 px hoch */
 .rd-radar .rr{fill:none;stroke:var(--papier-3);stroke-width:1.2}
 .rd-radar .rd-sweep{transform-origin:110px 110px;animation:rd-sweep 1.3s linear infinite}
 @keyframes rd-sweep{to{transform:rotate(360deg)}}
