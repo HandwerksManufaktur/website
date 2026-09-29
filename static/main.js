@@ -671,7 +671,12 @@ const rechnerStarten = (dlg) => {
   const d = {}; let akt = 1; const MAX = 9; let uhr = 0; let beruehrt = false;
   const eur = n => Math.round(n).toLocaleString('de-DE') + ' €';
   const spur = (name, extra) => { try { (window.dataLayer = window.dataLayer || []).push(Object.assign({ event: name, rechner: inline ? 'seite' : 'popup' }, extra || {})); } catch (e) {} };
+  // 🔴 Noah, 29.09.2026: „das muss noch ein bisschen smoother sein" — beim Schrittwechsel sprang das Fenster in der Höhe
+  //    (height:fit-content) und zentrierte sich ruckartig neu. Jetzt gleitet die Höhe vom alten zum neuen Maß.
+  const ruhigM = matchMedia('(prefers-reduced-motion: reduce)');
+  let hoeheAnim = null;
   const zeig = n => {
+    const h0 = dlg.getBoundingClientRect().height;
     akt = n; schritte.forEach(s => { const an = +s.dataset.schritt === n; s.hidden = !an; s.classList.toggle('an', an); });
     balken.style.transform = `scaleX(${Math.min(n, MAX) / MAX})`;
     zurueck.hidden = n === 1 || n === 7 || n === 10;
@@ -682,6 +687,13 @@ const rechnerStarten = (dlg) => {
       const ruhig = matchMedia('(prefers-reduced-motion: reduce)').matches;
       const lauf = t => { const p = ruhig ? 1 : Math.min(1, (t - t0) / 900); sum.textContent = eur(ziel * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(lauf); };
       requestAnimationFrame(lauf); const bl = $('[data-beleg]'); bl.textContent = b ? bl.dataset.belegB : bl.dataset.belegA; }
+    const h1 = dlg.getBoundingClientRect().height;
+    if (h0 > 0 && Math.abs(h1 - h0) > 2 && !ruhigM.matches && dlg.animate) {
+      if (hoeheAnim) hoeheAnim.cancel();
+      dlg.style.overflow = 'hidden';
+      hoeheAnim = dlg.animate([{ height: h0 + 'px' }, { height: h1 + 'px' }], { duration: 380, easing: 'cubic-bezier(.22,.8,.24,1)' });
+      hoeheAnim.onfinish = hoeheAnim.oncancel = () => { dlg.style.overflow = ''; hoeheAnim = null; };
+    }
     // Auf der Seite nie von selbst ins Feld springen (sonst scrollt die Seite beim Laden weg)
     const f = $('.rd-schritt.an input'); if (f && (beruehrt || !inline)) setTimeout(() => f.focus({ preventScroll: inline }), 60);
     if (beruehrt || !inline) spur('rechner_schritt', { schritt: n });
@@ -689,7 +701,10 @@ const rechnerStarten = (dlg) => {
   if (inline) { zeig(1); dlg.addEventListener('pointerdown', () => { beruehrt = true; }, { once: true }); dlg.addEventListener('keydown', () => { beruehrt = true; }, { once: true }); }
   else {
     const oeffne = () => { if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', ''); document.documentElement.classList.add('rd-offen'); beruehrt = true; zeig(1); spur('rechner_offen'); };
-    const zu = () => { if (dlg.close) dlg.close(); else dlg.removeAttribute('open'); document.documentElement.classList.remove('rd-offen'); };
+    // Schließen mit derselben Bewegung rückwärts statt schlagartig weg
+    const zu = () => { const ende = () => { if (dlg.close) dlg.close(); else dlg.removeAttribute('open'); document.documentElement.classList.remove('rd-offen'); };
+      if (ruhigM.matches || !dlg.animate) return ende();
+      dlg.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateY(12px) scale(.98)' }], { duration: 220, easing: 'cubic-bezier(.4,0,1,1)' }).onfinish = ende; };
     document.addEventListener('click', e => { const t = e.target.closest('[data-rechner], a[href="#rechner-auf"]'); if (!t) return;
       // Steht der Rechner auf dieser Seite offen da, dorthin scrollen statt das Fenster zu öffnen
       const block = document.querySelector('.rd-inline'); e.preventDefault();
@@ -704,7 +719,7 @@ const rechnerStarten = (dlg) => {
   $$('.rd-wahl button').forEach(b => b.addEventListener('click', () => {
     beruehrt = true; d[b.dataset.feld] = b.dataset.wert;
     $$(`.rd-wahl button[data-feld="${b.dataset.feld}"]`).forEach(x => x.classList.toggle('an', x === b));
-    setTimeout(() => zeig(akt + 1), 180);
+    setTimeout(() => zeig(akt + 1), 220);
   }));
   const radar = () => {
     const r = $('[data-radar]'), ok = $('.rd-radar-ok', r), t = $('[data-radar-text]', r);

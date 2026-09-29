@@ -1991,9 +1991,9 @@ a.team-karte{color:inherit;text-decoration:none}
 /* Kontakt: rechte Spalte wächst mit der Collage auf die Höhe der Noah-Karte */
 .direkt-raster{align-items:stretch}
 .direkt-rechts{display:flex;flex-direction:column;gap:var(--gap)}
-.collage.klein{grid-template-rows:repeat(2,minmax(0,1fr));flex:1;min-height:180px}
+.collage.klein{grid-template-rows:repeat(3,minmax(0,1fr));flex:1;min-height:180px}
 .collage.klein img{aspect-ratio:auto;height:100%}
-@media (max-width:1000px){.collage.klein{flex:none}}
+@media (max-width:1000px){.collage.klein{flex:none;grid-template-rows:none}.collage.klein img{aspect-ratio:1/1;height:auto}}
 @media (prefers-reduced-motion:reduce){.collage img{transition:none}}
 /* Runde 13: WhatsApp-Hinweis unten rechts */
 .wa-marke{position:fixed;right:16px;bottom:16px;z-index:86;display:flex;align-items:center;gap:4px;padding:6px 6px 6px 8px;border-radius:var(--pille);background:#fff;box-shadow:0 0 0 1px rgba(22,19,14,.08),0 18px 40px -18px rgba(22,19,14,.45);opacity:0;transform:translateY(16px) scale(.96);pointer-events:none;transition:opacity .35s var(--ease),transform .35s var(--ease)}
@@ -2586,8 +2586,10 @@ a.team-karte{color:inherit;text-decoration:none}
 /* ---- Potenzial-Rechner (Runde 17) — Bauform von der SHK-Seite, Farben aus dem HWM-Branding ---- */
 .rd{width:min(560px,calc(100vw - 32px));max-height:calc(100dvh - 32px);border:0;padding:0;border-radius:var(--radius);background:var(--papier);color:var(--tinte);box-shadow:0 40px 90px -30px rgba(22,19,14,.6);overflow:auto;margin:auto;position:fixed;inset:0;height:fit-content}
 .rd::backdrop{background:rgba(22,19,14,.55)}
-.rd[open]{animation:rd-auf .35s var(--ease)}
-@keyframes rd-auf{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+.rd[open]{animation:rd-auf .42s cubic-bezier(.22,.8,.24,1)}
+.rd::backdrop{animation:rd-schleier .42s ease}
+@keyframes rd-schleier{from{opacity:0}to{opacity:1}}
+@keyframes rd-auf{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:none}}
 .rd-form{padding:22px 26px 26px;position:relative}
 .rd-honig{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 .rd-kopf{display:flex;align-items:center;justify-content:space-between;gap:12px}
@@ -2598,8 +2600,9 @@ a.team-karte{color:inherit;text-decoration:none}
 .rd-balken{height:4px;border-radius:99px;background:var(--papier-3);margin:14px 0 22px;overflow:hidden}
 .rd-balken i{display:block;height:100%;background:var(--bronze);transform-origin:left;transform:scaleX(.11);transition:transform .4s var(--ease)}
 .rd-schritt h3{font-size:clamp(22px,3vw,28px);line-height:1.2;letter-spacing:-.02em;margin:0 0 18px}
-.rd-schritt.an{animation:rd-schritt .35s var(--ease)}
-@keyframes rd-schritt{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+.rd-schritt.an{animation:rd-schritt .42s cubic-bezier(.22,.8,.24,1) .06s both}
+@keyframes rd-schritt{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.rd[open],.rd::backdrop,.rd-schritt.an{animation:none}}
 .rd-wahl{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .rd-wahl button{display:flex;align-items:center;justify-content:center;gap:10px;min-height:60px;padding:10px 14px;border-radius:var(--radius-klein);border:1.5px solid var(--papier-3);background:#fff;font:inherit;font-weight:700;font-size:16px;color:var(--tinte);text-align:center;cursor:pointer;transition:border-color .2s,background .2s,transform .2s var(--ease)}
 .rd-wahl button:hover{border-color:var(--tinte)}
