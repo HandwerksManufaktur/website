@@ -21,8 +21,8 @@ const GA4 = 'G-NQNECGN6HT';
 const HOTJAR = 'https://t.contentsquare.net/uxa/99d8993a2bc41.js';
 const SCHLUESSEL = 'cookie-consent';
 /* ---- Google Ads: leer = nichts wird für Ads geladen oder gefeuert ---- */
-const ADS_ID = '';            // z. B. 'AW-1234567890' (Konto wird erst angelegt)
-const ADS_LABEL = '';         // Conversion-Label „Lead" (Primärziel, bei hwm:lead)
+const ADS_ID = 'AW-17920994298';            // z. B. 'AW-1234567890' (Konto wird erst angelegt)
+const ADS_LABEL = 'SOr3CN6tj4sdEPrXsuFC';         // Conversion-Label „Lead" (Primärziel, bei hwm:lead)
 const ADS_LABELS = { termin_klick: '', anruf_klick: '' };  // sekundäre Ziele, je ein Label; leer = keine eigene Conversion
 const KLICK_NUR_MIT_EINWILLIGUNG = false;
 const KLICK = 'hwm-klick';
