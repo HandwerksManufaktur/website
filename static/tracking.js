@@ -5,6 +5,14 @@
    • Hotjar über Contentsquare (dasselbe Tag wie auf firma/website) = Heatmaps, Scrolltiefe, Aufnahmen
    • Beides lädt NUR nach „Alle akzeptieren" (§ 25 TDDDG). Schlüssel `cookie-consent` wie auf der
      alten Seite, damit eine dort gegebene Wahl hier gilt.
+   • Google Ads (30.09.2026, vorbereitet, INERT): solange ADS_ID leer ist, lädt und feuert für Ads nichts. Mit ADS_ID:
+     Consent-Update → gtag('config', ADS_ID) → Conversion bei „hwm:lead" (ADS_LABEL) und je Ereignis-Label (ADS_LABELS).
+     Consent Mode v2: der Default steht VOR jedem Google-Tag und steht überall auf „denied"; erst „Alle akzeptieren"
+     stellt per gtag('consent','update') auf „granted" (analytics_storage, ad_storage, ad_user_data, ad_personalization).
+   • Klick-Kennungen (gclid, gbraid, wbraid, utm_*) werden beim Aufruf in sessionStorage `hwm-klick` gemerkt — nur als
+     Vorbefüllwert fürs Formular, kein Cookie, nichts wird gesendet. Weitergegeben werden sie an Close erst mit dem
+     Absenden des Formulars (Einwilligung in die Kontaktaufnahme; lp.js / konzept.js hängen sie an den Versand).
+     🔴 Datenschutz offen (Strategie Z. 238): soll das Merken erst nach „Alle akzeptieren" passieren, KLICK_NUR_MIT_EINWILLIGUNG = true.
    • Außerhalb der echten Domain lädt nichts (die Konzept-Vorschau auf localhost soll die Zahlen nicht
      verfälschen) — außer mit ?tracking=test, das gilt dann für die Sitzung. */
 (() => {
@@ -12,6 +20,13 @@
 const GA4 = 'G-NQNECGN6HT';
 const HOTJAR = 'https://t.contentsquare.net/uxa/99d8993a2bc41.js';
 const SCHLUESSEL = 'cookie-consent';
+/* ---- Google Ads: leer = nichts wird für Ads geladen oder gefeuert ---- */
+const ADS_ID = '';            // z. B. 'AW-1234567890' (Konto wird erst angelegt)
+const ADS_LABEL = '';         // Conversion-Label „Lead" (Primärziel, bei hwm:lead)
+const ADS_LABELS = { termin_klick: '', anruf_klick: '' };  // sekundäre Ziele, je ein Label; leer = keine eigene Conversion
+const KLICK_NUR_MIT_EINWILLIGUNG = false;
+const KLICK = 'hwm-klick';
+const KLICK_FELDER = ['gclid', 'gbraid', 'wbraid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
 const lies = () => { try { return localStorage.getItem(SCHLUESSEL); } catch (e) { return null; } };
 const schreib = w => { try { localStorage.setItem(SCHLUESSEL, w); } catch (e) {} };
 let test = false;
@@ -21,20 +36,43 @@ try {
 } catch (e) {}
 const echt = /(^|\.)handwerksmanufaktur\.digital$/.test(location.hostname) || test;
 
+/* Klick-Kennungen merken (nur sessionStorage, unabhängig vom Laden der Dienste). Neue Kennung schlägt die alte. */
+function klickMerken() {
+  try {
+    const q = new URLSearchParams(location.search), neu = {};
+    KLICK_FELDER.forEach(k => { const v = (q.get(k) || '').replace(/[^\w.\-~%+]/g, '').slice(0, 200); if (v) neu[k] = v; });
+    if (Object.keys(neu).length) sessionStorage.setItem(KLICK, JSON.stringify(neu));
+  } catch (e) {}
+}
+if (!KLICK_NUR_MIT_EINWILLIGUNG || lies() === 'accepted') klickMerken();
+
 window.dataLayer = window.dataLayer || [];
 function gtag() { dataLayer.push(arguments); }
 window.gtag = window.gtag || gtag;
 let geladen = false;
 function laden() {
   if (geladen || !echt) return; geladen = true;
-  gtag('consent', 'default', { analytics_storage: 'granted', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
+  // Consent Mode v2: Default VOR jedem Google-Tag, alles „denied". laden() läuft nur nach „Alle akzeptieren" —
+  // das Update direkt danach stellt auf „granted".
+  gtag('consent', 'default', { analytics_storage: 'denied', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
   gtag('js', new Date());
+  gtag('consent', 'update', { analytics_storage: 'granted', ad_storage: 'granted', ad_user_data: 'granted', ad_personalization: 'granted' });
   gtag('config', GA4, { debug_mode: test });
+  if (ADS_ID) gtag('config', ADS_ID);
   const g = document.createElement('script'); g.async = true; g.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA4; document.head.appendChild(g);
   const h = document.createElement('script'); h.async = true; h.src = HOTJAR; document.head.appendChild(h);
+  if (KLICK_NUR_MIT_EINWILLIGUNG) klickMerken();
 }
 /* Ereignis nur senden, wenn eingewilligt und geladen — sonst geht nichts raus. */
-function ereignis(name, daten) { if (geladen) gtag('event', name, Object.assign({ seite: location.pathname }, daten || {})); }
+function ereignis(name, daten) {
+  if (!geladen) return;
+  gtag('event', name, Object.assign({ seite: location.pathname }, daten || {}));
+  // Ads: Primärziel = Lead; sekundär = Ereignisse mit eigenem Label. Ohne ADS_ID (bzw. Label) passiert hier nichts.
+  if (ADS_ID) {
+    const label = name === 'generate_lead' ? ADS_LABEL : (ADS_LABELS[name] || '');
+    if (label) gtag('event', 'conversion', { send_to: ADS_ID + '/' + label });
+  }
+}
 
 /* ---- Hinweis unten ---- */
 let box = null;

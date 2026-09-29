@@ -16,6 +16,16 @@
     const chip = $('.ka-code-chip'); chip.hidden = false; $('b', chip).textContent = code;
   }
 
+  // 📈 Google Ads (30.09.2026): Klick-Kennungen, die tracking.js beim Aufruf in sessionStorage `hwm-klick` gemerkt hat,
+  // reisen erst JETZT mit — mit dem Absenden (Einwilligung in die Kontaktaufnahme). Der Worker legt sie an den Close-Lead.
+  const klickFelder = fd => {
+    try {
+      const k = JSON.parse(sessionStorage.getItem('hwm-klick') || '{}');
+      ['gclid', 'gbraid', 'wbraid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']
+        .forEach(n => { if (k[n]) fd.set(n, String(k[n]).slice(0, 200)); });
+    } catch (e) {}
+  };
+
   const zeig = (k, fokus = true) => {
     n = Math.max(0, Math.min(schritte.length - 1, k));
     schritte.forEach((s, i) => { s.hidden = i !== n; s.classList.toggle('an', i === n); });
@@ -76,6 +86,7 @@
     if (!gueltig()) return;
     const knopf = $('button[type=submit]'); knopf.disabled = true; fehler('');
     const fd = new FormData(f); fd.append('seite', location.pathname + location.search);
+    klickFelder(fd);
     if (!(logo.files && logo.files[0])) fd.delete('logo');
     let j = null;
     try {

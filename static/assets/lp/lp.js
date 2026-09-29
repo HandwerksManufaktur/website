@@ -32,6 +32,16 @@
   };
   const weiter = () => { if (gueltig()) zeig(n + 1); };
 
+  // 📈 Google Ads (30.09.2026): Klick-Kennungen, die tracking.js beim Aufruf in sessionStorage `hwm-klick` gemerkt hat,
+  // reisen erst JETZT mit — mit dem Absenden (Einwilligung in die Kontaktaufnahme). Der Worker legt sie an den Close-Lead.
+  const klickFelder = fd => {
+    try {
+      const k = JSON.parse(sessionStorage.getItem('hwm-klick') || '{}');
+      ['gclid', 'gbraid', 'wbraid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']
+        .forEach(n => { if (k[n]) fd.set(n, String(k[n]).slice(0, 200)); });
+    } catch (e) {}
+  };
+
   // Antipp-Schritte: ein Tipp = Antwort + weiter (kein Extra-Knopf)
   $$('[data-wahl]').forEach(b => b.addEventListener('click', () => {
     const feld = b.dataset.wahl;
@@ -55,6 +65,7 @@
     const fd = new FormData(f);
     const zusatz = Object.entries(antworten).map(([k, v]) => `${k}=${v}`).join('&');
     fd.set('seite', (location.pathname + (zusatz ? '?' + zusatz : '')).slice(0, 200));
+    klickFelder(fd);
     let j = null;
     try {
       const r = await fetch(ZIEL, { method: 'POST', body: fd });
