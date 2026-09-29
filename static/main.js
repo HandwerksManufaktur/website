@@ -747,3 +747,16 @@ const rechnerStarten = (dlg) => {
   });
 };
 document.querySelectorAll('.rd').forEach(rechnerStarten);
+
+/* ---- Ratgeber: Selbsttest-Zähler + Lesebalken (29.09.2026) ---- */
+(() => {
+  document.querySelectorAll('[data-test]').forEach(t => {
+    const z = t.querySelector('[data-test-zahl]');
+    t.addEventListener('change', () => { z.textContent = t.querySelectorAll('input:checked').length; });
+  });
+  const art = document.querySelector('.rg-text'); if (!art) return;
+  const b = document.createElement('div'); b.className = 'rg-lesebalken'; b.setAttribute('aria-hidden', 'true'); document.body.appendChild(b);
+  let lauf = false;
+  const f = () => { lauf = false; const r = art.getBoundingClientRect(); const p = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - innerHeight))); b.style.transform = `scaleX(${p.toFixed(3)})`; };
+  addEventListener('scroll', () => { if (!lauf) { lauf = true; requestAnimationFrame(f); } }, { passive: true }); f();
+})();

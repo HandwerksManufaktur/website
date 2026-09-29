@@ -2977,3 +2977,30 @@ html.rd-offen{overflow:hidden}
 .rg-shk{margin-top:clamp(40px,4vw,56px);padding:20px 24px;border-radius:var(--radius);background:var(--papier-2)}
 .rg-shk b{display:block;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--bronze-tief);margin-bottom:10px}
 .rg-shk ul{list-style:none;padding:0;margin:0;gap:8px}
+/* Ratgeber: Selbsttest + Rechner-Stopp + Frage an Noah (29.09.2026) */
+.rg-stopp{margin-top:clamp(40px,4vw,56px);border-radius:var(--radius);background:var(--tinte);color:var(--papier);overflow:hidden}
+.rg-test{padding:clamp(22px,2.6vw,32px) clamp(22px,2.6vw,32px) 8px}
+.rg-test b{display:block;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--bronze-hell);margin-bottom:6px}
+.rg-test>p{margin:0 0 14px;color:#D9D2C4;font-size:16px}
+.rg-test ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+.rg-test label{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:var(--radius-klein);background:rgba(250,247,241,.06);cursor:pointer;font-size:16.5px;line-height:1.45;color:var(--papier);transition:background var(--schnell)}
+.rg-test label:hover{background:rgba(250,247,241,.11)}
+.rg-test input{appearance:none;flex:none;width:22px;height:22px;margin-top:1px;border-radius:7px;border:1.5px solid rgba(250,247,241,.5);display:grid;place-items:center;transition:background var(--schnell),border-color var(--schnell)}
+.rg-test input:checked{background:var(--bronze);border-color:var(--bronze)}
+.rg-test input:checked::after{content:"✓";color:var(--tinte);font-size:14px;font-weight:800;line-height:1}
+.rg-test .rg-test-stand{margin:12px 0 0;font-size:15px;color:#D9D2C4}
+.rg-test-stand span{font-weight:800;color:var(--bronze-hell)}
+.rg-stopp-knopf{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:clamp(20px,2.4vw,28px) clamp(22px,2.6vw,32px);border-top:1px solid rgba(250,247,241,.1)}
+.rg-stopp-knopf b{display:block;font-size:19px;color:var(--papier);letter-spacing:-.01em}
+.rg-stopp-knopf span{font-size:15px;color:#D9D2C4}
+.rg-stopp-knopf .btn .ic{width:20px;height:20px}
+.rg-frage{border-radius:var(--radius);background:var(--papier-2);padding:clamp(22px,2.6vw,32px)}
+.rg-frage-kopf{display:flex;gap:16px;align-items:center;margin-bottom:18px}
+.rg-frage-kopf img{width:64px;height:64px;border-radius:50%;object-fit:cover;object-position:50% 22%;flex:none}
+.rg-frage-kopf h2{margin:0 0 4px!important}
+.rg-frage-kopf p{margin:0;font-size:16px}
+.rg-frage .sf-form{margin:0}
+.rg-lesebalken{position:fixed;left:0;top:0;height:3px;width:100%;transform-origin:0 50%;transform:scaleX(0);background:var(--bronze);z-index:200;pointer-events:none}
+.rg-stopp .btn.btn-bronze{background:var(--papier);color:var(--tinte);box-shadow:none}
+.rg-stopp .btn.btn-bronze:hover{background:var(--bronze-hell);color:var(--tinte)}
+.rg-stopp .btn.btn-bronze svg{color:var(--bronze-tief)}

@@ -85,4 +85,44 @@ document.addEventListener('click', e => {
 }, { capture: true });
 // Runde 18: Lead erst zählen, wenn die Anfrage wirklich angekommen ist (/static/main.js schickt „hwm:lead" nach dem Versand)
 document.addEventListener('hwm:lead', e => ereignis('generate_lead', e.detail || {}));
+
+/* ---- Seiten-Zähler OHNE Cookies (29.09.2026) ----
+   🔴 Noah: „bau da überall nen tracker rein … welche seiten aufrufe bekommen … wo die leute drauf drücken, wie viele, woher".
+   GA4/Hotjar zählen nur nach „Ja" — in 28 Tagen 15 Startseiten-Aufrufe, fast nur Noah. Dieser Zähler speichert NICHTS
+   im Browser (kein Cookie, kein localStorage) und schickt keine Nutzer-Kennung; die Aufruf-Kennung lebt nur im Speicher
+   dieser einen Seite. Gespeichert wird im Worker seiten-zaehler (system/apps/seiten-zaehler): Seite, Ereignis, Klickziel,
+   Herkunfts-Host, Handy/Desktop, Land — keine IP. Läuft nur auf der echten Domain. */
+if (echt && !test) {
+  const Z = 'https://seiten-zaehler.handwerksmanufaktur.workers.dev/z';
+  const id = Math.random().toString(36).slice(2, 12);
+  const geraet = innerWidth < 768 ? 'm' : 'd';
+  const senden = (t, extra) => {
+    const d = JSON.stringify(Object.assign({ t, s: location.hostname, p: location.pathname, g: geraet, id }, extra || {}));
+    try { if (!(navigator.sendBeacon && navigator.sendBeacon(Z, new Blob([d], { type: 'text/plain' })))) fetch(Z, { method: 'POST', body: d, keepalive: true, mode: 'no-cors' }); } catch (x) {}
+  };
+  let ref = 'direkt';
+  try {
+    const q = new URLSearchParams(location.search);
+    if (q.get('utm_source')) ref = 'utm:' + q.get('utm_source');
+    else if (document.referrer) { const h = new URL(document.referrer).hostname.replace(/^www\./, ''); if (h && h !== location.hostname) ref = h; }
+  } catch (x) {}
+  senden('v', { r: ref });
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a, button, summary'); if (!a || a.closest('.cookie-hinweis')) return;
+    const text = (a.getAttribute('aria-label') || a.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 70);
+    const href = a.getAttribute && a.getAttribute('href') || '';
+    const wohin = href.startsWith('tel:') ? ' → Anruf' : href.startsWith('mailto:') ? ' → Mail' : /calendly/.test(href) ? ' → Termin' : '';
+    senden('k', { z: (text || a.tagName.toLowerCase()) + wohin });
+  }, { capture: true });
+  document.addEventListener('hwm:lead', e => senden('f', { z: (e.detail && e.detail.formular) || 'formular' }));
+  const marken = [25, 50, 75, 100], erreicht = new Set();
+  let lauf = false;
+  const tiefe = () => {
+    lauf = false;
+    const h = document.documentElement.scrollHeight - innerHeight; if (h <= 0) return;
+    const p = Math.round(scrollY / h * 100);
+    marken.forEach(m => { if (p >= m - 2 && !erreicht.has(m)) { erreicht.add(m); senden('l', { z: String(m) }); } });
+  };
+  addEventListener('scroll', () => { if (!lauf) { lauf = true; requestAnimationFrame(tiefe); } }, { passive: true });
+}
 })();
