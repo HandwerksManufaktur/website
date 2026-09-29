@@ -45,3 +45,4 @@
 @media (max-width:900px){.ka-raster{grid-template-columns:1fr}.ka-refs .projekte{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:560px){.ka-refs .projekte{grid-template-columns:1fr}.ka-knoepfe .btn,.ka-knoepfe .ka-leise{flex:1 1 100%;justify-content:center}.ka-fertig .btn{justify-self:stretch;justify-content:center}}
 @media (prefers-reduced-motion:reduce){.ka-drop,.ka-leise{transition:none}}
+.ka-fertig h3:focus{outline:none}
