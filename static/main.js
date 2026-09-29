@@ -724,8 +724,8 @@ const rechnerStarten = (dlg) => {
   const radar = () => {
     const r = $('[data-radar]'), ok = $('.rd-radar-ok', r), t = $('[data-radar-text]', r);
     const ort = form.elements.ort.value.trim(), plz = form.elements.plz.value.trim();
-    clearTimeout(uhr); r.classList.remove('fertig'); ok.hidden = true; t.hidden = false; t.textContent = `Umkreis ${plz} ${ort} wird geprüft …`;
-    uhr = setTimeout(() => { r.classList.add('fertig'); t.hidden = true; ok.hidden = false; $('[data-radar-titel]', r).textContent = `Im Umkreis um ${ort} ist das möglich.`; const k = $('button', ok); if (k) k.focus({ preventScroll: inline }); spur('rechner_radar', { plz }); }, matchMedia('(prefers-reduced-motion: reduce)').matches ? 400 : 2600);
+    clearTimeout(uhr); r.classList.remove('fertig'); ok.hidden = true; t.hidden = false; t.textContent = `Umkreis ${plz} ${ort} wird vorgemerkt …`;
+    uhr = setTimeout(() => { r.classList.add('fertig'); t.hidden = true; ok.hidden = false; $('[data-radar-titel]', r).textContent = `${ort} ist vorgemerkt.`; const k = $('button', ok); if (k) k.focus({ preventScroll: inline }); spur('rechner_radar', { plz }); }, matchMedia('(prefers-reduced-motion: reduce)').matches ? 300 : 1400);
   };
   $$('[data-weiter]').forEach(b => b.addEventListener('click', () => {
     let leer = null;

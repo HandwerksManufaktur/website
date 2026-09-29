@@ -3042,3 +3042,4 @@ html.rd-offen{overflow:hidden}
 .wege-ende .we-wer{margin:0 0 6px;font-size:14px;color:var(--tinte-3)}
 .we-gesicht{width:64px;height:64px;border-radius:50%;object-fit:cover;object-position:50% 25%}
 .kt-haken{display:none}
+.rd-ergebnis .rd-grob{margin:-4px 0 10px;font-weight:500;font-size:13px}
