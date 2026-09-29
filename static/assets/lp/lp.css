@@ -1,0 +1,84 @@
+/* 📍 Stadt- und Gewerkseiten (29.09.2026) — nur diese Seiten laden das. Formular-Grundform aus konzept.css (.ka-form). */
+
+/* Klick-Strecke im Hero */
+.lp-form{box-shadow:none;padding:clamp(20px,2.4vw,30px)}
+.lp-form .sf-balken i{transform:scaleX(.14)}
+.lp-form .sf-frage{font-size:clamp(20px,1.9vw,24px);font-weight:800;letter-spacing:-.02em;line-height:1.2;margin:0 0 4px}
+.lp-wahl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.lp-wahl.eins{grid-template-columns:1fr}
+.lp-wahl button{display:flex;align-items:center;gap:10px;min-height:56px;padding:12px 18px;border-radius:var(--pille);border:0;background:var(--papier-2);box-shadow:inset 0 0 0 1.5px var(--linie);font:inherit;font-size:16px;font-weight:650;color:var(--tinte);text-align:left;cursor:pointer;letter-spacing:.005em;transition:box-shadow var(--schnell),background var(--schnell),transform 100ms}
+.lp-wahl button:hover{box-shadow:inset 0 0 0 1.5px var(--tinte-3);background:#fff}
+.lp-wahl button:active{transform:scale(.98)}
+.lp-wahl button.gewaehlt{box-shadow:inset 0 0 0 2px var(--tinte);background:#fff}
+.lp-wahl .em{font-size:20px;line-height:1}
+.lp-versprechen{display:flex;flex-wrap:wrap;gap:6px 14px;margin:0;padding:0 clamp(20px,2.4vw,30px) clamp(18px,2vw,24px);list-style:none;font-size:14px;color:var(--tinte-2);letter-spacing:.01em}
+.lp-versprechen li::before{content:"✓ ";color:var(--gruen);font-weight:800}
+.ka-fertig h3{font-size:24px;letter-spacing:-.02em;margin:0 0 8px}
+.ka-fertig p{margin:0 0 14px;color:var(--tinte-2)}
+
+/* Referenz-Karten (Betriebe ohne eigene Bildschirmaufnahme) */
+.lp-kunden{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
+.lp-kunde{display:grid;gap:14px;align-content:start;background:var(--papier);border-radius:var(--radius);padding:var(--pad);box-shadow:0 0 0 1px rgba(22,19,14,.07);transition:transform var(--schnell),box-shadow var(--schnell)}
+.lp-kunde:hover{transform:translateY(-3px);box-shadow:0 0 0 1px rgba(22,19,14,.1),0 24px 44px -30px rgba(22,19,14,.45)}
+.lp-kunde:active{transform:scale(.99)}
+.lp-kunde .lk-kopf{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:56px}
+.lp-kunde .lk-logo{height:48px;max-width:140px;display:flex;align-items:center;flex:none}
+.lp-kunde .lk-logo img{max-height:48px;max-width:140px;width:auto;height:auto;object-fit:contain}
+.lp-kunde .lk-logo.dunkel{background:var(--tinte);border-radius:var(--radius-klein);padding:8px 12px}
+.lp-kunde .lk-logo.dunkel img{max-height:32px}
+.lp-kunde .lk-ini{width:48px;height:48px;border-radius:50%;background:var(--tinte);color:var(--papier);display:grid;place-items:center;font-weight:800;font-size:15px}
+.lp-kunde b.lk-name{font-size:18px;letter-spacing:-.01em;display:block}
+.lp-kunde .lk-ort{font-size:14px;color:var(--tinte-3);letter-spacing:.01em}
+.lp-kunde .lk-platz{display:inline-flex;align-items:center;gap:8px;align-self:start;justify-self:start;padding:8px 12px;border-radius:var(--pille);background:var(--bronze-hauch);color:var(--bronze-tief);font-size:14px;font-weight:700;letter-spacing:.01em}
+.lp-kunde .lk-platz.eins{background:var(--bronze);color:var(--tinte)}
+.lp-kunde blockquote{margin:0;font-size:15.5px;line-height:1.5;color:var(--tinte-2)}
+.lp-kunde blockquote .stern{display:block;color:var(--bronze);letter-spacing:.06em;margin-bottom:6px}
+.lp-kunde .textlink{font-size:15px;min-height:44px;display:inline-flex;align-items:center}
+
+/* Google-Treffer aus der Region */
+.lp-google{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap)}
+.lp-treffer{display:grid;gap:10px;background:#fff;border-radius:var(--radius);padding:var(--pad);box-shadow:0 0 0 1px rgba(22,19,14,.07);color:var(--tinte);text-decoration:none;transition:transform var(--schnell),box-shadow var(--schnell)}
+.lp-treffer:hover{transform:translateY(-3px);box-shadow:0 0 0 1px rgba(22,19,14,.1),0 24px 44px -30px rgba(22,19,14,.45)}
+.lp-treffer:active{transform:scale(.99)}
+.lp-treffer .lt-suche{display:flex;align-items:center;gap:10px;min-height:48px;padding:0 16px;border-radius:var(--pille);box-shadow:inset 0 0 0 1.5px var(--linie);font-size:16px;color:var(--tinte)}
+.lp-treffer .lt-suche svg{width:18px;height:18px;flex:none;fill:none;stroke:var(--tinte-3);stroke-width:2}
+.lp-treffer .lt-zeile{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center}
+.lp-treffer .lt-platz{display:grid;place-items:center;min-width:88px;height:44px;border-radius:var(--pille);background:var(--bronze-hauch);color:var(--bronze-tief);font-weight:800;font-size:14.5px}
+.lp-treffer .lt-platz.eins{background:var(--bronze);color:var(--tinte)}
+.lp-treffer b{display:block;font-size:16.5px}
+.lp-treffer small{display:block;font-size:14px;color:var(--gruen);font-weight:600;letter-spacing:.01em}
+.lp-fussnote{margin-top:18px;font-size:14px;color:var(--tinte-3);letter-spacing:.01em}
+
+/* Text neben Bild: was die Seite im Ort leisten muss */
+.lp-ort{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,4vw,64px);align-items:center}
+.lp-ort .lp-bild{border-radius:var(--radius-klein);overflow:hidden;aspect-ratio:4/3;background:var(--papier-2)}
+.lp-ort .lp-bild img{width:100%;height:100%;object-fit:cover;display:block}
+.lp-ort p{font-size:17px;line-height:1.6;color:var(--tinte-2);margin:0 0 14px;max-width:58ch}
+.lp-ort p b{color:var(--tinte)}
+
+/* Querverweise */
+.lp-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(20px,3vw,40px)}
+.lp-links h3{font-size:18px;letter-spacing:-.01em;margin:0 0 12px}
+.lp-chips{display:flex;flex-wrap:wrap;gap:8px}
+.lp-chips a{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:var(--pille);background:var(--papier);box-shadow:inset 0 0 0 1.5px var(--linie);font-size:15px;font-weight:600;color:var(--tinte);text-decoration:none;letter-spacing:.01em;transition:box-shadow var(--schnell),transform 100ms}
+.lp-chips a:hover{box-shadow:inset 0 0 0 1.5px var(--tinte)}
+.lp-chips a:active{transform:scale(.98)}
+
+@media (max-width:1100px){.lp-kunden{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  .lp-kunden,.lp-google,.lp-ort,.lp-links{grid-template-columns:1fr}
+  .lp-wahl button{min-height:52px;padding:10px 14px;font-size:15px}
+  .lp-ort .lp-bild{order:-1}
+}
+
+/* Bild der Kundenkarte: Startbildschirm, bei langen Seitenaufnahmen scrollt es beim Drüberfahren durch */
+.lp-kunde .lk-bild{aspect-ratio:16/10;overflow:hidden;border-radius:var(--radius-klein);background:var(--papier-2);box-shadow:0 0 0 1px rgba(22,19,14,.06)}
+.lp-kunde .lk-bild img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.lp-kunde .lk-bild picture{display:contents}
+@media (hover:hover) and (min-width:761px){.lp-kunde .lk-bild.lang img{height:auto;min-height:100%}}
+@keyframes lk-lauf{to{transform:translateY(calc(-100% + 100cqh))}}
+@media (hover:hover){.lp-kunde:hover .lk-bild.lang img{animation:lk-lauf 5s cubic-bezier(.45,0,.2,1) forwards}}
+@media (prefers-reduced-motion:reduce){.lp-kunde:hover .lk-bild.lang img{animation:none}}
+.lp-kunde .lk-bild{container-type:size}
+
+.lp-form .sf-stand{white-space:nowrap}
