@@ -16,11 +16,11 @@
     const chip = $('.ka-code-chip'); chip.hidden = false; $('b', chip).textContent = code;
   }
 
-  // 📈 Google Ads (30.09.2026): Klick-Kennungen, die tracking.js beim Aufruf in sessionStorage `hwm-klick` gemerkt hat,
+  // 📈 Google Ads (30.09.2026): Klick-Kennungen, die tracking.js beim Aufruf im Speicher der Seite hält (window.hwmKlick()),
   // reisen erst JETZT mit — mit dem Absenden (Einwilligung in die Kontaktaufnahme). Der Worker legt sie an den Close-Lead.
   const klickFelder = fd => {
     try {
-      const k = JSON.parse(sessionStorage.getItem('hwm-klick') || '{}');
+      const k = typeof window.hwmKlick === 'function' ? window.hwmKlick() : JSON.parse(sessionStorage.getItem('hwm-klick') || '{}');
       ['gclid', 'gbraid', 'wbraid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']
         .forEach(n => { if (k[n]) fd.set(n, String(k[n]).slice(0, 200)); });
     } catch (e) {}
@@ -81,9 +81,11 @@
   ['dragenter', 'dragover'].forEach(t => drop.addEventListener(t, () => drop.classList.add('ueber')));
   ['dragleave', 'drop'].forEach(t => drop.addEventListener(t, () => drop.classList.remove('ueber')));
 
+  let laeuft = false;   // In-Flight-Schutz: ein zweites Absenden (Enter während der Antwort) wird verworfen, sonst zwei POSTs + zwei Conversions
   f.addEventListener('submit', async e => {
     e.preventDefault();
-    if (!gueltig()) return;
+    if (laeuft || !gueltig()) return;
+    laeuft = true;
     const knopf = $('button[type=submit]'); knopf.disabled = true; fehler('');
     const fd = new FormData(f); fd.append('seite', location.pathname + location.search);
     klickFelder(fd);
@@ -94,7 +96,7 @@
       j = await r.json().catch(() => null);
       if (!r.ok || !j || !j.ok) throw new Error((j && j.fehler) || 'Versand');
     } catch (x) {
-      knopf.disabled = false;
+      knopf.disabled = false; laeuft = false;
       fehler(x && x.message && x.message !== 'Versand' && x.message !== 'Failed to fetch' ? x.message : 'Das hat gerade nicht geklappt. Ruf gern direkt an: +49 8194 7174990');
       return;
     }

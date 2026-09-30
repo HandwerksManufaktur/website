@@ -32,11 +32,11 @@
   };
   const weiter = () => { if (gueltig()) zeig(n + 1); };
 
-  // 📈 Google Ads (30.09.2026): Klick-Kennungen, die tracking.js beim Aufruf in sessionStorage `hwm-klick` gemerkt hat,
+  // 📈 Google Ads (30.09.2026): Klick-Kennungen, die tracking.js beim Aufruf im Speicher der Seite hält (window.hwmKlick()),
   // reisen erst JETZT mit — mit dem Absenden (Einwilligung in die Kontaktaufnahme). Der Worker legt sie an den Close-Lead.
   const klickFelder = fd => {
     try {
-      const k = JSON.parse(sessionStorage.getItem('hwm-klick') || '{}');
+      const k = typeof window.hwmKlick === 'function' ? window.hwmKlick() : JSON.parse(sessionStorage.getItem('hwm-klick') || '{}');
       ['gclid', 'gbraid', 'wbraid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']
         .forEach(n => { if (k[n]) fd.set(n, String(k[n]).slice(0, 200)); });
     } catch (e) {}
@@ -58,9 +58,11 @@
     if (n < schritte.length - 1) weiter(); else f.requestSubmit();
   });
 
+  let laeuft = false;   // In-Flight-Schutz: ein zweites Absenden (Enter während der Antwort) wird verworfen, sonst zwei POSTs + zwei Conversions
   f.addEventListener('submit', async e => {
     e.preventDefault();
-    if (!gueltig()) return;
+    if (laeuft || !gueltig()) return;
+    laeuft = true;
     const knopf = $('button[type=submit]'); knopf.disabled = true; fehler('');
     const fd = new FormData(f);
     const zusatz = Object.entries(antworten).map(([k, v]) => `${k}=${v}`).join('&');
@@ -72,7 +74,7 @@
       j = await r.json().catch(() => null);
       if (!r.ok || !j || !j.ok) throw new Error((j && j.fehler) || 'Versand');
     } catch (x) {
-      knopf.disabled = false;
+      knopf.disabled = false; laeuft = false;
       fehler(x && x.message && x.message !== 'Versand' && x.message !== 'Failed to fetch' ? x.message : 'Das hat gerade nicht geklappt. Ruf gern direkt an: +49 8194 7174990');
       return;
     }
@@ -86,32 +88,41 @@
   zeig(0, false);
 })();
 
-/* 🎁 Geschenk-Fenster (30.09.2026, Noah: „wenn die kurz auf der Seite sind, dann ploppt es auf … nach 15 Sekunden").
-   Geht auf, sobald der Besucher 15 s auf der Seite ist UND mindestens einmal gescrollt hat — einmal je Sitzung.
-   Danach bleibt unten links ein kleiner Knopf, der es wieder öffnet. Nie beim Laden, nie zweimal ungefragt. */
+/* 🎁 Geschenk-Fenster (30.09.2026). Geht auf, sobald der Besucher 15 s auf der Seite ist UND gescrollt hat — einmal je Sitzung.
+   Runde 3: Wer schließen will (×, Escape, Klick daneben), sieht erst die Warnung „verfällt für diesen Besuch".
+   Bestätigt er, ist es für diese Sitzung weg — kein Knopf, kein zweites Aufgehen. Erst ein neuer Besuch zeigt es wieder. */
 (() => {
   const d = document.querySelector('dialog.lp-geschenk'); if (!d) return;
-  const knopf = document.querySelector('.lg-knopf');
   const MERK = 'hwm-geschenk';
   const gesehen = () => { try { return sessionStorage.getItem(MERK) === '1'; } catch (e) { return false; } };
   const merken = () => { try { sessionStorage.setItem(MERK, '1'); } catch (e) {} };
-  const auf = (quelle) => {
+  const teil = s => d.querySelector(s);
+  let vorher = '.lg-auf';
+  const zeige = s => { ['.lg-auf', '.lg-form', '.lg-warnung'].forEach(x => teil(x).hidden = x !== s); };
+  const auf = () => {
     if (d.open) return;
     d.showModal(); d.classList.add('an'); merken();
-    document.dispatchEvent(new CustomEvent('hwm:geschenk', { detail: { quelle } }));
+    document.dispatchEvent(new CustomEvent('hwm:geschenk', { detail: { schritt: 'auf' } }));
   };
-  const zu = () => { d.classList.remove('an'); d.close(); knopf.hidden = false; };
-  d.querySelector('.lg-zu').addEventListener('click', zu);
-  d.addEventListener('cancel', e => { e.preventDefault(); zu(); });
-  d.addEventListener('click', e => { if (e.target === d) zu(); });
-  d.querySelector('.lg-los').addEventListener('click', () => {
-    d.querySelector('.lg-auf').hidden = true; const f = d.querySelector('.lg-form'); f.hidden = false;
-    const b = f.querySelector('.lp-wahl button, input.ka-feld'); if (b) b.focus({ preventScroll: true });
+  const warnen = () => {
+    if (!teil('.lg-warnung').hidden) return;
+    vorher = teil('.lg-form').hidden ? '.lg-auf' : '.lg-form';
+    const fertig = teil('.ka-fertig'); if (fertig && !fertig.hidden) return schliessen();   // nach dem Absenden ohne Warnung
+    zeige('.lg-warnung'); teil('.lg-zurueck').focus({ preventScroll: true });
+  };
+  const schliessen = () => { d.classList.remove('an'); d.close(); document.dispatchEvent(new CustomEvent('hwm:geschenk', { detail: { schritt: 'verfallen' } })); };
+  teil('.lg-zu').addEventListener('click', warnen);
+  d.addEventListener('cancel', e => { e.preventDefault(); warnen(); });
+  d.addEventListener('click', e => { if (e.target === d) warnen(); });
+  teil('.lg-zurueck').addEventListener('click', () => { zeige(vorher); });
+  teil('.lg-verfallen').addEventListener('click', schliessen);
+  teil('.lg-los').addEventListener('click', () => {
+    zeige('.lg-form');
+    const b = teil('.lg-form .lp-wahl button, .lg-form input.ka-feld'); if (b) b.focus({ preventScroll: true });
   });
-  knopf.addEventListener('click', () => auf('knopf'));
-  if (gesehen()) { knopf.hidden = false; return; }
+  if (gesehen()) return;
   let gescrollt = false, zeitUm = false;
-  const pruef = () => { if (gescrollt && zeitUm && !gesehen()) auf('automatisch'); };
+  const pruef = () => { if (gescrollt && zeitUm && !gesehen()) auf(); };
   addEventListener('scroll', () => { if (scrollY > 200) { gescrollt = true; pruef(); } }, { passive: true });
   setTimeout(() => { zeitUm = true; pruef(); }, 15000);
 })();

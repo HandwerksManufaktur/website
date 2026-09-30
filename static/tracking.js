@@ -9,10 +9,13 @@
      Consent-Update → gtag('config', ADS_ID) → Conversion bei „hwm:lead" (ADS_LABEL) und je Ereignis-Label (ADS_LABELS).
      Consent Mode v2: der Default steht VOR jedem Google-Tag und steht überall auf „denied"; erst „Alle akzeptieren"
      stellt per gtag('consent','update') auf „granted" (analytics_storage, ad_storage, ad_user_data, ad_personalization).
-   • Klick-Kennungen (gclid, gbraid, wbraid, utm_*) werden beim Aufruf in sessionStorage `hwm-klick` gemerkt — nur als
-     Vorbefüllwert fürs Formular, kein Cookie, nichts wird gesendet. Weitergegeben werden sie an Close erst mit dem
-     Absenden des Formulars (Einwilligung in die Kontaktaufnahme; lp.js / konzept.js hängen sie an den Versand).
-     🔴 Datenschutz offen (Strategie Z. 238): soll das Merken erst nach „Alle akzeptieren" passieren, KLICK_NUR_MIT_EINWILLIGUNG = true.
+   • Klick-Kennungen (gclid, gbraid, wbraid, utm_*) nimmt /static/tracking.js beim Aufruf NUR in eine Variable im Speicher dieser
+     einen Seite (window.hwmKlick()) — vor der Einwilligung kein sessionStorage, kein localStorage, kein Cookie (§ 25 TDDDG).
+     Nichts wird gesendet; weitergegeben werden sie an Close erst mit dem Absenden des Formulars (Einwilligung in die
+     Kontaktaufnahme; lp.js / konzept.js lesen window.hwmKlick() und hängen sie an den Versand — auf der Landingpage, wo das
+     Formular steht, klappt das auch ohne „Ja"). In sessionStorage `hwm-klick` wird erst nach „Alle akzeptieren" geschrieben,
+     damit ein Seitenwechsel innerhalb der Sitzung den Klick behält; ein vorhandener Eintrag wird nur GELESEN. Widerruf löscht ihn.
+     Neuer Satz ersetzt den gemerkten nur, wenn er gclid/gbraid/wbraid oder utm_source trägt; sonst werden Schlüssel ergänzt.
    • Außerhalb der echten Domain lädt nichts (die Konzept-Vorschau auf localhost soll die Zahlen nicht
      verfälschen) — außer mit ?tracking=test, das gilt dann für die Sitzung. */
 (() => {
@@ -24,11 +27,13 @@ const SCHLUESSEL = 'cookie-consent';
 const ADS_ID = 'AW-17920994298';            // z. B. 'AW-1234567890' (Konto wird erst angelegt)
 const ADS_LABEL = 'SOr3CN6tj4sdEPrXsuFC';         // Conversion-Label „Lead" (Primärziel, bei hwm:lead)
 const ADS_LABELS = { termin_klick: '', anruf_klick: '' };  // sekundäre Ziele, je ein Label; leer = keine eigene Conversion
-const KLICK_NUR_MIT_EINWILLIGUNG = false;
 const KLICK = 'hwm-klick';
-const KLICK_FELDER = ['gclid', 'gbraid', 'wbraid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+const KLICK_KENNUNGEN = ['gclid', 'gbraid', 'wbraid'];   // streng: nur Buchstaben, Ziffern, _ und -
+const KLICK_UTM = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];   // großzügig: Umlaute, Leerzeichen ok
 const lies = () => { try { return localStorage.getItem(SCHLUESSEL); } catch (e) { return null; } };
 const schreib = w => { try { localStorage.setItem(SCHLUESSEL, w); } catch (e) {} };
+// Einwilligungszustand zusätzlich im Speicher: schlägt localStorage.setItem fehl, gilt trotzdem die Wahl dieser Seite.
+let zustimmung = lies() === 'accepted';
 let test = false;
 try {
   if (new URLSearchParams(location.search).get('tracking') === 'test') sessionStorage.setItem('hm-tracking-test', '1');
@@ -36,15 +41,25 @@ try {
 } catch (e) {}
 const echt = /(^|\.)handwerksmanufaktur\.digital$/.test(location.hostname) || test;
 
-/* Klick-Kennungen merken (nur sessionStorage, unabhängig vom Laden der Dienste). Neue Kennung schlägt die alte. */
+/* Klick-Kennungen: im Speicher dieser Seite (klick), Rückfall aus sessionStorage nur LESEN. Geschrieben wird dorthin
+   erst nach „Alle akzeptieren" (klickSichern). */
+let klick = {};
+try { const alt = JSON.parse(sessionStorage.getItem(KLICK) || '{}'); if (alt && typeof alt === 'object') klick = alt; } catch (e) {}
+function klickSichern() { try { if (zustimmung && Object.keys(klick).length) sessionStorage.setItem(KLICK, JSON.stringify(klick)); } catch (e) {} }
 function klickMerken() {
   try {
     const q = new URLSearchParams(location.search), neu = {};
-    KLICK_FELDER.forEach(k => { const v = (q.get(k) || '').replace(/[^\w.\-~%+]/g, '').slice(0, 200); if (v) neu[k] = v; });
-    if (Object.keys(neu).length) sessionStorage.setItem(KLICK, JSON.stringify(neu));
+    // Kennungen: ganz gültig oder gar nicht — eine „reparierte" Kennung („ab cd" → „abcd") wäre für Googles Import wertlos
+    KLICK_KENNUNGEN.forEach(k => { const v = q.get(k) || ''; if (/^[\w\-]{1,200}$/.test(v)) neu[k] = v; });
+    KLICK_UTM.forEach(k => { const v = (q.get(k) || '').replace(/[\u0000-\u001f\u007f<>"']/g, '').trim().slice(0, 200); if (v) neu[k] = v; });
+    if (!Object.keys(neu).length) return;
+    // ein neuer Satz ersetzt den alten nur, wenn er eine Kennung oder utm_source trägt; sonst werden nur Schlüssel ergänzt
+    klick = (neu.gclid || neu.gbraid || neu.wbraid || neu.utm_source) ? neu : Object.assign({}, klick, neu);
+    klickSichern();
   } catch (e) {}
 }
-if (!KLICK_NUR_MIT_EINWILLIGUNG || lies() === 'accepted') klickMerken();
+window.hwmKlick = () => Object.assign({}, klick);   // die Formulare (lp.js, konzept.js) lesen den Klick hier
+klickMerken();
 
 window.dataLayer = window.dataLayer || [];
 function gtag() { dataLayer.push(arguments); }
@@ -61,16 +76,15 @@ function laden() {
   if (ADS_ID) gtag('config', ADS_ID);
   const g = document.createElement('script'); g.async = true; g.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA4; document.head.appendChild(g);
   const h = document.createElement('script'); h.async = true; h.src = HOTJAR; document.head.appendChild(h);
-  if (KLICK_NUR_MIT_EINWILLIGUNG) klickMerken();
 }
 /* Ereignis nur senden, wenn eingewilligt und geladen — sonst geht nichts raus. */
 function ereignis(name, daten) {
-  if (!geladen) return;
+  if (!geladen || !zustimmung) return;
   gtag('event', name, Object.assign({ seite: location.pathname }, daten || {}));
   // Ads: Primärziel = Lead; sekundär = Ereignisse mit eigenem Label. Ohne ADS_ID (bzw. Label) passiert hier nichts.
   if (ADS_ID) {
     const label = name === 'generate_lead' ? ADS_LABEL : (ADS_LABELS[name] || '');
-    if (label) gtag('event', 'conversion', { send_to: ADS_ID + '/' + label });
+    if (label) gtag('event', 'conversion', Object.assign({ send_to: ADS_ID + '/' + label }, daten && daten.transaction_id ? { transaction_id: daten.transaction_id } : {}));
   }
 }
 
@@ -87,10 +101,19 @@ function hinweis() {
   document.body.appendChild(box);
   box.addEventListener('click', e => {
     const b = e.target.closest('[data-wahl]'); if (!b) return;
-    const w = b.dataset.wahl, vorher = lies(); schreib(w);
+    const w = b.dataset.wahl, vorher = zustimmung || lies() === 'accepted'; schreib(w); zustimmung = w === 'accepted';
+    const gespeichert = lies() === w;   // localStorage kann blockiert sein — dann steht dort noch die alte Wahl
     box.classList.remove('da'); setTimeout(() => { box.hidden = true; }, 300);
-    if (w === 'accepted') laden();
-    else if (vorher === 'accepted' && geladen) location.reload(); // Widerruf: geladene Dienste nur per Neuladen los
+    if (w === 'accepted') { laden(); klickSichern(); }
+    else if (vorher) {
+      // Widerruf nach vorherigem „Ja": Google sofort auf denied, eigene Ereignisse sind gesperrt (zustimmung = false),
+      // gemerkter Klick verschwindet aus dem Browser; geladene Dienste (Hotjar) nur per Neuladen los.
+      // 🔴 Neu geladen wird NUR, wenn das „Nein" auch gespeichert ist — sonst liest die Seite das alte „Ja" und
+      // startet alles wieder (Gegenprobe 30.09.2026). Ohne Speicher bleibt die Seite stehen, gesperrt und auf denied.
+      if (geladen) gtag('consent', 'update', { analytics_storage: 'denied', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
+      try { sessionStorage.removeItem(KLICK); } catch (x) {}
+      if (geladen && gespeichert) location.reload();
+    }
   });
   requestAnimationFrame(() => requestAnimationFrame(() => { box.classList.add('da'); const ja = box.querySelector('.cookie-ja'); if (ja) ja.focus({ preventScroll: true }); }));
 }
@@ -122,7 +145,12 @@ document.addEventListener('click', e => {
   if (a.classList.contains('btn')) return ereignis('knopf_klick', { text, bereich });
 }, { capture: true });
 // Runde 18: Lead erst zählen, wenn die Anfrage wirklich angekommen ist (/static/main.js schickt „hwm:lead" nach dem Versand)
-document.addEventListener('hwm:lead', e => ereignis('generate_lead', e.detail || {}));
+// transaction_id (Zeitstempel + Zufall) je Absenden, damit Google eine Conversion nicht doppelt zählt; liefert der Absender eine, gilt seine.
+document.addEventListener('hwm:lead', e => {
+  const d = Object.assign({}, e.detail || {});
+  if (!d.transaction_id) d.transaction_id = Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+  ereignis('generate_lead', d);
+});
 // 🎁 Aktionsseite /konzept (29.09.2026): eigenes Ereignis mit Kanal (Code aus ?code=), nur mit Einwilligung wie alles hier
 document.addEventListener('hwm:konzept', e => ereignis('konzept_anfrage', e.detail || {}));
 
