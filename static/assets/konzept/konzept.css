@@ -33,7 +33,8 @@
 .ka-drop small{font-size:14px;color:var(--tinte-2)}
 .ka-drop.hat{border-style:solid;border-color:var(--tinte)}
 .ka-drop:focus-within{outline:2px solid var(--bronze);outline-offset:2px}
-.ka-code-chip{display:inline-flex;align-items:center;gap:8px;align-self:start;justify-self:start;padding:8px 14px;border-radius:var(--pille);background:var(--bronze-hauch);color:var(--bronze-tief);font-weight:700;font-size:14.5px}
+.ka-gruss{margin:0;padding:14px 16px;border-radius:var(--radius-klein);background:var(--bronze-hauch);color:var(--tinte-2);font-size:15.5px;line-height:1.5}
+.ka-gruss b{color:var(--tinte)}
 .ka-recht{font-size:13.5px;color:var(--tinte-2);margin:0;line-height:1.45}
 .ka-recht a{text-decoration:underline}
 .ka-fertig{display:grid;gap:12px;padding:6px 0}

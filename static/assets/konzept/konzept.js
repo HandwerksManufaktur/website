@@ -1,4 +1,4 @@
-/* 🎁 Aktionsseite /konzept (29.09.2026): „Konzept anfordern" in sieben kleinen Schritten.
+/* 🎁 Aktionsseite /konzept (29.09.2026): „Konzept anfordern" in sieben kleinen Schritten (Code zuerst, dann Betrieb, Name, Telefon, E-Mail, Website, Logo).
    Ein Feld pro Schritt, Enter = weiter, Website und Logo lassen sich überspringen, der Code kommt aus der Adresse
    (?code=KLEINANZEIGEN oder ?c=…). Versand an den Onboarding-Worker → Close-Lead, Mails, D1 (firma/website/cf-worker/src/konzept.js). */
 (() => {
@@ -12,8 +12,16 @@
   const q = new URLSearchParams(location.search);
   const code = String(q.get('code') || q.get('c') || '').trim().toUpperCase().replace(/[^A-Z0-9-]/g, '').slice(0, 30);
   if (code) {
+    // Begrüßung über dem Formular: nennt den Kanal (KLEINANZEIGEN → Kleinanzeigen), unbekannter Code → „über unsere Anzeige“.
+    // Der Code ist Schritt 1, vorbelegt und änderbar; ein zweiter „Code erkannt“-Hinweis entfällt.
+    const KANAELE = { KLEINANZEIGEN: 'Kleinanzeigen', INSTAGRAM: 'Instagram', FACEBOOK: 'Facebook', META: 'Facebook', GOOGLE: 'Google', LINKEDIN: 'LinkedIn' };
+    const gruss = $('.ka-gruss'), s1 = schritte[0];
     $('input[name=code]').value = code;
-    const chip = $('.ka-code-chip'); chip.hidden = false; $('b', chip).textContent = code;
+    $('[data-kanal]', gruss).textContent = KANAELE[code] ? `über ${KANAELE[code]}` : 'über unsere Anzeige';
+    gruss.hidden = false;
+    $('.sf-frage', s1).textContent = 'Dein Code';
+    $('.ka-hilfe', s1).textContent = 'Er steht schon drin. Stimmt er nicht, ändere ihn einfach.';
+    $('[data-skip]', s1).hidden = true;
   }
 
   // 📈 Google Ads (30.09.2026): Klick-Kennungen, die tracking.js beim Aufruf im Speicher der Seite hält (window.hwmKlick()),
@@ -52,7 +60,8 @@
   $$('[data-weiter]').forEach(b => b.addEventListener('click', weiter));
   $$('[data-skip]').forEach(b => b.addEventListener('click', () => {
     $$('input', schritte[n]).forEach(i => { if (i.type === 'file') { i.value = ''; logoZeigen(); } else i.value = ''; i.classList.remove('fehlt'); });
-    fehler(''); zeig(n + 1);
+    fehler('');
+    if (n === schritte.length - 1) f.requestSubmit(); else zeig(n + 1);
   }));
   zurueck.addEventListener('click', () => zeig(n - 1));
   f.addEventListener('keydown', e => {
@@ -104,7 +113,7 @@
     document.dispatchEvent(new CustomEvent('hwm:lead', { detail: { formular: 'konzept', kanal } }));
     document.dispatchEvent(new CustomEvent('hwm:konzept', { detail: { kanal, logo: !!j.hat_logo } }));
     schritte.forEach(s => s.hidden = true); zurueck.hidden = true;
-    $('.sf-kopf').hidden = true; $('.sf-balken').hidden = true; $('.ka-code-chip').hidden = true;
+    $('.sf-kopf').hidden = true; $('.sf-balken').hidden = true; $('.ka-gruss').hidden = true;
     const fertig = $('.ka-fertig'); fertig.hidden = false;
     $('[data-betrieb]', fertig).textContent = fd.get('betrieb');
     $('[data-ohne-logo]', fertig).hidden = !!j.hat_logo;
