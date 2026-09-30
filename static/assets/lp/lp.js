@@ -88,14 +88,20 @@
   zeig(0, false);
 })();
 
-/* 🎁 Geschenk-Fenster (30.09.2026). Geht auf, sobald der Besucher 15 s auf der Seite ist UND gescrollt hat — einmal je Sitzung.
-   Runde 3: Wer schließen will (×, Escape, Klick daneben), sieht erst die Warnung „verfällt für diesen Besuch".
-   Bestätigt er, ist es für diese Sitzung weg — kein Knopf, kein zweites Aufgehen. Erst ein neuer Besuch zeigt es wieder. */
+/* 🎁 Geschenk-Fenster (30.09.2026). Geht auf, sobald der Besucher 15 s auf der Seite ist UND gescrollt hat.
+   Runde 3: Wer schließen will (×, Escape, Klick daneben), sieht erst die Warnung.
+   Runde 6 (Noah: „nur ein Mal erscheinen … oder dann erst wieder eine Woche drauf"): gemerkt wird im Browser (localStorage,
+   Zeitstempel) — nach dem Aufgehen sieben Tage Ruhe, auf ALLEN Stadt- und Gewerkseiten zusammen. Nicht über die IP-Adresse:
+   dafür bräuchte es einen Server, der IPs speichert (personenbezogen, DSGVO), und im Betrieb teilen sich oft zehn Leute eine IP.
+   Der Browser-Speicher ist der Weg ohne Einwilligung und ohne Datenweitergabe — ein anderes Gerät sieht es wieder, das ist gewollt. */
 (() => {
   const d = document.querySelector('dialog.lp-geschenk'); if (!d) return;
-  const MERK = 'hwm-geschenk';
-  const gesehen = () => { try { return sessionStorage.getItem(MERK) === '1'; } catch (e) { return false; } };
-  const merken = () => { try { sessionStorage.setItem(MERK, '1'); } catch (e) {} };
+  const MERK = 'hwm-geschenk-am', RUHE = 7 * 24 * 3600 * 1000;
+  const gesehen = () => {
+    try { const z = +localStorage.getItem(MERK) || 0; if (z && Date.now() - z < RUHE) return true; } catch (e) {}
+    try { return sessionStorage.getItem('hwm-geschenk') === '1'; } catch (e) { return false; }
+  };
+  const merken = () => { try { localStorage.setItem(MERK, String(Date.now())); } catch (e) {} try { sessionStorage.setItem('hwm-geschenk', '1'); } catch (e) {} };
   const teil = s => d.querySelector(s);
   let vorher = '.lg-auf';
   const zeige = s => { ['.lg-auf', '.lg-form', '.lg-warnung'].forEach(x => teil(x).hidden = x !== s); };
