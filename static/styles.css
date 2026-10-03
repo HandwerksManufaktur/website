@@ -3057,3 +3057,54 @@ html.rd-offen{overflow:hidden}
 .we-gesicht{width:64px;height:64px;border-radius:50%;object-fit:cover;object-position:50% 25%}
 .kt-haken{display:none}
 .rd-ergebnis .rd-grob{margin:-4px 0 10px;font-weight:500;font-size:13px}
+
+/* ───────── Mobil-Runde 03.10.2026 (Noah: „mobil über alle Seiten … noch nicht für mobil optimiert") ─────────
+   Gemessen mit Playwright bei 390/375/360 px: nichts lief seitlich aus der Seite, aber
+   (1) die Rechtszeile im Fuß ragte 7 px über den Seitenrand (white-space:nowrap + zentrierte Spalte),
+   (2) Ratgeber-Tabellen mussten seitlich gewischt werden und schnitten Spalten ab → am Handy je Zeile eine Karte,
+   (3) h1 38 px / h2 34 px waren kaum abgestuft (Ratgeber: h1 36 px, h2 34 px) → h2 am Handy 28 px,
+   (4) lange Seitentitel (Stadt-/Gewerkseiten, über 70 Zeichen → class h1-lang) brauchten 7–8 Zeilen,
+   (5) Geschenk-Fenster: Signet links neben mittigem Text, auf kleinen Telefonen Knopf abgeschnitten,
+   (6) Tipp-Ziele unter 40 px (Brotkrumen und Inhaltsverzeichnis im Ratgeber, AGB-Link im Fuß). Desktop unverändert. */
+@media (max-width:640px){
+  h2{font-size:clamp(26px,7.2vw,30px)}
+  .ss h3{font-size:24px}
+  .hero-klein h1.h1-lang,.rg-kopf h1.h1-lang{font-size:clamp(29px,8.4vw,33px)}
+  .fuss .unten{white-space:normal;align-items:flex-start;gap:4px}
+  .fuss .unten>span:last-child{display:flex;flex-wrap:wrap;gap:0 18px}
+  .fuss .unten a,.fuss .unten .cookie-link{margin:0;min-width:44px}
+  .rg-tabelle{overflow:visible;background:transparent;box-shadow:none;border-radius:0}
+  .rg-tabelle table,.rg-tabelle tbody,.rg-tabelle tr{display:block;min-width:0}
+  .rg-tabelle caption{display:block;padding:0 0 12px;font-size:16px}
+  .rg-tabelle thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .rg-tabelle tbody tr{background:#fff;border-radius:var(--radius);box-shadow:0 0 0 1px rgba(22,19,14,.1);margin-bottom:12px;overflow:hidden}
+  .rg-tabelle tbody tr:hover{background:#fff}
+  .rg-tabelle tbody th{display:block;padding:14px 18px 12px;border-top:0;background:var(--papier-2);font-size:16px}
+  .rg-tabelle td{display:grid;grid-template-columns:minmax(0,7.5em) minmax(0,1fr);gap:4px 14px;padding:11px 18px;font-size:15px}
+  .rg-tabelle td::before{content:attr(data-label);font-size:13px;line-height:1.45;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tinte-3)}
+}
+@media (max-width:1000px){
+  .rg-brot{gap:0 8px;align-items:center;margin-bottom:8px}
+  .rg-brot a{display:inline-flex;align-items:center;min-height:44px;padding-inline:4px;margin-inline:-4px}
+  .rg-toc ol{gap:0;margin-top:6px}
+  .rg-toc a{display:block;padding-block:10px}
+  .rg-toc li::before{padding-top:10px}
+}
+/* Geschenk-Fenster (/static/assets/lp/lp.css, auf den Stadt- und Gewerkseiten inline): am Handy kompakt, Signet raus aus dem mittigen Kicker */
+.lp-geschenk .lg-auf .kicker::before{display:none}
+@media (max-width:760px){
+  .lp-geschenk .lg-auf,.lp-geschenk .lg-warnung{gap:10px;padding:60px 20px 22px}
+  .lp-geschenk .lg-box{width:72px;height:72px}
+  .lp-geschenk .lg-koerper{font-size:40px}
+  .lp-geschenk .lg-auf h3{font-size:25px}
+  .lp-geschenk .lg-warnung h3{font-size:24px}
+  .lp-geschenk .lg-auf p,.lp-geschenk .lg-warnung p{font-size:15.5px;line-height:1.5}
+}
+@media (max-width:760px) and (max-height:700px){
+  .lp-geschenk .lg-auf,.lp-geschenk .lg-warnung{padding-top:56px;gap:8px}
+  .lp-geschenk .lg-box{width:56px;height:56px}
+  .lp-geschenk .lg-koerper{font-size:32px}
+}
+
+/* Lange Einzelwörter in Überschriften trennen statt aus dem Bild ragen (Noah, 03.10.2026: mobil alle Seiten). */
+@media(max-width:640px){h1,h2,h3{hyphens:auto;-webkit-hyphens:auto;hyphenate-limit-chars:14 6 6;overflow-wrap:break-word}}
