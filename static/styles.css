@@ -649,6 +649,11 @@ small,.fussnote,.klein,.brot,.etikett,.name,.herkunft,.marke-s,.lb-fuss small,.d
 .recht h3{font-size:18px;line-height:1.3;font-weight:700;margin:28px 0 8px;color:var(--tinte)}
 .recht h2 + h3{margin-top:18px}
 .recht p{margin:0 0 14px}
+/* Mobil (03.10.2026): lange Wörter in der Seitenüberschrift passen ins Bild, Fragen im Fließtext stehen unter den Zwischenüberschriften. */
+.recht h1{font-size:clamp(30px,4.6vw + 14px,60px);hyphens:auto;-webkit-hyphens:auto;overflow-wrap:break-word}
+.recht p strong{font-weight:600;color:var(--tinte)}
+.recht .stand{color:var(--tinte-3);font-size:14px;margin:-14px 0 32px}
+@media(max-width:600px){.recht h2{font-size:21px;margin-top:44px}.recht h3{font-size:17px}.recht p,.recht li{font-size:15.5px}}
 .recht p,.recht li{color:var(--tinte-2);font-size:16px}
 .recht ul{list-style:disc;padding-left:22px}
 .recht .hinweis{background:var(--bronze-hauch);border-radius:var(--radius-klein);padding:18px 22px;margin-bottom:28px}
