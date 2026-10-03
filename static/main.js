@@ -429,7 +429,7 @@ if (zb) {
 /* ---- „Erkennst du dich wieder?" (Runde 10, Prinzip SHK v3): fünf Lagen, alle 6 s weiter, solange im Bild; Klick hält an ---- */
 const lb = $('.lg-buehne');
 if (lb) {
-  const tabs = $$('.lg-tab', lb), pan = $$('.lg-panel', lb), TAKT = lb.classList.contains('pb-buehne') ? 7500 : 6000;
+  const tabs = $$('.lg-tab', lb), pan = $$('.lg-panel', lb), TAKT = (lb.classList.contains('pb-buehne') ? 7500 : 6000) * (matchMedia('(max-width: 760px)').matches ? 1.6 : 1); // Handy: Heute und Mit uns nacheinander, also mehr Zeit je Moment
   // Runde 15: Uhren in den Szenen zählen bei jedem Zeigen neu hoch (Heute ab 0,5 s lang, Mit uns kurz)
   const zaehle = p => $$('[data-bis]', p).forEach(b => { const bis = +b.dataset.bis, mit = !!b.closest('.mit'), start = mit ? 1250 : 500, dauer = mit ? 450 : 2600;
     if (ruhig) { b.textContent = bis.toFixed(1).replace('.', ','); return; }
@@ -444,7 +444,7 @@ if (lb) {
       const l = $('.lauf', t); if (l && an) { l.style.animation = 'none'; void l.offsetWidth; l.style.animation = ''; } });
     pan.forEach((p, n) => { const an = n === i; p.hidden = !an; p.classList.remove('an'); if (an) { void p.offsetWidth; p.classList.add('an'); zaehle(p); } });
     if (fokus) tabs[i].focus();
-    if (innerWidth < 1000) tabs[i].scrollIntoView({ block: 'nearest', inline: 'center', behavior: ruhig ? 'auto' : 'smooth' });
+    if (innerWidth < 1000 && !lb.classList.contains('lgm')) tabs[i].scrollIntoView({ block: 'nearest', inline: 'center', behavior: ruhig ? 'auto' : 'smooth' });
   };
   const lauf = () => { clearInterval(timer); if (!steht) timer = setInterval(() => zeig(i + 1), TAKT); };
   const halt = () => { steht = true; lb.classList.add('steht'); clearInterval(timer); };
@@ -759,4 +759,160 @@ document.querySelectorAll('.rd').forEach(rechnerStarten);
   let lauf = false;
   const f = () => { lauf = false; const r = art.getBoundingClientRect(); const p = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - innerHeight))); b.style.transform = `scaleX(${p.toFixed(3)})`; };
   addEventListener('scroll', () => { if (!lauf) { lauf = true; requestAnimationFrame(f); } }, { passive: true }); f();
+})();
+
+/* ═══════ HANDY-FASSUNG (03.10.2026): eigene Bühnen fürs Telefon — nur bis 760 px, nie am Desktop ═══════
+   Noah: „Mobil kann man doch eh eigentlich ziemlich viel nice mit Animation machen." Ein Takt (rAF), eine
+   Fortschritts-Rechnung je Bühne, Bewegung nur über transform/opacity. Ohne Skript oder mit reduzierter
+   Bewegung bleibt die gestapelte Fassung stehen. */
+(() => {
+  const handy = matchMedia('(max-width: 760px)');
+  if (!handy.matches) return;
+  const ruhig = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const klemm = x => Math.max(0, Math.min(1, x));
+  const sanft = x => 1 - Math.pow(1 - x, 3);
+  const neuStarten = el => { el.style.display = 'none'; void el.offsetWidth; el.style.display = ''; };
+  const takt = [];
+  let geplant = false;
+  const lauf = () => { geplant = false; takt.forEach(f => f()); };
+  addEventListener('scroll', () => { if (!geplant) { geplant = true; requestAnimationFrame(lauf); } }, { passive: true });
+  addEventListener('resize', () => requestAnimationFrame(lauf));
+
+  /* ── Fünf Momente: Symbol-Leiste, Titel darunter, Heute → Mit uns wischt im selben Rahmen; Wischen mit dem Daumen ── */
+  $$('.lg-buehne').forEach(lb => {
+    const tabs = $$('.lg-tab', lb), pan = $$('.lg-panel', lb), panels = $('.lg-panels', lb);
+    if (!tabs.length || !panels) return;
+    lb.classList.add('lgm');
+    const pb = lb.classList.contains('pb-buehne');
+    const FLIP = pb ? 5000 : 4000;
+    const etikett = (k, fall) => { const e = $(`.lg-seite.${k} .lg-etikett`, lb); return e ? e.textContent.replace(/^[✕✓]/, '').trim() : fall; };
+    const titel = document.createElement('div'); titel.className = 'lgm-titel'; titel.setAttribute('aria-hidden', 'true');
+    titel.innerHTML = `<small>Moment <span>1</span> von ${tabs.length}</small><b></b>`;
+    $('.lg-tabs', lb).after(titel);
+    const sch = document.createElement('div'); sch.className = 'lgm-schalter'; sch.dataset.mit = '0';
+    sch.setAttribute('role', 'group'); sch.setAttribute('aria-label', 'Vergleich umschalten');
+    sch.innerHTML = `<i class="lgm-daumen" aria-hidden="true"></i><button type="button" aria-pressed="true"><i aria-hidden="true">✕</i>${etikett('heute', 'Heute')}</button><button type="button" aria-pressed="false"><i aria-hidden="true">✓</i>${etikett('mit', 'Mit uns')}</button>`;
+    panels.before(sch);
+    const [bH, bM] = $$('button', sch);
+    let uhr = null, aktiv = null, wunsch = null;
+    const zaehle = seite => $$('[data-bis]', seite).forEach(b => {
+      const bis = +b.dataset.bis; cancelAnimationFrame(b._r);
+      if (ruhig) { b.textContent = bis.toFixed(1).replace('.', ','); return; }
+      b.textContent = '0,0'; const t0 = performance.now() + 650;
+      const f = t => { const q = klemm((t - t0) / 500); b.textContent = (bis * sanft(q)).toFixed(1).replace('.', ','); if (q < 1) b._r = requestAnimationFrame(f); };
+      b._r = requestAnimationFrame(f);
+    });
+    const setze = (p, mit) => {
+      clearTimeout(uhr);
+      p.classList.toggle('mit-an', mit);
+      sch.dataset.mit = mit ? '1' : '0'; bH.setAttribute('aria-pressed', mit ? 'false' : 'true'); bM.setAttribute('aria-pressed', mit ? 'true' : 'false');
+      const s = $(mit ? '.lg-seite.mit' : '.lg-seite.heute', p);
+      if (s) { neuStarten(s); if (mit) zaehle(s); }
+    };
+    const zeigen = p => {
+      aktiv = p; const k = pan.indexOf(p);
+      const t = tabs[k]; $('span', titel).textContent = k + 1; $('b', titel).textContent = t ? $('b', t).textContent.replace(/­/g, '') : '';
+      titel.classList.remove('neu'); void titel.offsetWidth; titel.classList.add('neu');
+      if (wunsch !== null) { const w = wunsch; wunsch = null; setze(p, w); return; }
+      p.classList.remove('mit-an'); sch.dataset.mit = '0'; bH.setAttribute('aria-pressed', 'true'); bM.setAttribute('aria-pressed', 'false');
+      clearTimeout(uhr); if (!ruhig) uhr = setTimeout(() => setze(p, true), FLIP);  // reduzierte Bewegung: Umschalten nur per Tipp
+    };
+    // nur auf das NEUE Einschalten eines Moments hören (alt ohne „an", jetzt mit) — sonst schaukelt sich der Beobachter selbst auf
+    const hatAn = c => /(^|\s)an(\s|$)/.test(c || '');
+    new MutationObserver(ms => ms.forEach(m => { const p = m.target; if (pan.includes(p) && !hatAn(m.oldValue) && hatAn(p.className) && !p.hidden) zeigen(p); }))
+      .observe(panels, { subtree: true, attributes: true, attributeOldValue: true, attributeFilter: ['class'] });
+    const aktuell = () => pan.indexOf(aktiv || pan.find(p => !p.hidden) || pan[0]);
+    // Schalter und Wischen halten den automatischen Wechsel an (wie ein Tipp auf einen Reiter)
+    const manuell = mit => { wunsch = mit; tabs[aktuell()].click(); };
+    bH.addEventListener('click', () => manuell(false));
+    bM.addEventListener('click', () => manuell(true));
+    let x0 = null, y0 = 0;
+    panels.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+    panels.addEventListener('touchend', e => {
+      if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0; x0 = null;
+      if (Math.abs(dx) < 45 || Math.abs(dx) < Math.abs(dy) * 1.3) return;
+      const mit = aktiv && aktiv.classList.contains('mit-an'), k = aktuell();
+      if (dx < 0) { if (!mit) manuell(true); else { wunsch = false; tabs[(k + 1) % tabs.length].click(); } }
+      else { if (mit) manuell(false); else { wunsch = true; tabs[(k - 1 + tabs.length) % tabs.length].click(); } }
+    }, { passive: true });
+    // gleiche Höhe für alle fünf Momente — die Seite springt beim Wechsel nicht
+    const messen = () => {
+      lb.style.removeProperty('--lgm-h'); let h = 0;
+      pan.forEach(p => { const war = p.hidden; p.hidden = false; h = Math.max(h, p.offsetHeight); p.hidden = war; });
+      if (h) lb.style.setProperty('--lgm-h', Math.ceil(h) + 'px');
+    };
+    messen(); addEventListener('load', messen); if (document.fonts) document.fonts.ready.then(messen);
+    let bx = innerWidth; addEventListener('resize', () => { if (innerWidth !== bx) { bx = innerWidth; messen(); } });
+    const erst = pan.find(p => p.classList.contains('an') && !p.hidden); if (erst) zeigen(erst);
+  });
+
+  /* ── Drei Säulen: gepinnte Bühne, die Säulen wachsen nacheinander aus dem Boden — am Ende steht das Logo ── */
+  const sae = $('.system-sek .system-saeulen');
+  if (sae && !ruhig) {
+    const hubs = $$('.ss-hub', sae);
+    if (hubs.length === 3) {
+      sae.classList.add('ssm'); sae.closest('.sek')?.classList.add('ssm-sek');
+      const klebt = document.createElement('div'); klebt.className = 'ssm-klebt';
+      const reihe = document.createElement('div'); reihe.className = 'ssm-saeulen'; reihe.setAttribute('aria-hidden', 'true');
+      const texte = document.createElement('div'); texte.className = 'ssm-texte';
+      const karten = hubs.map(h => { reihe.appendChild(h); const t = document.createElement('div'); t.className = 'ssm-text';
+        $$('.ss-in > *', h).forEach(k => t.appendChild(k.cloneNode(true))); texte.appendChild(t); return t; });
+      klebt.append(reihe, texte); sae.prepend(klebt);
+      const ss = hubs.map(h => $('.ss', h));
+      let zuletzt = '';
+      const male = () => {
+        const r = sae.getBoundingClientRect(), H = innerHeight;
+        if (r.bottom < -H || r.top > H * 2) return;
+        const vor = H * .45, weg = Math.max(1, r.height - H + vor * .4);
+        const s = klemm((vor - r.top) / weg) * 3;
+        const g = [0, 1, 2].map(i => sanft(klemm((s - i * .92) / .7)));
+        const an = Math.min(2, Math.max(0, Math.floor(s * 1.0 - .05)));
+        const key = g.map(x => x.toFixed(3)).join() + an;
+        if (key === zuletzt) return; zuletzt = key;
+        ss.forEach((e, i) => { e.style.transform = `translate3d(0,${((1 - g[i]) * 101).toFixed(2)}%,0)`; });
+        hubs.forEach((h, i) => h.classList.toggle('an', i === an));
+        karten.forEach((k, i) => { const ja = i === an; k.classList.toggle('an', ja); k.inert = !ja; ja ? k.removeAttribute('aria-hidden') : k.setAttribute('aria-hidden', 'true'); });
+      };
+      takt.push(male); male();
+    }
+  }
+
+  /* ── Kartenstapel: Fallstudien (Start) und „Was du bekommst" (Unterseiten) — die obere Karte tritt zurück,
+        wenn die nächste darüber gleitet ── */
+  if (!ruhig && innerHeight >= 640) [['.erg-sek .ergebnisse', '.erg'], ['.bento-sek .bento', '.zelle']].forEach(([cs, ks]) => $$(cs).forEach(box => {
+    const k = $$(ks, box).filter(c => c.parentElement === box);
+    if (k.length < 2) return;
+    box.classList.add('stapelm'); box.closest('.sek')?.classList.add('stapelm-sek');
+    const male = () => {
+      const br = box.getBoundingClientRect(); if (br.bottom < 0 || br.top > innerHeight) return;
+      k.forEach((c, i) => {
+        const n = k[i + 1]; if (!n) return;
+        const a = c.getBoundingClientRect(), b = n.getBoundingClientRect();
+        const q = klemm(1 - (b.top - a.top) / Math.max(1, a.height));
+        c.style.scale = (1 - .07 * q).toFixed(4);
+        c.style.opacity = (1 - .35 * q).toFixed(3);
+      });
+    };
+    takt.push(male); male();
+  }));
+
+  /* ── Treppe „So läuft es ab": Zeitstrahl, dessen Linie mit dem Scrollen wächst ── */
+  if (!ruhig) $$('.treppe').forEach(tr => {
+    const st = $$('.stufe', tr); if (st.length < 2) return;
+    tr.classList.add('trpm');
+    const linie = document.createElement('i'); linie.className = 'trpm-linie'; linie.setAttribute('aria-hidden', 'true'); tr.prepend(linie);
+    let zuletzt = -1;
+    const male = () => {
+      const r = tr.getBoundingClientRect(), H = innerHeight; if (r.bottom < 0 || r.top > H) return;
+      // voll, wenn die Treppe ganz im Bild ist oder ihr Ende die Bildmitte erreicht (Scroll-Scrub endet im Sichtfeld)
+      const p = klemm((H * .78 - r.top) / Math.max(1, r.height - H * .28));
+      if (Math.abs(p - zuletzt) < .002) return; zuletzt = p;
+      linie.style.transform = `scaleY(${p.toFixed(4)})`;
+      const y = r.top + 22 + (r.height - 44) * p;
+      st.forEach(s => { const sr = s.getBoundingClientRect(); s.classList.toggle('an', sr.top + 30 <= y); });
+    };
+    takt.push(male); male();
+  });
+  lauf();
 })();
