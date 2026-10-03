@@ -640,6 +640,15 @@ small,.fussnote,.klein,.brot,.etikett,.name,.herkunft,.marke-s,.lb-fuss small,.d
 .recht .wrap{max-width:var(--eng)}
 .recht h1{font-size:clamp(36px,4.6vw,60px);margin-bottom:30px}
 .recht h2{font-size:22px;margin:36px 0 12px}
+/* Rechtsseiten (Impressum, Datenschutz, AGB): das Signet steht EINMAL über der Seitenüberschrift, nie an jeder h2.
+   Rangfolge h1 > h2 > h3 sichtbar (Noah, 03.10.2026). */
+.recht.sek h2::before,.recht .sek h2::before{display:none}
+.recht h1::before{content:"";display:block;width:24px;height:26px;margin-bottom:18px;background:var(--bronze);
+  -webkit-mask:var(--signet) no-repeat left center/contain;mask:var(--signet) no-repeat left center/contain}
+.recht h2{font-size:24px;line-height:1.25;margin:52px 0 14px}
+.recht h3{font-size:18px;line-height:1.3;font-weight:700;margin:28px 0 8px;color:var(--tinte)}
+.recht h2 + h3{margin-top:18px}
+.recht p{margin:0 0 14px}
 .recht p,.recht li{color:var(--tinte-2);font-size:16px}
 .recht ul{list-style:disc;padding-left:22px}
 .recht .hinweis{background:var(--bronze-hauch);border-radius:var(--radius-klein);padding:18px 22px;margin-bottom:28px}
