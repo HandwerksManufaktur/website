@@ -206,10 +206,24 @@ if (suche) {
 
 /* ---- Videos nur abspielen, wenn sie im Bild sind ---- */
 const ioV = new IntersectionObserver(es => es.forEach(e => {
-  const v = e.target;
-  if (e.isIntersecting) { if (!v.getAttribute('src') && v.dataset.src) v.src = (innerWidth < 760 && v.dataset.srcMobil) || v.dataset.src; v.play().catch(() => {}); }
+  const v = e.target; v._sicht = e.isIntersecting;
+  if (e.isIntersecting) { const los = () => { if (!v._sicht) return; if (!v.getAttribute('src') && v.dataset.src) v.src = (innerWidth < 760 && v.dataset.srcMobil) || v.dataset.src; v.play().catch(() => {}); };
+    /* Hero-Filme erst nach dem Laden der Seite holen (nicht gegen LCP/Schrift konkurrieren); das Poster steht bis dahin */
+    if (document.readyState === 'complete') los(); else addEventListener('load', () => setTimeout(los, 200), { once: true }); }
   else v.pause();
 }), { rootMargin: '120px 0px' });
+/* 🔴 04.10.2026: Poster (data-poster) und Bilder (img[data-spaet]) unterhalb des Heros laden erst 900 px vor ihrer SEKTION.
+   Beobachtet wird die Sektion, nicht das Element: Säulen und Laufbänder liegen in Containern mit overflow/clip-path, dort
+   meldet ein Beobachter „nicht sichtbar", bis das Element eingeblendet ist — dann stünde kurz ein schwarzer Kasten. */
+const ioSpaet = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return; ioSpaet.unobserve(e.target);
+  $$('video[data-poster], img[data-spaet]', e.target).forEach(el => {
+    if (el.dataset.poster) { el.poster = el.dataset.poster; delete el.dataset.poster; }
+    if (el.dataset.srcset) { el.srcset = el.dataset.srcset; delete el.dataset.srcset; }
+    if (el.tagName === 'IMG' && el.dataset.src) { el.src = el.dataset.src; delete el.dataset.src; }
+  });
+}), { rootMargin: '900px 0px' });
+new Set($$('video[data-poster], img[data-spaet]').map(el => el.closest('section') || el.parentElement)).forEach(s => ioSpaet.observe(s));
 /* 🔴 JEDES Video, nicht nur die mit data-lazy. Noah, 26.09.2026: "auf einmal läuft das video
    senftleben direkt? hä" — die Fallstudie auf der Startseite lief beim Laden los, während man
    noch im Hero stand, und 16 Referenz-Aufnahmen liefen daneben mit. autoplay bleibt als Rückfall
@@ -839,6 +853,25 @@ document.querySelectorAll('.rd').forEach(rechnerStarten);
       if (dx < 0) { if (!mit) manuell(true); else { wunsch = false; tabs[(k + 1) % tabs.length].click(); } }
       else { if (mit) manuell(false); else { wunsch = true; tabs[(k - 1 + tabs.length) % tabs.length].click(); } }
     }, { passive: true });
+    // 🔴 04.10.2026: Wischen ging, war aber nicht zu erkennen. Beim ersten Erscheinen stupst die Karte einmal seitlich an
+    // (wie eine Wischbahn), dazu zwei kleine Pfeile am Rand; nach dem ersten Wisch oder Tipp verschwinden sie. Einmal je Seitenaufruf,
+    // nur transform/opacity, bei reduzierter Bewegung nur die stehenden Pfeile. Nur am Handy.
+    if (matchMedia('(max-width: 760px)').matches) {
+      const ph = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      const hin = document.createElement('div'); hin.className = 'lgm-hinweis'; hin.setAttribute('aria-hidden', 'true');
+      hin.innerHTML = `<i class="l">${ph}</i><i class="r">${ph}</i>`; panels.append(hin);
+      const weg = () => hin.classList.add('weg');
+      panels.addEventListener('touchstart', weg, { passive: true, once: true });
+      sch.addEventListener('click', weg, { once: true });
+      if (!window.__lgmStups) {
+        window.__lgmStups = true;
+        const io = new IntersectionObserver(es => es.forEach(e => {
+          if (!e.isIntersecting) return; io.disconnect(); hin.classList.add('zeigt');
+          if (!ruhig && !hin.classList.contains('weg')) setTimeout(() => { if (!hin.classList.contains('weg')) { panels.classList.add('stupst'); setTimeout(() => panels.classList.remove('stupst'), 1300); } }, 900);
+        }), { threshold: .6 });
+        io.observe(panels);
+      } else hin.classList.add('zeigt');
+    }
     // gleiche Höhe für alle fünf Momente — die Seite springt beim Wechsel nicht
     const messen = () => {
       lb.style.removeProperty('--lgm-h'); let h = 0;

@@ -3315,3 +3315,20 @@ html.rd-offen{overflow:hidden}
 /* Ratgeber-Übersicht: die große Artikelkarte (h3, 28 px) war am Handy und Tablet größer als die Gruppentitel (h2, 26 px).
    h1 > h2 > h3 — die Karte bleibt deutlich größer als die übrigen Karten (19 px). Ab 1200 px unverändert. */
 @media (max-width:1180px){.rg-karte.gross h3{font-size:calc(clamp(26px,2.6vw,36px) - 2px)}}
+
+/* Wisch-Hinweis auf der Moment-Bühne (04.10.2026): die Karte stupst einmal an, zwei kleine Pfeile am Rand bis zum ersten Wisch */
+.lgm-hinweis{display:none}
+@media (max-width:760px){
+  .lgm-hinweis{display:block;position:absolute;inset:0;z-index:4;pointer-events:none}
+  .lgm-hinweis i{position:absolute;top:46%;width:30px;height:30px;margin-top:-15px;border-radius:50%;display:grid;place-items:center;background:rgba(22,19,14,.82);color:#FAF7F1;box-shadow:0 6px 16px -8px rgba(22,19,14,.6);opacity:0;transition:opacity .5s var(--ease)}
+  .lgm-hinweis i svg{width:16px;height:16px}
+  .lgm-hinweis .r{right:-9px}
+  .lgm-hinweis .l{left:-9px;transform:scaleX(-1)}
+  .lgm-hinweis.zeigt .r{opacity:.86;animation:lgm-pfeil 1.5s ease-in-out 1.2s 3}
+  .lgm-schalter[data-mit="1"] ~ .lg-panels .lgm-hinweis.zeigt .l{opacity:.86}
+  .lgm-hinweis.weg i{opacity:0 !important;animation:none}
+  .lgm .lg-panels.stupst{animation:lgm-stups 1.1s cubic-bezier(.3,.7,.3,1) both}
+  @keyframes lgm-stups{0%{transform:none}32%{transform:translate3d(-18px,0,0)}58%{transform:translate3d(3px,0,0)}78%{transform:translate3d(-6px,0,0)}100%{transform:none}}
+  @keyframes lgm-pfeil{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(-5px,0,0)}}
+}
+@media (prefers-reduced-motion:reduce){.lgm .lg-panels.stupst,.lgm-hinweis.zeigt .r{animation:none}}
