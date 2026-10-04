@@ -3255,3 +3255,63 @@ html.rd-offen{overflow:hidden}
   .galerie figure.reveal img{transform:none;transition:none}
   .zahlen-buehne{height:auto}.zs-klebt{padding:var(--sekt) 0}.zs-text{height:auto}.zs-szene{position:relative;top:auto;margin-top:28px}
 }
+
+/* ═══════ Prüfrunde 04.10.2026 (Noah: „überprüf alles nochmal komplett … Handy, Tablet, Scrollen, Ladezeiten") ═══════
+   Gemessen mit Playwright in 9 Ansichten über alle 49 Seiten. Desktop (≥ 1200 px, Höhe > 500 px) bleibt unberührt. */
+@media (max-width:760px){
+  /* Schalter „Heute / Mit uns" schrumpfte auf 2 × 73 px — „✓ Mit uns" lief aus dem dunklen Daumen. Volle Breite bis 300 px. */
+  .lgm-schalter{width:100%}
+  /* h1 > h2 > h3: das Säulen-Wort („Gefunden.") war mit 34 px größer als jede h2 (26–30 px) */
+  .ssm-text h3{font-size:clamp(24px,6.4vw,27px)}
+}
+/* Inhaltsverzeichnis im Ratgeber: „Inhalt" war ein 28 px hohes Tipp-Ziel */
+@media (max-width:1000px){.rg-toc summary{display:flex;align-items:center;min-height:44px;margin-block:-8px}}
+/* Handy quer und flache Fenster (über 760 px breit, unter 500 px hoch): Startbild, Zahlen-Bühne und Geschenk-Fenster passen in die Höhe */
+@media (min-width:761px) and (max-height:500px){
+  .hero-text{padding-bottom:14px}
+  .hero-text .wrap{gap:10px}
+  .hero-text h1{font-size:clamp(36px,4.6vw,52px);max-width:none}  /* h1 bleibt größer als h2 (4,2vw) */
+  .hero-text .lead{font-size:15px}
+  .saeule .etikett{display:none}
+  .hero-klein .wrap{padding:calc(var(--kopf) + 14px) 0 36px;gap:14px}
+  .hero-klein h1,.hero-klein h1.h1-lang{font-size:clamp(36px,4.6vw,52px);max-width:24ch}
+  .zs-klebt{padding:calc(var(--kopf) - 6px) 0 72px}
+  .zs-text{min-height:210px}
+  .zs-bild{aspect-ratio:auto;height:calc(100svh - var(--kopf) - 90px)}
+  .zs-feld{width:min(100%,calc((100svh - var(--kopf) - 110px) * 1.4))}
+  .zs-nr{font-size:clamp(64px,24svh,110px)}
+  .zs-szene b{font-size:22px;margin-top:10px}
+  .zs-szene p{font-size:15px;margin-top:8px}
+  .lp-geschenk .lg-auf,.lp-geschenk .lg-warnung{gap:8px;padding:18px 64px}
+  .lp-geschenk .lg-box{display:none}
+  .lp-geschenk .lg-auf h3,.lp-geschenk .lg-warnung h3{font-size:24px}
+  .lp-geschenk .lg-auf p,.lp-geschenk .lg-warnung p{font-size:15px;line-height:1.45}
+  .lp-geschenk .lg-auf .btn,.lp-geschenk .lg-warnung .btn{min-height:48px;margin-top:2px}
+}
+/* „Der Chef spricht selbst" (Bento, Unterseiten): unter 900 px waren die zwei Handy-Videos ausgeblendet — übrig blieb eine
+   leere dunkle Karte. Kleiner, aber sichtbar; die Videos laden erst im Bild (data-lazy). */
+@media (max-width:900px){
+  .zelle.mit-handys{min-height:420px}
+  .zelle.mit-handys .handys-k{display:flex;right:18px;top:18px;gap:10px}
+  .zelle.mit-handys .handys-k video{width:min(96px,24vw)}
+}
+/* Tablets und andere Touch-Geräte über 1000 px (z. B. 1024 × 768 quer): dieselben Tipp-Ziele wie am Handy. Nur bei
+   grobem Zeiger — mit Maus bleibt der Desktop unverändert. Gemessen: Brotkrumen 22 px, Inhaltsverzeichnis 20 px,
+   „AGB" im Fuß 28 px breit, SHK-Hinweis 23 px hoch. */
+@media (pointer:coarse){
+  .fuss .unten a{min-width:44px;justify-content:center}
+  .rg-shk li a{display:inline-flex;align-items:center;min-height:44px}
+  .rg-brot a{display:inline-flex;align-items:center;min-height:44px;padding-inline:4px;margin-inline:-4px}
+  .rg-toc summary{display:flex;align-items:center;min-height:44px;margin-block:-8px}
+  .rg-toc ol{gap:0;margin-top:6px}
+  .rg-toc a{display:block;padding-block:10px}
+  .rg-toc li::before{padding-top:10px}
+}
+/* Reduzierte Bewegung: die Zahlen-Bühne steht auf der letzten Szene — dort war das Raster auf 8 % gedimmt (Platz für die
+   Sterne, die bei reduzierter Bewegung ausgeblendet sind). Übrig blieb ein leerer Kasten. Raster voll zeigen: 66 Seiten, 35 auf Platz 1. */
+@media (prefers-reduced-motion:reduce){.zahlen-buehne[data-szene="2"] .zs-feld{opacity:1;transform:none}}
+/* „Abends um zehn" bei 360 px: die Uhrzeit „22:04" ragte 4 px über den Kartenrand */
+@media (max-width:380px){.pb-abend{column-gap:10px}.pb-uhrzeit b{font-size:30px}}
+/* Ratgeber-Übersicht: die große Artikelkarte (h3, 28 px) war am Handy und Tablet größer als die Gruppentitel (h2, 26 px).
+   h1 > h2 > h3 — die Karte bleibt deutlich größer als die übrigen Karten (19 px). Ab 1200 px unverändert. */
+@media (max-width:1180px){.rg-karte.gross h3{font-size:calc(clamp(26px,2.6vw,36px) - 2px)}}

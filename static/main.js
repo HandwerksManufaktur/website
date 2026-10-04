@@ -820,7 +820,10 @@ document.querySelectorAll('.rd').forEach(rechnerStarten);
     };
     // nur auf das NEUE Einschalten eines Moments hören (alt ohne „an", jetzt mit) — sonst schaukelt sich der Beobachter selbst auf
     const hatAn = c => /(^|\s)an(\s|$)/.test(c || '');
-    new MutationObserver(ms => ms.forEach(m => { const p = m.target; if (pan.includes(p) && !hatAn(m.oldValue) && hatAn(p.className) && !p.hidden) zeigen(p); }))
+    // 🔴 04.10.2026: zeig() schreibt remove('an') + add('an') — beim Wechsel auf einen ANDEREN Moment kommen beide Einträge
+    // im selben Stapel an und zeigen() lief doppelt: der zweite Lauf verwarf den Wunsch (Wisch nach rechts landete auf „Heute"
+    // statt auf „Mit uns" des vorigen Moments). Je Stapel jeder Moment nur einmal.
+    new MutationObserver(ms => { const neu = new Set(); ms.forEach(m => { const p = m.target; if (pan.includes(p) && !hatAn(m.oldValue) && hatAn(p.className) && !p.hidden) neu.add(p); }); neu.forEach(zeigen); })
       .observe(panels, { subtree: true, attributes: true, attributeOldValue: true, attributeFilter: ['class'] });
     const aktuell = () => pan.indexOf(aktiv || pan.find(p => !p.hidden) || pan[0]);
     // Schalter und Wischen halten den automatischen Wechsel an (wie ein Tipp auf einen Reiter)
@@ -915,4 +918,18 @@ document.querySelectorAll('.rd').forEach(rechnerStarten);
     takt.push(male); male();
   });
   lauf();
+})();
+
+/* ── Laufende Bahnen (Kundenstimmen, Belege auf Stadt-/Gewerkseiten): Logos vorladen (04.10.2026) ──
+   Die Bahn liegt in einem Rahmen mit overflow:hidden — loading="lazy" lädt ein Logo erst, wenn die Karte schon im
+   Bild ist; am Handy lief so ein leerer dunkler Kasten herein. Sobald die Sektion naht, alle ihre Bilder laden. */
+(() => {
+  const bahnen = [...document.querySelectorAll('.sek.stimmen, .lp-belege2')];
+  if (!bahnen.length || !('IntersectionObserver' in window)) return;
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (!(e.intersectionRatio > 0)) return;  // erst, wenn die Sektion wirklich ins Bild kommt — die Startseite lädt dadurch nichts zusätzlich
+    e.target.querySelectorAll('img[loading="lazy"]').forEach(i => { i.loading = 'eager'; });
+    io.unobserve(e.target);
+  }), { threshold: [0, 0.01] });
+  bahnen.forEach(b => io.observe(b));
 })();
