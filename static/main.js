@@ -928,6 +928,11 @@ document.querySelectorAll('.rd').forEach(rechnerStarten);
         hubs.forEach((h, i) => h.classList.toggle('an', i === an));
         karten.forEach((k, i) => { const ja = i === an; k.classList.toggle('an', ja); k.inert = !ja; ja ? k.removeAttribute('aria-hidden') : k.setAttribute('aria-hidden', 'true'); });
       };
+      // Rastpunkte wie bei der Zahlen-Bühne (05.10.2026, Noah: „mach das einrasten auch bei den säulen"): mitten im Halt jeder Säule
+      const rast = [0, 1, 2].map(() => { const e = document.createElement('i'); e.className = 'zs-rast'; e.setAttribute('aria-hidden', 'true'); sae.append(e); return e; });
+      const raste = () => { const H = innerHeight, vor = H * .45, weg = Math.max(1, sae.offsetHeight - H + vor * .4); rast.forEach((e, k) => { e.style.top = Math.round((k + .72) / 3 * weg - vor) + 'px'; }); };
+      document.documentElement.classList.add('zs-rastet');
+      raste(); addEventListener('load', raste); let bx = innerWidth; addEventListener('resize', () => { if (innerWidth !== bx) { bx = innerWidth; raste(); } });
       takt.push(male); male();
     }
   }
