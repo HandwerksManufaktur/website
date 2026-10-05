@@ -443,7 +443,7 @@ if (zb) {
 /* ---- „Erkennst du dich wieder?" (Runde 10, Prinzip SHK v3): fünf Lagen, alle 6 s weiter, solange im Bild; Klick hält an ---- */
 const lb = $('.lg-buehne');
 if (lb) {
-  const tabs = $$('.lg-tab', lb), pan = $$('.lg-panel', lb), TAKT = (lb.classList.contains('pb-buehne') ? 7500 : 6000) * (matchMedia('(max-width: 760px)').matches ? 1.6 : 1); // Handy: Heute und Mit uns nacheinander, also mehr Zeit je Moment
+  const tabs = $$('.lg-tab', lb), pan = $$('.lg-panel', lb), TAKT = (lb.classList.contains('pb-buehne') ? 7500 : 6000) ; // Handy: Heute 1,6 s, dann wischt Mit uns von selbst rein — derselbe Takt reicht
   // Runde 15: Uhren in den Szenen zählen bei jedem Zeigen neu hoch (Heute ab 0,5 s lang, Mit uns kurz)
   const zaehle = p => $$('[data-bis]', p).forEach(b => { const bis = +b.dataset.bis, mit = !!b.closest('.mit'), start = mit ? 1250 : 500, dauer = mit ? 450 : 2600;
     if (ruhig) { b.textContent = bis.toFixed(1).replace('.', ','); return; }
@@ -467,7 +467,7 @@ if (lb) {
     if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault(); halt(); zeig(i + 1, true); }
     if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); halt(); zeig(i - 1, true); } });
   if (ruhig) lb.classList.add('steht');
-  new IntersectionObserver(es => es.forEach(e => { if (lb.classList.contains('lgs') || lb.classList.contains('lgm-ruhig')) return; if (e.isIntersecting) { zeig(i); lauf(); } else clearInterval(timer); }), { threshold: .35 }).observe(lb);  // Handy: die Scroll-Bühne steuert selbst
+  new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { zeig(i); lauf(); } else clearInterval(timer); }), { threshold: .35 }).observe(lb);
 }
 
 /* ---- Anfrage in drei Schritten (Runde 11): Name → Telefon oder Mail → Thema → abschicken ---- */
@@ -793,66 +793,94 @@ document.querySelectorAll('.rd').forEach(rechnerStarten);
   addEventListener('scroll', () => { if (!geplant) { geplant = true; requestAnimationFrame(lauf); } }, { passive: true });
   addEventListener('resize', () => requestAnimationFrame(lauf));
 
-  /* ── Fünf Momente (05.10.2026): kein Tippen mehr. Die Bühne klebt, der Daumen scrollt — je Moment erst „Heute",
-        dann wischt „Mit uns" darüber, dann kommt der nächste Moment. Die Symbol-Leiste zeigt nur, wo man steht
-        (Tipp springt hin). 🔴 Noah: „zwei mal klicken ist shit … oben Bildschirm, Suche, Kamera und dann unten
-        nochmal Heute und Mit uns". Reduzierte Bewegung: alle Momente untereinander, Heute und Mit uns sichtbar. ── */
+  /* ── Fünf Momente: Symbol-Leiste, Titel darunter, Heute → Mit uns wischt im selben Rahmen VON SELBST; Wischen mit dem Daumen ──
+        🔴 05.10.2026 Noah: „zwei mal klicken ist shit" — kein Heute/Mit-uns-Schalter mehr. Ein Tipp aufs Symbol zeigt Heute,
+        nach 1,6 s wischt Mit uns darüber. Tipp auf den Rahmen schaltet hin und her. Die klebende Scroll-Bühne (gleicher Tag)
+        war „richtig langsam", mit langem Abstand und „nicht interaktiv" — nie wieder Pinnen für diese Bühne. ── */
   $$('.lg-buehne').forEach(lb => {
-    const tabs = $$('.lg-tab', lb), pan = $$('.lg-panel', lb), panels = $('.lg-panels', lb), leiste = $('.lg-tabs', lb);
-    if (!tabs.length || !panels || !leiste) return;
+    const tabs = $$('.lg-tab', lb), pan = $$('.lg-panel', lb), panels = $('.lg-panels', lb);
+    if (!tabs.length || !panels) return;
     lb.classList.add('lgm');
-    const sek = lb.closest('section'), lead = sek && $('.lead', sek);
-    if (ruhig) { lb.classList.add('lgm-ruhig'); pan.forEach(p => { p.hidden = false; }); return; }
-    lb.classList.add('lgs'); if (sek) sek.classList.add('lgs-sek');
-    if (lead) lead.textContent = lead.textContent.replace(/Tipp auf (einen|deine)\.?/, 'Scroll einfach weiter.');
-    const n = pan.length;
-    lb.style.setProperty('--lgs-n', n);
-    const titel = document.createElement('div'); titel.className = 'lgm-titel'; titel.setAttribute('aria-live', 'polite');
-    titel.innerHTML = `<small>Moment <span>1</span> von ${n}</small><b></b>`;
-    const klebt = document.createElement('div'); klebt.className = 'lgs-klebt';
-    leiste.before(klebt); klebt.append(leiste, titel, panels);
-    const seite = (p, k) => $(`.lg-seite.${k}`, p);
-    const zaehle = (s, dauer) => $$('[data-bis]', s).forEach(b => {  // Heute zählt lang (lädt ewig), Mit uns kurz
+    const pb = lb.classList.contains('pb-buehne');
+    const FLIP = 1600;
+    const etikett = (k, fall) => { const e = $(`.lg-seite.${k} .lg-etikett`, lb); return e ? e.textContent.replace(/^[✕✓]/, '').trim() : fall; };
+    const titel = document.createElement('div'); titel.className = 'lgm-titel'; titel.setAttribute('aria-hidden', 'true');
+    titel.innerHTML = `<small>Moment <span>1</span> von ${tabs.length}</small><b></b>`;
+    $('.lg-tabs', lb).after(titel);
+    let uhr = null, aktiv = null, wunsch = null;
+    const zaehle = seite => $$('[data-bis]', seite).forEach(b => {
       const bis = +b.dataset.bis; cancelAnimationFrame(b._r);
-      b.textContent = '0,0'; const t0 = performance.now() + 250;
-      const f = t => { const q = klemm((t - t0) / dauer); b.textContent = (bis * (dauer > 1000 ? q : sanft(q))).toFixed(1).replace('.', ','); if (q < 1) b._r = requestAnimationFrame(f); };
+      if (ruhig) { b.textContent = bis.toFixed(1).replace('.', ','); return; }
+      b.textContent = '0,0'; const t0 = performance.now() + 650;
+      const f = t => { const q = klemm((t - t0) / 500); b.textContent = (bis * sanft(q)).toFixed(1).replace('.', ','); if (q < 1) b._r = requestAnimationFrame(f); };
       b._r = requestAnimationFrame(f);
     });
-    // Tipp auf ein Symbol springt zu diesem Moment (statt eines zweiten Schalters) — der alte Klick-Wechsel läuft nicht mit
-    const ziel = k => { const r = lb.getBoundingClientRect(), weg = r.height - innerHeight; return scrollY + r.top + weg * (k + .04) / n; };
-    tabs.forEach((t, k) => t.addEventListener('click', e => { e.stopImmediatePropagation(); scrollTo({ top: ziel(k), behavior: 'smooth' }); }, true));
-    let k0 = -1, mit0 = null;
-    const male = () => {
-      const r = lb.getBoundingClientRect(), weg = Math.max(1, r.height - innerHeight);
-      const x = klemm(-r.top / weg) * n, k = Math.min(n - 1, Math.floor(x)), q = Math.min(1, x - k);
-      const w = sanft(klemm((q - .3) / .3)), p = pan[k];
-      if (k !== k0) {
-        tabs.forEach((t, j) => { t.classList.toggle('an', j === k); t.classList.toggle('war', j < k); t.setAttribute('aria-selected', j === k ? 'true' : 'false'); });
-        pan.forEach((x, j) => { x.hidden = j !== k; x.classList.toggle('an', j === k); });
-        $('span', titel).textContent = k + 1; $('b', titel).textContent = $('b', tabs[k]).textContent.replace(/­/g, '');
-        titel.classList.remove('neu'); void titel.offsetWidth; titel.classList.add('neu');
-        const h = seite(p, 'heute'); if (h) { neuStarten(h); zaehle(h, 2600); }
-        k0 = k; mit0 = null;
-      }
-      tabs.forEach((t, j) => { const l = $('.lauf', t); if (l) l.style.transform = `scaleX(${j < k ? 1 : j === k ? q.toFixed(3) : 0})`; });
-      const m = seite(p, 'mit');
-      if (m) m.style.clipPath = `inset(0 0 0 ${((1 - w) * 100).toFixed(2)}%)`;
-      const mit = w > .5;
-      if (mit !== mit0) { p.classList.toggle('mit-an', mit); if (mit && m) { neuStarten(m); m.style.clipPath = `inset(0 0 0 ${((1 - w) * 100).toFixed(2)}%)`; zaehle(m, 500); } mit0 = mit; }
+    const setze = (p, mit) => {
+      clearTimeout(uhr);
+      p.classList.toggle('mit-an', mit);
+      const s = $(mit ? '.lg-seite.mit' : '.lg-seite.heute', p);
+      if (s) { neuStarten(s); if (mit) zaehle(s); }
     };
-    // gleiche Höhe für alle Momente; passt die Bühne nicht ins Bild (kleine Telefone), wird der Rahmen verkleinert
+    const zeigen = p => {
+      aktiv = p; const k = pan.indexOf(p);
+      const t = tabs[k]; $('span', titel).textContent = k + 1; $('b', titel).textContent = t ? $('b', t).textContent.replace(/­/g, '') : '';
+      titel.classList.remove('neu'); void titel.offsetWidth; titel.classList.add('neu');
+      if (wunsch !== null) { const w = wunsch; wunsch = null; setze(p, w); return; }
+      p.classList.remove('mit-an');
+      clearTimeout(uhr); if (!ruhig) uhr = setTimeout(() => setze(p, true), FLIP);  // reduzierte Bewegung: Umschalten nur per Tipp
+    };
+    // nur auf das NEUE Einschalten eines Moments hören (alt ohne „an", jetzt mit) — sonst schaukelt sich der Beobachter selbst auf
+    const hatAn = c => /(^|\s)an(\s|$)/.test(c || '');
+    // 🔴 04.10.2026: zeig() schreibt remove('an') + add('an') — beim Wechsel auf einen ANDEREN Moment kommen beide Einträge
+    // im selben Stapel an und zeigen() lief doppelt: der zweite Lauf verwarf den Wunsch (Wisch nach rechts landete auf „Heute"
+    // statt auf „Mit uns" des vorigen Moments). Je Stapel jeder Moment nur einmal.
+    new MutationObserver(ms => { const neu = new Set(); ms.forEach(m => { const p = m.target; if (pan.includes(p) && !hatAn(m.oldValue) && hatAn(p.className) && !p.hidden) neu.add(p); }); neu.forEach(zeigen); })
+      .observe(panels, { subtree: true, attributes: true, attributeOldValue: true, attributeFilter: ['class'] });
+    const aktuell = () => pan.indexOf(aktiv || pan.find(p => !p.hidden) || pan[0]);
+    // Schalter und Wischen halten den automatischen Wechsel an (wie ein Tipp auf einen Reiter)
+    const manuell = mit => { wunsch = mit; tabs[aktuell()].click(); };
+    // Tipp auf den Rahmen: Heute ↔ Mit uns
+    let gewischt = false;
+    panels.addEventListener('click', () => { if (gewischt) { gewischt = false; return; } manuell(!(aktiv && aktiv.classList.contains('mit-an'))); });
+    let x0 = null, y0 = 0;
+    panels.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+    panels.addEventListener('touchend', e => {
+      if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0; x0 = null;
+      if (Math.abs(dx) < 45 || Math.abs(dx) < Math.abs(dy) * 1.3) return;
+      gewischt = true; setTimeout(() => { gewischt = false; }, 400);
+      const mit = aktiv && aktiv.classList.contains('mit-an'), k = aktuell();
+      if (dx < 0) { if (!mit) manuell(true); else { wunsch = false; tabs[(k + 1) % tabs.length].click(); } }
+      else { if (mit) manuell(false); else { wunsch = true; tabs[(k - 1 + tabs.length) % tabs.length].click(); } }
+    }, { passive: true });
+    // 🔴 04.10.2026: Wischen ging, war aber nicht zu erkennen. Beim ersten Erscheinen stupst die Karte einmal seitlich an
+    // (wie eine Wischbahn), dazu zwei kleine Pfeile am Rand; nach dem ersten Wisch oder Tipp verschwinden sie. Einmal je Seitenaufruf,
+    // nur transform/opacity, bei reduzierter Bewegung nur die stehenden Pfeile. Nur am Handy.
+    if (matchMedia('(max-width: 760px)').matches) {
+      const ph = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      const hin = document.createElement('div'); hin.className = 'lgm-hinweis'; hin.setAttribute('aria-hidden', 'true');
+      hin.innerHTML = `<i class="l">${ph}</i><i class="r">${ph}</i>`; panels.append(hin);
+      // 🔴 05.10.2026: hieß die Klasse „weg", griff die Karten-Regel .weg (Papier-Fläche) und deckte nach dem ersten Berühren den ganzen Rahmen ab
+      const weg = () => hin.classList.add('lgm-aus');
+      panels.addEventListener('touchstart', weg, { passive: true, once: true });
+      panels.addEventListener('click', weg, { once: true });
+      if (!window.__lgmStups) {
+        window.__lgmStups = true;
+        const io = new IntersectionObserver(es => es.forEach(e => {
+          if (!e.isIntersecting) return; io.disconnect(); hin.classList.add('zeigt');
+          if (!ruhig && !hin.classList.contains('lgm-aus')) setTimeout(() => { if (!hin.classList.contains('lgm-aus')) { panels.classList.add('stupst'); setTimeout(() => panels.classList.remove('stupst'), 1300); } }, 900);
+        }), { threshold: .6 });
+        io.observe(panels);
+      } else hin.classList.add('zeigt');
+    }
+    // gleiche Höhe für alle fünf Momente — die Seite springt beim Wechsel nicht
     const messen = () => {
-      lb.style.removeProperty('--lgm-h'); panels.style.removeProperty('--lgs-s'); let h = 0;
+      lb.style.removeProperty('--lgm-h'); let h = 0;
       pan.forEach(p => { const war = p.hidden; p.hidden = false; h = Math.max(h, p.offsetHeight); p.hidden = war; });
-      if (!h) return;
-      lb.style.setProperty('--lgm-h', Math.ceil(h) + 'px');
-      const frei = innerHeight - 92 - leiste.offsetHeight - titel.offsetHeight - 40;
-      const s = Math.min(1, frei / h); panels.style.setProperty('--lgs-s', s.toFixed(3));
-      male();
+      if (h) lb.style.setProperty('--lgm-h', Math.ceil(h) + 'px');
     };
     messen(); addEventListener('load', messen); if (document.fonts) document.fonts.ready.then(messen);
     let bx = innerWidth; addEventListener('resize', () => { if (innerWidth !== bx) { bx = innerWidth; messen(); } });
-    takt.push(male); male();
+    const erst = pan.find(p => p.classList.contains('an') && !p.hidden); if (erst) zeigen(erst);
   });
 
   /* ── Drei Säulen: gepinnte Bühne, die Säulen wachsen nacheinander aus dem Boden — am Ende steht das Logo ── */
