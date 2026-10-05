@@ -977,3 +977,12 @@ document.querySelectorAll('.rd').forEach(rechnerStarten);
   }), { threshold: [0, 0.01] });
   bahnen.forEach(b => io.observe(b));
 })();
+
+/* ---- Hintergrund-Videos am Handy etwas schneller (05.10.2026, Noah: „lass die videos bisschen schneller durchlaufen da mobil").
+        Nur stumme Schleifen-Videos, nur bis 760 px; jedes neue Laden (Lazy-Quelle) setzt das Tempo zurück, darum bei play/loadeddata nachziehen. ---- */
+(() => {
+  if (!matchMedia('(max-width: 760px)').matches) return;
+  const TEMPO = 1.3;
+  const setze = v => { v.defaultPlaybackRate = TEMPO; if (v.playbackRate !== TEMPO) v.playbackRate = TEMPO; };
+  document.querySelectorAll('video[muted][loop], video[loop][muted]').forEach(v => { setze(v); ['loadeddata', 'play'].forEach(e => v.addEventListener(e, () => setze(v))); });
+})();
