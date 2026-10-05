@@ -2371,7 +2371,7 @@ a.team-karte{color:inherit;text-decoration:none}
    Gemessen: beim Hineinscrollen standen 84–88 % des Bildschirms in Schwarz, die Zahl begann bei „0", beim Hinausscrollen
    blieb ein leeres schwarzes Band. Jetzt: Papier statt Tinte, 240 statt 320 svh, und die Zahl zählt schon beim Hereinkommen
    hoch (/static/main.js) — wer ankommt, sieht sofort „66 Kundenseiten". */
-.zahlen-buehne{height:240svh;background:var(--papier-2);color:var(--tinte)}
+.zahlen-buehne{height:300svh;background:var(--papier-2);color:var(--tinte)}
 .zs-text .kicker{color:var(--bronze-tief)}
 .zs-szene[data-szene="1"] .zs-nr,.zs-szene[data-szene="2"] .zs-nr{color:var(--bronze-tief)}
 .zs-szene p{color:var(--tinte-2)}
@@ -2385,7 +2385,7 @@ a.team-karte{color:inherit;text-decoration:none}
 .zs-fort path{fill:rgba(22,19,14,.16)}
 .zahlen-buehne[data-szene="0"] .zs-fort .s0,.zahlen-buehne[data-szene="1"] .zs-fort .s0,.zahlen-buehne[data-szene="1"] .zs-fort .s1,.zahlen-buehne[data-szene="2"] .zs-fort path{fill:var(--bronze)}
 .zs-fuss small{color:var(--tinte-3)}
-@media (max-width:760px){.zahlen-buehne{height:230svh}}
+@media (max-width:760px){.zahlen-buehne{height:300svh}}
 /* ---- Neukunden: Werbekonto als Kalender (Runde 15, SHK-Stil) ---- */
 .wk-tafel{margin-top:clamp(26px,3vw,40px);background:#fff;box-shadow:0 0 0 1px rgba(22,19,14,.08),0 24px 50px -34px rgba(22,19,14,.45)}
 .wk-tafel .kal-kopf small{max-width:none}
@@ -3160,7 +3160,7 @@ html.rd-offen{overflow:hidden}
   .lgm .lg-seite .lg-etikett{align-self:center}
   /* ── „Drei Säulen": die drei Säulen des Logos wachsen beim Scrollen nacheinander aus dem Boden ── */
   .ssm-sek,.stapelm-sek{overflow:clip}  /* hidden würde das Kleben (sticky) verhindern */
-  .system-saeulen.ssm{display:block;height:310svh;margin-top:8px;position:relative}
+  .system-saeulen.ssm{display:block;height:360svh;margin-top:8px;position:relative}
   .ssm-klebt{position:sticky;top:0;height:100svh;display:flex;flex-direction:column;justify-content:center;gap:20px;padding:80px 0 22px}
   .ssm-saeulen{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;align-items:end;height:min(40svh,360px);border-bottom:3px solid var(--tinte)}
   .ssm .ss-hub{clip-path:none;transition:none;overflow:hidden;height:100%;position:relative}
@@ -3188,7 +3188,7 @@ html.rd-offen{overflow:hidden}
   .ssm-text .ss-links a:active{transform:scale(.97)}
   .ssm-text .ss-links a svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
   /* ── „Gemessen, nicht behauptet": mittig und kompakt, das Raster baut sich Säule für Säule auf ── */
-  .zahlen-buehne{height:215svh}
+  .zahlen-buehne{height:300svh}  /* 215 → 300: jedes Ergebnis bekommt Haltezeit (05.10.2026) */
   .zs-klebt{padding:72px 0 64px}
   .zs-klebt>.zs-raster{display:flex;flex-direction:column;align-items:center;gap:18px}
   .zs-text{order:1;width:100%;min-height:0;height:250px;display:flex;flex-direction:column;align-items:center}
@@ -3335,3 +3335,7 @@ html.rd-offen{overflow:hidden}
   @keyframes lgm-pfeil{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(-5px,0,0)}}
 }
 @media (prefers-reduced-motion:reduce){.lgm .lg-panels.stupst,.lgm-hinweis.zeigt .r{animation:none}}
+
+/* Rastpunkte der Zahlen-Bühne (05.10.2026): sanftes Einrasten am Ergebnis, nur wenn die Bühne Rastpunkte gesetzt hat */
+html.zs-rastet{scroll-snap-type:y proximity}
+.zs-rast{position:absolute;left:0;width:1px;height:1px;pointer-events:none;scroll-snap-align:start;scroll-snap-stop:normal}

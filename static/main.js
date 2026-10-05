@@ -427,7 +427,9 @@ if (zb) {
     const r = zb.getBoundingClientRect(), vorlauf = innerHeight * .6, weg = r.height - innerHeight + vorlauf;
     const p = ruhig ? 1 : klemm((vorlauf - r.top) / (weg || 1));
     const s = Math.min(2.999, p * 3), szene = Math.floor(s);
-    const a = klemm(s / 0.7), b = klemm((s - 1) / 0.7), c = klemm((s - 2) / 0.7);
+    // 🔴 05.10.2026 Noah: „beim scrollen … am Ergebnis hängen bleiben, z.B. mit 66 Seiten oder 35 auf der 1, sonst überspringt man
+    // das Ergebnis". Zählen in 40 % jedes Drittels, 60 % steht das Ergebnis (vorher 70/30 — am Handy nur ~150 px Halt).
+    const a = klemm(s / 0.4), b = klemm((s - 1) / 0.4), c = klemm((s - 2) / 0.4);
     const n66 = Math.round(66 * a), n35 = Math.round(35 * b), n5 = Math.round(5 * c * 10) / 10;
     const schluessel = szene + '|' + n66 + '|' + n35 + '|' + n5;
     if (schluessel === zuletzt) return; zuletzt = schluessel;
@@ -436,8 +438,12 @@ if (zb) {
     sterne.forEach((st, i) => st.classList.toggle('an', i < Math.round(n5)));
     if (!ruhig) { nr[0].textContent = n66; nr[1].textContent = n35; nr[2].textContent = (Math.max(n5, 0)).toFixed(1).replace('.', ','); }
   };
+  // Rastpunkte: in der Mitte jedes Halts rastet der Scroll sanft ein (scroll-snap proximity) — wer durchwischt, bleibt kurz am Ergebnis hängen
+  const rast = ruhig ? [] : [0, 1, 2].map(() => { const e = document.createElement('i'); e.className = 'zs-rast'; e.setAttribute('aria-hidden', 'true'); zb.append(e); return e; });
+  const raste = () => { const ih = innerHeight, vorlauf = ih * .6, weg = zb.offsetHeight - ih + vorlauf; rast.forEach((e, k) => { e.style.top = Math.round(-vorlauf + weg * (k + .7) / 3) + 'px'; }); };
+  if (rast.length) document.documentElement.classList.add('zs-rastet');
   addEventListener('scroll', () => requestAnimationFrame(male), { passive: true });
-  addEventListener('resize', male); male();
+  addEventListener('resize', () => { raste(); male(); }); addEventListener('load', raste); raste(); male();
 }
 
 /* ---- „Erkennst du dich wieder?" (Runde 10, Prinzip SHK v3): fünf Lagen, alle 6 s weiter, solange im Bild; Klick hält an ---- */
@@ -913,8 +919,9 @@ document.querySelectorAll('.rd').forEach(rechnerStarten);
         if (r.bottom < -H || r.top > H * 2) return;
         const vor = H * .45, weg = Math.max(1, r.height - H + vor * .4);
         const s = klemm((vor - r.top) / weg) * 3;
-        const g = [0, 1, 2].map(i => sanft(klemm((s - i * .92) / .7)));
-        const an = Math.min(2, Math.max(0, Math.floor(s * 1.0 - .05)));
+        // 05.10.2026: jede Säule wächst in 45 % ihres Drittels und steht dann — Text und Säule bleiben stehen, bevor die nächste kommt
+        const g = [0, 1, 2].map(i => sanft(klemm((s - i) / .45)));
+        const an = Math.min(2, Math.max(0, Math.floor(s)));
         const key = g.map(x => x.toFixed(3)).join() + an;
         if (key === zuletzt) return; zuletzt = key;
         ss.forEach((e, i) => { e.style.transform = `translate3d(0,${((1 - g[i]) * 101).toFixed(2)}%,0)`; });
