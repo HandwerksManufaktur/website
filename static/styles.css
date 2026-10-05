@@ -3147,10 +3147,10 @@ html.rd-offen{overflow:hidden}
   .lgm .lg-seite{grid-area:1/1;min-height:0;border-radius:var(--radius);box-shadow:0 0 0 1px rgba(22,19,14,.08)}
   .lgm .lg-seite.heute{background:#fff}
   .lgm .lg-seite.mit{visibility:hidden}
-  .lgm .lg-panel.mit-an .lg-seite.mit{visibility:visible;animation:pb-wisch .7s cubic-bezier(.7,0,.2,1) both}
+  .lgm .lg-panel.mit-an .lg-seite.mit{visibility:visible;animation:pb-wisch .9s cubic-bezier(.7,0,.2,1) both}
   .lgm .lg-panel:not(.mit-an) .lg-seite.heute{animation:pb-rein-l .45s var(--ease) both}
   .lgm .pb-vs{display:none}
-  .lgm .mit .pb-g{--t:.45s}
+  .lgm .mit .pb-g{--t:1s}  /* wie am Desktop — .45 s war am Handy zu schnell (Noah, 05.10.2026) */
   .lgm .lg-seite p{text-align:center}
   .lgm .lg-seite .lg-etikett{align-self:center}
   /* ── „Drei Säulen": die drei Säulen des Logos wachsen beim Scrollen nacheinander aus dem Boden ── */

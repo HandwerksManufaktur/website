@@ -443,7 +443,7 @@ if (zb) {
 /* ---- „Erkennst du dich wieder?" (Runde 10, Prinzip SHK v3): fünf Lagen, alle 6 s weiter, solange im Bild; Klick hält an ---- */
 const lb = $('.lg-buehne');
 if (lb) {
-  const tabs = $$('.lg-tab', lb), pan = $$('.lg-panel', lb), TAKT = (lb.classList.contains('pb-buehne') ? 7500 : 6000) ; // Handy: Heute 1,6 s, dann wischt Mit uns von selbst rein — derselbe Takt reicht
+  const tabs = $$('.lg-tab', lb), pan = $$('.lg-panel', lb), TAKT = (lb.classList.contains('pb-buehne') ? 7500 : 6000) * (matchMedia('(max-width: 760px)').matches ? 1.6 : 1); // Handy: Heute 3 s, dann wischt Mit uns rein und steht noch 9 s (Noah, 05.10.2026: „die animation geht etwas zu schnell beim handy“)
   // Runde 15: Uhren in den Szenen zählen bei jedem Zeigen neu hoch (Heute ab 0,5 s lang, Mit uns kurz)
   const zaehle = p => $$('[data-bis]', p).forEach(b => { const bis = +b.dataset.bis, mit = !!b.closest('.mit'), start = mit ? 1250 : 500, dauer = mit ? 450 : 2600;
     if (ruhig) { b.textContent = bis.toFixed(1).replace('.', ','); return; }
@@ -795,14 +795,14 @@ document.querySelectorAll('.rd').forEach(rechnerStarten);
 
   /* ── Fünf Momente: Symbol-Leiste, Titel darunter, Heute → Mit uns wischt im selben Rahmen VON SELBST; Wischen mit dem Daumen ──
         🔴 05.10.2026 Noah: „zwei mal klicken ist shit" — kein Heute/Mit-uns-Schalter mehr. Ein Tipp aufs Symbol zeigt Heute,
-        nach 1,6 s wischt Mit uns darüber. Tipp auf den Rahmen schaltet hin und her. Die klebende Scroll-Bühne (gleicher Tag)
+        nach 3 s wischt Mit uns darüber. Tipp auf den Rahmen schaltet hin und her. Die klebende Scroll-Bühne (gleicher Tag)
         war „richtig langsam", mit langem Abstand und „nicht interaktiv" — nie wieder Pinnen für diese Bühne. ── */
   $$('.lg-buehne').forEach(lb => {
     const tabs = $$('.lg-tab', lb), pan = $$('.lg-panel', lb), panels = $('.lg-panels', lb);
     if (!tabs.length || !panels) return;
     lb.classList.add('lgm');
     const pb = lb.classList.contains('pb-buehne');
-    const FLIP = 1600;
+    const FLIP = 3000;  // Heute erst lesen lassen — 1,6 s war zu schnell
     const etikett = (k, fall) => { const e = $(`.lg-seite.${k} .lg-etikett`, lb); return e ? e.textContent.replace(/^[✕✓]/, '').trim() : fall; };
     const titel = document.createElement('div'); titel.className = 'lgm-titel'; titel.setAttribute('aria-hidden', 'true');
     titel.innerHTML = `<small>Moment <span>1</span> von ${tabs.length}</small><b></b>`;
