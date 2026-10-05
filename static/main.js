@@ -807,6 +807,15 @@ document.querySelectorAll('.rd').forEach(rechnerStarten);
     const titel = document.createElement('div'); titel.className = 'lgm-titel'; titel.setAttribute('aria-hidden', 'true');
     titel.innerHTML = `<small>Moment <span>1</span> von ${tabs.length}</small><b></b>`;
     $('.lg-tabs', lb).after(titel);
+    // Kleiner Schalter oben IM Rahmen (05.10.2026, Noah: „heute und mit uns doch zur auswahl … bisschen kleiner, intuitiver …
+    // oben … und dann switcht es und man sieht auch oben am schalter, dass es switcht"). Er springt beim automatischen
+    // Wechsel mit und lässt sich antippen. Ersetzt am Handy das Etikett der Karte.
+    const sch = document.createElement('div'); sch.className = 'lgm-schalter'; sch.dataset.mit = '0';
+    sch.setAttribute('role', 'group'); sch.setAttribute('aria-label', 'Vergleich umschalten');
+    sch.innerHTML = '<i class="lgm-daumen" aria-hidden="true"></i><button type="button" aria-pressed="true"><i aria-hidden="true">✕</i>Ohne uns</button><button type="button" aria-pressed="false"><i aria-hidden="true">✓</i>Mit uns</button>';
+    panels.append(sch);
+    const [bH, bM] = $$('button', sch);
+    const zeigeSchalter = mit => { sch.dataset.mit = mit ? '1' : '0'; bH.setAttribute('aria-pressed', mit ? 'false' : 'true'); bM.setAttribute('aria-pressed', mit ? 'true' : 'false'); };
     let uhr = null, aktiv = null, wunsch = null;
     const zaehle = seite => $$('[data-bis]', seite).forEach(b => {
       const bis = +b.dataset.bis; cancelAnimationFrame(b._r);
@@ -817,7 +826,7 @@ document.querySelectorAll('.rd').forEach(rechnerStarten);
     });
     const setze = (p, mit) => {
       clearTimeout(uhr);
-      p.classList.toggle('mit-an', mit);
+      p.classList.toggle('mit-an', mit); zeigeSchalter(mit);
       const s = $(mit ? '.lg-seite.mit' : '.lg-seite.heute', p);
       if (s) { neuStarten(s); if (mit) zaehle(s); }
     };
@@ -826,7 +835,7 @@ document.querySelectorAll('.rd').forEach(rechnerStarten);
       const t = tabs[k]; $('span', titel).textContent = k + 1; $('b', titel).textContent = t ? $('b', t).textContent.replace(/­/g, '') : '';
       titel.classList.remove('neu'); void titel.offsetWidth; titel.classList.add('neu');
       if (wunsch !== null) { const w = wunsch; wunsch = null; setze(p, w); return; }
-      p.classList.remove('mit-an');
+      p.classList.remove('mit-an'); zeigeSchalter(false);
       clearTimeout(uhr); if (!ruhig) uhr = setTimeout(() => setze(p, true), FLIP);  // reduzierte Bewegung: Umschalten nur per Tipp
     };
     // nur auf das NEUE Einschalten eines Moments hören (alt ohne „an", jetzt mit) — sonst schaukelt sich der Beobachter selbst auf
@@ -841,6 +850,8 @@ document.querySelectorAll('.rd').forEach(rechnerStarten);
     const manuell = mit => { wunsch = mit; tabs[aktuell()].click(); };
     // Tipp auf den Rahmen: Heute ↔ Mit uns
     let gewischt = false;
+    bH.addEventListener('click', e => { e.stopPropagation(); manuell(false); });
+    bM.addEventListener('click', e => { e.stopPropagation(); manuell(true); });
     panels.addEventListener('click', () => { if (gewischt) { gewischt = false; return; } manuell(!(aktiv && aktiv.classList.contains('mit-an'))); });
     let x0 = null, y0 = 0;
     panels.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
