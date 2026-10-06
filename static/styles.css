@@ -3339,3 +3339,51 @@ html.rd-offen{overflow:hidden}
 /* Rastpunkte der Zahlen-Bühne (05.10.2026): sanftes Einrasten am Ergebnis, nur wenn die Bühne Rastpunkte gesetzt hat */
 html.zs-rastet{scroll-snap-type:y proximity}
 .zs-rast{position:absolute;left:0;width:1px;height:1px;pointer-events:none;scroll-snap-align:start;scroll-snap-stop:normal}
+
+/* ═══ Handy-Runde 06.10.2026 — alles nur bis 760 px, Desktop bleibt unberührt ═══ */
+@media (max-width:760px){
+  /* „Frag Google einfach selbst": der getippte Begriff bricht um statt abgeschnitten zu werden (auch
+     „zimmerei dießen am ammersee" bei 360 px). Das Feld hat Platz für zwei Zeilen, damit beim Tippen nichts springt. */
+  .google .suchfeld{min-height:84px;padding:14px 18px;gap:12px;font-size:18px;line-height:1.35}
+  .google .suchfeld .tipp{white-space:normal;overflow:visible;overflow-wrap:anywhere;min-width:0}
+  /* Kasten so hoch wie mit Treffer (gemessen 282–285 px bei 360–390): beim Wechsel tippen → Treffer springt darunter nichts */
+  .google .suche{min-height:292px}
+}
+/* Handy: kein Einrasten des ganzen Dokuments (zog jeden Halt ±200 px nach, auch rückwärts) — siehe main.js, Zahlen-Bühne */
+@media (max-width:760px){html.zs-rastet{scroll-snap-type:none}}
+/* Collage über „Was ist in deinem Umkreis drin?" (Start + Unterseiten) am Handy: ruhiges Raster aus drei Spalten —
+   Film 2 × 2 oben links, fünf große Bilder drumherum. Quadrate kommen allein aus aspect-ratio (kein height:100 % im
+   Raster: Safari rechnete das bei Bildern mit 360-px-Maßangabe falsch), der Film füllt seine Fläche absolut. */
+@media (max-width:760px){
+  .uk-bild .collage.mit-film{grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:auto;gap:8px;flex:none}
+  .uk-bild .collage.mit-film img{height:auto;aspect-ratio:1/1;border-radius:16px;min-width:0}
+  .uk-bild .collage.mit-film img:nth-child(n+7){display:none}
+  .uk-bild .collage.mit-film .c-film{position:relative;border-radius:16px;min-width:0;min-height:0}
+  .uk-bild .collage.mit-film .c-film video{position:absolute;inset:0}
+}
+/* Sicherheitsnetz Intro (Handy): kommt main.js nicht oder spät an (schwaches Netz, Inhaltsblocker), blieb der schwarze
+   Vorhang mit dem Signet stehen. Nach 3,6 s geht er auch ohne JavaScript (sonst nimmt main.js ihn nach 2,15 s weg). */
+@media (max-width:760px){#intro{animation:mo-intro-weg .3s linear 3.6s forwards}}
+@keyframes mo-intro-weg{to{opacity:0;visibility:hidden;pointer-events:none}}
+/* Team-Bahn (Start, Über uns): die Regel „margin-inline:auto" (Desktop-Breite 1120 px) hob am Handy den negativen Rand auf —
+   die Bahn endete 20 px vor dem Bildschirmrand, die zweite Karte war hart abgeschnitten. Jetzt läuft sie bis an den Rand. */
+@media (max-width:760px){.team-drei{margin-inline:calc(var(--rand) * -1);max-width:none;scroll-padding-inline:var(--rand)}}
+/* „Ganze Fallstudie" im Kartenstapel: die zurücktretende Karte schrumpft auf 93 % — der Link (44 px) wurde 41 px. Etwas mehr Tippfläche. */
+@media (max-width:760px){.stapelm .textlink{position:relative}.stapelm .textlink::after{content:"";position:absolute;inset:-4px 0}}
+/* Ratgeber am Handy: Tippflächen ≥ 44 px (gemessen: Inhaltsverzeichnis 40 px hoch, „Start" in der Brotkrume 41 px breit,
+   Quellen-Links unter den Zahlen 18 px hoch). Ohne sichtbare Verschiebung: Polster und gleich großer negativer Rand. */
+@media (max-width:760px){
+  .rg-toc a{padding-block:12.5px}
+  .rg-toc li::before{padding-top:12.5px}
+  .rg-brot a{padding-inline:6px;margin-inline:-6px}
+  .rg-quelle a{padding-block:14px;margin-block:-14px}
+  /* Handy-Bahn (Mitarbeitergewinnung): läuft bis an den Bildschirmrand statt 22 px davor hart abgeschnitten */
+  .handys{margin-inline:calc(var(--rand) * -1);padding-inline:var(--rand);scroll-padding-inline:var(--rand)}
+}
+/* Momente-Bühne, kleine Telefone: Zeichen ✕/✓ im Etikett 12 → 13 px (Hausregel: nichts unter 13 px) */
+@media (max-width:760px){.lg-etikett i{font-size:13px}}
+/* Ratgeber-Tabellen am Handy: lange Einzelwörter in der Beschriftungsspalte („Größenordnung" 167 px in einer 113-px-Spalte,
+   „Einschätzung", „Bewerbungen", „Warnzeichen") liefen in den Wert daneben — jetzt mit Trennstrich umbrochen. */
+@media (max-width:760px){.rg-tabelle td::before{-webkit-hyphens:auto;hyphens:auto;overflow-wrap:anywhere;min-width:0}}
+/* KI-Hinweis: das × misst während der Einblend-Animation 43 px — unsichtbar etwas größere Tippfläche */
+@media (max-width:760px){.kt-zu::after{content:"";position:absolute;inset:-3px;border-radius:50%}}

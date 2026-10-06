@@ -177,10 +177,13 @@ if (wischer) {
 const suche = $('.suche');
 if (suche) {
   const daten = JSON.parse(suche.dataset.treffer || '[]');
-  const tipp = $('.tipp', suche), liste = $('.treffer', suche), chips = $$('.begriffe button', suche);
+  const tipp = $('.tipp', suche), liste = $('.treffer', suche), chips = $$('.begriffe button', suche.closest('.buehne') || suche);  // die Begriffe stehen neben dem Suchkasten, nicht darin — vorher reagierte kein Tipp
   let i = 0, timer = null, tippTimer = null;
   function zeige(k, vonHand) {
     i = k; chips.forEach((c, j) => c.classList.toggle('aktiv', j === k));
+    // Handy: die Begriffe sind eine Wischbahn — der aktive Begriff rückt in die Bahn (nur waagerecht, die Seite bleibt stehen)
+    const bahn = chips[k] && chips[k].parentElement;
+    if (bahn && bahn.scrollWidth > bahn.clientWidth + 1) bahn.scrollTo({ left: Math.max(0, bahn.scrollLeft + chips[k].getBoundingClientRect().left - bahn.getBoundingClientRect().left - 20), behavior: ruhig ? 'auto' : 'smooth' });
     const d = daten[k]; if (!d) return;
     clearTimeout(tippTimer); liste.innerHTML = ''; tipp.textContent = '';
     let z = 0;
@@ -439,7 +442,12 @@ if (zb) {
     if (!ruhig) { nr[0].textContent = n66; nr[1].textContent = n35; nr[2].textContent = (Math.max(n5, 0)).toFixed(1).replace('.', ','); }
   };
   // Rastpunkte: in der Mitte jedes Halts rastet der Scroll sanft ein (scroll-snap proximity) — wer durchwischt, bleibt kurz am Ergebnis hängen
-  const rast = ruhig ? [] : [0, 1, 2].map(() => { const e = document.createElement('i'); e.className = 'zs-rast'; e.setAttribute('aria-hidden', 'true'); zb.append(e); return e; });
+  // 🔴 06.10.2026 (Noah: „wie buggt das Scrollverhalten noch manchmal"): am Handy KEINE Rastpunkte mehr. Gemessen: proximity-Snap
+  //    auf dem ganzen Dokument zieht jeden Halt im Umkreis von ±200 px um einen Rastpunkt nachträglich dorthin — auch rückwärts —,
+  //    und raste() verschob die Punkte bei jedem resize (iOS: Adressleiste ein/aus mitten im Wischen). Der Halt am Ergebnis kommt
+  //    am Handy allein aus der Animation: zählen in 40 %, stehen in 60 % jedes Drittels. Desktop unverändert.
+  const zsHandy = matchMedia('(max-width: 760px)').matches;
+  const rast = (ruhig || zsHandy) ? [] : [0, 1, 2].map(() => { const e = document.createElement('i'); e.className = 'zs-rast'; e.setAttribute('aria-hidden', 'true'); zb.append(e); return e; });
   const raste = () => { const ih = innerHeight, vorlauf = ih * .6, weg = zb.offsetHeight - ih + vorlauf; rast.forEach((e, k) => { e.style.top = Math.round(-vorlauf + weg * (k + .7) / 3) + 'px'; }); };
   if (rast.length) document.documentElement.classList.add('zs-rastet');
   addEventListener('scroll', () => requestAnimationFrame(male), { passive: true });
@@ -914,13 +922,15 @@ document.querySelectorAll('.rd').forEach(rechnerStarten);
       klebt.append(reihe, texte); sae.prepend(klebt);
       const ss = hubs.map(h => $('.ss', h));
       let zuletzt = '';
+      // Handy (06.10.2026): ohne Rastpunkte — dafür wächst jede Säule in 40 % ihres Drittels und steht 60 % (Desktop wie bisher 45 %)
+      const saeHandy = matchMedia('(max-width: 760px)').matches, wachs = saeHandy ? .4 : .45;
       const male = () => {
         const r = sae.getBoundingClientRect(), H = innerHeight;
         if (r.bottom < -H || r.top > H * 2) return;
         const vor = H * .45, weg = Math.max(1, r.height - H + vor * .4);
         const s = klemm((vor - r.top) / weg) * 3;
         // 05.10.2026: jede Säule wächst in 45 % ihres Drittels und steht dann — Text und Säule bleiben stehen, bevor die nächste kommt
-        const g = [0, 1, 2].map(i => sanft(klemm((s - i) / .45)));
+        const g = [0, 1, 2].map(i => sanft(klemm((s - i) / wachs)));
         const an = Math.min(2, Math.max(0, Math.floor(s)));
         const key = g.map(x => x.toFixed(3)).join() + an;
         if (key === zuletzt) return; zuletzt = key;
@@ -929,10 +939,12 @@ document.querySelectorAll('.rd').forEach(rechnerStarten);
         karten.forEach((k, i) => { const ja = i === an; k.classList.toggle('an', ja); k.inert = !ja; ja ? k.removeAttribute('aria-hidden') : k.setAttribute('aria-hidden', 'true'); });
       };
       // Rastpunkte wie bei der Zahlen-Bühne (05.10.2026, Noah: „mach das einrasten auch bei den säulen"): mitten im Halt jeder Säule
-      const rast = [0, 1, 2].map(() => { const e = document.createElement('i'); e.className = 'zs-rast'; e.setAttribute('aria-hidden', 'true'); sae.append(e); return e; });
-      const raste = () => { const H = innerHeight, vor = H * .45, weg = Math.max(1, sae.offsetHeight - H + vor * .4); rast.forEach((e, k) => { e.style.top = Math.round((k + .72) / 3 * weg - vor) + 'px'; }); };
-      document.documentElement.classList.add('zs-rastet');
-      raste(); addEventListener('load', raste); let bx = innerWidth; addEventListener('resize', () => { if (innerWidth !== bx) { bx = innerWidth; raste(); } });
+      if (!saeHandy) {
+        const rast = [0, 1, 2].map(() => { const e = document.createElement('i'); e.className = 'zs-rast'; e.setAttribute('aria-hidden', 'true'); sae.append(e); return e; });
+        const raste = () => { const H = innerHeight, vor = H * .45, weg = Math.max(1, sae.offsetHeight - H + vor * .4); rast.forEach((e, k) => { e.style.top = Math.round((k + .72) / 3 * weg - vor) + 'px'; }); };
+        document.documentElement.classList.add('zs-rastet');
+        raste(); addEventListener('load', raste); let bx = innerWidth; addEventListener('resize', () => { if (innerWidth !== bx) { bx = innerWidth; raste(); } });
+      }
       takt.push(male); male();
     }
   }
@@ -943,6 +955,7 @@ document.querySelectorAll('.rd').forEach(rechnerStarten);
     const k = $$(ks, box).filter(c => c.parentElement === box);
     if (k.length < 2) return;
     box.classList.add('stapelm'); box.closest('.sek')?.classList.add('stapelm-sek');
+    const stapelHandy = matchMedia('(max-width: 760px)').matches;
     const male = () => {
       const br = box.getBoundingClientRect(); if (br.bottom < 0 || br.top > innerHeight) return;
       k.forEach((c, i) => {
@@ -950,7 +963,11 @@ document.querySelectorAll('.rd').forEach(rechnerStarten);
         const a = c.getBoundingClientRect(), b = n.getBoundingClientRect();
         const q = klemm(1 - (b.top - a.top) / Math.max(1, a.height));
         c.style.scale = (1 - .07 * q).toFixed(4);
-        c.style.opacity = (1 - .35 * q).toFixed(3);
+        // Handy (06.10.2026): die zurücktretende Karte wurde durchsichtig — durch sie hindurch lag die Schrift der Karte
+        // darunter auf ihrer eigenen („2:14 · Benjamin Senftleben" unter „2:39 · Florian Schmidt"). Am Handy bleibt sie
+        // deckend und wird nur dunkler; Desktop wie bisher.
+        if (stapelHandy) c.style.filter = 'brightness(' + (1 - .22 * q).toFixed(3) + ')';
+        else c.style.opacity = (1 - .35 * q).toFixed(3);
       });
     };
     takt.push(male); male();
