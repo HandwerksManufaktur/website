@@ -71,86 +71,49 @@ h1{font-family:var(--font-head);font-weight:800;font-size:clamp(26px,5vw,34px);l
 
 <main class="wrap">
   <h1>Vorbereitung: eure neue Website geht online</h1>
-  <p class="intro">Eure neue Website bekommt ein eigenes Konto bei GitHub. Dort liegt sie, sie gehört euch, und es fallen keine monatlichen Hosting-Kosten an. Wenn diese Punkte vorab erledigt sind, ist der gemeinsame Termin in wenigen Minuten durch.</p>
-  <div class="time-badge">⏱ Dauert ca. 10 Minuten</div>
+  <p class="intro">Eure neue Website bekommt ein eigenes Konto bei GitHub. Dort liegt sie, sie gehört euch, und es fallen keine monatlichen Hosting-Kosten an. Ihr legt nur das Konto an, alles Weitere richten wir ein.</p>
+  <div class="time-badge">⏱ Dauert ca. 5 Minuten</div>
 
   <section class="card">
-    <div class="card-head"><span class="card-num">1</span><h2 class="card-title">Google Authenticator aufs Handy laden</h2></div>
-    <p>Die App erzeugt den Sicherheitscode, den GitHub beim Einloggen zusätzlich abfragt („Zwei-Faktor“). GitHub schreibt das für alle Konten vor. Wenn ihr die App schon habt (zum Beispiel von Facebook), einfach diesen Punkt überspringen.</p>
-    <div class="app-box">
-      <img src="google-authenticator-icon.png" alt="Symbol der Google-Authenticator-App: bunter Stern aus blauen, roten, gelben und grünen Balken" width="56" height="56">
-      <div class="app-box-text"><strong>Google Authenticator</strong>So sieht die App aus: bunter Stern, Anbieter „Google LLC“. Die App ist kostenlos.</div>
-    </div>
-    <p class="tap-hint">👉 <strong>Tippt einfach auf euren Store</strong>, der Link führt direkt zur richtigen App:</p>
-    <div class="store-links">
-      <a href="https://apps.apple.com/de/app/google-authenticator/id388497605" target="_blank" rel="noopener">📱 iPhone, zum App Store</a>
-      <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2" target="_blank" rel="noopener">🤖 Android, zum Play Store</a>
-    </div>
-    <p class="tap-hint">Dort auf „Laden“ bzw. „Installieren“ tippen, die App einmal öffnen und wieder zur Seite legen.</p>
-  </section>
-
-  <section class="card">
-    <div class="card-head"><span class="card-num">2</span><h2 class="card-title">GitHub-Konto anlegen</h2></div>
+    <div class="card-head"><span class="card-num">1</span><h2 class="card-title">GitHub-Konto anlegen</h2></div>
     <p>Am besten am PC oder Laptop. Das Konto läuft auf euren Betrieb und eure E-Mail-Adresse.</p>
     <div class="store-links"><a class="btn-link" href="https://github.com/signup" target="_blank" rel="noopener">→ github.com/signup öffnen</a></div>
     <ul class="steps-inline">
-      <li><strong>E-Mail-Adresse</strong> eintragen: die Adresse, die ihr täglich lest (dorthin kommen die Bestätigungscodes)</li>
-      <li><strong>Passwort</strong> ausdenken: mindestens 15 Zeichen, oder mindestens 8 Zeichen mit einer Zahl und einem Kleinbuchstaben. <strong>Gleich auf den Zettel unten schreiben.</strong></li>
+      <li><strong>E-Mail-Adresse</strong> eintragen: die Adresse, die ihr täglich lest</li>
+      <li><strong>Passwort</strong> ausdenken: mindestens 15 Zeichen, oder mindestens 8 Zeichen mit einer Zahl und einem Kleinbuchstaben. <strong>Gleich aufschreiben.</strong></li>
       <li><strong>Benutzername</strong>: euer Firmenname ohne Leerzeichen, zum Beispiel <em>schreinerei-mueller</em>. Ist er vergeben, hängt den Ort an.</li>
       <li>Die Frage nach Neuigkeiten per E-Mail könnt ihr verneinen → <strong>„Continue“ / „Weiter“</strong></li>
       <li>GitHub zeigt ein kurzes <strong>Rätsel</strong> (Bilder auswählen), das ist normal → lösen</li>
-      <li>In euer Postfach schauen: GitHub schickt einen <strong>8-stelligen Code</strong> → auf der Seite eintippen</li>
-      <li>Fragen zu Team-Größe oder Interessen einfach <strong>überspringen</strong> („Skip“). Wenn nach einem Tarif gefragt wird: <strong>„Free“</strong>, das kostenlose Konto reicht völlig.</li>
+      <li><strong>E-Mail bestätigen:</strong> In euer Postfach schauen, GitHub schickt einen <strong>8-stelligen Code</strong> → auf der Seite eintippen</li>
+      <li>Fragen zu Team-Größe oder Interessen einfach <strong>überspringen</strong> („Skip“). Wenn nach einem Tarif gefragt wird: <strong>„Free“</strong>, das kostenlose Konto reicht völlig. Fertig ✅</li>
     </ul>
+    <p class="tap-hint">Mehr müsst ihr bei GitHub nicht einstellen. Projekt, Sicherheitscode und Verknüpfung mit eurer Domain richten wir ein.</p>
   </section>
 
   <section class="card">
-    <div class="card-head"><span class="card-num">3</span><h2 class="card-title">Zwei-Faktor bei GitHub einschalten</h2></div>
-    <p>Eingeloggt bei GitHub, am PC:</p>
-    <ul class="steps-inline">
-      <li>Oben rechts auf euer <strong>Profilbild</strong> klicken → <strong>„Settings“</strong></li>
-      <li>Links <strong>„Password and authentication“</strong> → <strong>„Enable two-factor authentication“</strong></li>
-      <li>GitHub zeigt einen <strong>QR-Code</strong>. Darunter steht klein <strong>„setup key“</strong>: anklicken, den Schlüssel (lange Buchstabenreihe) <strong>auf den Zettel schreiben</strong></li>
-      <li>In der <strong>Google-Authenticator-App</strong> auf <strong>„+“</strong> → <strong>„QR-Code scannen“</strong> → Handykamera auf den QR-Code am Bildschirm halten</li>
-      <li>Die App zeigt jetzt einen <strong>6-stelligen Code</strong> → bei GitHub eintippen</li>
-      <li>GitHub zeigt <strong>Wiederherstellungscodes</strong> („recovery codes“) → <strong>„Download“</strong> und die Datei aufheben, oder ausdrucken. Damit kommt ihr immer wieder rein, falls das Handy mal weg ist.</li>
-      <li>Zum Schluss auf <strong>„Done“</strong> klicken → fertig ✅</li>
-    </ul>
-    <div class="why"><strong>Warum der Schlüssel auf den Zettel:</strong> Wir nehmen ihn im Termin zusätzlich in unseren verschlüsselten Passwort-Tresor. So können wir Änderungen an eurer Seite einspielen, ohne euch jedes Mal nach einem Code vom Handy zu fragen. Euer Zugang bleibt trotzdem voll bei euch.</div>
-    <p class="tap-hint">Hängt ihr hier irgendwo: kein Problem, den Schritt machen wir im Termin zusammen fertig.</p>
-  </section>
-
-  <section class="card">
-    <div class="card-head"><span class="card-num">4</span><h2 class="card-title">Alles auf einen Zettel schreiben</h2></div>
-    <p>Diese vier Angaben braucht ihr im Termin. Am besten ausdrucken und ausfüllen, oder abschreiben:</p>
+    <div class="card-head"><span class="card-num">2</span><h2 class="card-title">E-Mail und Passwort an uns durchgeben</h2></div>
+    <p>Gebt uns die <strong>E-Mail-Adresse</strong>, mit der ihr das Konto angelegt habt, und das <strong>Passwort</strong> durch, am einfachsten kurz telefonisch.</p>
     <div class="zettel" aria-label="Notizzettel zum Ausfüllen">
       <div><span>E-Mail-Adresse</span><span></span></div>
-      <div><span>Benutzername</span><span></span></div>
       <div><span>Passwort</span><span></span></div>
-      <div><span>Setup key (Zwei-Faktor)</span><span></span></div>
     </div>
-    <div class="why"><strong>Bitte nicht per E-Mail oder WhatsApp schicken.</strong> Den Zettel einfach im Termin neben euch legen, wir übernehmen die Angaben direkt.</div>
+    <div class="why"><strong>Was dann passiert:</strong> Wir legen die Zugangsdaten in unserem verschlüsselten Passwort-Tresor ab und richten alles Weitere ein. Beim ersten Einloggen schickt GitHub euch eventuell noch einen Bestätigungscode per E-Mail, den gebt ihr uns dann kurz durch.</div>
   </section>
 
   <section class="card">
-    <div class="card-head"><span class="card-num">5</span><h2 class="card-title">Zugang zu eurer Domain bereitlegen</h2></div>
+    <div class="card-head"><span class="card-num">3</span><h2 class="card-title">Zugang zu eurer Domain bereitlegen</h2></div>
     <p>Damit eure Adresse (zum Beispiel <em>www.euer-betrieb.de</em>) auf die neue Seite zeigt, stellen wir bei eurem Domain-Anbieter einen Eintrag um. Das ist meist dort, wo ihr die Domain bezahlt: zum Beispiel IONOS, Strato, Raidboxes oder All-Inkl.</p>
-    <p>Sucht die <strong>Zugangsdaten</strong> raus und probiert vorher einmal aus, ob der Login klappt. Passwort vergessen? Am besten jetzt schon zurücksetzen, nicht erst im Termin.</p>
+    <p>Sucht die <strong>Zugangsdaten</strong> raus und probiert vorher einmal aus, ob der Login klappt. Passwort vergessen? Am besten jetzt schon zurücksetzen.</p>
     <div class="why"><strong>Keine Sorge um eure E-Mails:</strong> Wir ändern nur den Eintrag für die Website. Eure E-Mail-Adressen laufen unverändert weiter.</div>
   </section>
 
   <section class="card">
-    <div class="card-head"><span class="card-num">6</span><h2 class="card-title">Zugang zur alten Website<span class="optional-tag">Optional</span></h2></div>
+    <div class="card-head"><span class="card-num">4</span><h2 class="card-title">Zugang zur alten Website<span class="optional-tag">Optional</span></h2></div>
     <p>Falls vorhanden: die Zugangsdaten zur bisherigen Website (zum Beispiel WordPress) oder den Kontakt zu eurem bisherigen Webdesigner. Damit sichern wir die alte Seite und leiten alte Links auf die neuen Seiten um, damit bei Google nichts verloren geht.</p>
   </section>
 
-  <section class="card">
-    <div class="card-head"><span class="card-num">7</span><h2 class="card-title">Im Termin: PC an, E-Mail-Postfach offen</h2></div>
-    <p>Wir telefonieren ca. 10 Minuten. Setzt euch dafür an den PC, lasst euer <strong>E-Mail-Postfach</strong> offen (GitHub schickt eventuell einen Code) und habt das <strong>Handy mit der Authenticator-App</strong> und den <strong>Zettel</strong> neben euch. Den Rest machen wir.</p>
-  </section>
-
   <div class="footer-note">
-    Fragen zu einem der Punkte? Ruft einfach kurz durch: <a href="tel:+4981947174990">+49 8194 7174990</a>. Und falls etwas nicht klappt: Wir lösen das gemeinsam im Termin, verschiebt ihn deswegen nicht.
+    Fragen zu einem der Punkte? Ruft einfach kurz durch: <a href="tel:+4981947174990">+49 8194 7174990</a>. Und falls etwas nicht klappt: Wir lösen das gemeinsam.
   </div>
 </main>
 
