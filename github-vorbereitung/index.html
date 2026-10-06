@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vorbereitung Website-Livegang – HandwerksManufaktur</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#FAF7F1">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Cpath fill=%27%2316130E%27 d=%27M8.044,44.103 L30.286,29.275 L30.286,96 L8.044,96 Z M42.418,18.828 L64.659,4 L64.659,96 L42.418,96 L42.418,69.381 L35.341,72.747 L35.341,58.256 L42.418,53.538 Z M69.714,18.828 L91.956,4 L91.956,96 L69.714,96 Z%27/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* Palette der Hauptseite (Fassung C) */
+  --bg:#FAF7F1;--card:#FFFFFF;--surface:#F1ECE2;--line:#DED7C8;--border:#C9C0AE;
+  --ink:#16130E;--text:#16130E;--label:#3A352C;--muted:#6B6355;
+  --radius:20px;--font-head:'Archivo','Inter',system-ui,sans-serif;--font-body:'Inter',system-ui,-apple-system,sans-serif;
+  --shadow:0 1px 2px rgba(22,19,14,.04),0 12px 36px rgba(22,19,14,.07);
+}
+body{background:var(--bg);min-height:100vh;font-family:var(--font-body);color:var(--text)}
+.header{background:rgba(255,255,255,.92);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:16px 36px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:100}
+.header-left{display:flex;align-items:center}
+.header-left img{height:37px;width:auto;display:block}
+.header-badge{border-radius:20px;padding:5px 14px;font-size:13px;font-weight:600;color:var(--ink);background:var(--surface);white-space:nowrap}
+@media (max-width:520px){.header{padding:14px 18px}.header-left img{height:30px}.header-badge{padding:4px 10px}}
+.wrap{max-width:680px;margin:0 auto;padding:36px 24px 80px}
+h1{font-family:var(--font-head);font-weight:800;font-size:clamp(26px,5vw,34px);line-height:1.2;letter-spacing:-.02em;text-wrap:balance;margin-bottom:14px}
+.intro{font-size:15px;color:var(--label);line-height:1.65;margin-bottom:10px}
+.time-badge{display:inline-block;background:var(--surface);border-radius:20px;padding:5px 14px;font-size:13px;font-weight:600;color:var(--ink);margin:6px 0 30px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 24px;margin-bottom:18px;transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}
+.card:hover{transform:translateY(-2px);box-shadow:0 2px 4px rgba(22,19,14,.05),0 18px 44px rgba(22,19,14,.10);border-color:var(--border)}
+.card-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;font-size:13px;font-weight:600;margin-right:10px;flex-shrink:0}
+.card-head{display:flex;align-items:center;margin-bottom:10px}
+.card-title{font-family:var(--font-head);font-weight:800;font-size:17px;letter-spacing:-.01em;line-height:1.3}
+.card p{font-size:15px;line-height:1.65;color:var(--label)}
+.card p+p{margin-top:8px}
+.card .why{background:var(--surface);border-radius:var(--radius);padding:12px 16px;margin-top:12px;font-size:13.5px;line-height:1.6;color:var(--label)}
+.card .why strong{color:var(--text)}
+.sub{margin-top:16px;font-size:15px;color:var(--text)}
+.steps-inline{margin-top:10px;padding-left:0;list-style:none}
+.steps-inline li{font-size:14px;line-height:1.6;color:var(--label);padding:8px 0 8px 26px;position:relative;border-bottom:1px dashed var(--line)}
+.steps-inline li:last-child{border-bottom:none}
+.steps-inline li::before{content:'→';position:absolute;left:4px;color:var(--ink);font-weight:600}
+.optional-tag{display:inline-block;background:var(--surface);border-radius:12px;padding:2px 10px;font-size:13px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-left:8px;vertical-align:middle}
+.store-links{margin-top:10px;display:flex;gap:10px;flex-wrap:wrap}
+.store-links a,.btn-link{display:inline-block;border:1.5px solid var(--border);border-radius:999px;padding:9px 16px;font-size:13.5px;font-weight:600;color:var(--text);text-decoration:none;background:var(--bg);transition:background .2s,border-color .2s,color .2s}
+.store-links a:hover,.btn-link:hover{background:var(--ink);border-color:var(--ink);color:#fff}
+.app-box{display:flex;align-items:center;gap:14px;background:var(--surface);border-radius:var(--radius);padding:14px 16px;margin-top:12px}
+.app-box img{width:56px;height:56px;border-radius:12px;flex-shrink:0;box-shadow:0 2px 8px rgba(22,19,14,.12)}
+.app-box-text{font-size:13.5px;line-height:1.5;color:var(--label)}
+.app-box-text strong{color:var(--text);display:block;font-size:14px;margin-bottom:2px}
+.tap-hint{font-size:13.5px;color:var(--muted);margin-top:8px;line-height:1.55}
+.zettel{margin-top:12px;border:1.5px dashed var(--border);border-radius:var(--radius);padding:14px 18px;background:var(--bg)}
+.zettel div{display:flex;justify-content:space-between;gap:16px;padding:7px 0;border-bottom:1px solid var(--line);font-size:14px;color:var(--label)}
+.zettel div:last-child{border-bottom:0}
+.zettel span:last-child{flex:1;border-bottom:1px solid var(--border);max-width:55%;min-height:1.2em}
+.footer-note{background:var(--surface);border-radius:var(--radius);padding:16px 20px;font-size:14px;line-height:1.6;color:var(--text);margin-top:28px}
+.footer-note a{color:var(--ink);font-weight:600}
+@media (prefers-reduced-motion:reduce){.card,.card:hover{transition:none;transform:none}}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <a class="header-left" href="https://handwerksmanufaktur.digital/">
+    <img src="/assets/logo-hm-quer-schwarz.svg" alt="HandwerksManufaktur" width="137" height="37">
+  </a>
+  <div class="header-badge">Vorbereitung Livegang</div>
+</header>
+
+<main class="wrap">
+  <h1>Vorbereitung: eure neue Website geht online</h1>
+  <p class="intro">Eure neue Website bekommt ein eigenes Konto bei GitHub. Dort liegt sie, sie gehört euch, und es fallen keine monatlichen Hosting-Kosten an. Wenn diese Punkte vorab erledigt sind, ist der gemeinsame Termin in wenigen Minuten durch.</p>
+  <div class="time-badge">⏱ Dauert ca. 10 Minuten</div>
+
+  <section class="card">
+    <div class="card-head"><span class="card-num">1</span><h2 class="card-title">Google Authenticator aufs Handy laden</h2></div>
+    <p>Die App erzeugt den Sicherheitscode, den GitHub beim Einloggen zusätzlich abfragt („Zwei-Faktor“). GitHub schreibt das für alle Konten vor. Wenn ihr die App schon habt (zum Beispiel von Facebook), einfach diesen Punkt überspringen.</p>
+    <div class="app-box">
+      <img src="google-authenticator-icon.png" alt="Symbol der Google-Authenticator-App: bunter Stern aus blauen, roten, gelben und grünen Balken" width="56" height="56">
+      <div class="app-box-text"><strong>Google Authenticator</strong>So sieht die App aus: bunter Stern, Anbieter „Google LLC“. Die App ist kostenlos.</div>
+    </div>
+    <p class="tap-hint">👉 <strong>Tippt einfach auf euren Store</strong>, der Link führt direkt zur richtigen App:</p>
+    <div class="store-links">
+      <a href="https://apps.apple.com/de/app/google-authenticator/id388497605" target="_blank" rel="noopener">📱 iPhone, zum App Store</a>
+      <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2" target="_blank" rel="noopener">🤖 Android, zum Play Store</a>
+    </div>
+    <p class="tap-hint">Dort auf „Laden“ bzw. „Installieren“ tippen, die App einmal öffnen und wieder zur Seite legen.</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head"><span class="card-num">2</span><h2 class="card-title">GitHub-Konto anlegen</h2></div>
+    <p>Am besten am PC oder Laptop. Das Konto läuft auf euren Betrieb und eure E-Mail-Adresse.</p>
+    <div class="store-links"><a class="btn-link" href="https://github.com/signup" target="_blank" rel="noopener">→ github.com/signup öffnen</a></div>
+    <ul class="steps-inline">
+      <li><strong>E-Mail-Adresse</strong> eintragen: die Adresse, die ihr täglich lest (dorthin kommen die Bestätigungscodes)</li>
+      <li><strong>Passwort</strong> ausdenken: mindestens 15 Zeichen, oder mindestens 8 Zeichen mit einer Zahl und einem Kleinbuchstaben. <strong>Gleich auf den Zettel unten schreiben.</strong></li>
+      <li><strong>Benutzername</strong>: euer Firmenname ohne Leerzeichen, zum Beispiel <em>schreinerei-mueller</em>. Ist er vergeben, hängt den Ort an.</li>
+      <li>Die Frage nach Neuigkeiten per E-Mail könnt ihr verneinen → <strong>„Continue“ / „Weiter“</strong></li>
+      <li>GitHub zeigt ein kurzes <strong>Rätsel</strong> (Bilder auswählen), das ist normal → lösen</li>
+      <li>In euer Postfach schauen: GitHub schickt einen <strong>8-stelligen Code</strong> → auf der Seite eintippen</li>
+      <li>Fragen zu Team-Größe oder Interessen einfach <strong>überspringen</strong> („Skip“). Wenn nach einem Tarif gefragt wird: <strong>„Free“</strong>, das kostenlose Konto reicht völlig.</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <div class="card-head"><span class="card-num">3</span><h2 class="card-title">Zwei-Faktor bei GitHub einschalten</h2></div>
+    <p>Eingeloggt bei GitHub, am PC:</p>
+    <ul class="steps-inline">
+      <li>Oben rechts auf euer <strong>Profilbild</strong> klicken → <strong>„Settings“</strong></li>
+      <li>Links <strong>„Password and authentication“</strong> → <strong>„Enable two-factor authentication“</strong></li>
+      <li>GitHub zeigt einen <strong>QR-Code</strong>. Darunter steht klein <strong>„setup key“</strong>: anklicken, den Schlüssel (lange Buchstabenreihe) <strong>auf den Zettel schreiben</strong></li>
+      <li>In der <strong>Google-Authenticator-App</strong> auf <strong>„+“</strong> → <strong>„QR-Code scannen“</strong> → Handykamera auf den QR-Code am Bildschirm halten</li>
+      <li>Die App zeigt jetzt einen <strong>6-stelligen Code</strong> → bei GitHub eintippen</li>
+      <li>GitHub zeigt <strong>Wiederherstellungscodes</strong> („recovery codes“) → <strong>„Download“</strong> und die Datei aufheben, oder ausdrucken. Damit kommt ihr immer wieder rein, falls das Handy mal weg ist.</li>
+      <li>Zum Schluss auf <strong>„Done“</strong> klicken → fertig ✅</li>
+    </ul>
+    <div class="why"><strong>Warum der Schlüssel auf den Zettel:</strong> Wir nehmen ihn im Termin zusätzlich in unseren verschlüsselten Passwort-Tresor. So können wir Änderungen an eurer Seite einspielen, ohne euch jedes Mal nach einem Code vom Handy zu fragen. Euer Zugang bleibt trotzdem voll bei euch.</div>
+    <p class="tap-hint">Hängt ihr hier irgendwo: kein Problem, den Schritt machen wir im Termin zusammen fertig.</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head"><span class="card-num">4</span><h2 class="card-title">Alles auf einen Zettel schreiben</h2></div>
+    <p>Diese vier Angaben braucht ihr im Termin. Am besten ausdrucken und ausfüllen, oder abschreiben:</p>
+    <div class="zettel" aria-label="Notizzettel zum Ausfüllen">
+      <div><span>E-Mail-Adresse</span><span></span></div>
+      <div><span>Benutzername</span><span></span></div>
+      <div><span>Passwort</span><span></span></div>
+      <div><span>Setup key (Zwei-Faktor)</span><span></span></div>
+    </div>
+    <div class="why"><strong>Bitte nicht per E-Mail oder WhatsApp schicken.</strong> Den Zettel einfach im Termin neben euch legen, wir übernehmen die Angaben direkt.</div>
+  </section>
+
+  <section class="card">
+    <div class="card-head"><span class="card-num">5</span><h2 class="card-title">Zugang zu eurer Domain bereitlegen</h2></div>
+    <p>Damit eure Adresse (zum Beispiel <em>www.euer-betrieb.de</em>) auf die neue Seite zeigt, stellen wir bei eurem Domain-Anbieter einen Eintrag um. Das ist meist dort, wo ihr die Domain bezahlt: zum Beispiel IONOS, Strato, Raidboxes oder All-Inkl.</p>
+    <p>Sucht die <strong>Zugangsdaten</strong> raus und probiert vorher einmal aus, ob der Login klappt. Passwort vergessen? Am besten jetzt schon zurücksetzen, nicht erst im Termin.</p>
+    <div class="why"><strong>Keine Sorge um eure E-Mails:</strong> Wir ändern nur den Eintrag für die Website. Eure E-Mail-Adressen laufen unverändert weiter.</div>
+  </section>
+
+  <section class="card">
+    <div class="card-head"><span class="card-num">6</span><h2 class="card-title">Zugang zur alten Website<span class="optional-tag">Optional</span></h2></div>
+    <p>Falls vorhanden: die Zugangsdaten zur bisherigen Website (zum Beispiel WordPress) oder den Kontakt zu eurem bisherigen Webdesigner. Damit sichern wir die alte Seite und leiten alte Links auf die neuen Seiten um, damit bei Google nichts verloren geht.</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head"><span class="card-num">7</span><h2 class="card-title">Im Termin: PC an, E-Mail-Postfach offen</h2></div>
+    <p>Wir telefonieren ca. 10 Minuten. Setzt euch dafür an den PC, lasst euer <strong>E-Mail-Postfach</strong> offen (GitHub schickt eventuell einen Code) und habt das <strong>Handy mit der Authenticator-App</strong> und den <strong>Zettel</strong> neben euch. Den Rest machen wir.</p>
+  </section>
+
+  <div class="footer-note">
+    Fragen zu einem der Punkte? Ruft einfach kurz durch: <a href="tel:+4981947174990">+49 8194 7174990</a>. Und falls etwas nicht klappt: Wir lösen das gemeinsam im Termin, verschiebt ihn deswegen nicht.
+  </div>
+</main>
+
+</body>
+</html>
