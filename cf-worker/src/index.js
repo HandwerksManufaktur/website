@@ -4,6 +4,7 @@
 
 import { createClickUpTasks, addPipelineExtrasForTask } from './clickup.js';
 import { handleKonzeptAnfrage } from './konzept.js';
+import { handleZugang } from './zugang.js';
 
 const FOLDER_IDS = {
   webdesign: '0AEItEqlPzyB0Uk9PVA',
@@ -393,6 +394,8 @@ export default {
       // @handwerksmanufaktur.digital — sonst wäre das ein offenes Mail-Relay.
       if (p === '/intern/mail') return handleInternMail(request, env);
       if (p === '/konzept-anfrage') return handleKonzeptAnfrage(request, env);
+      // 🔐 Zugangsdaten vom Kunden, im Browser verschlüsselt (src/zugang.js, Tabelle kunden_zugang)
+      if (p === '/zugang') return handleZugang(request, env);
       if (p === '/create-folders'  || p === '/api/create-folders')  return handleCreateFolders(request, env, ctx);
       // Subtasks + Checklisten für EINEN Projekt-Task. Bewusst ein eigener Request:
       // bei zwei Projekt-Tasks (Recruiting + Leadgen) reichte die Laufzeit eines einzigen

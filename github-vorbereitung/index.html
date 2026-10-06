@@ -51,13 +51,30 @@ h1{font-family:var(--font-head);font-weight:800;font-size:clamp(26px,5vw,34px);l
 .app-box-text{font-size:13.5px;line-height:1.5;color:var(--label)}
 .app-box-text strong{color:var(--text);display:block;font-size:14px;margin-bottom:2px}
 .tap-hint{font-size:13.5px;color:var(--muted);margin-top:8px;line-height:1.55}
-.zettel{margin-top:12px;border:1.5px dashed var(--border);border-radius:var(--radius);padding:14px 18px;background:var(--bg)}
-.zettel div{display:flex;justify-content:space-between;gap:16px;padding:7px 0;border-bottom:1px solid var(--line);font-size:14px;color:var(--label)}
-.zettel div:last-child{border-bottom:0}
-.zettel span:last-child{flex:1;border-bottom:1px solid var(--border);max-width:55%;min-height:1.2em}
+.zform{margin-top:14px;display:grid;gap:14px}
+.field label{display:block;font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px}
+.field .opt{font-weight:500;color:var(--muted)}
+.field input{width:100%;min-height:46px;border:1.5px solid var(--border);border-radius:14px;padding:11px 14px;font:inherit;font-size:16px;color:var(--text);background:var(--bg);transition:border-color .2s,box-shadow .2s,background .2s}
+.field input:hover{border-color:var(--ink)}
+.field input:focus-visible{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px rgba(22,19,14,.18);background:#fff}
+.pw-row{display:flex;gap:8px}
+.pw-row input{flex:1;min-width:0}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;border:1.5px solid var(--border);border-radius:999px;padding:10px 20px;font:inherit;font-size:14px;font-weight:600;color:var(--text);background:var(--bg);cursor:pointer;transition:background .2s,border-color .2s,color .2s}
+.btn:hover{background:var(--ink);border-color:var(--ink);color:#fff}
+.btn:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(22,19,14,.28)}
+.btn-main{background:var(--ink);border-color:var(--ink);color:#fff}
+.btn-main:hover{background:#2c271e}
+.btn[disabled]{opacity:.55;cursor:wait}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.zstatus{border-radius:var(--radius);padding:12px 16px;font-size:14px;line-height:1.55;color:var(--text);background:var(--surface)}
+.zstatus[hidden]{display:none}
+.zstatus.ok{background:#E6EFDF}
+.zstatus.err{background:#F6E1DA}
+.zalt{font-size:13.5px;color:var(--muted);margin-top:12px}
+.zalt a{color:var(--ink);font-weight:600}
 .footer-note{background:var(--surface);border-radius:var(--radius);padding:16px 20px;font-size:14px;line-height:1.6;color:var(--text);margin-top:28px}
 .footer-note a{color:var(--ink);font-weight:600}
-@media (prefers-reduced-motion:reduce){.card,.card:hover{transition:none;transform:none}}
+@media (prefers-reduced-motion:reduce){.card,.card:hover,.btn,.field input{transition:none;transform:none}}
 </style>
 </head>
 <body>
@@ -91,25 +108,21 @@ h1{font-family:var(--font-head);font-weight:800;font-size:clamp(26px,5vw,34px);l
   </section>
 
   <section class="card">
-    <div class="card-head"><span class="card-num">2</span><h2 class="card-title">E-Mail und Passwort an uns durchgeben</h2></div>
-    <p>Gebt uns die <strong>E-Mail-Adresse</strong>, mit der ihr das Konto angelegt habt, und das <strong>Passwort</strong> durch, am einfachsten kurz telefonisch.</p>
-    <div class="zettel" aria-label="Notizzettel zum Ausfüllen">
-      <div><span>E-Mail-Adresse</span><span></span></div>
-      <div><span>Passwort</span><span></span></div>
-    </div>
-    <div class="why"><strong>Was dann passiert:</strong> Wir legen die Zugangsdaten in unserem verschlüsselten Passwort-Tresor ab und richten alles Weitere ein. Beim ersten Einloggen schickt GitHub euch eventuell noch einen Bestätigungscode per E-Mail, den gebt ihr uns dann kurz durch.</div>
-  </section>
-
-  <section class="card">
-    <div class="card-head"><span class="card-num">3</span><h2 class="card-title">Zugang zu eurer Domain bereitlegen</h2></div>
-    <p>Damit eure Adresse (zum Beispiel <em>www.euer-betrieb.de</em>) auf die neue Seite zeigt, stellen wir bei eurem Domain-Anbieter einen Eintrag um. Das ist meist dort, wo ihr die Domain bezahlt: zum Beispiel IONOS, Strato, Raidboxes oder All-Inkl.</p>
-    <p>Sucht die <strong>Zugangsdaten</strong> raus und probiert vorher einmal aus, ob der Login klappt. Passwort vergessen? Am besten jetzt schon zurücksetzen.</p>
-    <div class="why"><strong>Keine Sorge um eure E-Mails:</strong> Wir ändern nur den Eintrag für die Website. Eure E-Mail-Adressen laufen unverändert weiter.</div>
-  </section>
-
-  <section class="card">
-    <div class="card-head"><span class="card-num">4</span><h2 class="card-title">Zugang zur alten Website<span class="optional-tag">Optional</span></h2></div>
-    <p>Falls vorhanden: die Zugangsdaten zur bisherigen Website (zum Beispiel WordPress) oder den Kontakt zu eurem bisherigen Webdesigner. Damit sichern wir die alte Seite und leiten alte Links auf die neuen Seiten um, damit bei Google nichts verloren geht.</p>
+    <div class="card-head"><span class="card-num">2</span><h2 class="card-title">Zugangsdaten an uns schicken</h2></div>
+    <p>Gebt uns die <strong>E-Mail-Adresse</strong>, mit der ihr das Konto angelegt habt, und das <strong>Passwort</strong> durch. Am einfachsten direkt hier.</p>
+    <form class="zform" id="zugang-form" autocomplete="off" novalidate>
+      <div class="field"><label for="z-firma">Firmenname</label><input id="z-firma" name="firma" type="text" autocomplete="organization" required></div>
+      <div class="field"><label for="z-email">E-Mail-Adresse des GitHub-Kontos</label><input id="z-email" name="email" type="email" autocomplete="off" inputmode="email" required></div>
+      <div class="field"><label for="z-user">Benutzername <span class="opt">(optional)</span></label><input id="z-user" name="benutzername" type="text" autocomplete="off" autocapitalize="none" spellcheck="false"></div>
+      <div class="field"><label for="z-pw">Passwort</label>
+        <div class="pw-row"><input id="z-pw" name="passwort" type="password" autocomplete="off" required><button type="button" class="btn" id="z-show" aria-pressed="false">Anzeigen</button></div>
+      </div>
+      <div class="hp" aria-hidden="true"><label>Website<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+      <div><button type="submit" class="btn btn-main" id="z-send">Verschlüsselt senden</button></div>
+      <div class="zstatus" id="z-status" role="status" aria-live="polite" hidden></div>
+    </form>
+    <div class="why"><strong>So sicher ist das:</strong> Eure Angaben werden schon in eurem Browser verschlüsselt und können nur von uns geöffnet werden. Bitte nicht per E-Mail oder WhatsApp schicken. Beim ersten Einloggen schickt GitHub euch eventuell noch einen Gerätecode per E-Mail, den gebt ihr uns dann kurz durch.</div>
+    <p class="zalt">Lieber telefonisch? <a href="tel:+4981947174990">+49 8194 7174990</a></p>
   </section>
 
   <div class="footer-note">
@@ -117,5 +130,41 @@ h1{font-family:var(--font-head);font-weight:800;font-size:clamp(26px,5vw,34px);l
   </div>
 </main>
 
+<script>
+(function(){
+  var PUB='MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAtTehTY/Gft3ZWn7Q+7ychpEnjU+e4b+PHC9WUkbbZYISo6/+XJ6vn9+UoKPIdT9TsI6OTP9rmW0G3YSq7AG5gpuD4JCVDovo6ZU9kBft11E5Uivo8QYfcI1MjAO+vHVTqKXp/YbiYwPWNsH91ApasrQwoHQMbrqbhtMmZrKEgZ9+6wQuxkNADIfLEm5q04ueF0aKrUX5WcCzWK2R3yHmqsYolVWUotZpOm3j8btUv1gFJfj4CDFonbtLZUX2yM7sogEWD3+Jn9UGU0hZrrHzNt1QSX42bZktH1UKHnvpgpaoMe+9zWtlKbxVFmJaEcp3X3Q0mRPdBrACB/dUOASah7jp0UUTh613tfMYroiYYrhZOemRxPUD03v/SfO2Sht6oB1oTMwR+QNu/F6+hhDPagK/v2C/w6iXjs7Fvy1LwHSUAOBwj0OUb7zmi+G9u+ffRRkPbByTHqAa/Xsd7n6lQpfxOhR0lPPZYi3IShBi5dJ3n7H56XkYXkUpaUteJ/rhyHm0IUfi63Z++b3jxFnRTMpYFdxJIBmXiqUySKR4LhkIfEOd0VMEzQHrYSI8D0Y6WIPcG9zmZlVtwboiVKVMsMknSnn2PomeTQA5LmpbT2bBWg5mvVlTd9ZqSKZ+fyLtvJ9E/2j6yf9F2qU8Wm+We6MngZGfVBX3hsIhBihWuTcCAwEAAQ==';
+  var ZIEL='https://handwerksmanufaktur-onboarding.handwerksmanufaktur.workers.dev/zugang';
+  var f=document.getElementById('zugang-form'),st=document.getElementById('z-status'),btn=document.getElementById('z-send'),pw=document.getElementById('z-pw'),show=document.getElementById('z-show');
+  function b64(buf){var a=new Uint8Array(buf),s='';for(var i=0;i<a.length;i++)s+=String.fromCharCode(a[i]);return btoa(s)}
+  function unb64(s){var r=atob(s),a=new Uint8Array(r.length);for(var i=0;i<r.length;i++)a[i]=r.charCodeAt(i);return a}
+  function meldung(art,text){st.hidden=false;st.className='zstatus '+art;st.textContent=text}
+  async function verschluesseln(obj){
+    var pub=await crypto.subtle.importKey('spki',unb64(PUB),{name:'RSA-OAEP',hash:'SHA-256'},false,['encrypt']);
+    var key=await crypto.subtle.generateKey({name:'AES-GCM',length:256},true,['encrypt']);
+    var iv=crypto.getRandomValues(new Uint8Array(12));
+    var c=await crypto.subtle.encrypt({name:'AES-GCM',iv:iv},key,new TextEncoder().encode(JSON.stringify(obj)));
+    var raw=await crypto.subtle.exportKey('raw',key);
+    var k=await crypto.subtle.encrypt({name:'RSA-OAEP'},pub,raw);
+    return {k:b64(k),iv:b64(iv),c:b64(c)};
+  }
+  show.addEventListener('click',function(){var an=pw.type==='password';pw.type=an?'text':'password';show.textContent=an?'Verbergen':'Anzeigen';show.setAttribute('aria-pressed',an?'true':'false')});
+  f.addEventListener('submit',async function(e){
+    e.preventDefault();
+    var d=new FormData(f),firma=(d.get('firma')||'').trim(),email=(d.get('email')||'').trim(),pass=d.get('passwort')||'';
+    if(!firma||!email||!pass){meldung('err','Bitte Firmenname, E-Mail-Adresse und Passwort ausfüllen.');return}
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){meldung('err','Die E-Mail-Adresse sieht nicht vollständig aus.');return}
+    if(!(window.crypto&&crypto.subtle)){meldung('err','Euer Browser kann hier nicht verschlüsseln. Bitte ruft uns kurz an: +49 8194 7174990.');return}
+    btn.disabled=true;btn.textContent='Wird verschlüsselt …';meldung('','Einen Moment …');
+    try{
+      var chiffre=await verschluesseln({firma:firma,email:email,passwort:pass,benutzername:(d.get('benutzername')||'').trim(),zeit:new Date().toISOString()});
+      var r=await fetch(ZIEL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({firma:firma,chiffre:chiffre,website:d.get('website')||''})});
+      var j=await r.json().catch(function(){return {}});
+      if(r.ok&&j.ok){f.reset();pw.type='password';show.textContent='Anzeigen';meldung('ok','Angekommen. Eure Zugangsdaten sind verschlüsselt bei uns, wir melden uns, sobald alles eingerichtet ist.')}
+      else meldung('err',(j&&j.fehler)||'Das hat leider nicht geklappt. Bitte versucht es gleich nochmal oder ruft uns kurz an: +49 8194 7174990.');
+    }catch(x){meldung('err','Das hat leider nicht geklappt. Bitte prüft eure Internetverbindung oder ruft uns kurz an: +49 8194 7174990.')}
+    btn.disabled=false;btn.textContent='Verschlüsselt senden';
+  });
+})();
+</script>
 </body>
 </html>
