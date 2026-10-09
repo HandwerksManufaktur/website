@@ -26,7 +26,9 @@ const SCHLUESSEL = 'cookie-consent';
 /* ---- Google Ads: leer = nichts wird für Ads geladen oder gefeuert ---- */
 const ADS_ID = 'AW-17920994298';            // z. B. 'AW-1234567890' (Konto wird erst angelegt)
 const ADS_LABEL = 'SOr3CN6tj4sdEPrXsuFC';         // Conversion-Label „Lead" (Primärziel, bei hwm:lead)
-const ADS_LABELS = { termin_klick: '', anruf_klick: '' };  // sekundäre Ziele, je ein Label; leer = keine eigene Conversion
+// 🔴 Noah, 09.10.2026: „nicht anruf, sondern klick-conversion“ → EINE sekundäre Conversion „Klick: Entwurf/Termin (Website)“
+const KLICK_LABEL = 'e20bCI263ZYdEPrXsuFC';
+const ADS_LABELS = { entwurf_klick: KLICK_LABEL, termin_klick: KLICK_LABEL, erstgespraech_klick: KLICK_LABEL, anruf_klick: '' };  // sekundäre Ziele; leer = keine eigene Conversion
 const KLICK = 'hwm-klick';
 const KLICK_KENNUNGEN = ['gclid', 'gbraid', 'wbraid'];   // streng: nur Buchstaben, Ziffern, _ und -
 const KLICK_UTM = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];   // großzügig: Umlaute, Leerzeichen ok
@@ -142,6 +144,8 @@ document.addEventListener('click', e => {
     const b = a.closest('.lb-k, .projekt').querySelector('b');
     return ereignis('referenz_klick', { betrieb: b ? b.textContent.trim() : text });
   }
+  // Klick auf „Entwurf anfordern“ / „Angebot sichern“ / Weg zur Aktionsseite /konzept — nicht die Weiter-/Abschicken-Knöpfe im Formular
+  if (!a.matches('.rd-weiter, [type=submit]') && (/entwurf|angebot sichern|doch sichern/i.test(text) || /(^|\/)konzept(\.html|\/|$)/.test(href))) return ereignis('entwurf_klick', { text, bereich });
   if (a.classList.contains('btn')) return ereignis('knopf_klick', { text, bereich });
 }, { capture: true });
 // Runde 18: Lead erst zählen, wenn die Anfrage wirklich angekommen ist (/static/main.js schickt „hwm:lead" nach dem Versand)
