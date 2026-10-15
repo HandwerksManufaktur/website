@@ -19,13 +19,32 @@ def ersetze(alt, neu, menge=1):
 # 1 · Nicht in Google, Startseite bleibt die echte Adresse
 ersetze('<meta name="robots" content="index,follow">', '<meta name="robots" content="noindex, nofollow, noarchive">')
 
-# 2 · Problem-Block: statt 5 Reitern mit abstrakten Platzhalter-Bildschirmen 3 Reiter (einer je Säule)
-#     mit echten Namen und einem Schalter „Heute / Mit uns“, der von selbst umschaltet.
+# 2 · Problem-Block: die bebilderten Szenen von vorher (Noah: „dass da davor bilder drin waren, das ist gut so“),
+#     aber nur noch 3 Momente, einer je Säule, als 01 · Gefunden / 02 · Gesehen / 03 · Gebucht.
 #     Die alten Reiter waren laut Zähler die meistgeklickte Stelle der Startseite → klickbar bleibt es.
-#     (Noah, 15.10.2026: „so, dass die leute trotzdem klicken und checken was abgeht“)
+def ende_div(text, start):
+    """Index hinter dem </div>, das das bei start öffnende <div> schließt."""
+    tiefe, i = 0, start
+    for m in re.finditer(r"<div\b|</div>", text[start:]):
+        tiefe += 1 if m.group(0) == "<div" else -1
+        if tiefe == 0:
+            return start + m.end()
+    raise ValueError("kein Ende")
+
+for nr in (4, 2):  # „Abends um zehn“ und „Die alte Homepage“ raus (abstrakte Platzhalter)
+    a = h.index(f'<div class="lg-panel pb-panel" role="tabpanel" id="lg-p{nr}"')
+    h = h[:a] + h[ende_div(h, a):]
+    a = h.index(f'<button type="button" class="lg-tab" role="tab" id="lg-t{nr}"')
+    h = h[:a] + h[h.index("</button>", a) + len("</button>"):]
+for alt, nr, saeule in (("Bei Google unsichtbar", "01", "Gefunden"), ("Der Kunde vergleicht", "02", "Gesehen"),
+                        ("Der Bewerber schaut nach", "03", "Gebucht")):
+    ersetze(f"<b>{alt}</b>", f'<span class="lg-txt"><small>{nr} · {saeule}</small><b>{alt}</b></span>')
+ersetze("Fünf Momente, in denen deine Website entscheidet, ob sich jemand meldet. Tipp auf einen.",
+        "Drei Momente, in denen sich ein Kunde oder Bewerber für dich entscheidet. Oder für den Nachbarn. Tipp auf einen.")
+ersetze('aria-label="Fünf Momente"', 'aria-label="Drei Momente"')
 a = h.index('<section class="sek grund lagen-sek probleme pb-sek">')
-e = h.index("\n<section", a + 1)
-h = h[:a] + (WURZEL / "test-startseite" / "problem_block.html").read_text().strip() + h[e:]
+e = h.index("</section>", a) + len("</section>")
+h = h[:e] + (WURZEL / "test-startseite" / "problem_stil.html").read_text().strip() + h[e:]
 ersetze('<section class="sek laufband">', '<section class="sek laufband" id="gefunden">')
 
 # 3 · Säulen am Handy ohne gepinnte Bühne (main.js liest das Attribut, eigener Cache-Schlüssel)

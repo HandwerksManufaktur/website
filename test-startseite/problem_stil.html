@@ -1,0 +1,15 @@
+<style>
+/* Testfassung: 3 Momente als 01/02/03 je Säule — nur auf /test-startseite/ */
+.pb-sek .lg-tabs{justify-content:stretch}
+.pb-sek .lg-tab{flex:1;min-height:0;padding:14px 22px 14px 14px;border-radius:var(--radius)}
+.pb-sek .lg-txt{display:grid;gap:3px}
+.pb-sek .lg-txt small{font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--bronze-tief)}
+.pb-sek .lg-tab.an .lg-txt small{color:var(--bronze-hell)}
+.pb-sek .lg-txt b{font-size:clamp(18px,1.4vw,20px);line-height:1.25}
+@media (max-width:760px){
+  .pb-sek .lg-tabs{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .pb-sek .lg-tab{padding:10px 6px;border-radius:18px;flex-direction:column;gap:6px}
+  .pb-sek .lg-txt b{display:none}
+  .pb-sek .lg-txt small{font-size:13px;letter-spacing:.04em;text-align:center}
+}
+</style>
