@@ -86,9 +86,10 @@ h = h[:e] + "\n\n" + team.rstrip("\n") + h[e:]
 ersetze("Drei Momente, in denen sich ein Kunde oder Bewerber für dich entscheidet. Oder für den Nachbarn. Tipp auf einen.",
         "Drei Momente, in denen sich Kunden und Bewerber für dich entscheiden. Oder für den Nachbarn. Tipp auf den, wo es bei dir hakt.")
 ersetze('<span class="pb-marke gut">Platz 1 in deinem Ort</span>', '<span class="pb-marke gut">Ganz vorne in deinem Ort</span>')
-ersetze("<h2>Drei Säulen, die aufeinander aufbauen.</h2>", "<h2>Damit deine gute Arbeit gefunden wird.</h2>")
+ersetze('<span class="kicker">Das Drei-Säulen-System</span>', '<span class="kicker">Die Lösung in drei Schritten</span>')
+ersetze("<h2>Drei Säulen, die aufeinander aufbauen.</h2>", "<h2>Damit man dich findet, sieht und bucht.</h2>")
 ersetze("Kein Baukasten aus sechs Angeboten, sondern ein Auftritt, der in drei Schritten aufeinander aufbaut. Wo wir bei dir anfangen, klären wir im Erstgespräch: bei den meisten ist es die Website, bei manchen die Stelle, die seit Monaten offen ist.",
-        "Wir bringen deinen Betrieb bei Google nach vorne, zeigen deine Arbeit in echten Bildern und holen Anfragen und Bewerbungen aus deinem Umkreis. Womit du anfängst, klären wir im Erstgespräch.")
+        "Ein Kunde findet dich bei Google, sieht deine Arbeit und deine Leute und ruft dann an. Bei Bewerbern läuft es genauso. Für jeden dieser drei Schritte bauen wir dir das Passende, und womit du anfängst, klären wir im Erstgespräch.")
 ersetze("Anzeigen im Umkreis, vier Filterfragen davor.", "Anzeigen im Umkreis. Wer sich meldet, beantwortet vorher ein paar kurze Fragen.")
 ersetze('<span class="kicker">Probier es aus</span>', '<span class="kicker">01 · Gefunden bei Google</span>')
 ersetze('<span class="kicker">01 · Gefunden</span>', '<span class="kicker">01 · Gefunden über die Website</span>')
@@ -104,7 +105,7 @@ ersetze("Drohne, Kamera, Baustellenstaub. Skript, Dreh und Schnitt von uns, vor 
 ersetze("<h2>Was dabei rauskommt.</h2>", "<h2>Das bringen Anzeigen im Umkreis.</h2>")
 ersetze("Drei Betriebe, drei Kampagnen, alle Zahlen aus den laufenden Konten. Klick auf ein Video, dann erzählt es der Chef selbst.",
         "Drei Handwerksbetriebe, echte Zahlen aus den laufenden Anzeigen. Klick auf ein Video, dann erzählt es der Chef selbst.")
-ersetze("<h2>Wir können viel erzählen. Unsere Kunden erzählen es besser.</h2>", "<h2>Du musst dich mit Websites nicht auskennen.</h2>")
+ersetze("<h2>Wir können viel erzählen. Unsere Kunden erzählen es besser.</h2>", "<h2>Und du musst dich um nichts davon selbst kümmern.</h2>")
 
 (WURZEL / "test-startseite" / "index.html").write_text(h)
 print("test-startseite/index.html gebaut")
