@@ -18,14 +18,14 @@
         <li style="--h:1;--m:2"><i><span class="h">2</span><span class="m">3</span></i>Handwerker-Portal</li>
         <li style="--h:2;--m:3"><i><span class="h">3</span><span class="m">4</span></i>Holzbau Mitbewerber</li>
         <li class="pz-luecke" style="--h:3;--m:3">… Seite 2</li>
-        <li class="du" style="--h:4;--m:0"><i><span class="h">14</span><span class="m">1</span></i>Dein Betrieb</li>
+        <li class="du" style="--h:4;--m:0"><i><span class="h">14</span><span class="m">1</span></i><img class="pz-thumb" src="/static/assets/img/collage/c61.webp" alt="" loading="lazy" width="360" height="360"><span class="pz-name">Dein Betrieb<small class="m">★★★★★ 5,0 · 23 Bewertungen</small></span><span class="pz-ruf m">📞 Anrufen</span></li>
       </ol>
     </div>
 
     <div class="pz-szene pz-s" data-s="s" hidden>
       <div class="pz-drei">
         <div class="pz-b"><div class="pz-foto"><span>Stockfoto</span></div><b>Mitbewerber</b></div>
-        <div class="pz-b du"><div class="pz-foto"><span>Stockfoto</span><img src="/static/assets/img/collage/c42.webp" alt="" loading="lazy" width="360" height="360"></div><b>Du</b></div>
+        <div class="pz-b du"><div class="pz-foto"><span>Stockfoto</span><img src="/static/assets/img/collage/c43.webp" alt="" loading="lazy" width="360" height="360"></div><div class="pz-mehr"><img src="/static/assets/img/collage/c30.webp" alt="" loading="lazy" width="360" height="360"><img src="/static/assets/img/collage/c16.webp" alt="" loading="lazy" width="360" height="360"></div><b>Du</b></div>
         <div class="pz-b"><div class="pz-foto"><span>Stockfoto</span></div><b>Mitbewerber</b></div>
       </div>
       <div class="pz-anruf-bahn"><span class="pz-anruf">📞 Anruf</span></div>
@@ -34,11 +34,11 @@
     <div class="pz-szene pz-b-sz" data-s="b" hidden>
       <div class="pz-postfach">
         <div class="pz-pf-kopf"><b>Dein Postfach</b><span class="pz-zahl"><span class="h">0 neu</span><span class="m">3 neu</span></span></div>
-        <p class="pz-leer">Diese Woche keine neue Anfrage.</p>
+        <div class="pz-leer"><img src="/static/assets/img/collage/c41.webp" alt="" loading="lazy" width="360" height="360"><p>Diese Woche keine neue Anfrage.</p></div>
         <ul>
-          <li style="--i:0"><small>Neue Anfrage · Peiting</small><b>Dachstuhl erneuern</b></li>
-          <li style="--i:1"><small>Bewerbung</small><b>Zimmerer, 3 Jahre Erfahrung</b></li>
-          <li style="--i:2"><small>Neue Anfrage · Schongau</small><b>Carport mit Geräteraum</b></li>
+          <li style="--i:0"><img src="/static/assets/img/collage/c61.webp" alt="" loading="lazy" width="360" height="360"><span><small>Neue Anfrage · Peiting</small><b>Dachstuhl erneuern</b></span></li>
+          <li style="--i:1"><em class="pz-ini" aria-hidden="true">MK</em><span><small>Bewerbung</small><b>Zimmerer, 3 Jahre Erfahrung</b></span></li>
+          <li style="--i:2"><img src="/static/assets/img/collage/c30.webp" alt="" loading="lazy" width="360" height="360"><span><small>Neue Anfrage · Schongau</small><b>Carport mit Geräteraum</b></span></li>
         </ul>
       </div>
     </div>
@@ -69,7 +69,7 @@
 .pz-buehne[data-zustand="heute"] .pz-schalter [data-zu="heute"]{color:var(--tinte)}
 .pz-buehne[data-zustand="mit"] .pz-schalter [data-zu="mit"]{color:var(--papier)}
 .pz-buehne[data-zustand="mit"] .pz-schalter i{transform:translateX(100%);background:var(--tinte)}
-.pz-szene{flex:1;display:grid;align-content:center;gap:14px;min-height:320px}
+.pz-szene{flex:1;display:grid;align-content:center;gap:14px;min-height:390px}
 .pz-buehne .h,.pz-buehne .m{transition:opacity .35s}
 .pz-buehne[data-zustand="heute"] .m,.pz-buehne[data-zustand="mit"] .h{display:none}
 /* 01 Google */
@@ -78,6 +78,11 @@
 .pz-liste{position:relative;list-style:none;margin:0;padding:0;height:calc(5 * 50px)}
 .pz-liste li{position:absolute;left:0;right:0;top:0;height:42px;display:flex;align-items:center;gap:14px;padding:0 16px;border-radius:12px;background:#fff;border:1px solid var(--papier-3);font-size:16px;color:var(--tinte-2);transform:translateY(calc(var(--h) * 50px));transition:transform .8s var(--ease),background .5s,border-color .5s,opacity .5s}
 .pz-liste li i{font-style:normal;font-weight:700;min-width:26px;color:var(--tinte-3)}
+.pz-thumb{width:0;height:40px;border-radius:8px;object-fit:cover;opacity:0;transition:width .6s var(--ease),opacity .6s}
+.pz-name{display:grid;line-height:1.2}.pz-name small{font-size:13px;font-weight:600;color:var(--bronze-hell)}
+.pz-ruf{margin-left:auto;font-size:13px;font-weight:600;padding:6px 12px;border-radius:999px;background:var(--bronze);color:#fff;white-space:nowrap}
+.pz-buehne[data-zustand="mit"] .pz-liste .du{height:62px;margin-top:-14px}
+.pz-buehne[data-zustand="mit"] .pz-thumb{width:52px;height:52px;opacity:1}
 .pz-liste .pz-luecke{background:none;border-style:dashed;color:var(--tinte-4)}
 .pz-liste .du{background:var(--papier-2);font-weight:700;color:var(--tinte);opacity:.7}
 .pz-buehne[data-zustand="mit"] .pz-liste li{transform:translateY(calc(var(--m) * 50px))}
@@ -92,7 +97,11 @@
 .pz-foto span{font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--tinte-3);background:rgba(250,247,241,.9);padding:4px 10px;border-radius:999px}
 .pz-foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .7s}
 .pz-buehne[data-zustand="mit"] .pz-b.du{border-color:var(--bronze);transform:translateY(-6px)}
-.pz-buehne[data-zustand="mit"] .pz-b.du img{opacity:1}
+.pz-buehne[data-zustand="mit"] .pz-b.du .pz-foto img{opacity:1}
+.pz-mehr{display:grid;grid-template-columns:1fr 1fr;gap:6px;height:0;opacity:0;overflow:hidden;transition:height .6s var(--ease),opacity .6s .2s}
+.pz-mehr img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;display:block}
+.pz-buehne[data-zustand="mit"] .pz-mehr{height:var(--mehr-h,74px);opacity:1}
+.pz-drei{align-items:start}
 .pz-buehne[data-zustand="mit"] .pz-b.du b{color:var(--tinte)}
 .pz-anruf-bahn{position:relative;height:40px}
 .pz-anruf{position:absolute;top:0;left:83.33%;transform:translateX(-50%);white-space:nowrap;padding:8px 16px;border-radius:999px;background:var(--papier-2);font-weight:600;font-size:15px;transition:left .8s var(--ease),background .5s,color .5s}
@@ -102,10 +111,14 @@
 .pz-pf-kopf{display:flex;justify-content:space-between;align-items:center;font-size:17px}
 .pz-zahl{font-weight:700;font-size:14px;padding:4px 12px;border-radius:999px;background:var(--papier-2);color:var(--tinte-3)}
 .pz-buehne[data-zustand="mit"] .pz-zahl{background:var(--bronze);color:#fff}
-.pz-leer{margin:40px 0 0;text-align:center;color:var(--tinte-3);font-size:17px}
+.pz-leer{display:grid;justify-items:center;gap:12px;margin-top:14px;text-align:center;color:var(--tinte-3);font-size:17px}.pz-leer p{margin:0}
+.pz-leer img{width:120px;height:120px;border-radius:50%;object-fit:cover;filter:grayscale(1);opacity:.8}
 .pz-buehne[data-zustand="mit"] .pz-leer{display:none}
 .pz-postfach ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
-.pz-postfach li{display:grid;gap:2px;padding:12px 14px;border-radius:12px;background:var(--papier-2);border-left:4px solid var(--bronze);font-size:16px}
+.pz-postfach li{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;background:var(--papier-2);border-left:4px solid var(--bronze);font-size:16px}
+.pz-postfach li span{display:grid;gap:2px}
+.pz-postfach li img,.pz-ini{width:46px;height:46px;flex:none;border-radius:10px;object-fit:cover}
+.pz-ini{display:grid;place-items:center;background:var(--tinte);color:var(--bronze-hell);font-style:normal;font-weight:700;font-size:15px}
 .pz-postfach li small{font-size:13px;color:var(--tinte-3)}
 .pz-buehne[data-zustand="heute"] .pz-postfach li{display:none}
 .pz-buehne[data-zustand="mit"] .pz-postfach li{animation:pz-rein .5s var(--ease) both;animation-delay:calc(var(--i) * .45s + .15s)}
@@ -123,8 +136,9 @@
   .pz-tab span{font-size:13px;letter-spacing:.06em}
   .pz-buehne{padding:18px;min-height:0}
   .pz-liste li{font-size:15px}
-  .pz-szene{min-height:310px}
+  .pz-szene{min-height:330px}
   .pz-foto span{text-transform:none;letter-spacing:0;padding:3px 7px}
+  .pz-ruf{display:none}
   .pz-b{padding:7px}.pz-b b{font-size:13px}
 }
 @media (prefers-reduced-motion:reduce){.pz *{transition:none!important;animation:none!important}}
