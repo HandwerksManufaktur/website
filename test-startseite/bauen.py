@@ -93,19 +93,22 @@ ersetze("Kein Baukasten aus sechs Angeboten, sondern ein Auftritt, der in drei S
 ersetze("Anzeigen im Umkreis, vier Filterfragen davor.", "Anzeigen im Umkreis. Wer sich meldet, beantwortet vorher ein paar kurze Fragen.")
 ersetze('<span class="kicker">Probier es aus</span>', '<span class="kicker">01 · Gefunden bei Google</span>')
 ersetze('<span class="kicker">01 · Gefunden</span>', '<span class="kicker">01 · Gefunden über die Website</span>')
-ersetze("<h2>Frag Google einfach selbst.</h2>", "<h2>So stehen unsere Kunden bei Google da.</h2>")
+ersetze("<h2>Frag Google einfach selbst.</h2>", "<h2>So werden unsere Kunden bei Google gefunden.</h2>")
 ersetze("Tipp einen Suchbegriff an. So suchen Kunden, und so stehen unsere Betriebe da.",
         "Tipp einen Suchbegriff an, so wie ihn ein Kunde eintippt. Du siehst, auf welchem Platz der Betrieb steht.")
-ersetze("<h2>Das läuft gerade live.</h2>", "<h2>Das sehen Kunden nach dem Klick.</h2>")
+ersetze("<h2>Das läuft gerade live.</h2>", "<h2>Und das sieht der Kunde nach dem Klick.</h2>")
 ersetze("Bildschirmaufnahmen der fertigen Websites, so wie sie heute online sind. Klick auf eine, dann bist du drauf.",
         "Fertige Websites unserer Betriebe, so wie sie heute online sind. Klick auf eine, dann bist du drauf.")
-ersetze("<h2>Bei unseren Kunden gedreht.</h2>", "<h2>Zeig, wie bei dir gearbeitet wird.</h2>")
+ersetze("<h2>Bei unseren Kunden gedreht.</h2>", "<h2>So wird deine Arbeit gesehen.</h2>")
 ersetze("Drohne, Kamera, Baustellenstaub. Skript, Dreh und Schnitt von uns, vor der Kamera steht der Chef. Alle Aufnahmen gehören danach dem Betrieb.",
-        "So sehen Kunden deine Arbeit und Bewerber dein Team, bevor sie anrufen. Dreh und Schnitt machen wir, die Aufnahmen gehören danach dir.")
-ersetze("<h2>Was dabei rauskommt.</h2>", "<h2>Das bringen Anzeigen im Umkreis.</h2>")
+        "Kunden sehen deine Arbeit und Bewerber dein Team, bevor sie anrufen. Dreh und Schnitt machen wir, die Aufnahmen gehören danach dir.")
+ersetze("<h2>Was dabei rauskommt.</h2>", "<h2>So wird bei unseren Kunden gebucht.</h2>")
 ersetze("Drei Betriebe, drei Kampagnen, alle Zahlen aus den laufenden Konten. Klick auf ein Video, dann erzählt es der Chef selbst.",
         "Drei Handwerksbetriebe, echte Zahlen aus den laufenden Anzeigen. Klick auf ein Video, dann erzählt es der Chef selbst.")
 ersetze("<h2>Wir können viel erzählen. Unsere Kunden erzählen es besser.</h2>", "<h2>Und du musst dich um nichts davon selbst kümmern.</h2>")
+
+# 7 · Schleife schließen: Problem fragt „wo hakt es“, Säulen sagen „klären wir im Erstgespräch“, Kontakt greift beides auf
+ersetze("<h2>Was ist in deinem Umkreis drin?</h2>", "<h2>Und wo hakt es bei dir?</h2>")
 
 (WURZEL / "test-startseite" / "index.html").write_text(h)
 print("test-startseite/index.html gebaut")
