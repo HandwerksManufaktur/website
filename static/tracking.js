@@ -199,5 +199,13 @@ if (echt && !test) {
     marken.forEach(m => { if (p >= m - 2 && !erreicht.has(m)) { erreicht.add(m); senden('l', { z: String(m) }); } });
   };
   addEventListener('scroll', () => { if (!lauf) { lauf = true; requestAnimationFrame(tiefe); } }, { passive: true });
+  // Welcher Abschnitt wurde überhaupt erreicht (Oberkante bis Bildmitte) — je Aufruf einmal, Name = Kicker (15.10.2026)
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (!e.isIntersecting) return; io.unobserve(e.target);
+      senden('l', { z: '§ ' + e.target.querySelector('.kicker').textContent.trim().slice(0, 60) });
+    }), { rootMargin: '0px 0px -50% 0px' });
+    document.querySelectorAll('main section').forEach(s => { if (s.querySelector(':scope .kicker')) io.observe(s); });
+  }
 }
 })();

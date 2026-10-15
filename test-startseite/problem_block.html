@@ -1,0 +1,155 @@
+<section class="sek grund pz-sek" aria-label="Woran es meistens hängt"><div class="wrap">
+<div class="kopfzeile reveal"><span class="kicker">Woran es meistens hängt</span><h2>Gute Arbeit reicht nicht mehr, um gefunden zu werden.</h2><p class="lead">Drei Momente, in denen sich ein Kunde oder Bewerber für dich entscheidet. Oder für den Nachbarn. Tipp auf einen.</p></div>
+<div class="pz reveal">
+  <div class="pz-tabs" role="tablist" aria-label="Drei Momente">
+    <button type="button" class="pz-tab an" role="tab" aria-selected="true" data-szene="g"><em class="pz-nr" aria-hidden="true">01</em><span>Gefunden</span><b>Ein Kunde googelt deinen Ort</b></button>
+    <button type="button" class="pz-tab" role="tab" aria-selected="false" data-szene="s"><em class="pz-nr" aria-hidden="true">02</em><span>Gesehen</span><b>Er vergleicht drei Betriebe</b></button>
+    <button type="button" class="pz-tab" role="tab" aria-selected="false" data-szene="b"><em class="pz-nr" aria-hidden="true">03</em><span>Gebucht</span><b>Du brauchst Anfragen und Leute</b></button>
+  </div>
+  <div class="pz-buehne" data-szene="g" data-zustand="heute">
+    <div class="pz-schalter" role="group" aria-label="Vergleich">
+      <button type="button" data-zu="heute" aria-pressed="true">✕ Heute</button><button type="button" data-zu="mit" aria-pressed="false">✓ Mit uns</button><i aria-hidden="true"></i>
+    </div>
+
+    <div class="pz-szene pz-g" data-s="g">
+      <div class="pz-suche"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>zimmerei schongau</div>
+      <ol class="pz-liste">
+        <li style="--h:0;--m:1"><i><span class="h">1</span><span class="m">2</span></i>Zimmerei aus dem Nachbarort</li>
+        <li style="--h:1;--m:2"><i><span class="h">2</span><span class="m">3</span></i>Handwerker-Portal</li>
+        <li style="--h:2;--m:3"><i><span class="h">3</span><span class="m">4</span></i>Holzbau Mitbewerber</li>
+        <li class="pz-luecke" style="--h:3;--m:3">… Seite 2</li>
+        <li class="du" style="--h:4;--m:0"><i><span class="h">14</span><span class="m">1</span></i>Dein Betrieb</li>
+      </ol>
+    </div>
+
+    <div class="pz-szene pz-s" data-s="s" hidden>
+      <div class="pz-drei">
+        <div class="pz-b"><div class="pz-foto"><span>Stockfoto</span></div><b>Mitbewerber</b></div>
+        <div class="pz-b du"><div class="pz-foto"><span>Stockfoto</span><img src="/static/assets/img/collage/c42.webp" alt="" loading="lazy" width="360" height="360"></div><b>Du</b></div>
+        <div class="pz-b"><div class="pz-foto"><span>Stockfoto</span></div><b>Mitbewerber</b></div>
+      </div>
+      <div class="pz-anruf-bahn"><span class="pz-anruf">📞 Anruf</span></div>
+    </div>
+
+    <div class="pz-szene pz-b-sz" data-s="b" hidden>
+      <div class="pz-postfach">
+        <div class="pz-pf-kopf"><b>Dein Postfach</b><span class="pz-zahl"><span class="h">0 neu</span><span class="m">3 neu</span></span></div>
+        <p class="pz-leer">Diese Woche keine neue Anfrage.</p>
+        <ul>
+          <li style="--i:0"><small>Neue Anfrage · Peiting</small><b>Dachstuhl erneuern</b></li>
+          <li style="--i:1"><small>Bewerbung</small><b>Zimmerer, 3 Jahre Erfahrung</b></li>
+          <li style="--i:2"><small>Neue Anfrage · Schongau</small><b>Carport mit Geräteraum</b></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pz-fuss">
+      <p class="pz-satz" data-s="g"><span class="h">Du stehst auf Seite 2. Da schaut keiner hin.</span><span class="m">Du stehst ganz oben. Der Anruf geht an dich.</span></p>
+      <p class="pz-satz" data-s="s" hidden><span class="h">Überall dieselben Stockfotos. Er ruft den Nächsten an.</span><span class="m">Er sieht deine Leute und deine Arbeit. Er ruft dich an.</span></p>
+      <p class="pz-satz" data-s="b" hidden><span class="h">Du wartest auf Empfehlungen. Diese Woche kam nichts.</span><span class="m">Anzeigen im Umkreis. Anfragen und Bewerbungen landen bei dir.</span></p>
+      <a class="pz-los" href="#gefunden" data-ziele="#gefunden #videos #ergebnisse">So sieht das bei unseren Kunden aus <span aria-hidden="true">↓</span></a>
+    </div>
+  </div>
+</div>
+</div></section>
+<style>
+.pz{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:24px;align-items:stretch}
+.pz-tabs{display:grid;gap:12px;grid-auto-rows:1fr}
+.pz-tab{display:flex;flex-direction:column;justify-content:flex-end;gap:4px;position:relative;text-align:left;padding:20px 24px;border-radius:var(--radius);border:1px solid var(--papier-3);background:var(--papier);color:var(--tinte);cursor:pointer;font:inherit;transition:background .3s,border-color .3s,transform .3s}
+.pz-tab span{font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--bronze-tief)}
+.pz-tab b{font-size:clamp(18px,1.4vw,21px);line-height:1.3}
+.pz-nr{position:absolute;top:18px;left:24px;font-style:normal;font-size:clamp(34px,3vw,46px);font-weight:800;letter-spacing:-.03em;line-height:1;color:var(--papier-3)}
+.pz-tab.an .pz-nr{color:var(--bronze-hell)}
+.pz-tab:hover{border-color:var(--bronze)}
+.pz-tab.an{background:var(--tinte);border-color:var(--tinte);color:var(--papier)}.pz-tab.an span{color:var(--bronze-hell)}
+.pz-buehne{display:flex;flex-direction:column;gap:22px;padding:24px;border-radius:var(--radius);background:var(--papier);border:1px solid var(--papier-3);min-height:470px}
+.pz-schalter{position:relative;display:grid;grid-template-columns:1fr 1fr;align-self:center;background:var(--papier-2);border-radius:999px;padding:4px;width:min(320px,100%)}
+.pz-schalter button{position:relative;z-index:1;border:0;background:none;font:inherit;font-weight:600;font-size:16px;padding:10px 14px;border-radius:999px;cursor:pointer;color:var(--tinte-3);transition:color .35s}
+.pz-schalter i{position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);border-radius:999px;background:var(--papier-3);transition:transform .45s var(--ease),background .45s}
+.pz-buehne[data-zustand="heute"] .pz-schalter [data-zu="heute"]{color:var(--tinte)}
+.pz-buehne[data-zustand="mit"] .pz-schalter [data-zu="mit"]{color:var(--papier)}
+.pz-buehne[data-zustand="mit"] .pz-schalter i{transform:translateX(100%);background:var(--tinte)}
+.pz-szene{flex:1;display:grid;align-content:center;gap:14px;min-height:320px}
+.pz-buehne .h,.pz-buehne .m{transition:opacity .35s}
+.pz-buehne[data-zustand="heute"] .m,.pz-buehne[data-zustand="mit"] .h{display:none}
+/* 01 Google */
+.pz-suche{display:flex;align-items:center;gap:10px;padding:12px 18px;border-radius:999px;border:1px solid var(--papier-3);background:#fff;font-size:17px;color:var(--tinte-2)}
+.pz-suche svg{width:18px;height:18px;fill:none;stroke:var(--tinte-3);stroke-width:2}
+.pz-liste{position:relative;list-style:none;margin:0;padding:0;height:calc(5 * 50px)}
+.pz-liste li{position:absolute;left:0;right:0;top:0;height:42px;display:flex;align-items:center;gap:14px;padding:0 16px;border-radius:12px;background:#fff;border:1px solid var(--papier-3);font-size:16px;color:var(--tinte-2);transform:translateY(calc(var(--h) * 50px));transition:transform .8s var(--ease),background .5s,border-color .5s,opacity .5s}
+.pz-liste li i{font-style:normal;font-weight:700;min-width:26px;color:var(--tinte-3)}
+.pz-liste .pz-luecke{background:none;border-style:dashed;color:var(--tinte-4)}
+.pz-liste .du{background:var(--papier-2);font-weight:700;color:var(--tinte);opacity:.7}
+.pz-buehne[data-zustand="mit"] .pz-liste li{transform:translateY(calc(var(--m) * 50px))}
+.pz-buehne[data-zustand="mit"] .pz-liste .pz-luecke{opacity:0}
+.pz-buehne[data-zustand="mit"] .pz-liste .du{background:var(--tinte);color:var(--papier);border-color:var(--tinte);opacity:1}
+.pz-buehne[data-zustand="mit"] .pz-liste .du i{color:var(--bronze-hell)}
+/* 02 Gesehen */
+.pz-drei{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.pz-b{display:grid;gap:10px;padding:10px;border-radius:16px;border:1px solid var(--papier-3);background:#fff;transition:border-color .5s,transform .5s var(--ease)}
+.pz-b b{font-size:15px;text-align:center;color:var(--tinte-2)}
+.pz-foto{position:relative;aspect-ratio:1;border-radius:10px;background:repeating-linear-gradient(45deg,var(--papier-2) 0 10px,var(--papier-3) 10px 20px);display:grid;place-items:center;overflow:hidden}
+.pz-foto span{font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--tinte-3);background:rgba(250,247,241,.9);padding:4px 10px;border-radius:999px}
+.pz-foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .7s}
+.pz-buehne[data-zustand="mit"] .pz-b.du{border-color:var(--bronze);transform:translateY(-6px)}
+.pz-buehne[data-zustand="mit"] .pz-b.du img{opacity:1}
+.pz-buehne[data-zustand="mit"] .pz-b.du b{color:var(--tinte)}
+.pz-anruf-bahn{position:relative;height:40px}
+.pz-anruf{position:absolute;top:0;left:83.33%;transform:translateX(-50%);white-space:nowrap;padding:8px 16px;border-radius:999px;background:var(--papier-2);font-weight:600;font-size:15px;transition:left .8s var(--ease),background .5s,color .5s}
+.pz-buehne[data-zustand="mit"] .pz-anruf{left:50%;background:var(--tinte);color:var(--papier)}
+/* 03 Gebucht */
+.pz-postfach{display:grid;gap:12px;padding:18px;border-radius:16px;background:#fff;border:1px solid var(--papier-3);min-height:250px;align-content:start}
+.pz-pf-kopf{display:flex;justify-content:space-between;align-items:center;font-size:17px}
+.pz-zahl{font-weight:700;font-size:14px;padding:4px 12px;border-radius:999px;background:var(--papier-2);color:var(--tinte-3)}
+.pz-buehne[data-zustand="mit"] .pz-zahl{background:var(--bronze);color:#fff}
+.pz-leer{margin:40px 0 0;text-align:center;color:var(--tinte-3);font-size:17px}
+.pz-buehne[data-zustand="mit"] .pz-leer{display:none}
+.pz-postfach ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.pz-postfach li{display:grid;gap:2px;padding:12px 14px;border-radius:12px;background:var(--papier-2);border-left:4px solid var(--bronze);font-size:16px}
+.pz-postfach li small{font-size:13px;color:var(--tinte-3)}
+.pz-buehne[data-zustand="heute"] .pz-postfach li{display:none}
+.pz-buehne[data-zustand="mit"] .pz-postfach li{animation:pz-rein .5s var(--ease) both;animation-delay:calc(var(--i) * .45s + .15s)}
+@keyframes pz-rein{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+/* Fuß */
+.pz-fuss{display:grid;gap:10px;border-top:1px solid var(--papier-3);padding-top:18px}
+.pz-satz{margin:0;font-size:clamp(19px,1.5vw,22px);font-weight:700;line-height:1.35;color:var(--tinte)}
+.pz-los{justify-self:start;font-weight:600;color:var(--tinte);text-decoration:none;border-bottom:2px solid var(--bronze);padding-bottom:2px}
+@media (max-width:900px){
+  .pz{grid-template-columns:1fr}
+  .pz-tabs{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .pz-tab{padding:12px 10px;text-align:center;justify-items:center}
+  .pz-tab b{display:none}
+  .pz-nr{position:static;font-size:13px;font-weight:600;letter-spacing:.06em;color:var(--bronze-tief)}
+  .pz-tab span{font-size:13px;letter-spacing:.06em}
+  .pz-buehne{padding:18px;min-height:0}
+  .pz-liste li{font-size:15px}
+  .pz-szene{min-height:310px}
+  .pz-foto span{text-transform:none;letter-spacing:0;padding:3px 7px}
+  .pz-b{padding:7px}.pz-b b{font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){.pz *{transition:none!important;animation:none!important}}
+</style>
+<script>
+(() => {
+  const pz = document.querySelector('.pz'); if (!pz) return;
+  const buehne = pz.querySelector('.pz-buehne'), tabs = [...pz.querySelectorAll('.pz-tab')];
+  const los = pz.querySelector('.pz-los'), ziele = los.dataset.ziele.split(' ');
+  let uhr = null, gesehen = false, selbst = false;
+  const zustand = z => {
+    buehne.dataset.zustand = z;
+    buehne.querySelectorAll('.pz-schalter button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.zu === z)));
+  };
+  // Erst „Heute“ zeigen, dann von selbst auf „Mit uns“ umschalten — solange man nicht selbst schaltet
+  const vorfuehren = () => { clearTimeout(uhr); zustand('heute'); if (!selbst) uhr = setTimeout(() => zustand('mit'), 1800); };
+  const szene = (s, i) => {
+    buehne.dataset.szene = s;
+    buehne.querySelectorAll('[data-s]').forEach(e => { e.hidden = e.dataset.s !== s; });
+    tabs.forEach(t => { const an = t.dataset.szene === s; t.classList.toggle('an', an); t.setAttribute('aria-selected', String(an)); });
+    los.setAttribute('href', ziele[i]);
+    if (gesehen) vorfuehren();
+  };
+  tabs.forEach((t, i) => t.addEventListener('click', () => { selbst = false; szene(t.dataset.szene, i); }));
+  buehne.querySelectorAll('.pz-schalter button').forEach(b => b.addEventListener('click', () => { selbst = true; clearTimeout(uhr); zustand(b.dataset.zu); }));
+  new IntersectionObserver((es, io) => es.forEach(e => { if (e.isIntersecting) { gesehen = true; io.disconnect(); vorfuehren(); } }), { threshold: .5 }).observe(buehne);
+})();
+</script>
