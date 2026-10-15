@@ -910,7 +910,7 @@ document.querySelectorAll('.rd').forEach(rechnerStarten);
 
   /* ── Drei Säulen: gepinnte Bühne, die Säulen wachsen nacheinander aus dem Boden — am Ende steht das Logo ── */
   const sae = $('.system-sek .system-saeulen');
-  if (sae && !ruhig) {
+  if (sae && !ruhig && !sae.closest('[data-ohne-buehne]')) {
     const hubs = $$('.ss-hub', sae);
     if (hubs.length === 3) {
       sae.classList.add('ssm'); sae.closest('.sek')?.classList.add('ssm-sek');
