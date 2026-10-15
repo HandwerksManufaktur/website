@@ -8,6 +8,8 @@ from pathlib import Path
 
 WURZEL = Path(__file__).resolve().parent.parent
 h = (WURZEL / "index.html").read_text()
+if "lg-txt" in h:  # seit 15.10.2026 ist die Testfassung die Live-Startseite — Quelle jetzt build_pages.py im Konzept
+    raise SystemExit("index.html ist schon die überarbeitete Fassung, nichts zu tun")
 
 
 def ersetze(alt, neu, menge=1):
