@@ -56,7 +56,8 @@ ersetze('<span class="kicker">Aus unseren Arbeiten</span>', '<span class="kicker
 ersetze('<span class="kicker">Aus der Praxis</span>', '<span class="kicker">02 · Gesehen</span>')
 ersetze('<span class="kicker">Ergebnisse, nicht Versprechen</span>', '<span class="kicker">03 · Gebucht</span>')
 
-# 5 · Reihenfolge: Problem → Säulen → 01 Gefunden → 02 Gesehen → 03 Gebucht → Team → Stimmen → Kontakt
+# 5 · Reihenfolge (Angriff 15.10.: erst Google, dann was man nach dem Klick sieht; Stimmen vor Team):
+#     Problem → Säulen → 01 Google → 01 Website → 02 Videos → 03 Ergebnisse → Stimmen → Team → Kontakt
 def block(anfang):
     a = h.index(anfang)
     e = min(x for x in (h.find("\n<section", a + 1), h.find("\n</main", a + 1)) if x > 0)
@@ -73,8 +74,37 @@ teile = {k: h[slice(*block(v))] for k, v in namen.items()}
 a = block(namen["system"])[0]
 e = block(namen["google"])[1]
 assert h[a:e].count("<section class=\"sek") == 5, "unerwartete Abschnitte zwischen Säulen und Google"
-neu = "".join(teile[k].rstrip("\n") + "\n\n" for k in ("system", "laufband", "google", "videos", "erg"))
+neu = "".join(teile[k].rstrip("\n") + "\n\n" for k in ("system", "google", "laufband", "videos", "erg"))
 h = h[:a] + neu.rstrip("\n") + h[e:]
+
+a, e = block('<section class="sek team-sek"')
+team = h[a:e]; h = h[:a] + h[e:].lstrip("\n")
+a, e = block('<section class="sek stimmen"')
+h = h[:e] + "\n\n" + team.rstrip("\n") + h[e:]
+
+# 6 · Copy: alles knüpft an „Gute Arbeit reicht nicht mehr, um gefunden zu werden“ an (Angriff 15.10.2026)
+ersetze("Drei Momente, in denen sich ein Kunde oder Bewerber für dich entscheidet. Oder für den Nachbarn. Tipp auf einen.",
+        "Drei Momente, in denen sich Kunden und Bewerber für dich entscheiden. Oder für den Nachbarn. Tipp auf den, wo es bei dir hakt.")
+ersetze('<span class="pb-marke gut">Platz 1 in deinem Ort</span>', '<span class="pb-marke gut">Ganz vorne in deinem Ort</span>')
+ersetze("<h2>Drei Säulen, die aufeinander aufbauen.</h2>", "<h2>Damit deine gute Arbeit gefunden wird.</h2>")
+ersetze("Kein Baukasten aus sechs Angeboten, sondern ein Auftritt, der in drei Schritten aufeinander aufbaut. Wo wir bei dir anfangen, klären wir im Erstgespräch: bei den meisten ist es die Website, bei manchen die Stelle, die seit Monaten offen ist.",
+        "Wir bringen deinen Betrieb bei Google nach vorne, zeigen deine Arbeit in echten Bildern und holen Anfragen und Bewerbungen aus deinem Umkreis. Womit du anfängst, klären wir im Erstgespräch.")
+ersetze("Anzeigen im Umkreis, vier Filterfragen davor.", "Anzeigen im Umkreis. Wer sich meldet, beantwortet vorher ein paar kurze Fragen.")
+ersetze('<span class="kicker">Probier es aus</span>', '<span class="kicker">01 · Gefunden bei Google</span>')
+ersetze('<span class="kicker">01 · Gefunden</span>', '<span class="kicker">01 · Gefunden über die Website</span>')
+ersetze("<h2>Frag Google einfach selbst.</h2>", "<h2>So stehen unsere Kunden bei Google da.</h2>")
+ersetze("Tipp einen Suchbegriff an. So suchen Kunden, und so stehen unsere Betriebe da.",
+        "Tipp einen Suchbegriff an, so wie ihn ein Kunde eintippt. Du siehst, auf welchem Platz der Betrieb steht.")
+ersetze("<h2>Das läuft gerade live.</h2>", "<h2>Das sehen Kunden nach dem Klick.</h2>")
+ersetze("Bildschirmaufnahmen der fertigen Websites, so wie sie heute online sind. Klick auf eine, dann bist du drauf.",
+        "Fertige Websites unserer Betriebe, so wie sie heute online sind. Klick auf eine, dann bist du drauf.")
+ersetze("<h2>Bei unseren Kunden gedreht.</h2>", "<h2>Zeig, wie bei dir gearbeitet wird.</h2>")
+ersetze("Drohne, Kamera, Baustellenstaub. Skript, Dreh und Schnitt von uns, vor der Kamera steht der Chef. Alle Aufnahmen gehören danach dem Betrieb.",
+        "So sehen Kunden deine Arbeit und Bewerber dein Team, bevor sie anrufen. Dreh und Schnitt machen wir, die Aufnahmen gehören danach dir.")
+ersetze("<h2>Was dabei rauskommt.</h2>", "<h2>Das bringen Anzeigen im Umkreis.</h2>")
+ersetze("Drei Betriebe, drei Kampagnen, alle Zahlen aus den laufenden Konten. Klick auf ein Video, dann erzählt es der Chef selbst.",
+        "Drei Handwerksbetriebe, echte Zahlen aus den laufenden Anzeigen. Klick auf ein Video, dann erzählt es der Chef selbst.")
+ersetze("<h2>Wir können viel erzählen. Unsere Kunden erzählen es besser.</h2>", "<h2>Du musst dich mit Websites nicht auskennen.</h2>")
 
 (WURZEL / "test-startseite" / "index.html").write_text(h)
 print("test-startseite/index.html gebaut")
