@@ -1,0 +1,22 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive"><title>Szene 3 im Vergleich</title>
+<style>
+:root{--papier:#FAF7F1;--tinte:#16130E;--bronze:#C8873A}
+body{margin:0;background:var(--papier);color:var(--tinte);font:16px/1.4 system-ui,-apple-system,sans-serif}
+header{padding:24px 24px 8px}h1{margin:0 0 4px;font-size:24px}p{margin:0;color:#6B6355}
+.zwei{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:16px 24px 32px}
+.spalte h2{margin:0 0 10px;font-size:17px}.spalte h2 span{color:var(--bronze)}
+.rahmen{position:relative;width:100%;aspect-ratio:1440/900;overflow:hidden;border-radius:16px;box-shadow:0 0 0 1px rgba(22,19,14,.12);background:#fff}
+.rahmen iframe{position:absolute;top:0;left:0;width:1440px;height:900px;border:0;transform-origin:0 0}
+a{color:inherit}
+@media (max-width:900px){.zwei{grid-template-columns:1fr}}
+</style></head><body>
+<header><h1>Szene 3 · „03 · Gebucht“ im Vergleich</h1><p>Links wie jetzt live, rechts der Vorschlag. Beide öffnen Moment 3 von selbst. Klick in den Rahmen, um zu wechseln.</p></header>
+<div class="zwei">
+<div class="spalte"><h2>Jetzt live · <span>Keine Karriereseite</span></h2><div class="rahmen"><iframe src="alt.html" title="Szene 3 live"></iframe></div><p style="margin-top:8px"><a href="alt.html" target="_blank">groß öffnen ↗</a></p></div>
+<div class="spalte"><h2>Vorschlag · <span>Stellenanzeige im Umkreis</span></h2><div class="rahmen"><iframe src="neu.html" title="Szene 3 Vorschlag"></iframe></div><p style="margin-top:8px"><a href="neu.html" target="_blank">groß öffnen ↗</a></p></div>
+</div>
+<script>
+const passen = () => document.querySelectorAll('.rahmen').forEach(r => { const f = r.querySelector('iframe'); f.style.transform = `scale(${r.clientWidth / 1440})`; });
+addEventListener('resize', passen); passen();
+</script></body></html>
