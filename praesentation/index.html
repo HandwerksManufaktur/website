@@ -317,6 +317,14 @@ body.measuring .slide *{animation:none!important;}
 .casefolie .cstat .statsub{font-size:clamp(12px,1.02vw,15px);margin-top:5px;}
 .casefolie .note{max-width:820px;border-left:3px solid var(--accent);padding:6px 0 6px clamp(16px,1.8vw,28px);font-size:clamp(13px,1.1vw,15.5px);color:var(--muted);}
 .casefolie .note b{color:var(--white);}
+.seofolie{display:flex;flex-direction:column;gap:clamp(22px,3.4vh,38px);max-width:1080px;}
+.seofolie .seostats{display:flex;gap:clamp(48px,7vw,104px);flex-wrap:wrap;margin-top:clamp(6px,1vh,10px);}
+.seofolie .sstat{display:flex;align-items:center;gap:clamp(14px,1.6vw,26px);border-left:1px solid var(--border2);padding-left:clamp(15px,1.7vw,26px);}
+.seofolie .sstat .statnum{font-family:var(--fd);font-weight:800;line-height:.9;color:var(--accent);letter-spacing:-.035em;font-size:clamp(46px,5.2vw,82px);white-space:nowrap;}
+.seofolie .sstat .statnum .statof{font-size:.46em;font-weight:700;color:var(--muted);letter-spacing:-.01em;}
+.seofolie .sstat .statlbl{font-family:var(--fd);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--white);font-size:clamp(13px,1.2vw,18px);}
+.seofolie .sstat .statsub{color:var(--muted);line-height:1.4;font-size:clamp(12px,1.02vw,15px);margin-top:5px;}
+.seofolie .note{max-width:820px;border-left:3px solid var(--accent);padding:6px 0 6px clamp(16px,1.8vw,28px);font-size:clamp(13px,1.1vw,15.5px);color:var(--muted);}
 /* 13 ABSCHLUSS */
 #s13{align-items:flex-start;}
 #s13 .cover-glow{position:absolute;bottom:-35%;left:-15%;width:70vw;height:70vw;background:radial-gradient(circle,rgba(224,164,92,.14),transparent 62%);pointer-events:none;z-index:0;}
@@ -525,6 +533,18 @@ body.on-night #nav .steps b.on{background:var(--accent-l,#4FC3F0);}
   <h2 data-a="2">Über 120 Handwerksbetriebe<br>haben schon mit uns <span class="acc">gearbeitet</span></h2>
   <div class="logo-wall" id="logowall" data-a="3"></div>
   <div class="foot" data-a="4">Mitarbeitergewinnung · Neukundengewinnung · Social Media · <b>seit 2019</b></div>
+</section>
+
+<!-- 2B SEO-BELEG (Stand 19.10.2026 — Quelle kunden/handwerksmanufaktur/konzept/rankings-2026-09-23.md + rankings-2026-10-19.md) -->
+<section class="slide seofolie" id="s2b">
+  <div class="kicker" data-a="1">Google-Rankings unserer Kundenseiten · Stand 19.10.2026</div>
+  <h2 data-a="2">77 von 108 Kundenseiten<br>stehen bei Google auf <span class="acc">Seite 1.</span></h2>
+  <p class="sub" data-a="3">38 davon sogar auf <b>Platz 1</b>: gemessen für Gewerk + Ort.</p>
+  <div class="seostats" data-a="4">
+    <div class="sstat"><div class="statnum">77<span class="statof">/108</span></div><div><div class="statlbl">Seite 1</div><div class="statsub">Platz 1–10 bei Google</div></div></div>
+    <div class="sstat"><div class="statnum">38<span class="statof">/108</span></div><div><div class="statlbl">Platz 1</div><div class="statsub">ganz oben bei Google</div></div></div>
+  </div>
+  <div class="note" data-a="5">Gemessen am 23.09. und 19.10.2026 über Google.de, organische Treffer, ohne Anmeldung — Suchwort ist Gewerk + Ort aus der Kundenadresse.</div>
 </section>
 
 <!-- 3 GEWERKE -->
