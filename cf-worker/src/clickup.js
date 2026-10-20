@@ -272,6 +272,18 @@ export function buildDescription(formData, driveLink, linie) {
   return parts.join('\n\n');
 }
 
+// Leistungen + Stichpunkte als Textblock für die Projekt-Beschreibung (statt je eine Unteraufgabe).
+export function leistungenAlsText(leistungen, formData) {
+  if (!Array.isArray(leistungen)) return '';
+  const zeilen = [];
+  for (const l of leistungen) {
+    if (!l) continue;
+    const st = pick(formData, `${l} - Stichpunkte`, `Stichpunkte ${l}`) || '';
+    zeilen.push(`**${l}**` + (st ? `\n${st}` : ''));
+  }
+  return zeilen.length ? `\n\n---\n**Leistungen:**\n\n${zeilen.join('\n\n')}` : '';
+}
+
 function cleanFields(arr) {
   return arr.filter(f => f.value !== null && f.value !== undefined && f.value !== '');
 }
@@ -418,26 +430,16 @@ export async function createClickUpTasks({ token, firmaName, serviceType, formDa
       name: `${firmaName} - ${projekttyp && /multi/i.test(projekttyp) ? 'Multipager' : 'Onepager'}`,
       status: 'neuer kunde',
       custom_item_id: TASK_TYPE_PROJECT,
-      description,
+      description: description + leistungenAlsText(leistungen, formData),
       custom_fields: wdFields,
     });
 
     // Relationship: Website Projekt ↔ Kundendatenbank
     await clickup(token, `/task/${wdTask.id}/link/${kdbTask.id}`, 'POST', null).catch(() => {});
 
-    // Leistungen als Subtasks im Website Projekt
-    if (Array.isArray(leistungen)) {
-      for (const leistung of leistungen) {
-        if (!leistung) continue;
-        const stichpunkte = pick(formData, `${leistung} - Stichpunkte`, `Stichpunkte ${leistung}`) || '';
-        await clickup(token, `/list/${LISTS.webdesign}/task`, 'POST', {
-          name: leistung,
-          parent: wdTask.id,
-          description: stichpunkte,
-        }).catch(() => {});
-      }
-    }
-
+    // 🔴 Leistungen sind KEINE Subtasks (04.10.2026, Noah zu Entenmann: „das sind keine To-dos"). Bis dahin
+    // legte der Worker je Leistung (Badinstallation, Wärmepumpe …) eine leere Unteraufgabe an, die für immer
+    // offen blieb. Die Leistungen samt Stichpunkten stehen jetzt als Text in der Beschreibung des Projekts.
     return { kdbTaskId: kdbTask.id, webdesignTaskId: wdTask.id };
   }
 

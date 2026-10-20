@@ -359,7 +359,11 @@ async function handleInternMail(request, env) {
   const b = await request.json().catch(() => null);
   if (!b || !b.subject || !(b.html || b.text) || !b.to) return jsonResp({ error: 'from, to, subject, html/text nötig' }, 400);
   const from = String(b.from || '');
-  if (!/@handwerksmanufaktur\.digital>?$/.test(from)) return jsonResp({ error: 'Absender nicht erlaubt' }, 400);
+  // Feste Liste bei Resend verifizierter Kunden-Domains (08.10.2026) — keine beliebigen Domains.
+  const KUNDEN_ABSENDER_DOMAINS = ['mehrlebensenergie-praxis.de'];
+  const absenderDomain = (from.match(/@([a-z0-9.-]+)>?$/i) || [])[1] || '';
+  const absenderOk = absenderDomain.toLowerCase() === 'handwerksmanufaktur.digital' || KUNDEN_ABSENDER_DOMAINS.includes(absenderDomain.toLowerCase());
+  if (!absenderOk) return jsonResp({ error: 'Absender nicht erlaubt' }, 400);
   const liste = (x) => (Array.isArray(x) ? x : x ? [x] : []).map(String).slice(0, 10);
   const body = { from, to: liste(b.to), subject: String(b.subject).slice(0, 300) };
   if (b.reply_to) body.reply_to = b.reply_to;
@@ -379,6 +383,55 @@ async function handleInternMail(request, env) {
   return new Response(txt, { status: r.ok ? 200 : 502, headers: { ...CORS, 'Content-Type': 'application/json' } });
 }
 
+// 🌐 Resend-Domains verwalten (08.10.2026): Absender-Domain eines Kunden anlegen/prüfen, ohne Resend-Login.
+// Nur mit INTERN_MAIL_SECRET. Aufruf lokal: system/scripts/resend_domain.py
+async function handleResendDomain(request, env) {
+  if (!env.INTERN_MAIL_SECRET || !gleichZeit(request.headers.get('x-intern-mail-secret') || '', env.INTERN_MAIL_SECRET)) {
+    return new Response('Not found', { status: 404, headers: CORS });
+  }
+  if (!env.RESEND_API_KEY) return jsonResp({ error: 'RESEND_API_KEY fehlt' }, 500);
+  const b = await request.json().catch(() => null);
+  if (!b || !b.aktion) return jsonResp({ error: 'aktion nötig' }, 400);
+  const domain = String(b.domain || '').toLowerCase().trim();
+  const api = async (pfad, method, body) => {
+    const r = await fetch('https://api.resend.com' + pfad, {
+      method,
+      headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    const j = await r.json().catch(() => ({}));
+    return { ok: r.ok, status: r.status, data: j };
+  };
+  const finden = async () => {
+    const l = await api('/domains', 'GET');
+    if (!l.ok) return { fehler: l };
+    const arr = l.data.data || [];
+    return { id: (arr.find((d) => d.name === domain) || {}).id };
+  };
+  let res;
+  if (b.aktion === 'liste') {
+    res = await api('/domains', 'GET');
+  } else {
+    if (!/^[a-z0-9.-]+\.[a-z]{2,}$/.test(domain)) return jsonResp({ error: 'domain ungültig' }, 400);
+    if (b.aktion === 'anlegen') {
+      const f = await finden();
+      if (f.fehler) res = f.fehler;
+      else if (f.id) res = await api('/domains/' + f.id, 'GET');
+      else res = await api('/domains', 'POST', { name: domain, region: 'eu-west-1' });
+    } else {
+      const f = await finden();
+      if (f.fehler) res = f.fehler;
+      else if (!f.id) return jsonResp({ error: 'Domain nicht angelegt' }, 404);
+      else if (b.aktion === 'pruefen') {
+        await api('/domains/' + f.id + '/verify', 'POST');
+        res = await api('/domains/' + f.id, 'GET');
+      } else if (b.aktion === 'status') res = await api('/domains/' + f.id, 'GET');
+      else return jsonResp({ error: 'aktion unbekannt' }, 400);
+    }
+  }
+  return jsonResp({ ok: res.ok, status: res.status, ...res.data }, res.ok ? 200 : 502);
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
@@ -393,6 +446,7 @@ export default {
       // schickt seine Mails über dieses Service-Binding. Nur mit INTERN_MAIL_SECRET, nur von
       // @handwerksmanufaktur.digital — sonst wäre das ein offenes Mail-Relay.
       if (p === '/intern/mail') return handleInternMail(request, env);
+      if (p === '/intern/resend-domain') return handleResendDomain(request, env);
       if (p === '/konzept-anfrage') return handleKonzeptAnfrage(request, env);
       // 🔐 Zugangsdaten vom Kunden, im Browser verschlüsselt (src/zugang.js, Tabelle kunden_zugang)
       if (p === '/zugang') return handleZugang(request, env);
