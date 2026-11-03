@@ -3413,3 +3413,13 @@ html.zs-rastet{scroll-snap-type:y proximity}
   .google .buehne .begriffe button{min-height:44px;padding:8px 14px;font-size:14px}
   .google .buehne .begriffe button:nth-child(n+7){display:none}
 }
+
+/* Handy, Runde 2 (03.11.2026, Noah: „die sollten nicht die halbe Website mit Beispielen belegen") — Beispiele kürzen */
+@media (max-width:760px){
+  .google .buehne .begriffe{display:none}
+  .laufband .lb-bahn.rueck{display:none}
+  .system-sek .ss-hub .ss{height:470px;min-height:0}
+  .uk-bild{max-height:240px;overflow:hidden}
+}
+/* Team ohne Rudolf (seit 02.10.2026 nicht mehr dabei): drei Karten in einer Reihe */
+@media (min-width:761px){.team-sek .team-drei,main .team-drei,.sek .team-drei{grid-template-columns:repeat(3,minmax(0,1fr));max-width:880px;margin-inline:auto}}
