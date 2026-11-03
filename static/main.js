@@ -955,7 +955,7 @@ document.querySelectorAll('.rd').forEach(rechnerStarten);
     const k = $$(ks, box).filter(c => c.parentElement === box);
     if (k.length < 2) return;
     // 04.11.2026: Fallstudien am Handy = Wischleiste nebeneinander, kein Stapel (sonst graue Nachbarkarten)
-    if (cs === '.erg-sek .ergebnisse' && matchMedia('(max-width: 760px)').matches) return;
+    if (cs === '.erg-sek .ergebnisse' && matchMedia('(max-width: 1100px)').matches) return;
     box.classList.add('stapelm'); box.closest('.sek')?.classList.add('stapelm-sek');
     const stapelHandy = matchMedia('(max-width: 760px)').matches;
     const male = () => {
