@@ -32,7 +32,7 @@ const intro = $('#intro');
 if (intro) {
   let gesehen = false;
   try { gesehen = sessionStorage.getItem('hm-intro') === '1'; } catch (e) {}
-  if (gesehen || ruhig) intro.remove();
+  if (gesehen || ruhig || matchMedia('(max-width:760px)').matches) intro.remove();  // Handy: kein Logo-Intro vor dem ersten Blick (Noah, 03.11.2026)
   else {
     requestAnimationFrame(() => intro.classList.add('los'));
     // Runde 9: Linie, drei Balken (zack, zack, zack), Schriftzug. Steht bei 1,8 s, dann weg.
@@ -819,7 +819,7 @@ document.querySelectorAll('.rd').forEach(rechnerStarten);
     const FLIP = 3500;  // Heute zu Ende spielen lassen („Nicht erreichbar" kommt bei 2,3 s) — 1,6 s und 3 s waren zu schnell
     const etikett = (k, fall) => { const e = $(`.lg-seite.${k} .lg-etikett`, lb); return e ? e.textContent.replace(/^[✕✓]/, '').trim() : fall; };
     const titel = document.createElement('div'); titel.className = 'lgm-titel'; titel.setAttribute('aria-hidden', 'true');
-    titel.innerHTML = `<small>Moment <span>1</span> von ${tabs.length}</small><b></b>`;
+    titel.innerHTML = `<small><span>1</span> von ${tabs.length}</small><b></b>`;
     $('.lg-tabs', lb).after(titel);
     // Kleiner Schalter oben IM Rahmen (05.10.2026, Noah: „heute und mit uns doch zur auswahl … bisschen kleiner, intuitiver …
     // oben … und dann switcht es und man sieht auch oben am schalter, dass es switcht"). Er springt beim automatischen

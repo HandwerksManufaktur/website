@@ -3387,3 +3387,29 @@ html.zs-rastet{scroll-snap-type:y proximity}
 @media (max-width:760px){.rg-tabelle td::before{-webkit-hyphens:auto;hyphens:auto;overflow-wrap:anywhere;min-width:0}}
 /* KI-Hinweis: das × misst während der Einblend-Animation 43 px — unsichtbar etwas größere Tippfläche */
 @media (max-width:760px){.kt-zu::after{content:"";position:absolute;inset:-3px;border-radius:50%}}
+
+/* ── Handy aufgeräumt (03.11.2026, Noah: „mobil schaut das richtig scheiße aus … der erste Eindruck ist wichtig") ──
+   Hero: EIN ruhiges Video hinter dem Text statt drei schräger Säulen. Problem-Leiste: ein Wort je Kachel, nichts gequetscht.
+   Google-Treffer: Platz, Name und Logo mittig. Suchbegriffe: sechs, mittig umbrochen statt Querband. */
+@media (max-width:760px){
+  #intro{display:none}
+  .sek h2{hyphens:manual;-webkit-hyphens:manual}
+  .hero .saeulen{grid-template-columns:1fr;gap:0;padding:0}
+  .hero .saeule:nth-child(1),.hero .saeule:nth-child(3){display:none}
+  .hero .saeule:nth-child(2){height:100%;clip-path:none;border-radius:0}
+  .hero .saeule video,.hero .saeule img{transform:none}
+  .hero .saeule::after{background:linear-gradient(180deg,rgba(22,19,14,.72) 0%,rgba(22,19,14,.58) 38%,rgba(22,19,14,.78) 70%,var(--tinte) 100%)}
+  .hero .pause{opacity:.55}
+
+  .lgm .lg-tab{min-height:84px;flex-direction:column;gap:6px;padding:12px 6px}
+  .lgm .lg-tab .lg-txt{display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0}
+  .lgm .lg-tab small{display:block;white-space:nowrap;font-size:13px;letter-spacing:.04em}
+  .lgm .lg-tab .lg-ic{margin:0}
+
+  .google .treffer .t{grid-template-columns:1fr;justify-items:center;text-align:center;row-gap:10px}
+  .google .treffer .t>div{grid-column:1}
+  .google .treffer .t-logo{margin-inline:auto}
+  .google .buehne .begriffe{flex-wrap:wrap;justify-content:center;overflow:visible;margin-inline:0;padding:4px 0 8px;gap:8px}
+  .google .buehne .begriffe button{min-height:44px;padding:8px 14px;font-size:14px}
+  .google .buehne .begriffe button:nth-child(n+7){display:none}
+}
