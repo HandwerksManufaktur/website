@@ -954,6 +954,8 @@ document.querySelectorAll('.rd').forEach(rechnerStarten);
   if (!ruhig && innerHeight >= 640) [['.erg-sek .ergebnisse', '.erg'], ['.bento-sek .bento', '.zelle']].forEach(([cs, ks]) => $$(cs).forEach(box => {
     const k = $$(ks, box).filter(c => c.parentElement === box);
     if (k.length < 2) return;
+    // 04.11.2026: Fallstudien am Handy = Wischleiste nebeneinander, kein Stapel (sonst graue Nachbarkarten)
+    if (cs === '.erg-sek .ergebnisse' && matchMedia('(max-width: 760px)').matches) return;
     box.classList.add('stapelm'); box.closest('.sek')?.classList.add('stapelm-sek');
     const stapelHandy = matchMedia('(max-width: 760px)').matches;
     const male = () => {
