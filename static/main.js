@@ -383,7 +383,15 @@ if (matchMedia('(hover:hover) and (pointer:fine)').matches && !ruhig) {
     const b = $('.seite-bild', e.target); if (!b || b.getAttribute('src')) return;
     (window.requestIdleCallback || setTimeout)(() => { if (!b.getAttribute('src')) b.src = b.dataset.src; });
   }), { rootMargin: '300px 0px' });
-  $$('.schirm, .lb-schirm').forEach(el => vorlad.observe(el));
+  $$('.schirm').forEach(el => vorlad.observe(el));
+  /* 🔴 07.11.2026 (Ladezeit): Das Laufband hat 36 Kacheln mit je ~150 KB Seitenbild. Vorher wurden alle beim Näherkommen
+     geholt (~4,5 MB) und haben den Fotos weiter unten die Leitung weggenommen. Jetzt erst, wenn die Maus über einer
+     Bahn steht — und dann nur die Kacheln, die gerade im Bild sind. */
+  $$('.lb-bahn').forEach(bahn => bahn.addEventListener('pointerenter', e => {
+    if (e.pointerType !== 'mouse') return;
+    $$('.lb-schirm', bahn).forEach(s => { const r = s.getBoundingClientRect(); if (r.right < 0 || r.left > innerWidth) return;
+      const b = $('.seite-bild', s); if (b && !b.getAttribute('src')) b.src = b.dataset.src; });
+  }));
 }
 
 /* ---- KI-Hinweis links unten (Startseite) ----

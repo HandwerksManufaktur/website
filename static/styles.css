@@ -3452,3 +3452,14 @@ p.ki-hinweis .ki-i,.ki-hinweis span.ki-i{font-size:13px}
 @media (max-width:1100px){nav.rg-brot a{min-height:44px;display:inline-flex;align-items:center}}
 @media (max-width:1100px){nav.rg-brot a{min-width:44px;justify-content:center}}
 @media (min-width:761px) and (max-width:1000px){.handys{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));overflow:visible;margin-inline:0;padding-inline:0}}
+/* Fotowand „Wir schauen uns deinen Betrieb an" ab Tablet: gleiches Raster (5 bzw. 4 Spalten, Film 2 × 2), aber echte
+   Quadrate. 🔴 07.11.2026, Noah: „unten bei den fotos … fotos zu vertikal, das raster alles so lassen". Vorher streckte
+   sich das Raster auf die Höhe der Textspalte (flex:1 + height:100 %) → Kacheln 113 × 166 px hochkant, die Köpfe saßen
+   falsch. Quadrate kommen allein aus aspect-ratio, der Film füllt seine 2 × 2-Fläche absolut. */
+@media (min-width:761px){
+  .uk-karte:has(.uk-bild .collage.mit-film){align-items:center}
+  .uk-bild .collage.mit-film{flex:none;grid-auto-rows:auto;align-content:start}
+  .uk-bild .collage.mit-film img{height:auto;aspect-ratio:1/1;min-width:0;background:var(--papier-2,#efe9df)}
+  .uk-bild .collage.mit-film .c-film{position:relative;min-width:0;min-height:0}
+  .uk-bild .collage.mit-film .c-film video{position:absolute;inset:0}
+}
