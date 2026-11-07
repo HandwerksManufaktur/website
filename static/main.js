@@ -208,12 +208,17 @@ if (suche) {
 }
 
 /* ---- Videos nur abspielen, wenn sie im Bild sind ---- */
+/* 🔴 07.11.2026 (Ladezeit, Noah: „unten bei den fotos … laden manche nicht"): Gemessen liefen beim Durchscrollen bis zu
+   17 Video-Downloads parallel weiter, auch wenn die Videos längst aus dem Bild waren (pause() bricht keinen Download ab).
+   Die Fotos unten warteten 5–7 s dahinter. Jetzt: ein Video lädt erst, wenn es 350 ms im Bild bleibt (Vorbeiscrollen
+   zählt nicht), und ein halb geladenes Video gibt die Leitung frei, sobald es das Bild verlässt (Poster bleibt stehen). */
 const ioV = new IntersectionObserver(es => es.forEach(e => {
-  const v = e.target; v._sicht = e.isIntersecting;
+  const v = e.target; v._sicht = e.isIntersecting; clearTimeout(v._warte);
   if (e.isIntersecting) { const los = () => { if (!v._sicht) return; if (!v.getAttribute('src') && v.dataset.src) v.src = (innerWidth < 760 && v.dataset.srcMobil) || v.dataset.src; v.play().catch(() => {}); };
     /* Hero-Filme erst nach dem Laden der Seite holen (nicht gegen LCP/Schrift konkurrieren); das Poster steht bis dahin */
-    if (document.readyState === 'complete') los(); else addEventListener('load', () => setTimeout(los, 200), { once: true }); }
-  else v.pause();
+    if (document.readyState !== 'complete') addEventListener('load', () => setTimeout(los, 200), { once: true });
+    else if (v.closest('.hero')) los(); else v._warte = setTimeout(los, 350); }
+  else { v.pause(); if (v.getAttribute('src') && v.readyState < 4 && !v.closest('.hero')) { v.removeAttribute('src'); v.load(); } }
 }), { rootMargin: '120px 0px' });
 /* 🔴 04.10.2026: Poster (data-poster) und Bilder (img[data-spaet]) unterhalb des Heros laden erst 900 px vor ihrer SEKTION.
    Beobachtet wird die Sektion, nicht das Element: Säulen und Laufbänder liegen in Containern mit overflow/clip-path, dort
