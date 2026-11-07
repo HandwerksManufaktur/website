@@ -558,10 +558,13 @@ $$('form.sf-form').forEach(f => {
     const zufall = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
     const start = [], gruppen = new Set();
     for (const e of zufall(pool.slice())) { if (start.length >= felder.length) break; if (!gruppen.has(e[1])) { gruppen.add(e[1]); start.push(e); } }
-    felder.forEach((f, i) => { if (start[i]) { f.dataset.k = JSON.stringify(start[i][2] || []); f.src = start[i][0]; f.dataset.g = start[i][1]; } });
+    // 🔴 07.11.2026: Fotowand blieb auf langsamer Leitung leer (Kacheln warteten hinter Logos/Postern). Die Startbilder
+    // bekommen hohen Vorrang, und getauscht wird erst, wenn alle sichtbaren Felder ein Bild haben.
+    felder.forEach((f, i) => { if (start[i]) { f.fetchPriority = 'high'; f.dataset.k = JSON.stringify(start[i][2] || []); f.src = start[i][0]; f.dataset.g = start[i][1]; } });
     const tausch = () => {
       if (!pool.length) return;
       const sichtbar = felder.filter(f => f.offsetParent !== null); if (!sichtbar.length) return;
+      if (sichtbar.some(x => !(x.complete && x.naturalWidth))) return;
       const f = sichtbar[Math.floor(Math.random() * sichtbar.length)];
       const belegt = new Set(sichtbar.filter(x => x !== f).map(x => x.dataset.g)), zu_sehen = new Set(sichtbar.map(x => x.getAttribute('src')));
       const moeglich = pool.filter(e => !belegt.has(e[1]) && !zu_sehen.has(e[0]));
