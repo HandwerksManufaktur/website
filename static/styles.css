@@ -3474,3 +3474,14 @@ p.ki-hinweis .ki-i,.ki-hinweis span.ki-i{font-size:13px}
 .fuss .fuss-gewerke .fuss-titel{margin-bottom:6px}
 .rg-gegen{margin:18px 0 0}
 @media (max-width:640px){.fuss .fuss-gewerke ul{gap:0 20px}}
+/* 07.11.2026 SEO/GEO: Leistungs-Ratgeber (Mitarbeiter finden je Gewerk, Kunden gewinnen) — Antwort-zuerst unter der H1, Gewerkfoto */
+.ls-kopf .ls-antwort{font-size:clamp(18px,1.6vw,21px);line-height:1.6;color:var(--tinte);max-width:64ch}
+.ls-knoepfe{margin:26px 0 0}
+.ls-kopf.mit-bild .ls-kopf-raster{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(28px,4vw,64px);align-items:center}
+.ls-kopf.mit-bild h1{max-width:18ch}
+.ls-bild{margin:0;border-radius:var(--radius);overflow:hidden;aspect-ratio:3/2;background:var(--papier-3,#e9e3d8)}
+.ls-bild img{width:100%;height:100%;object-fit:cover;object-position:50% 35%;display:block}
+.ls-chips{margin-top:18px}
+.rg-text .fall-stapel{margin-top:18px}
+@media (max-width:900px){.ls-kopf.mit-bild .ls-kopf-raster{grid-template-columns:minmax(0,1fr)}.ls-bild{aspect-ratio:3/2;order:2}}
+.ls-knoepfe .btn{white-space:normal;max-width:100%;text-align:left;line-height:1.3}
