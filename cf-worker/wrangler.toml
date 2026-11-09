@@ -2,13 +2,14 @@ name = "handwerksmanufaktur-onboarding"
 main = "src/index.js"
 compatibility_date = "2025-01-01"
 
-# Self-Service-Binding: der Worker ruft sich selbst auf (/clickup-extras),
-# damit jeder Projekt-Task sein Subtask/Checklisten-Geruest in einer EIGENEN
-# Invocation mit frischem Laufzeitlimit bekommt. Direkte HTTP-Self-Requests
-# auf die eigene workers.dev-URL blockiert Cloudflare — das Binding nicht.
-[[services]]
-binding = "SELF"
-service = "handwerksmanufaktur-onboarding"
+# 📥 Onboarding-Eingang (10.11.2026, ClickUp raus): jede Formular-Abgabe als Rohsatz in der EIGENEN D1
+# `onboarding-eingang` (Tabelle onboarding_eingang, Schema schema.sql; der Worker legt sie auch selbst an).
+# Abholer auf dem Mac: system/scripts/onboarding_eingang.py (CEO-GPT) → Kunde + Projekte in der Grundlage.
+# Einmalig: npx wrangler d1 create onboarding-eingang → database_id unten eintragen (Platzhalter ersetzen).
+[[d1_databases]]
+binding = "EINGANG_DB"
+database_name = "onboarding-eingang"
+database_id = "4689f378-68a6-4ef2-8426-92af485ade62"
 
 # Secrets werden per CLI gesetzt – niemals hier eintragen:
 # wrangler secret put GOOGLE_CLIENT_EMAIL

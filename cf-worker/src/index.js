@@ -2,7 +2,7 @@
  * Handwerksmanufaktur Onboarding – Cloudflare Worker
  */
 
-import { createClickUpTasks, addPipelineExtrasForTask } from './clickup.js';
+import { eingangSpeichern } from './eingang.js';
 import { handleKonzeptAnfrage } from './konzept.js';
 import { handleZugang } from './zugang.js';
 
@@ -270,26 +270,20 @@ async function handleCreateFolders(request, env, ctx) {
     console.error('[Email ERROR]', e.message);
   }
 
-  // ClickUp: Tasks anlegen (non-blocking, aber via ctx.waitUntil damit Worker nicht killt)
-  if (env.CLICKUP_API_TOKEN) {
-    const clickupPromise = createClickUpTasks({
-      token: env.CLICKUP_API_TOKEN,
-      firmaName,
-      serviceType,
-      formData,
-      driveLink,
-      leistungen,
-      selfService: env.SELF, // Service Binding: Extras pro Task in eigener Invocation
-    }).then(r => console.log('[ClickUp OK]', JSON.stringify(r)))
-      .catch(err => console.error('[ClickUp ERROR]', err.message, err.stack));
-    if (ctx && ctx.waitUntil) {
-      ctx.waitUntil(clickupPromise);
-    }
-  } else {
-    console.error('[ClickUp] CLICKUP_API_TOKEN not set');
+  // Eingang als Rohsatz in die eigene D1 (seit 10.11.2026 statt Fremddienst-Tasks): der Mac-Abholer
+  // system/scripts/onboarding_eingang.py macht daraus Kunde + Projekt(e) in der Informationsgrundlage.
+  // Ein D1-Fehler kippt die Abgabe nie — Drive-Ordner, Formular-Doc und Mail stehen schon.
+  let eingangId = null;
+  try {
+    const r = await eingangSpeichern(env, { firmaName, serviceType, formData, driveLink, leistungen, missing,
+                                            rootId, clientV });
+    eingangId = r.id;
+    console.log('[Eingang OK]', JSON.stringify(r));
+  } catch (err) {
+    console.error('[Eingang ERROR]', err.message);
   }
 
-  return jsonResp({ success: true, folderIds, customerFolderId, rootId, driveLink });
+  return jsonResp({ success: true, folderIds, customerFolderId, rootId, driveLink, eingangId });
 }
 
 async function handleStartUpload(request, env) {
@@ -451,25 +445,6 @@ export default {
       // 🔐 Zugangsdaten vom Kunden, im Browser verschlüsselt (src/zugang.js, Tabelle kunden_zugang)
       if (p === '/zugang') return handleZugang(request, env);
       if (p === '/create-folders'  || p === '/api/create-folders')  return handleCreateFolders(request, env, ctx);
-      // Subtasks + Checklisten für EINEN Projekt-Task. Bewusst ein eigener Request:
-      // bei zwei Projekt-Tasks (Recruiting + Leadgen) reichte die Laufzeit eines einzigen
-      // Worker-Aufrufs nicht, der zweite Task blieb ohne Subtasks/Checklisten.
-      if (p === '/clickup-extras') {
-        // Nur der Worker selbst (via Service Binding) darf das aufrufen — der Endpoint
-        // ist sonst öffentlich und würde beliebige Task-IDs mit Gerüsten befüllen.
-        if (!env.CLICKUP_API_TOKEN) return jsonResp({ error: 'kein Token' }, 500);
-        if (request.headers.get('x-internal-auth') !== env.CLICKUP_API_TOKEN) {
-          return new Response('Not found', { status: 404, headers: CORS });
-        }
-        const { taskId, todayMs } = await request.json();
-        if (!taskId) return jsonResp({ error: 'taskId fehlt' }, 400);
-        // Bewusst SYNCHRON (kein waitUntil): der Aufrufer ist der Worker selbst via
-        // Service Binding und wartet auf das Ergebnis — so ist deterministisch fertig,
-        // was fertig gemeldet wird.
-        await addPipelineExtrasForTask(env.CLICKUP_API_TOKEN, taskId, todayMs || Date.now());
-        console.log('[ClickUp Extras OK]', taskId);
-        return jsonResp({ ok: true, taskId });
-      }
       if (p === '/start-upload'    || p === '/api/start-upload')    return handleStartUpload(request, env);
       if (p === '/upload-chunk'    || p === '/api/upload-chunk')    return handleUploadChunk(request, env);
       return new Response('Not found', { status: 404, headers: CORS });

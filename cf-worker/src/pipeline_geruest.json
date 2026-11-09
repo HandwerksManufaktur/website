@@ -1,5 +1,5 @@
 {
-  "_hinweis": "Eine Wahrheit fuer das Geruest jedes Performance-Projekt-Tasks. Gelesen vom Onboarding-Worker (clickup.js) UND von system/scripts/onboarding_geruest.py, das fehlende Teile nachtraegt.",
+  "_hinweis": "Eine Wahrheit fuer das Geruest jedes Performance-Projekts in der Informationsgrundlage (seit 10.11.2026). subtasks = Arbeitsschritte, gelesen von performance_waechter.py, onboarding_eingang.py und onboarding_geruest.py (CEO-GPT/system/scripts). checklisten werden derzeit nicht angelegt.",
   "subtasks": [
     {
       "name": "Onboarding versenden",
