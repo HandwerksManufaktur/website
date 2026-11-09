@@ -190,6 +190,12 @@ if (echt && !test) {
     senden('k', { z: (text || a.tagName.toLowerCase()) + wohin });
   }, { capture: true });
   document.addEventListener('hwm:lead', e => senden('f', { z: (e.detail && e.detail.formular) || 'formular' }));
+  // Verweildauer (09.11.2026, Noah: „wie lange waren die Leute auf der Seite"): sichtbare Sekunden je Aufruf, gemeldet beim
+  // Verstecken/Verlassen als Summe bisher — der Zähler nimmt je Aufruf den größten Wert. Nichts wird im Browser gespeichert.
+  let sicht = 0, ab = document.visibilityState === 'visible' ? Date.now() : 0;
+  const dauer = () => { if (ab) { sicht += Date.now() - ab; ab = 0; } const sek = Math.round(sicht / 1000); if (sek > 0) senden('d', { z: String(sek) }); };
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') dauer(); else ab = Date.now(); });
+  addEventListener('pagehide', dauer);
   const marken = [25, 50, 75, 100], erreicht = new Set();
   let lauf = false;
   const tiefe = () => {
