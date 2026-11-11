@@ -29,11 +29,11 @@
     pfeil: '<path d="M5 12h14M13 6l6 6-6 6"/>',
     bad: '<path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-1-.5C4.683 3 4 3.683 4 4.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/><path d="m10 5-2 2"/><path d="M2 12h20"/><path d="M7 19v2"/><path d="M17 19v2"/>'
   };
-  // Genau drei Themen nebeneinander (Noah, 11.11.2026: SHK „nur 3 sachen - aufträge, monteure oder website", HWM „generell eigentlich auch nur 3 sachen …
+  // Genau drei Themen nebeneinander (Noah, 11.11.2026: SHK „nur 3 sachen - aufträge, monteure oder website", Reihenfolge „1. monteure, 2. aufträge, 3. webdesign", HWM „generell eigentlich auch nur 3 sachen …
   // seo oder sea oder shooting fällt ja unter webdesign") — der Satz darunter fängt SEO, Google-Anzeigen und Shootings ab.
   var THEMEN = SEITE === 'shk' ? [
-    ['kunden', 'Aufträge', 'Bad, Heizung, Wärmepumpe', 'bad'],
     ['mitarbeiter', 'Monteure', 'Bewerber aus deiner Region'],
+    ['kunden', 'Aufträge', 'Bad, Heizung, Wärmepumpe', 'bad'],
     ['website', 'Website', 'Neu oder überarbeitet']
   ] : [
     ['website', 'Website', 'Neu oder überarbeitet'],
