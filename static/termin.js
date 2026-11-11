@@ -25,22 +25,19 @@
     kalender: '<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/>',
     zu: '<path d="M18 6 6 18M6 6l12 12"/>',
     ok: '<path d="m5 12 4 4L19 7"/>',
-    pfeil: '<path d="M5 12h14M13 6l6 6-6 6"/>'
+    pfeil: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+    bad: '<path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-1-.5C4.683 3 4 3.683 4 4.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/><path d="m10 5-2 2"/><path d="M2 12h20"/><path d="M7 19v2"/><path d="M17 19v2"/>'
   };
+  // Genau drei Themen nebeneinander (Noah, 11.11.2026: SHK „nur 3 sachen - aufträge, monteure oder website", HWM „generell eigentlich auch nur 3 sachen …
+  // seo oder sea oder shooting fällt ja unter webdesign") — der Satz darunter fängt SEO, Google-Anzeigen und Shootings ab.
   var THEMEN = SEITE === 'shk' ? [
-    ['mitarbeiter', 'Monteure finden', 'Bewerbungen aus deiner Region'],
-    ['kunden', 'Aufträge gewinnen', 'Bad- und Wärmepumpen-Anfragen'],
-    ['website', 'Website', 'Neue Seite oder Überarbeitung'],
-    ['seo', 'Bei Google gefunden werden', 'SEO'],
-    ['ads', 'Google-Anzeigen', 'Google Ads'],
-    ['offen', 'Noch offen', 'Erst mal reden']
+    ['kunden', 'Aufträge', 'Bad, Heizung, Wärmepumpe', 'bad'],
+    ['mitarbeiter', 'Monteure', 'Bewerber aus deiner Region'],
+    ['website', 'Website', 'Neu oder überarbeitet']
   ] : [
-    ['website', 'Website', 'Neue Seite oder Überarbeitung'],
+    ['website', 'Website', 'Neu oder überarbeitet'],
     ['kunden', 'Neue Kunden', 'Mehr Anfragen über Werbung'],
-    ['mitarbeiter', 'Neue Mitarbeiter', 'Bewerbungen über Social Media'],
-    ['seo', 'Bei Google gefunden werden', 'SEO'],
-    ['ads', 'Google-Anzeigen', 'Google Ads'],
-    ['offen', 'Noch offen', 'Erst mal reden']
+    ['mitarbeiter', 'Neue Mitarbeiter', 'Bewerbungen über Social Media']
   ];
   function svg(n, k) { return '<svg class="' + (k || 'td-ic') + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' + IC[n] + '</svg>'; }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
@@ -58,6 +55,13 @@
     '@media (min-width:520px){.td .td-zeile2{grid-template-columns:1fr 1fr}}' +
     '.td .td-fehler{color:#9E2F22;font-size:14px;font-weight:600;margin:6px 0 0}' +
     '.td .td-hinweis{font-size:13px;opacity:.75;margin:6px 0 0}.td .td-hinweis a,.td .td-alt a{text-decoration:underline}' +
+    '.td.td-weit{width:min(760px,calc(100vw - 24px))}.td.td-weit .rd-form{padding:30px 34px 32px}' +
+    '.td .rd-wahl.td-drei{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}' +
+    '.td .rd-wahl.td-drei button{flex-direction:column;justify-content:flex-start;align-items:center;text-align:center;gap:10px;min-height:150px;padding:22px 12px;border-radius:20px}' +
+    '.td .rd-wahl.td-drei button>span{font-size:18px}.td .rd-wahl.td-drei button small{font-size:13px;margin-top:4px}' +
+    '.td .rd-wahl.td-drei .td-ic{width:30px;height:30px}' +
+    '.td .td-unter{font-size:14px;opacity:.75;margin:14px 0 0;text-align:center}' +
+    '@media (max-width:520px){.td.td-weit .rd-form{padding:22px 16px 22px}.td .rd-wahl.td-drei{gap:8px}.td .rd-wahl.td-drei button{min-height:104px;padding:18px 6px 14px;gap:8px;border-radius:16px}.td .rd-wahl.td-drei button>span{font-size:15px;line-height:1.2}.td .rd-wahl.td-drei button small{display:none}.td .td-kick-rest{display:none}.td .rd-wahl.td-drei .td-ic{width:26px;height:26px}}' +
     '.td.td-breit{width:min(860px,calc(100vw - 32px))}' +
     '.td .td-cal{height:min(700px,calc(100dvh - 230px));min-height:480px;margin:0 -8px;position:relative}' +
     '.td .td-cal .td-laedt{position:absolute;inset:0;display:grid;place-items:center;font-weight:600;opacity:.6}' +
@@ -79,15 +83,16 @@
 
   function bauen() {
     dlg = document.createElement('dialog');
-    dlg.className = 'rd td'; dlg.id = 'termin-dialog'; dlg.setAttribute('aria-labelledby', 'td-titel');
+    dlg.className = 'rd td td-weit'; dlg.id = 'termin-dialog'; dlg.setAttribute('aria-labelledby', 'td-titel');
     var wahl = THEMEN.map(function (t) {
-      return '<button type="button" data-thema="' + t[0] + '" aria-pressed="false">' + svg(t[0]) + '<span>' + esc(t[1]) + '<small>' + esc(t[2]) + '</small></span></button>';
+      return '<button type="button" data-thema="' + t[0] + '" aria-pressed="false">' + svg(t[3] || t[0]) + '<span>' + esc(t[1]) + '<small>' + esc(t[2]) + '</small></span></button>';
     }).join('');
     dlg.innerHTML = '<form class="rd-form" novalidate>' +
       '<input type="text" name="bot" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">' +
-      '<div class="rd-kopf"><p class="rd-kick" id="td-titel">' + svg('kalender') + 'Kostenloses Beratungsgespräch · 30 Min.</p><button type="button" class="rd-zu" data-zu aria-label="Schließen">' + svg('zu') + '</button></div>' +
+      '<div class="rd-kopf"><p class="rd-kick" id="td-titel">' + svg('kalender') + '<span>Kostenloses Beratungsgespräch<span class="td-kick-rest"> · 30 Min.</span></span></p><button type="button" class="rd-zu" data-zu aria-label="Schließen">' + svg('zu') + '</button></div>' +
       '<div class="rd-balken" aria-hidden="true"><i></i></div>' +
-      '<section class="rd-schritt an" data-schritt="1"><h3>Worum soll es gehen?</h3><p class="td-satz">Du kannst mehrere wählen.</p><div class="rd-wahl">' + wahl + '</div>' +
+      '<section class="rd-schritt an" data-schritt="1"><h3>Worum soll es gehen?</h3><p class="td-satz">Du kannst mehrere wählen.</p><div class="rd-wahl td-drei">' + wahl + '</div>' +
+      '<p class="td-unter">Es geht um SEO, Google-Anzeigen oder ein Foto- und Videoshooting? Dann wähl einfach Website.</p>' +
       '<p class="td-fehler" data-fehler="1" hidden>Bitte wähl mindestens ein Thema aus.</p>' +
       '<button type="button" class="' + KNOPF + ' td-knopf" data-weiter="1">Weiter ' + svg('pfeil') + '</button></section>' +
       '<section class="rd-schritt" data-schritt="2" hidden><h3>Wer bist du?</h3>' +
