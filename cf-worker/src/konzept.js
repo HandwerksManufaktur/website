@@ -161,7 +161,7 @@ async function ipHash(request, env) {
 }
 
 /* ---------------- Close ---------------- */
-function closeApi(env, fetchImpl) {
+export function closeApi(env, fetchImpl) {
   const auth = 'Basic ' + btoa(`${env.CLOSE_API_KEY}:`);
   return async (pfad, methode = 'GET', body) => {
     const r = await fetchImpl('https://api.close.com/api/v1' + pfad, {
@@ -296,7 +296,7 @@ export function mailBetrieb(d, logo, logoVerloren = false) {
   return { betreff: logo && !logoVerloren ? 'Dein Website-Konzept' : 'Dein Website-Konzept: dein Logo fehlt noch', text, html };
 }
 
-async function resend(env, fetchImpl, body) {
+export async function resend(env, fetchImpl, body) {
   const r = await fetchImpl('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },

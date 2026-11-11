@@ -4,6 +4,7 @@
 
 import { eingangSpeichern } from './eingang.js';
 import { handleKonzeptAnfrage } from './konzept.js';
+import { handleTerminAnfrage } from './termin.js';
 import { handleZugang } from './zugang.js';
 
 const FOLDER_IDS = {
@@ -442,6 +443,8 @@ export default {
       if (p === '/intern/mail') return handleInternMail(request, env);
       if (p === '/intern/resend-domain') return handleResendDomain(request, env);
       if (p === '/konzept-anfrage') return handleKonzeptAnfrage(request, env);
+      // 📅 Termin-Dialog der Websites (11.11.2026): Themen + Kontakt → Close-Lead + Aufgabe, Buchung → Notiz (src/termin.js)
+      if (p === '/termin-anfrage') return handleTerminAnfrage(request, env);
       // 🔐 Zugangsdaten vom Kunden, im Browser verschlüsselt (src/zugang.js, Tabelle kunden_zugang)
       if (p === '/zugang') return handleZugang(request, env);
       if (p === '/create-folders'  || p === '/api/create-folders')  return handleCreateFolders(request, env, ctx);
