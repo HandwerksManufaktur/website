@@ -82,6 +82,7 @@
     '@media (max-width:900px){.nav-termin svg{display:none}.nav-termin .nt-text{font-size:min(16px,3.9vw);white-space:nowrap}a.nav-cta.nav-termin{padding-left:14px;padding-right:14px}}' +
     '.wx-cta-karte .wx-cta-knoepfe{flex-direction:column;align-items:stretch}.wx-cta-karte .wx-cta-knoepfe .btn{justify-content:center}' +
     '@media (max-width:480px){.wx-cta-karte .btn[data-termin] svg,.kontakt-termin svg,.uk-termin svg{display:none}.wx-cta-karte .btn[data-termin],.kontakt-termin,.uk-termin{padding-left:10px;padding-right:10px;white-space:normal;text-align:center;line-height:1.25;font-size:14px}}' +
+    '@media (max-width:480px){.hero-cta .btn[href*="potenzial-erstgespraech"]{font-size:15px;padding-left:16px;padding-right:16px;white-space:nowrap}.hero-cta .btn[href*="potenzial-erstgespraech"] svg{display:none}}' +
     '.uk-termin,.kontakt-termin{width:100%;justify-content:center;gap:10px;margin-top:12px}.uk-termin svg,.kontakt-termin svg{width:20px;height:20px}';
   (function () { var st = document.createElement('style'); st.textContent = CSS; (document.head || document.documentElement).appendChild(st); })();
 
