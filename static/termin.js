@@ -1,9 +1,9 @@
-/* 📅 Termin-Dialog „Potenzialanalyse" (11.11.2026, 🌐 Helena) — gleiche Datei auf handwerksmanufaktur.digital
+/* 📅 Termin-Dialog „Kostenloses Beratungsgespräch" (11.11.2026, 🌐 Helena) — gleiche Datei auf handwerksmanufaktur.digital
  * (/static/termin.js) und shk.handwerksmanufaktur.digital (/termin.js). Einbinden:
  *   <script src="…/termin.js?v=…" data-seite="hwm|shk" data-knopf="btn btn-tinte|btn btn-ink" defer></script>
  * Noah, 11.11.2026: „Jetzt Termin buchen … zuerst eine kurze Auswahl: worum geht es … dann Namen/Firmennamen
  * … und beim Weiterklicken gleich im Kalender eingetragen." Ablauf: 1 Themen (mehrere) → 2 Name, Betrieb, Telefon,
- * E-Mail → Worker /termin-anfrage (Close-Lead + Aufgabe + Mail an info@) → 3 Calendly „Potenzialanalyse" eingebettet
+ * E-Mail → Worker /termin-anfrage (Close-Lead + Aufgabe + Mail an info@) → 3 Calendly „Kostenloses Beratungsgespräch" (Slug potenzial-erstgespraech) eingebettet
  * und vorausgefüllt → Buchung steht in Noahs Kalender, Worker trägt sie in Close nach → 4 „Dein Termin steht".
  * Öffnet sich über [data-termin] und über jeden Potenzial-Link auf calendly.com/noahseelau (ohne JS bleibt der Link). */
 (function () {
@@ -66,6 +66,12 @@
     '.td .td-ok{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;margin:0 auto 14px;background:rgba(61,220,132,.16);color:#1F7A4D}.td .td-ok .td-ic{width:30px;height:30px}' +
     '.td .td-zurueck{margin-top:12px;min-height:44px;font:inherit;font-weight:600;background:none;border:0;cursor:pointer;opacity:.7}' +
     '@media (max-width:480px){.td .td-cal{margin:0 -12px;min-height:520px;height:calc(100dvh - 190px)}}' +
+    '@media (max-width:1279px) and (min-width:901px){.nav-termin .nt-lang{display:none}}' +
+    '@media (max-width:1099px) and (min-width:901px){.nav-termin svg{display:none}a.nav-termin.nav-termin{padding-left:14px;padding-right:14px}}' +
+    '@media (max-width:1023px) and (min-width:901px){a.nav-termin.nav-termin{font-size:14px;padding-left:12px;padding-right:12px}}' +
+    '@media (max-width:900px){.nav-termin svg{display:none}.nav-termin .nt-text{font-size:min(17px,4.4vw);white-space:nowrap}}' +
+    '.wx-cta-karte .wx-cta-knoepfe{flex-direction:column;align-items:stretch}.wx-cta-karte .wx-cta-knoepfe .btn{justify-content:center}' +
+    '@media (max-width:480px){.wx-cta-karte .btn[data-termin] svg,.kontakt-termin svg,.uk-termin svg{display:none}.wx-cta-karte .btn[data-termin],.kontakt-termin,.uk-termin{padding-left:10px;padding-right:10px;white-space:normal;text-align:center;line-height:1.25;font-size:14px}}' +
     '.uk-termin,.kontakt-termin{width:100%;justify-content:center;gap:10px;margin-top:12px}.uk-termin svg,.kontakt-termin svg{width:20px;height:20px}';
   (function () { var st = document.createElement('style'); st.textContent = CSS; (document.head || document.documentElement).appendChild(st); })();
 
@@ -79,7 +85,7 @@
     }).join('');
     dlg.innerHTML = '<form class="rd-form" novalidate>' +
       '<input type="text" name="bot" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">' +
-      '<div class="rd-kopf"><p class="rd-kick" id="td-titel">' + svg('kalender') + 'Potenzialanalyse · 30 Min. · kostenlos</p><button type="button" class="rd-zu" data-zu aria-label="Schließen">' + svg('zu') + '</button></div>' +
+      '<div class="rd-kopf"><p class="rd-kick" id="td-titel">' + svg('kalender') + 'Kostenloses Beratungsgespräch · 30 Min.</p><button type="button" class="rd-zu" data-zu aria-label="Schließen">' + svg('zu') + '</button></div>' +
       '<div class="rd-balken" aria-hidden="true"><i></i></div>' +
       '<section class="rd-schritt an" data-schritt="1"><h3>Worum soll es gehen?</h3><p class="td-satz">Du kannst mehrere wählen.</p><div class="rd-wahl">' + wahl + '</div>' +
       '<p class="td-fehler" data-fehler="1" hidden>Bitte wähl mindestens ein Thema aus.</p>' +

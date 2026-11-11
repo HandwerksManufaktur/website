@@ -13,7 +13,7 @@
  *   POST /termin-anfrage  {schritt:"gebucht", tok, event_uri}
  *        → Termin aus Calendly lesen (falls CALENDLY_API_KEY gesetzt), Notiz „Termin gebucht", Anruf-Aufgabe abhaken,
  *          Mail an info@.
- * Der Termin selbst steht durch Calendly sofort in Noahs Google-Kalender (Terminart „Potenzialanalyse",
+ * Der Termin selbst steht durch Calendly sofort in Noahs Google-Kalender (Terminart „Kostenloses Beratungsgespräch",
  * Slug potenzial-erstgespraech) — das macht Calendly, nicht dieser Worker.
  * `?trocken=1` prüft nur (kein Close, keine Mail).
  */
@@ -152,11 +152,11 @@ export async function handleTerminAnfrage(request, env, { fetchImpl = fetch, jet
     const termin = await calendlyTermin(env, fetchImpl, sauber(j.event_uri, 200));
     const wann = termin && termin.start ? berlinText(termin.start) : 'Zeit steht im Kalender (Calendly)';
     const fehler = [];
-    try { await close('/activity/note/', 'POST', { lead_id: t.lead_id, note: `✅ Termin über den Website-Dialog gebucht: Potenzialanalyse · ${wann}` }); } catch (e) { fehler.push('Notiz: ' + fehlerText(e)); }
+    try { await close('/activity/note/', 'POST', { lead_id: t.lead_id, note: `✅ Termin über den Website-Dialog gebucht: Kostenloses Beratungsgespräch · ${wann}` }); } catch (e) { fehler.push('Notiz: ' + fehlerText(e)); }
     if (t.task_id) { try { await close(`/task/${t.task_id}/`, 'PUT', { is_complete: true }); } catch (e) { fehler.push('Aufgabe abhaken: ' + fehlerText(e)); } }
     try {
       await resend(env, fetchImpl, { from: ABSENDER, to: [INFO], subject: `Termin gebucht über die Website · ${wann}`,
-        html: mailHtml('Termin über den Website-Dialog gebucht', [['Termin', wann], ['Terminart', 'Potenzialanalyse']], t.lead_id,
+        html: mailHtml('Termin über den Website-Dialog gebucht', [['Termin', wann], ['Terminart', 'Kostenloses Beratungsgespräch']], t.lead_id,
           fehler.length ? `<p style="background:#fff3d6;padding:10px 12px;border-radius:6px">${esc(fehler.join(' · '))}</p>` : '') });
     } catch (e) { console.error('[Termin] Mail gebucht', fehlerText(e)); }
     return antwort({ ok: true });

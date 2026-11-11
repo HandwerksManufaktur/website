@@ -32,7 +32,7 @@ function attrappe({ treffer = [] } = {}) {
     if (url.includes('api.close.com') && url.includes('/lead/?query=')) return ok({ data: treffer });
     if (url.endsWith('/lead/') && opt.method === 'POST') return ok({ id: 'lead_NEU123' });
     if (url.endsWith('/task/') && opt.method === 'POST') return ok({ id: 'task_AUF1' });
-    if (url.includes('api.calendly.com/scheduled_events/')) return ok({ resource: { start_time: '2026-11-13T09:00:00.000000Z', name: 'Potenzialanalyse' } });
+    if (url.includes('api.calendly.com/scheduled_events/')) return ok({ resource: { start_time: '2026-11-13T09:00:00.000000Z', name: 'Kostenloses Beratungsgespräch' } });
     return ok({});
   };
   return { f, log };
