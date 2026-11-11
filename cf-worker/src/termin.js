@@ -71,7 +71,8 @@ export function lesenKontakt(j) {
   if (!themen.length) return { fehler: 'Bitte wähl aus, worum es gehen soll.' };
   if (d.name.length < 2) return { fehler: 'Bitte deinen Namen eintragen.' };
   if (d.betrieb.length < 2) return { fehler: 'Bitte den Namen deines Betriebs eintragen.' };
-  if (d.telefon.replace(/\D/g, '').length < 6 || !/^[+()\d\s\/.-]+$/.test(d.telefon)) return { fehler: 'Bitte eine gültige Telefonnummer eintragen.' };
+  // Telefon ist seit 11.11.2026 optional: der Dialog fragt nur Name, Betrieb, E-Mail (Noah: so wenig Felder wie möglich)
+  if (d.telefon && (d.telefon.replace(/\D/g, '').length < 6 || !/^[+()\d\s\/.-]+$/.test(d.telefon))) return { fehler: 'Bitte eine gültige Telefonnummer eintragen.' };
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.email)) return { fehler: 'Bitte eine gültige E-Mail-Adresse eintragen.' };
   return { daten: d };
 }
@@ -80,7 +81,7 @@ export function notizKontakt(d, quelle, hinweis = '') {
   return [
     `📅 Termin-Anfrage über ${SEITEN[d.seite].name}${hinweis}`,
     `Worum es geht: ${themenText(d.themen)}`,
-    `Betrieb: ${d.betrieb}`, `Name: ${d.name}`, `Telefon: ${d.telefon}`, `E-Mail: ${d.email}`,
+    `Betrieb: ${d.betrieb}`, `Name: ${d.name}`, `Telefon: ${d.telefon || '— (nicht abgefragt, ggf. in Calendly)'}`, `E-Mail: ${d.email}`,
     ...(d.pfad ? [`Seite: ${d.pfad}`] : []),
     `Quelle: ${quelle}`,
     'Stand: Daten eingetragen, Kalender geöffnet — ob gebucht wurde, steht in der nächsten Notiz. Ohne Buchung: anrufen.',
@@ -101,7 +102,7 @@ async function kontaktInClose(env, fetchImpl, d, quelle, heute) {
   } else {
     const neu = await close('/lead/', 'POST', {
       name: d.betrieb, status_id: CLOSE_STATUS_HOT,
-      contacts: [{ name: d.name, emails: [{ email: d.email, type: 'office' }], phones: [{ phone: d.telefon, type: 'office' }] }],
+      contacts: [{ name: d.name, emails: [{ email: d.email, type: 'office' }], ...(d.telefon ? { phones: [{ phone: d.telefon, type: 'office' }] } : {}) }],
       [`custom.${CLOSE_QUELLE_FELD}`]: quelle,
     });
     leadId = neu.id; art = treffer.length > 1 ? 'neu-mehrdeutig' : 'neu';
@@ -110,7 +111,7 @@ async function kontaktInClose(env, fetchImpl, d, quelle, heute) {
   await schritt('Notiz', () => close('/activity/note/', 'POST', { lead_id: leadId, note: notizKontakt(d, quelle, hinweis) }));
   const task = await schritt('Aufgabe', () => close('/task/', 'POST', {
     lead_id: leadId, date: heute,
-    text: `📅 Termin-Anfrage Website (${themenText(d.themen)}): ${d.name} anrufen, falls kein Termin gebucht wurde`,
+    text: `📅 Termin-Anfrage Website (${themenText(d.themen)}): ${d.name} ${d.telefon ? 'anrufen' : 'per Mail nachfassen'}, falls kein Termin gebucht wurde`,
   }));
   return { lead_id: leadId, task_id: task && task.id, art, teilfehler };
 }
@@ -179,7 +180,7 @@ export async function handleTerminAnfrage(request, env, { fetchImpl = fetch, jet
     await resend(env, fetchImpl, { from: ABSENDER, to: [INFO], reply_to: d.email,
       subject: `Termin-Anfrage · ${d.betrieb} · ${themenText(d.themen)}`,
       html: mailHtml(`Termin-Anfrage über ${SEITEN[d.seite].name} — Kalender geöffnet, Buchung folgt ggf.`,
-        [['Worum es geht', themenText(d.themen)], ['Betrieb', d.betrieb], ['Name', d.name], ['Telefon', d.telefon], ['E-Mail', d.email], ['Seite', d.pfad || '—'], ['Quelle in Close', quelle]],
+        [['Worum es geht', themenText(d.themen)], ['Betrieb', d.betrieb], ['Name', d.name], ['Telefon', d.telefon || '—'], ['E-Mail', d.email], ['Seite', d.pfad || '—'], ['Quelle in Close', quelle]],
         c.lead_id, warn) });
   } catch (e) { mailOk = false; console.error('[Termin] Mail', fehlerText(e)); }
   // Der Kalender öffnet sich IMMER — auch wenn Close oder die Mail hängen, darf die Buchung nicht scheitern.

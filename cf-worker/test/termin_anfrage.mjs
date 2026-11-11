@@ -84,6 +84,10 @@ async function proben(m) {
   pruef(r4.status === 400 && !a.log.length, '4 ohne Thema abgewiesen');
   r4 = await m.handleTerminAnfrage(req({ ...KONTAKT, telefon: 'abc' }), env, { fetchImpl: a.f, jetzt });
   pruef(r4.status === 400, '4 Telefon geprüft');
+  a = attrappe();
+  const r4b = await (await m.handleTerminAnfrage(req({ ...KONTAKT, telefon: '' }), env, { fetchImpl: a.f, jetzt })).json();
+  const p4 = a.log.find(x => x.url.endsWith('/lead/') && x.methode === 'POST');
+  pruef(r4b.ok && p4 && !p4.body.contacts[0].phones, '4 ohne Telefon: Lead ohne Telefonnummer angelegt');
 
   // 5 bestehender Lead → kein neuer
   a = attrappe({ treffer: [{ id: 'lead_ALT', custom: { Quelle: 'Kaltakquise' } }] });
