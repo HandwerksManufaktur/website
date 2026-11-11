@@ -78,6 +78,8 @@ function laden() {
   if (ADS_ID) gtag('config', ADS_ID);
   const g = document.createElement('script'); g.async = true; g.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA4; document.head.appendChild(g);
   const h = document.createElement('script'); h.async = true; h.src = HOTJAR; document.head.appendChild(h);
+  // 11.11.2026: eigene Sitzungs-Aufnahmen fürs Cockpit (nur nach „Ja“, Eingaben geschwärzt, eigene Browser nie) — Hotjar hat keine Schnittstelle
+  const a = document.createElement('script'); a.async = true; a.src = 'https://seiten-zaehler.handwerksmanufaktur.workers.dev/aufnahme.js'; document.head.appendChild(a);
 }
 /* Ereignis nur senden, wenn eingewilligt und geladen — sonst geht nichts raus. */
 function ereignis(name, daten) {
@@ -200,6 +202,9 @@ if (echt && !test) {
     else if (document.referrer) { const h = new URL(document.referrer).hostname.replace(/^www\./, ''); if (h && h !== location.hostname) ref = h; }
   } catch (x) {}
   senden('v', { r: ref });
+  // 11.11.2026: zusätzliche cookielose Messung (Fehler, Ladezeit, Wut-Klicks, Formular-Abbruch, Kopieren) aus dem Zähler-Worker
+  window.hwmZaehler = { s: senden, id };
+  try { const pl = document.createElement('script'); pl.async = true; pl.src = 'https://seiten-zaehler.handwerksmanufaktur.workers.dev/plus.js'; document.head.appendChild(pl); } catch (x) {}
   // Kurzer Element-Pfad (bis 4 Ebenen, Schluss bei einer id) — damit die Klick-Karte Knöpfe auch bei anderer Fensterhöhe wiederfindet
   const elPfad = n => { const t = []; for (let i = 0; n && n.nodeType === 1 && i < 4; i++) { let k = n.tagName.toLowerCase(); if (n.id) { t.unshift(k + '#' + n.id); break; } const c = (n.getAttribute('class') || '').trim().split(/\s+/)[0]; t.unshift(c ? k + '.' + c : k); n = n.parentElement; } return t.join('>').slice(0, 160); };
   document.addEventListener('click', e => {
