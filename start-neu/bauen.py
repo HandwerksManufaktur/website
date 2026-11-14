@@ -56,7 +56,7 @@ class Seite:
         self.ersetze('<meta name="robots" content="index,follow">', '<meta name="robots" content="noindex, nofollow, noarchive">')
         self.h = re.sub(r'href="/(#[^"]*)?"', lambda m: f'href="/start-neu/{m.group(1) or ""}"', self.h)
         self.h = re.sub(r'href="/(%s)/' % "|".join(LEISTUNGEN), r'href="/start-neu/\1/', self.h)
-        self.h = self.h.replace('</head>', '<style>/* Entwurf: Tap-Ziele im Fuß mindestens 44 px breit */.fuss ul a,.fuss .unten a{min-width:44px}</style></head>', 1)
+        self.h = self.h.replace('</head>', '<style>/* Entwurf: Tap-Ziele im Fuß mindestens 44 px breit */.fuss ul a,.fuss .unten a{min-width:44px}.lg-buehne li span b,.pb-marke,.ab-leiste span,.lang-marke,.pb-karte b,.fsz-legende span,.kal-fuss span,.kal-fuss b,.rg-lese,.pb-adr span,.pb-menue span,.pb-ruf,.pb-ok{letter-spacing:.01em!important}.ab-zoom{transition-duration:.4s!important}</style></head>', 1)
 
     def schreibe(self, pfad):
         pfad.parent.mkdir(parents=True, exist_ok=True)
@@ -112,7 +112,7 @@ def karte(bild, alt, pos, titel, zeile, text, ziel, knopf):
 
 
 LEISTUNGS_SEK = ('<section class="sek leistungen-sek" id="leistungen"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Unsere Leistungen</span>'
-                 '<h2>Drei Dinge machen wir für Handwerksbetriebe.</h2><p class="lead">Womit du anfängst, klären wir im Erstgespräch.</p></div><div class="ergebnisse">'
+                 '<h2>Drei Baustellen übernehmen wir für dich.</h2><p class="lead">Womit du anfängst, klären wir im Erstgespräch.</p></div><div class="ergebnisse">'
                  + karte("zimmerei-schneider", "Zwei Zimmerer von Zimmerei Schneider in der Werkstatt", "50% 30%", "Website", "Bei Google vorne.",
                          "Eine Seite je Leistung, mit deinem Ort drin. So findet dich, wer sucht.", "websites", "Mehr zur Website")
                  + karte("senftleben-team-wagen", "Das Team von Senftleben Haustechnik vor den Firmenwagen", "50% 30%", "Neue Kunden", "Anfragen aus deinem Umkreis.",
