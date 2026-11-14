@@ -15,7 +15,13 @@ from pathlib import Path
 HIER = Path(__file__).resolve().parent
 WURZEL = HIER.parent
 LEISTUNGEN = ("websites", "suchmaschinenoptimierung", "foto-video", "neukundengewinnung", "mitarbeitergewinnung")
-LIVE_START = (WURZEL / "index.html").read_text()
+import sys
+# Quelle = eingefrorener Stand der Seiten vor dem Umbau (start-neu/quelle/). Seit dem Livegang (14.11.2026) schreibt
+# `bauen.py --live` die neuen Fassungen an die echten Adressen; ohne Flag entsteht wie bisher der Entwurf unter /start-neu/.
+LIVE = "--live" in sys.argv
+QUELLE = HIER / "quelle"
+ZIEL = WURZEL if LIVE else HIER
+LIVE_START = (QUELLE / "start.html").read_text()
 
 
 class Seite:
@@ -53,9 +59,10 @@ class Seite:
 
     def entwurf(self):
         """noindex + alle Links auf Start und die fünf Leistungen in den Entwurf."""
-        self.ersetze('<meta name="robots" content="index,follow">', '<meta name="robots" content="noindex, nofollow, noarchive">')
-        self.h = re.sub(r'href="/(#[^"]*)?"', lambda m: f'href="/start-neu/{m.group(1) or ""}"', self.h)
-        self.h = re.sub(r'href="/(%s)/' % "|".join(LEISTUNGEN), r'href="/start-neu/\1/', self.h)
+        if not LIVE:
+            self.ersetze('<meta name="robots" content="index,follow">', '<meta name="robots" content="noindex, nofollow, noarchive">')
+            self.h = re.sub(r'href="/(#[^"]*)?"', lambda m: f'href="/start-neu/{m.group(1) or ""}"', self.h)
+            self.h = re.sub(r'href="/(%s)/' % "|".join(LEISTUNGEN), r'href="/start-neu/\1/', self.h)
         self.h = self.h.replace('</head>', '<style>/* Entwurf: Tap-Ziele im Fuß mindestens 44 px breit */.fuss ul a,.fuss .unten a{min-width:44px}.lg-buehne li span b,.pb-marke,.ab-leiste span,.lang-marke,.pb-karte b,.fsz-legende span,.kal-fuss span,.kal-fuss b,.rg-lese,.pb-adr span,.pb-menue span,.pb-ruf,.pb-ok{letter-spacing:.01em!important}.ab-zoom{transition-duration:.4s!important}</style></head>', 1)
 
     def schreibe(self, pfad):
@@ -111,7 +118,7 @@ def karte(bild, alt, pos, titel, zeile, text, ziel, knopf):
             f'<a class="textlink" href="/{ziel}/">{knopf} {PFEIL}</a></div></article>')
 
 
-LEISTUNGS_SEK = ('<section class="sek leistungen-sek" id="leistungen"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Unsere Leistungen</span>'
+LEISTUNGS_SEK = ('<section class="sek leistungen-sek" id="system"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Unsere Leistungen</span>'
                  '<h2>Drei Baustellen übernehmen wir für dich.</h2><p class="lead">Womit du anfängst, klären wir im Erstgespräch.</p></div><div class="ergebnisse">'
                  + karte("zimmerei-schneider", "Zwei Zimmerer von Zimmerei Schneider in der Werkstatt", "50% 30%", "Website", "Bei Google vorne.",
                          "Eine Seite je Leistung, mit deinem Ort drin. So findet dich, wer sucht.", "websites", "Mehr zur Website")
@@ -147,11 +154,11 @@ s.ersetze('<span class="kicker">Facebook &amp; Instagram</span><h2>Echte Betrieb
           '<span class="kicker">Die Ergebnisse · Kunden und Mitarbeiter</span><h2>So viel kam bei unseren Kunden an.</h2>')
 ergebnisse_aktuell(s)
 s.entwurf()
-s.schreibe(HIER / "index.html")
+s.schreibe(ZIEL / "index.html")
 
 
 def unterseite(slug):
-    return Seite((WURZEL / slug / "index.html").read_text())
+    return Seite((QUELLE / f"{slug}.html").read_text())
 
 
 def hero_knopf(seite, alt_href, neu_href, text="Ergebnisse ansehen"):
@@ -225,7 +232,7 @@ def fertig(seite, slug):
     ergebnisse_aktuell(seite)
     seite.entwurf()
     assert 'Werbung' not in "".join(re.findall(r'<h[123][^>]*>.*?</h[123]>', seite.h, re.S)), slug
-    seite.schreibe(HIER / slug / "index.html")
+    seite.schreibe(ZIEL / slug / "index.html")
 
 
 # ── 2 · Websites
