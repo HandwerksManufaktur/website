@@ -146,12 +146,12 @@ def ergebnisse_aktuell(seite):
     h = h.replace('Die Werbung läuft seit dem 29. Oktober im Umkreis von Stadtbergen.', 'Die Anzeigen laufen seit dem 29. Oktober im Umkreis von Stadtbergen.')
     h = h.replace('die Werbung pausiert deshalb bis Februar.', 'die Anzeigen pausieren deshalb bis Februar.')
     h = h.replace('<p class="lead">Werbung im Umkreis des Betriebs. Gezählt ist', '<p class="lead">Anzeigen im Umkreis des Betriebs. Gezählt ist')
-    h = h.replace('<h2>Du kümmerst dich um nichts davon.</h2>', '<h2>Unsere Kunden erzählen es besser als wir.</h2>')
+    h = h.replace('<h2>Du kümmerst dich um nichts davon.</h2>', '<h2>Wir lassen unsere Kunden sprechen.</h2>')
     seite.h = h
 
 
 s.ersetze('<span class="kicker">Facebook &amp; Instagram</span><h2>Echte Betriebe, echte Zahlen.</h2>',
-          '<span class="kicker">Die Ergebnisse · Kunden und Mitarbeiter</span><h2>Wir lassen unsere Kunden sprechen.</h2>')
+          '<span class="kicker">Die Ergebnisse · Kunden und Mitarbeiter</span><h2>So viel kam bei unseren Kunden an.</h2>')
 ergebnisse_aktuell(s)
 s.entwurf()
 s.schreibe(ZIEL / "index.html")
