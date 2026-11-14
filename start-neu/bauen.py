@@ -56,6 +56,7 @@ class Seite:
         self.ersetze('<meta name="robots" content="index,follow">', '<meta name="robots" content="noindex, nofollow, noarchive">')
         self.h = re.sub(r'href="/(#[^"]*)?"', lambda m: f'href="/start-neu/{m.group(1) or ""}"', self.h)
         self.h = re.sub(r'href="/(%s)/' % "|".join(LEISTUNGEN), r'href="/start-neu/\1/', self.h)
+        self.h = self.h.replace('</head>', '<style>/* Entwurf: Tap-Ziele im Fuß mindestens 44 px breit */.fuss ul a,.fuss .unten a{min-width:44px}</style></head>', 1)
 
     def schreibe(self, pfad):
         pfad.parent.mkdir(parents=True, exist_ok=True)
@@ -93,11 +94,57 @@ s = Seite(LIVE_START)
 s.ersetze('<h1><span class="w">Mehr Aufträge.</span> <span class="w">Mehr Bewerber.</span> <span class="w">Aus deinem Umkreis.</span></h1>',
           '<h1><span class="w">Der Partner für</span> <span class="w">Handwerksbetriebe.</span></h1>')
 s.ersetze('<p class="lead">Website, Fotos und Social-Media-Werbung für Handwerksbetriebe.</p>',
-          '<p class="lead">Über 130 Betriebe arbeiten mit uns. Wir bauen deine Website, machen Fotos und Videos bei dir im Betrieb und schalten Anzeigen für Kunden und Mitarbeiter.</p>')
-# Aufbau: Leistungen direkt nach den Logos, Problem-Szenen raus (stehen jetzt auf den Unterseiten)
-leistungen = s.heraus('<section class="sek system-sek" id="system"')
-s.vor('<section class="sek grund lagen-sek probleme pb-sek">', leistungen)
+          '<p class="lead">Über 130 Betriebe arbeiten mit uns. Wir bauen deine Website und bringen dir Kunden und Mitarbeiter aus deinem Umkreis.</p>')
+# Aufbau wie shk…/start-neu/: Firma → drei Leistungen (einfache Karten) → Ergebnisse → Stimmen → Team → Kontakt.
+# Die drei Säulen in Logo-Form stehen schon im Hero und kommen hier nicht noch einmal (Noah, 14.11.2026);
+# Problem-Szenen, Google-Mechanik und Foto-Band stehen auf den Unterseiten.
+s.heraus('<section class="sek system-sek" id="system"')
 s.heraus('<section class="sek grund lagen-sek probleme pb-sek">')
+s.heraus('<section class="sek google grund">')
+s.heraus('<section class="sek band auf-dunkel" id="videos">')
+PFEIL = '<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
+
+
+def karte(bild, alt, pos, titel, zeile, text, ziel, knopf):
+    return (f'<article class="erg reveal"><div class="erg-film"><img src="/start-neu/bilder/{bild}.webp" alt="{alt}" loading="lazy" decoding="async" style="object-position:{pos}"></div>'
+            f'<div class="erg-in"><div class="erg-zeile"><em>{titel}</em><span>{zeile}</span></div><p>{text}</p>'
+            f'<a class="textlink" href="/{ziel}/">{knopf} {PFEIL}</a></div></article>')
+
+
+LEISTUNGS_SEK = ('<section class="sek leistungen-sek" id="leistungen"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Unsere Leistungen</span>'
+                 '<h2>Drei Dinge machen wir für Handwerksbetriebe.</h2><p class="lead">Womit du anfängst, klären wir im Erstgespräch.</p></div><div class="ergebnisse">'
+                 + karte("zimmerei-schneider", "Zwei Zimmerer von Zimmerei Schneider in der Werkstatt", "50% 30%", "Website", "Bei Google vorne.",
+                         "Eine Seite je Leistung, mit deinem Ort drin. So findet dich, wer sucht.", "websites", "Mehr zur Website")
+                 + karte("senftleben-team-wagen", "Das Team von Senftleben Haustechnik vor den Firmenwagen", "50% 30%", "Neue Kunden", "Anfragen aus deinem Umkreis.",
+                         "Anzeigen im Umkreis. Die Anfragen kommen mit Name und Nummer zu dir, nicht aufs Portal.", "neukundengewinnung", "Mehr zu neuen Kunden")
+                 + karte("erwin-schmidt-team", "Das Team von Erwin Schmidt &amp; Sohn", "50% 30%", "Neue Mitarbeiter", "Bewerbungen aus deiner Region.",
+                         "Anzeigen bei Fachkräften im Umkreis. Die Bewerbungen kommen mit Name und Nummer zu dir.", "mitarbeitergewinnung", "Mehr zu neuen Mitarbeitern")
+                 + f'</div><p class="leistungen-zusatz reveal">Die Fotos und Videos dafür drehen wir bei dir im Betrieb. <a class="textlink" href="/foto-video/">Foto &amp; Video {PFEIL}</a></p></div></section>'
+                 '<style>/* Entwurf (start-neu/bauen.py) */.leistungen-zusatz{margin-top:28px;font-size:17px;line-height:1.5;color:var(--tinte-2)}'
+                 '.leistungen-sek .erg-zeile em{font-size:clamp(24px,2.2vw,30px)}'
+                 '@media (min-width:901px){#kontakt .uk-bild .collage.mit-film{grid-template-columns:repeat(4,1fr);align-content:center}}'
+                 '.uk-bild .collage img{background:var(--papier-2,#efe9df)}.uk-bild .collage img.raus{opacity:.35;transform:none}</style>')
+s.vor('<section class="sek laufband" id="gefunden">', LEISTUNGS_SEK)
+s.ersetze('<span class="kicker">Deine Website</span>', '<span class="kicker">Die Ergebnisse · Websites</span>')
+
+
+def ergebnisse_aktuell(seite):
+    """Kundenfotos + Stimpfle-Zahlen wie auf der SHK-Seite abgenommen (Noah, 14.11.2026 nachts): Sussmann Foto 6, Stimpfle Foto 3."""
+    h = seite.h
+    h = re.sub(r"<img data-k='[^']*' src=\"/static/assets/img/_800/fall/sussmann-team\.webp\" alt=\"\"",
+               '<img src="/start-neu/bilder/sussmann-wagen-duo.webp" alt="Patrick und Mirjana von Sussmann vor dem Firmenwagen" style="object-position:50% 30%"', h)
+    h = h.replace('<img src="/static/assets/img/_800/fall/stimpfle-team.webp" alt="Drei Monteure von Stimpfle Sanitär und Heizung vor dem Firmenwagen" loading="lazy" decoding="async" style="object-position:50% 22%">',
+                  '<img src="/start-neu/bilder/stimpfle-werkstatt.webp" alt="Das Team von Stimpfle Sanitär und Heizung in der Werkstatt" loading="lazy" decoding="async" style="object-position:50% 30%">')
+    h = h.replace('<em>3 Bad-Anfragen</em><span>in den ersten 3 Tagen</span>', '<em>7 Bad-Anfragen</em><span>3 Vor-Ort-Termine in den ersten 3 Tagen</span>')
+    h = h.replace('Die Werbung läuft seit dem 29. Oktober im Umkreis von Stadtbergen.', 'Die Anzeigen laufen seit dem 29. Oktober im Umkreis von Stadtbergen.')
+    h = h.replace('die Werbung pausiert deshalb bis Februar.', 'die Anzeigen pausieren deshalb bis Februar.')
+    h = h.replace('<p class="lead">Werbung im Umkreis des Betriebs. Gezählt ist', '<p class="lead">Anzeigen im Umkreis des Betriebs. Gezählt ist')
+    seite.h = h
+
+
+s.ersetze('<span class="kicker">Facebook &amp; Instagram</span><h2>Echte Betriebe, echte Zahlen.</h2>',
+          '<span class="kicker">Die Ergebnisse · Kunden und Mitarbeiter</span><h2>So viel kam bei unseren Kunden an.</h2>')
+ergebnisse_aktuell(s)
 s.entwurf()
 s.schreibe(HIER / "index.html")
 
@@ -120,6 +167,7 @@ ablauf = w.heraus('<section class="sek"><div class="wrap"><div class="kopfzeile 
 w.nach('<section class="sek aufbau-sek">', ablauf.replace('<section class="sek">', '<section class="sek grund">', 1))
 w.vor('<section class="sek faq">', STIMMEN)
 w.ersetze('<span class="kicker">Bevor du weiterliest</span>', '<span class="kicker">Wenn deine Seite mehr bringen soll</span>')
+ergebnisse_aktuell(w)
 w.entwurf()
 w.schreibe(HIER / "websites" / "index.html")
 
@@ -127,6 +175,7 @@ w.schreibe(HIER / "websites" / "index.html")
 g = unterseite("suchmaschinenoptimierung")
 hero_knopf(g, "/websites/#arbeiten", "#ergebnisse")
 g.ersetze('<section class="sek grund rangliste-sek">', '<section class="sek grund rangliste-sek" id="ergebnisse">')
+ergebnisse_aktuell(g)
 g.entwurf()
 g.schreibe(HIER / "suchmaschinenoptimierung" / "index.html")
 
@@ -136,6 +185,7 @@ hero_knopf(f, "/websites/#arbeiten", "#ergebnisse", "Arbeiten ansehen")
 f.ersetze('<section class="sek band auf-dunkel">', '<section class="sek band auf-dunkel" id="ergebnisse">')
 drehtag = f.heraus('<section class="sek"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">So läuft der Drehtag</span>')
 f.nach('<section class="hero-klein">', szene(1, "Der Kunde vergleicht", "Stockfotos wie überall. Der Anruf geht zum Nächsten.") + drehtag)
+ergebnisse_aktuell(f)
 f.entwurf()
 f.schreibe(HIER / "foto-video" / "index.html")
 
@@ -144,6 +194,7 @@ n = unterseite("neukundengewinnung")
 hero_knopf(n, "/websites/#arbeiten", "#ergebnisse")
 n.ersetze('<section class="sek grund"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Fallstudie',
           '<section class="sek grund" id="ergebnisse"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Fallstudie')
+ergebnisse_aktuell(n)
 n.entwurf()
 n.schreibe(HIER / "neukundengewinnung" / "index.html")
 
@@ -153,5 +204,6 @@ hero_knopf(m, "/websites/#arbeiten", "#ergebnisse")
 m.ersetze('<section class="sek grund"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Fallstudie',
           '<section class="sek grund" id="ergebnisse"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Fallstudie')
 m.nach('<section class="sek leiter-sek">', szene(3, "Und wenn doch einer nachschaut", "Kein Team, keine Stelle, kein Weg zur Bewerbung."))
+ergebnisse_aktuell(m)
 m.entwurf()
 m.schreibe(HIER / "mitarbeitergewinnung" / "index.html")
