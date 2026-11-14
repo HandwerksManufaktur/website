@@ -99,7 +99,7 @@ def szene(nr, kicker, titel, grund=True):
 # ── 1 · Startseite ────────────────────────────────────────────────────────────────────────────────
 s = Seite(LIVE_START)
 s.ersetze('<h1><span class="w">Mehr Aufträge.</span> <span class="w">Mehr Bewerber.</span> <span class="w">Aus deinem Umkreis.</span></h1>',
-          '<h1><span class="w">Der Partner für</span> <span class="w">Handwerksbetriebe.</span></h1>')
+          '<h1><span class="w">Dein Handwerk.</span> <span class="w">Unsere Baustelle.</span></h1>')  # Noah, 15.11.2026: „genau passend, ist perfekt“
 s.ersetze('<p class="lead">Website, Fotos und Social-Media-Werbung für Handwerksbetriebe.</p>',
           '<p class="lead">Über 130 Betriebe arbeiten mit uns. Wir bauen deine Website und bringen dir Kunden und Mitarbeiter aus deinem Umkreis.</p>')
 # Aufbau wie shk…/start-neu/: Firma → drei Leistungen (einfache Karten) → Ergebnisse → Stimmen → Team → Kontakt.
