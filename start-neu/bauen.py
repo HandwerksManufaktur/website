@@ -228,8 +228,32 @@ def einfach(seite, lead, behalten, fragen_lead=None):
     seite.h = seite.h[:a] + faq + seite.h[e:]
 
 
+# Überschriften im Ton von oevermann & oevermann, von Noah am 15.11.2026 für alle Unterseiten freigegeben
+# (Startseite folgt, sobald er dort gewählt hat). Je Seite: H1, „Was wir übernehmen“, Ergebnisse.
+FASSUNG = {
+    "websites": [('<h1>Die Website, die abends um zehn den Auftrag holt.</h1>', '<h1>Wir bauen. Du ziehst ein.</h1>'),
+                 ('<h2>Die ganze Seite übernehmen wir.</h2>', '<h2>Vom Rohbau bis zur Schlüsselübergabe.</h2>'),
+                 ('<h2>So sehen unsere Seiten aus.</h2>', '<h2>Bezugsfertig.</h2>')],
+    "suchmaschinenoptimierung": [('<h1>Dein nächster Kunde googelt gerade.</h1>', '<h1>Ganz oben ist dein Platz.</h1>'),
+                 ('<h2>Den Weg nach vorn übernehmen wir.</h2>', '<h2>Vom ersten Suchwort bis Seite 1.</h2>'),
+                 ('<h2>77 Kundenseiten stehen auf Seite 1.</h2>', '<h2>77-mal Richtfest.</h2><p class="lead">77 Kundenseiten stehen bei Google auf Seite 1.</p>')],
+    "foto-video": [('<h1>Fotos, auf denen man deinen Betrieb wiedererkennt.</h1>', '<h1>Wir setzen dein Handwerk ins Licht.</h1>'),
+                 ('<h2>Den Drehtag übernehmen wir.</h2>', '<h2>Vom ersten Bild bis zum fertigen Film.</h2>'),
+                 ('<h2>Diese Filme sind am Drehtag entstanden.</h2>', '<h2>Abgedreht.</h2>')],
+    "neukundengewinnung": [('<h1>Die Aufträge, die du willst. Nur für deinen Betrieb.</h1>', '<h1>Wir füllen dein Auftragsbuch.</h1>'),
+                 ('<h2>Die Anzeigen übernehmen wir.</h2>', '<h2>Von der Anzeige bis zum Aufmaß.</h2>'),
+                 ('<h2>„Dass so schnell so viele Anfragen kommen, hätte ich nicht gedacht.“</h2>', '<h2>Schwarz auf weiß.</h2><p class="lead">„Dass so schnell so viele Anfragen kommen, hätte ich nicht gedacht.“</p>')],
+    "mitarbeitergewinnung": [('<h1>Leute, die bei dir anfangen wollen. Aus deinem Umkreis.</h1>', '<h1>Verstärkung ist unterwegs.</h1>'),
+                 ('<h2>Die Suche übernehmen wir.</h2>', '<h2>Von der Anzeige bis zum Handschlag.</h2>'),
+                 ('<h2>„Wir haben nur nicht gedacht, dass es so viele sind.“</h2>', '<h2>25 Bewerbungen. 4 Wochen. 1 Neuer.</h2><p class="lead">„Wir haben nur nicht gedacht, dass es so viele sind.“</p>')],
+}
+
+
 def fertig(seite, slug):
     ergebnisse_aktuell(seite)
+    for alt, neu in FASSUNG.get(slug, []):
+        assert seite.h.count(alt) == 1, (slug, alt, seite.h.count(alt))
+        seite.h = seite.h.replace(alt, neu)
     seite.entwurf()
     assert 'Werbung' not in "".join(re.findall(r'<h[123][^>]*>.*?</h[123]>', seite.h, re.S)), slug
     seite.schreibe(ZIEL / slug / "index.html")
@@ -237,7 +261,7 @@ def fertig(seite, slug):
 
 # ── 2 · Websites
 w = unterseite("websites")
-einfach(w, 'Wir bauen sie mit Fotos aus deinem Betrieb und einer eigenen Seite je Leistung, damit der Kunde bei dir anruft.', ('Unsere Seiten',))
+einfach(w, 'Wir bauen deine Website mit Fotos aus deinem Betrieb und einer eigenen Seite je Leistung, damit der Kunde bei dir anruft.', ('Unsere Seiten',))
 w.ersetze('<span class="kicker">Unsere Seiten</span><h2>Jedes Gewerk bekommt seine eigene Seite.</h2>', '<span class="kicker">Die Ergebnisse</span><h2>So sehen unsere Seiten aus.</h2>')
 w.nach('<section class="hero-klein">',
        problem('Gute Arbeit, aber keiner findet dich.',
@@ -252,7 +276,7 @@ fertig(w, "websites")
 
 # ── 3 · Suchmaschinenoptimierung
 g = unterseite("suchmaschinenoptimierung")
-einfach(g, 'Er tippt dein Gewerk und deinen Ort ein und ruft den an, der oben steht.', ('Nachgemessen, nicht behauptet',),
+einfach(g, 'Dein nächster Kunde tippt dein Gewerk und deinen Ort ein und ruft den an, der oben steht.', ('Nachgemessen, nicht behauptet',),
         fragen_lead='Wie lange es dauert und ob es auch in der Großstadt geht.')
 hero_knopf(g, "/websites/#arbeiten", "#ergebnisse")
 g.ersetze('<section class="sek grund rangliste-sek"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Nachgemessen, nicht behauptet</span><h2>Wo unsere Kunden bei Google wirklich stehen.</h2>',
