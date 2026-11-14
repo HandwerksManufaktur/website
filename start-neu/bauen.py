@@ -159,52 +159,161 @@ def hero_knopf(seite, alt_href, neu_href, text="Ergebnisse ansehen"):
                   f'<a class="btn btn-umriss" href="{neu_href}">{text}</a>')
 
 
-# ── 2 · Websites: Problem (Google, Seite 3) → Aufbau → Ablauf → Seiten → Gewerke → Stimmen → Fragen → Kontakt
+# ── 2–6 · Unterseiten: so einfach wie die Startseite (Noah, 14.11.2026 abends: „alle unterseiten müssen simpler … die
+# simpelheit muss komplett übernommen werden, copy auch“). Je Seite höchstens sieben Sektionen mit einem Faden:
+# Hero → Das Problem (zwei Karten Heute / Mit uns) → Was wir übernehmen (drei Karten) → Die Ergebnisse → Kundenstimmen
+# → Häufige Fragen → Kontakt. Reiter-Szenen, Bento, Abläufe, Ratgeber-Raster, Gewerke-Listen stehen im Entwurf nicht mehr.
+UNTER_STIL = ('<style>/* Entwurf Unterseiten (start-neu/bauen.py) */'
+              '.pv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap);margin-top:clamp(26px,3vw,40px)}'
+              '.pv-k{background:var(--papier);border-radius:var(--radius);box-shadow:0 0 0 1px rgba(22,19,14,.06);padding:clamp(24px,3vw,40px);transition:transform var(--schnell),box-shadow var(--schnell)}'
+              '.pv-k:hover{transform:translateY(-4px);box-shadow:0 30px 60px -30px rgba(22,19,14,.4),0 0 0 1px rgba(22,19,14,.08)}'
+              '.pv-k.mit{background:var(--tinte);color:var(--papier)}'
+              '.pv-m{display:block;font-size:14px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--tinte-2)}'
+              '.pv-k.mit .pv-m{color:var(--bronze)}'
+              '.pv-k ul{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:16px}'
+              '.pv-k li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:14px;align-items:start;font-size:18px;line-height:1.45}'
+              '.pv-k li::before{content:"✕";display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--papier-2);color:var(--tinte-2);font-size:14px;font-weight:700;letter-spacing:.01em}'
+              '.pv-k.mit li::before{content:"✓";background:var(--bronze);color:var(--tinte)}'
+              '.uebernehmen-sek .erg-zeile em{font-size:clamp(24px,2.2vw,30px)}'
+              '@media (max-width:900px){.pv{grid-template-columns:1fr}.pv-k li{font-size:17px}}</style>')
+
+
+def problem(h2, heute, mit):
+    li = lambda zeilen: "".join(f"<li><span>{z}</span></li>" for z in zeilen)
+    return ('<section class="sek grund problem-sek"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Das Problem</span>'
+            f'<h2>{h2}</h2></div><div class="pv reveal"><div class="pv-k"><b class="pv-m">Heute</b><ul>{li(heute)}</ul></div>'
+            f'<div class="pv-k mit"><b class="pv-m">Mit uns</b><ul>{li(mit)}</ul></div></div></div></section>')
+
+
+def uebernehmen(h2, karten):
+    k = "".join(f'<article class="erg reveal"><div class="erg-film"><img src="/start-neu/bilder/{b}.webp" alt="{alt}" loading="lazy" decoding="async" style="object-position:{pos}"></div>'
+                f'<div class="erg-in"><div class="erg-zeile"><em>{titel}</em><span>{zeile}</span></div><p>{text}</p></div></article>'
+                for b, alt, pos, titel, zeile, text in karten)
+    return ('<section class="sek uebernehmen-sek"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Was wir übernehmen</span>'
+            f'<h2>{h2}</h2></div><div class="ergebnisse">{k}</div></div></section>' + UNTER_STIL)
+
+
+def einfach(seite, lead, behalten, fragen_lead=None):
+    """Hero-Einleitung auf einen Satz, alle Sektionen außer Hero, `behalten` (Kicker der Ergebnis-Sektionen), Fragen, Kontakt raus."""
+    a, e = seite.bereich('<section class="hero-klein">')
+    hero = seite.h[a:e]
+    assert hero.count('<p class="lead">') == 1
+    hero = re.sub(r'<p class="lead">.*?</p>', f'<p class="lead">{lead}</p>', hero, count=1, flags=re.S)
+    seite.h = seite.h[:a] + hero + seite.h[e:]
+    for m in reversed(list(re.finditer(r'<section class="sek[^"]*"[^>]*>', seite.h))):
+        kopf = seite.h[m.start():m.start() + 1500]
+        k = re.search(r'<span class="kicker">([^<]*)</span>', kopf)
+        if 'umkreis-kontakt' in m.group() or 'sek faq' in m.group() or (k and k.group(1) in behalten):
+            continue
+        tiefe = 0
+        for n in re.compile(r"<section\b|</section>").finditer(seite.h, m.start()):
+            tiefe += 1 if n.group() == "<section" else -1
+            if tiefe == 0:
+                seite.h = seite.h[:m.start()] + seite.h[n.end():]
+                break
+    a, e = seite.bereich('<section class="sek faq">')
+    faq = seite.h[a:e]
+    faq = re.sub(r'<span class="kicker">[^<]*</span><h2>Häufige Fragen\.</h2>', '<span class="kicker">Häufige Fragen</span><h2>Das fragen fast alle vorher.</h2>', faq, count=1)
+    assert 'Das fragen fast alle vorher.' in faq
+    if fragen_lead:
+        faq = re.sub(r'(<h2>Das fragen fast alle vorher\.</h2>)<p class="lead">.*?</p>', rf'\1<p class="lead">{fragen_lead}</p>', faq, count=1, flags=re.S)
+    assert len(re.findall(r'<details|class="frage"|<summary', faq)) >= 1
+    seite.h = seite.h[:a] + faq + seite.h[e:]
+
+
+def fertig(seite, slug):
+    ergebnisse_aktuell(seite)
+    seite.entwurf()
+    assert 'Werbung' not in "".join(re.findall(r'<h[123][^>]*>.*?</h[123]>', seite.h, re.S)), slug
+    seite.schreibe(HIER / slug / "index.html")
+
+
+# ── 2 · Websites
 w = unterseite("websites")
-w.nach('<section class="hero-klein">', szene(0, "Kennst du das?", "Gute Arbeit, aber keiner findet dich."))
-w.ersetze('<section class="sek grund aufbau-sek">', '<section class="sek aufbau-sek">')
-w.ersetze('<span class="kicker">Aufbau einer Seite</span>', '<span class="kicker">Was die Seite dagegen tut</span>')
-ablauf = w.heraus('<section class="sek"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">So läuft es ab</span>')
-w.nach('<section class="sek aufbau-sek">', ablauf.replace('<section class="sek">', '<section class="sek grund">', 1))
+einfach(w, 'Wir bauen sie mit Fotos aus deinem Betrieb und einer eigenen Seite je Leistung, damit der Kunde bei dir anruft.', ('Unsere Seiten',))
+w.ersetze('<span class="kicker">Unsere Seiten</span><h2>Jedes Gewerk bekommt seine eigene Seite.</h2>', '<span class="kicker">Die Ergebnisse</span><h2>So sehen unsere Seiten aus.</h2>')
+w.nach('<section class="hero-klein">',
+       problem('Gute Arbeit, aber keiner findet dich.',
+               ['Wer abends dein Gewerk und deinen Ort googelt, findet den Wettbewerber auf Seite 1.', 'Dich findet er auf Seite 3.', 'Die alte Seite kostet dich Anfragen.'],
+               ['Jede Leistung hat ihre eigene Seite, mit deinem Ort drin.', 'Auf der Seite stehen Fotos aus deinem Betrieb statt Katalogbilder.', 'Die Anfrage steht im ersten Bild, bevor jemand scrollt.'])
+       + uebernehmen('Die ganze Seite übernehmen wir.', [
+           ('u-ziel', 'Zwei Männer am Tisch mit Laptop im Küchenhaus Hirschvogel', '50% 30%', 'Das Ziel', 'Zuerst klären wir die Richtung.', 'Welche Aufträge die Seite bringen soll und wo dich die alte Seite heute Anfragen kostet.'),
+           ('u-aufnahmen', 'Zwei Männer in der Halle von CS Metalldesign', '50% 30%', 'Die Aufnahmen', 'Kamera und Drohne bei dir vor Ort.', 'Deine Leute und deine Baustellen statt Katalogbilder.'),
+           ('u-freigabe', 'Handschlag in der Werkstatt der Schreinerei Kreitner', '50% 30%', 'Die Seite', 'Wir bauen, du schaust drüber.', 'Die fertige Seite kommt als Link aufs Handy und du gibst sie frei.')]))
 w.vor('<section class="sek faq">', STIMMEN)
-w.ersetze('<span class="kicker">Bevor du weiterliest</span>', '<span class="kicker">Wenn deine Seite mehr bringen soll</span>')
-ergebnisse_aktuell(w)
-w.entwurf()
-w.schreibe(HIER / "websites" / "index.html")
+fertig(w, "websites")
 
-# ── 3 · Suchmaschinenoptimierung: Aufbau trägt den Faden schon (Problem → Was wir machen → Plätze → Fragen)
+# ── 3 · Suchmaschinenoptimierung
 g = unterseite("suchmaschinenoptimierung")
+einfach(g, 'Er tippt dein Gewerk und deinen Ort ein und ruft den an, der oben steht.', ('Nachgemessen, nicht behauptet',),
+        fragen_lead='Wie lange es dauert und ob es auch in der Großstadt geht.')
 hero_knopf(g, "/websites/#arbeiten", "#ergebnisse")
-g.ersetze('<section class="sek grund rangliste-sek">', '<section class="sek grund rangliste-sek" id="ergebnisse">')
-ergebnisse_aktuell(g)
-g.entwurf()
-g.schreibe(HIER / "suchmaschinenoptimierung" / "index.html")
+g.ersetze('<section class="sek grund rangliste-sek"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Nachgemessen, nicht behauptet</span><h2>Wo unsere Kunden bei Google wirklich stehen.</h2>',
+          '<section class="sek grund rangliste-sek" id="ergebnisse"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Die Ergebnisse</span><h2>77 Kundenseiten stehen auf Seite 1.</h2>')
+g.nach('<section class="hero-klein">',
+       problem('Der Wettbewerber steht vor dir.',
+               ['Heizung, Bad und Wartung stehen auf einer Seite. Gefunden wird davon nichts.', 'Das Google-Profil ist nicht gepflegt.', 'Die Seite lädt am Handy vier Sekunden und rutscht ab.'],
+               ['Jede Leistung hat ihre eigene Seite mit Ort.', 'Dein Google-Profil ist aufgebaut und gepflegt.', 'Die Seite lädt schnell, auch am Handy.'])
+       + uebernehmen('Den Weg nach vorn übernehmen wir.', [
+           ('u-leistung-ort', 'Haus mit Photovoltaik-Anlage von Wohner Elektrotechnik aus der Luft', '50% 50%', 'Die Seiten', 'Eine je Leistung, mit Ort.', '„Badsanierung Landsberg“ bekommt eine eigene Seite.'),
+           ('u-profil', 'Dach mit Blecheindeckung von Dachbau Kraus', '50% 50%', 'Das Google-Profil', 'Aufgebaut und gepflegt.', 'Mit Leistungen und Fotos, damit dich die Karte zeigt.'),
+           ('u-bewertung', 'Handschlag auf dem Hof von Kirchner in Thaining', '50% 30%', 'Die Bewertungen', 'Sie kommen von selbst.', 'Ein Link nach jedem Auftrag, der Rest läuft.')]))
+g.vor('<section class="sek faq">', STIMMEN)
+fertig(g, "suchmaschinenoptimierung")
 
-# ── 4 · Foto & Video: Problem (Vergleich, Stockfoto) → Drehtag → Filme → Fotos → Betriebe → Fragen → Kontakt
+# ── 4 · Foto & Video (zwei Ergebnis-Sektionen wie die Startseite: Filme + Fotos; dafür ohne Kundenstimmen)
 f = unterseite("foto-video")
+einfach(f, 'Wir kommen einen Tag mit Kamera und Drohne zu dir, danach hast du Bilder und Filme für deine Website und deine Anzeigen.',
+        ('Am Drehtag entstanden', 'Aus unseren Shootings'))
 hero_knopf(f, "/websites/#arbeiten", "#ergebnisse", "Arbeiten ansehen")
-f.ersetze('<section class="sek band auf-dunkel">', '<section class="sek band auf-dunkel" id="ergebnisse">')
-drehtag = f.heraus('<section class="sek"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">So läuft der Drehtag</span>')
-f.nach('<section class="hero-klein">', szene(1, "Der Kunde vergleicht", "Stockfotos wie überall. Der Anruf geht zum Nächsten.") + drehtag)
-ergebnisse_aktuell(f)
-f.entwurf()
-f.schreibe(HIER / "foto-video" / "index.html")
+f.ersetze('<section class="sek band auf-dunkel"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Am Drehtag entstanden</span><h2>Ein Drehtag, daraus der Film für deine Startseite und die Clips für deine Anzeigen.</h2>',
+          '<section class="sek band auf-dunkel" id="ergebnisse"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Die Ergebnisse · Filme</span><h2>Diese Filme sind am Drehtag entstanden.</h2>')
+f.ersetze('<span class="kicker">Aus unseren Shootings</span>', '<span class="kicker">Die Ergebnisse · Fotos</span>')
+f.nach('<section class="hero-klein">',
+       problem('Stockfotos wie überall. Der Anruf geht zum Nächsten.',
+               ['„Aktuelle Fotos haben wir keine“, hören wir fast in jedem Erstgespräch.', 'Auf der Seite stehen Katalogbilder.', 'Wer vergleicht, erkennt deinen Betrieb nicht wieder.'],
+               ['Auf den Bildern stehen deine Leute vor deinen Fahrzeugen.', 'Fotografiert wird im laufenden Betrieb.', 'Alle Fotos und Filme gehören dir, in voller Auflösung.'])
+       + uebernehmen('Den Drehtag übernehmen wir.', [
+           ('u-motivliste', 'Zwei Männer im Büro von HAWE Engineering', '50% 30%', 'Die Motivliste', 'Vorher am Telefon.', 'Wir klären, was Website und Anzeigen brauchen, und haken die Liste am Drehtag ab.'),
+           ('u-drehtag', 'Zwei Männer an der Laseranlage bei Allplast', '50% 30%', 'Der Drehtag', 'Ein Tag bei dir.', 'Wir fotografieren und filmen, was bei dir ohnehin passiert, und dein Betrieb läuft weiter.'),
+           ('u-uebergabe', 'Zwei Mitarbeiter in der Fertigung von SD Hirsch', '50% 30%', 'Die Übergabe', 'Alles gehört dir.', 'Du bekommst alle Fotos und Filme in voller Auflösung.')]))
+fertig(f, "foto-video")
 
-# ── 5 · Neukundengewinnung: Faden steht (Problem → Mechanik → Ablauf → Fallstudie → Werktage → Fragen)
+# ── 5 · Neukundengewinnung
 n = unterseite("neukundengewinnung")
+einfach(n, 'Anzeigen mit deinen Leuten, nur in deinem Umkreis, und jede Anfrage gehört dir allein.', ('Fallstudie · Badsanierung',))
 hero_knopf(n, "/websites/#arbeiten", "#ergebnisse")
-n.ersetze('<section class="sek grund"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Fallstudie',
-          '<section class="sek grund" id="ergebnisse"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Fallstudie')
-ergebnisse_aktuell(n)
-n.entwurf()
-n.schreibe(HIER / "neukundengewinnung" / "index.html")
+n.ersetze('<section class="sek grund"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Fallstudie · Badsanierung</span>',
+          '<section class="sek grund" id="ergebnisse"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Die Ergebnisse</span>')
+n.ersetze('<span class="nr" data-zahl="14">14</span><span class="fz-einheit">Bad-Anfragen</span></div><p>Daraus sieben Termine vor Ort und nach 18 Tagen der erste Auftrag.</p>',
+          '<span class="nr" data-zahl="37">37</span><span class="fz-einheit">Bad-Anfragen</span></div><p>Daraus zwölf Termine vor Ort, der erste Auftrag kam nach 18 Tagen.</p>')  # Stand wie Startseite (37 / 12)
+n.ersetze('Pflicht ist es nicht — es geht auch mit deinem Vorarbeiter.', 'Pflicht ist es nicht, es geht auch mit deinem Vorarbeiter.', 2)
+n.ersetze('Sein Argument: Werbung macht man nicht erst, wenn es schlechter läuft, sondern damit man dann schon bekannt ist.',
+          'Sein Argument: Wer erst wirbt, wenn es schlechter läuft, ist dann noch nicht bekannt.', 2)
+n.nach('<section class="hero-klein">',
+       problem('Drei Wochen voll, dann wieder Zufall.',
+               ['Empfehlungen kannst du nicht bestellen, wenn ein großes Projekt wegbricht.', 'Im Lead-Portal geht dieselbe Anfrage an vier Betriebe gleichzeitig.', 'Auf der Vergabeplattform bekommt den Auftrag, wer am billigsten ist.'],
+               ['Die Anzeige läuft nur 25 Kilometer um deinen Betrieb.', 'Vier Filterfragen stehen vor jeder Anfrage.', 'Jede Anfrage gehört dir allein.'])
+       + uebernehmen('Die Anzeigen übernehmen wir.', [
+           ('u-anzeige', 'Patrick und Mirjana von Sussmann vor dem Firmenschild', '50% 30%', 'Die Anzeige', 'Mit deinen Leuten drauf.', 'Man erkennt den Betrieb aus dem Nachbarort, deshalb bleibt sie im Feed hängen.'),
+           ('u-umkreis', 'Senftleben Haustechnik mit Team und Firmenwagen aus der Luft', '50% 50%', 'Der Umkreis', 'Nur 25 Kilometer um deinen Betrieb.', 'Wer 60 Kilometer weiter ein Projekt plant, sieht sie nicht.'),
+           ('u-filter', 'Zwei Mitarbeiter von Sussmann neben einem Speicher', '50% 30%', 'Die Filterfragen', 'Vier Fragen vor jeder Anfrage.', 'Bei dir kommt an, wer sein Projekt ernst meint, mit Name und Nummer.')]))
+n.vor('<section class="sek faq">', STIMMEN)
+fertig(n, "neukundengewinnung")
 
-# ── 6 · Mitarbeitergewinnung: Problem (vier Wege) + Szene Bewerber → Mechanik → Ablauf → Fallstudie → …
+# ── 6 · Mitarbeitergewinnung
 m = unterseite("mitarbeitergewinnung")
+einfach(m, 'Die Guten suchen nicht, also bringen wir deine Stelle dorthin, wo sie jeden Abend sind.', ('Fallstudie · Anlagenmechaniker SHK',))
 hero_knopf(m, "/websites/#arbeiten", "#ergebnisse")
-m.ersetze('<section class="sek grund"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Fallstudie',
-          '<section class="sek grund" id="ergebnisse"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Fallstudie')
-m.nach('<section class="sek leiter-sek">', szene(3, "Und wenn doch einer nachschaut", "Kein Team, keine Stelle, kein Weg zur Bewerbung."))
-ergebnisse_aktuell(m)
-m.entwurf()
-m.schreibe(HIER / "mitarbeitergewinnung" / "index.html")
+m.ersetze('<section class="sek grund"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Fallstudie · Anlagenmechaniker SHK</span>',
+          '<section class="sek grund" id="ergebnisse"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Die Ergebnisse</span>')
+m.nach('<section class="hero-klein">',
+       problem('Die Guten suchen nicht.',
+               ['Im Stellenportal meldet sich, wer gerade keine Arbeit hat.', 'Den Aufkleber am Firmenwagen liest, wer an der Ampel hinter dir steht.', '„Wir suchen dich“ auf der eigenen Seite liest nur, wer den Betrieb schon kennt.'],
+               ['Deine Stelle läuft auf Instagram und Facebook, 30 Kilometer um deinen Betrieb.', 'Deine Mannschaft steht in der Anzeige.', 'Die Bewerbung dauert zwei Minuten, ohne Anschreiben und Lebenslauf.'])
+       + uebernehmen('Die Suche übernehmen wir.', [
+           ('u-mannschaft', 'Das Team von Erwin Schmidt &amp; Sohn trägt lachend eine Kollegin', '50% 30%', 'Die Anzeige', 'Mit deiner Mannschaft.', 'Sie läuft abends auf Instagram und Facebook, nur im Umkreis um den Betrieb.'),
+           ('u-bewerbung', 'Monteur von Erwin Schmidt &amp; Sohn mit Zange im Lager', '50% 25%', 'Die Bewerbung', 'Zwei Minuten am Handy.', 'Vier Filterfragen statt Anschreiben und Lebenslauf.'),
+           ('u-gespraech', 'Drei Monteure von Heizung-Sanitär Klaß vor dem Firmenwagen', '50% 30%', 'Das Gespräch', 'Du rufst an.', 'Die Bewerbung kommt mit Nummer und Antworten, du führst nur noch die Gespräche.')]))
+m.vor('<section class="sek faq">', STIMMEN)
+fertig(m, "mitarbeitergewinnung")
