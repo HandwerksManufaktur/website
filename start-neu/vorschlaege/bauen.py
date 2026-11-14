@@ -72,13 +72,23 @@ FASSUNG = [
   ('Website', 'Wir verlegen deinen Betrieb ins Netz.', 'In zwei bis drei Wochen.', 'Vom ersten Foto bis zur Abnahme.', 'Frisch verlegt.'),
  ]),
  ('HWM', [
-  ('Startseite', 'Wir bringen dein Handwerk unter die Leute.', 'Ins Netz, ins Gespräch, ins Auftragsbuch.', 'Drei Gewerke. Eine Hand.', 'Hand drauf. Hier sind die Zahlen.'),
+  ('Startseite', 'Wir bringen dein Handwerk unter die Leute.', '', 'Drei Gewerke. Eine Hand.', 'Hand drauf. Hier sind die Zahlen.'),
   ('Websites', 'Wir bauen. Du ziehst ein.', 'Deine Website, schlüsselfertig.', 'Vom Rohbau bis zur Schlüsselübergabe.', 'Bezugsfertig.'),
   ('Google (SEO)', 'Ganz oben ist dein Platz.', 'Wir stellen das Gerüst.', 'Vom ersten Suchwort bis Seite 1.', '77-mal Richtfest.'),
   ('Foto & Video', 'Wir setzen dein Handwerk ins Licht.', 'Gedreht bei dir im Betrieb.', 'Vom ersten Bild bis zum fertigen Film.', 'Abgedreht.'),
   ('Neue Kunden', 'Wir füllen dein Auftragsbuch.', 'Seite für Seite, aus deinem Umkreis.', 'Von der Anzeige bis zum Aufmaß.', 'Schwarz auf weiß.'),
   ('Neue Mitarbeiter', 'Verstärkung ist unterwegs.', 'Aus deinem Umkreis.', 'Von der Anzeige bis zum Handschlag.', '25 Bewerbungen. 4 Wochen. 1 Neuer.'),
  ]),
+]
+
+# Runde 2 (Noah, 15.11.2026): Startseiten-Hero, Ergebnisse, Alternativen SHK Aufträge/Monteure mit Bau-Vergleich
+RUNDE2 = [
+ ('HWM Startseite, Hero', T('Wir bringen dein Handwerk unter die Leute.', 'Wir legen das Fundament. Du baust drauf.', 'Das Gewerk, das dir noch fehlt.', 'Du baust Häuser. Wir bauen deinen Ruf.', 'Dein Betrieb, schlüsselfertig sichtbar.', 'Wir machen Nägel mit Köpfen.', 'Handwerk für dein Handwerk.', 'Dein Handwerk hat goldenen Boden. Wir legen ihn frei.', 'Wir bauen an deinem Betrieb mit.', 'Alles aus einer Hand. Wie auf einer guten Baustelle.')),
+ ('SHK Startseite, Hero', T('Wir schließen SHK-Betriebe an.', 'Wir bringen deinen Betrieb auf Temperatur.', 'Wir sorgen für Druck auf der Leitung.', 'Der Anschluss, der deinem Betrieb fehlt.', 'Aufträge im Vorlauf. Monteure im Rücklauf.', 'Dein Betrieb, hydraulisch abgeglichen.', 'Du planst Anlagen. Wir planen deine Auslastung.', 'Wir verlegen die Leitung zu Kunden und Monteuren.', 'Wir halten deinen Betrieb am Laufen.', 'Alles dicht. Alles voll. Alles läuft.')),
+ ('SHK Aufträge, Hero (statt „Wir drehen dir den Hahn auf.“)', T('Du baust das Bad. Wir bauen die Nachfrage.', 'Wir bauen vor. Du baust ein.', 'Anfragen, anschlussfertig geliefert.', 'Wir stellen den Zulauf sicher.', 'Wir legen dir die Aufträge vor die Tür.')),
+ ('SHK Monteure, Hero (statt „Fehlt Druck im Team? Wir füllen nach.“)', T('Du baust Bäder. Wir bauen dein Team.', 'Wir stocken dein Team auf.', 'Wir bauen dein Team aus.', 'Bewerbungen, anschlussfertig geliefert.', 'Verstärkung für deine Kolonne.')),
+ ('SHK, Überschrift über den Ergebnissen', T('Druckprobe bestanden.', 'Dicht. Geprüft. Abgenommen.', 'Abgenommen.', 'Das Abnahmeprotokoll.', 'Läuft.', 'Unterm Strich.', 'Nachgemessen.', 'Übergeben und abgenommen.', 'Hält, was wir versprechen.', 'Hand drauf.')),
+ ('HWM, Überschrift über den Ergebnissen', T('Abgenommen.', 'Das Abnahmeprotokoll.', 'Schlüsselübergabe.', 'Richtfest.', 'Bauabnahme bestanden.', 'Sitzt, passt und hält.', 'Steht.', 'Unterm Strich.', 'Nachgemessen.', 'Hand drauf.')),
 ]
 e = html.escape
 out = ['<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Überschriften-Vorschläge</title><style>',
@@ -87,7 +97,10 @@ out = ['<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="v
  'nav{position:sticky;top:0;background:rgba(243,246,250,.85);backdrop-filter:blur(16px);padding:12px 0;display:flex;gap:8px;flex-wrap:wrap;z-index:2}nav a{min-height:44px;display:inline-flex;align-items:center;padding:0 16px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:600;font-size:15px}',
  'h2{font-size:28px;letter-spacing:-.02em;margin:48px 0 4px}h2 small{display:block;font-size:15px;font-weight:400;color:var(--sub);letter-spacing:0}h3{font-size:20px;letter-spacing:-.01em;margin:32px 0 12px}',
  '.block{background:#fff;border:1px solid var(--line);border-radius:24px;padding:20px 24px;margin-bottom:12px}.block h4{font-size:15px;color:var(--kalt);margin-bottom:2px}.jetzt{font-size:15px;color:var(--sub);margin-bottom:10px}ol{list-style:none;counter-reset:n}li{counter-increment:n;display:flex;gap:12px;padding:8px 0;border-top:1px solid var(--line);font-weight:600;letter-spacing:-.01em}li::before{content:counter(n);flex:none;width:24px;color:var(--sub);font-weight:400;font-variant-numeric:tabular-nums}',
- '.fass .h{font-size:clamp(24px,4vw,34px);font-weight:800;letter-spacing:-.03em;line-height:1.12;margin:6px 0 14px}.fass .h span{color:#F5762B}.fass dl{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;border-top:1px solid var(--line);padding-top:12px}.fass dt{font-size:15px;color:var(--sub)}.fass dd{font-weight:600}@media(max-width:560px){.fass dl{grid-template-columns:1fr;gap:2px}.fass dd{margin-bottom:8px}}</style></head><body><div class="wrap"><h1>Die Fassung</h1><p class="lead">So würden oevermann &amp; oevermann es für dich schreiben: die Redewendung aus dem Gewerk wörtlich genommen, kurze Sätze, Paare mit „von … bis …“.</p><nav><a href="#f-shk">Fassung SHK</a><a href="#f-hwm">Fassung HWM</a><a href="#shk">Alte Liste</a></nav>']
+ '.fass .h{font-size:clamp(24px,4vw,34px);font-weight:800;letter-spacing:-.03em;line-height:1.12;margin:6px 0 14px}.fass .h span{color:#F5762B}.fass dl{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;border-top:1px solid var(--line);padding-top:12px}.fass dt{font-size:15px;color:var(--sub)}.fass dd{font-weight:600}@media(max-width:560px){.fass dl{grid-template-columns:1fr;gap:2px}.fass dd{margin-bottom:8px}}</style></head><body><div class="wrap"><h1>Die Fassung</h1><p class="lead">So würden oevermann &amp; oevermann es für dich schreiben: die Redewendung aus dem Gewerk wörtlich genommen, kurze Sätze, Paare mit „von … bis …“.</p><nav><a href="#r2">Neue Vorschläge</a><a href="#f-shk">Fassung SHK</a><a href="#f-hwm">Fassung HWM</a><a href="#shk">Alte Liste</a></nav>']
+out.append('<h2 id="r2">Neue Vorschläge<small>Nenn mir Block und Nummer.</small></h2>')
+for titel, vs in RUNDE2:
+    out.append(f'<div class="block"><h4>{e(titel)}</h4><ol>' + ''.join(f'<li>{e(v)}</li>' for v in vs) + '</ol></div>')
 for kurz, seiten in FASSUNG:
     out.append(f'<h2 id="f-{kurz.lower()}">{kurz}</h2>')
     for name, h1, h1b, ueb, erg in seiten:
