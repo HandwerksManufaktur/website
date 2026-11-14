@@ -3,18 +3,42 @@
 from pathlib import Path
 import html
 PAARE = [
- ('HWM Startseite', 'handwerksmanufaktur.digital', [
-  ('Dein Handwerk. Unsere Baustelle.', 'Fertig gemeldet.'), ('Du machst dein Handwerk. Wir den Rest.', 'Erledigt.'),
-  ('Volle Bücher. Volle Mannschaft.', 'Voll geworden.'), ('Wir halten dir den Rücken frei.', 'Rücken frei. Bücher voll.'),
-  ('Dein Betrieb kann mehr. Wir holen es raus.', 'Rausgeholt.'), ('Gute Arbeit soll man sehen.', 'Gesehen. Angefragt. Beauftragt.'),
-  ('Wir bringen Arbeit. Und die Leute dafür.', 'Geliefert.'), ('Dein Betrieb, gut aufgestellt.', 'Aufgestellt.'),
-  ('Wir packen mit an.', 'Angepackt.'), ('Dein Betrieb läuft. Wir legen nach.', 'Nachgelegt.')]),
- ('SHK Startseite', 'shk.handwerksmanufaktur.digital', [
+ ('HWM Startseite · mutig', 'Bau-Welt, zieht sich durch zu Rohbau, Schlüsselübergabe und Richtfest auf den Unterseiten', [
+  ('Dein Handwerk. Unsere Baustelle.', 'Abgenommen.'), ('Wir sind dein Bautrupp.', 'Fertiggestellt.'),
+  ('Du baust für andere. Wir bauen für dich.', 'Gebaut.'), ('Wir bauen an deinem Betrieb.', 'Steht.'),
+  ('Wir legen das Fundament. Du baust drauf.', 'Fundament steht.'), ('Wir ziehen deinen Betrieb hoch.', 'Hochgezogen.'),
+  ('Baustelle Betrieb? Übernehmen wir.', 'Übergeben.'), ('Wir machen Nägel mit Köpfen.', 'Sitzt.'),
+  ('Wir setzen noch einen drauf.', 'Draufgesetzt.'), ('Dein Betrieb, schlüsselfertig.', 'Schlüssel übergeben.'),
+  ('Wir bauen aus. Du baust weiter.', 'Ausgebaut.'), ('Handwerk für dein Handwerk.', 'Handarbeit.'),
+  ('Wir richten das.', 'Gerichtet.'), ('Erst der Plan. Dann der Bau.', 'Nach Plan gebaut.'),
+  ('Dein Betrieb ist unsere Baustelle.', 'Baustelle geräumt.')]),
+ ('HWM Startseite · normal', 'klar und ohne Bild', [
+  ('Mehr Aufträge und Mitarbeiter für deinen Betrieb.', 'Das kam bei unseren Kunden an.'), ('Der Partner für Handwerksbetriebe.', 'So lief es bei unseren Kunden.'),
+  ('Website, Kunden und Mitarbeiter aus einer Hand.', 'Ergebnisse unserer Kunden.'), ('Wir machen Handwerksbetriebe sichtbar.', 'So sichtbar wurden unsere Kunden.'),
+  ('Mehr Anfragen. Mehr Bewerbungen. Aus deinem Umkreis.', 'Zahlen aus den Betrieben.'), ('Dein Betrieb, voll ausgelastet.', 'So voll wurde es.'),
+  ('Über 130 Betriebe arbeiten mit uns.', 'Das haben sie davon.'), ('Seit 8 Jahren nur Handwerk.', 'Was dabei rauskommt.'),
+  ('Damit dein Betrieb gefunden wird.', 'So wurden sie gefunden.'), ('Aufträge und Leute für dein Handwerk.', 'So viele kamen.'),
+  ('Marketing, das auf der Baustelle ankommt.', 'Angekommen.'), ('Wir kümmern uns um Kunden und Mitarbeiter.', 'Das Ergebnis.'),
+  ('Dein Handwerk verdient mehr Anfragen.', 'Mehr Anfragen, belegt.'), ('Die Agentur, die nur Handwerk macht.', 'Ergebnisse aus dem Handwerk.'),
+  ('Gute Betriebe sollen voll sein.', 'Voll geworden.')]),
+ ('SHK Startseite · mutig', 'SHK-Welt, zieht sich durch zu Hahn aufdrehen, nachfüllen und verlegen auf den Unterseiten', [
   ('Wir schließen dich an.', 'Angeschlossen.'), ('Wir drehen auf.', 'Aufgedreht.'),
   ('Wir bringen deinen Betrieb auf Temperatur.', 'Auf Temperatur.'), ('Wir heizen deinem Betrieb ein.', 'Eingeheizt.'),
   ('Wir sorgen für Durchfluss.', 'Läuft.'), ('Du installierst. Wir liefern nach.', 'Geliefert.'),
-  ('Volle Bücher. Volle Mannschaft.', 'Voll.'), ('Monteure und Aufträge. Frei Haus.', 'Zugestellt.'),
-  ('Dein Betrieb läuft. Wir halten den Druck.', 'Druck gehalten.'), ('Wir halten deinen Betrieb am Laufen.', 'Läuft weiter.')]),
+  ('Wir halten den Druck.', 'Druck gehalten.'), ('Wir bringen Wärme in dein Auftragsbuch.', 'Warm gelaufen.'),
+  ('Wir legen dir die Leitung.', 'Leitung steht.'), ('Wasser marsch.', 'Volles Rohr.'),
+  ('Wir entlüften deinen Betrieb.', 'Läuft wieder rund.'), ('Wir machen dicht, wo es tropft.', 'Dicht.'),
+  ('Neuer Anschluss für deinen Betrieb.', 'Angeschlossen und abgenommen.'), ('Dein Betrieb unter Volllast.', 'Volllast.'),
+  ('Vorlauf für deinen Betrieb.', 'Rücklauf: gut.')]),
+ ('SHK Startseite · normal', 'klar und ohne Bild', [
+  ('Der Partner für SHK-Betriebe.', 'So lief es bei unseren Kunden.'), ('Monteure und Aufträge für SHK-Betriebe.', 'Das kam bei unseren Kunden an.'),
+  ('Mehr Monteure. Mehr Bäder. Aus deinem Umkreis.', 'Zahlen aus den Betrieben.'), ('Wir bringen SHK-Betrieben Monteure und Aufträge.', 'So viele kamen.'),
+  ('Dein SHK-Betrieb, voll besetzt und ausgelastet.', 'So voll wurde es.'), ('Über 150 Betriebe. 8 Jahre Handwerk.', 'Das haben sie davon.'),
+  ('Marketing nur für SHK.', 'Ergebnisse aus SHK-Betrieben.'), ('Monteure finden. Aufträge gewinnen.', 'Gefunden und gewonnen.'),
+  ('Damit dir weder Leute noch Aufträge fehlen.', 'Fehlt nichts mehr.'), ('Die Agentur für Heizung, Sanitär und Klima.', 'Was dabei rauskommt.'),
+  ('Bad und Wärmepumpe: Aufträge aus deinem Umkreis.', 'Aufträge, belegt.'), ('Wir kennen dein Gewerk.', 'Fünf Betriebe, fünf Ergebnisse.'),
+  ('Planbar Monteure. Planbar Aufträge.', 'Planbar, belegt.'), ('Dein Umkreis hat mehr zu bieten.', 'Das war drin.'),
+  ('Für SHK-Betriebe, die wachsen wollen.', 'So sind sie gewachsen.')]),
 ]
 e = html.escape
 out = ['<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Überschriften Startseiten</title><style>',
