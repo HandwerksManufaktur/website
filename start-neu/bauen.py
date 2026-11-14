@@ -151,7 +151,7 @@ def ergebnisse_aktuell(seite):
 
 
 s.ersetze('<span class="kicker">Facebook &amp; Instagram</span><h2>Echte Betriebe, echte Zahlen.</h2>',
-          '<span class="kicker">Die Ergebnisse · Kunden und Mitarbeiter</span><h2>So viel kam bei unseren Kunden an.</h2>')
+          '<span class="kicker">Die Ergebnisse · Kunden und Mitarbeiter</span><h2>Ergebnisse unserer Kunden.</h2>')
 ergebnisse_aktuell(s)
 s.entwurf()
 s.schreibe(ZIEL / "index.html")
