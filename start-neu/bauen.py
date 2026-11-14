@@ -139,6 +139,7 @@ def ergebnisse_aktuell(seite):
     h = h.replace('Die Werbung läuft seit dem 29. Oktober im Umkreis von Stadtbergen.', 'Die Anzeigen laufen seit dem 29. Oktober im Umkreis von Stadtbergen.')
     h = h.replace('die Werbung pausiert deshalb bis Februar.', 'die Anzeigen pausieren deshalb bis Februar.')
     h = h.replace('<p class="lead">Werbung im Umkreis des Betriebs. Gezählt ist', '<p class="lead">Anzeigen im Umkreis des Betriebs. Gezählt ist')
+    h = h.replace('<h2>Du kümmerst dich um nichts davon.</h2>', '<h2>Unsere Kunden erzählen es besser als wir.</h2>')
     seite.h = h
 
 
