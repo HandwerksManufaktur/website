@@ -87,7 +87,12 @@ class Seite:
                                     # (gestreckt blieb unter dem Text bis zu 147 px Leerraum), Überschrift neben Lead startet oben wie überall.
                                     '.erg-wer{min-height:56px}.erg .textlink{margin-top:0}.kopfzeile:has(>.lead)>h2{align-self:start}.wisch-hinweis{margin-top:0}'
                                     '@media (max-width:760px){.ergebnisse{align-items:flex-start}}'
-                                    '.stimmen .kopfzeile{margin-bottom:clamp(36px,5vw,64px)}</style></head>', 1)
+                                    '.stimmen .kopfzeile{margin-bottom:clamp(36px,5vw,64px)}'
+                                    # Keine Sektions-H2 mit drei Zeilen am Desktop (Noah, 15.11.2026): die 16ch-Grenze lässt „Drei Baustellen übernehmen wir für dich.“ und
+                                    # „Über 50 Fotos aus den Betrieben unserer Kunden.“ dreizeilig laufen, also bekommen diese beiden Köpfe die breitere Spalte
+                                    '@media (min-width:901px){.leistungen-sek .kopfzeile,.fotowand-sek .kopfzeile{grid-template-columns:minmax(0,1.4fr) minmax(0,.6fr)!important}'
+                                    '.leistungen-sek .kopfzeile>h2,.fotowand-sek .kopfzeile>h2{max-width:none!important}}'
+                                    '@media (max-width:900px){.dsk-br{display:none}}</style></head>', 1)
 
     def schreibe(self, pfad):
         # Sperren (Noah, 15.11.2026): kein Kicker mit Mittelpunkt, keine alte Kundenzahl, keine Bewertungszeile unter den Stimmen
@@ -146,7 +151,7 @@ def karte(bild, alt, pos, titel, zeile, text, ziel, knopf):
 
 
 LEISTUNGS_SEK = ('<section class="sek leistungen-sek" id="system"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Unsere Leistungen</span>'
-                 '<h2>Drei Baustellen übernehmen wir für dich.</h2><p class="lead">Jede Leistung gibt es einzeln.</p></div><div class="ergebnisse">'
+                 '<h2>Drei Baustellen<br class="dsk-br"> übernehmen wir für dich.</h2><p class="lead">Jede Leistung gibt es einzeln.</p></div><div class="ergebnisse">'
                  # Fette Zeile = abgenommene H1 der Unterseite, Text je ein kurzer Satz (Noah, 15.11.2026)
                  + karte("zimmerei-schneider", "Zwei Zimmerer von Zimmerei Schneider in der Werkstatt", "50% 30%", "Website", "Wir bauen. Du ziehst ein.",
                          "Eine Seite je Leistung, mit deinem Ort drin.", "websites", "Mehr zur Website")
