@@ -194,7 +194,7 @@ def ergebnisse_aktuell(seite):
 
 # Einleitung darunter war Füllstoff, die Karten sprechen für sich (Noah, 15.11.2026)
 s.ersetze('<span class="kicker">Facebook &amp; Instagram</span><h2>Echte Betriebe, echte Zahlen.</h2><p class="lead">Werbung im Umkreis des Betriebs. Gezählt ist jede Anfrage und jede Bewerbung, die angekommen ist.</p>',
-          '<span class="kicker">Die Ergebnisse</span><h2>Ergebnisse unserer Kunden.</h2>')
+          '<span class="kicker">Fallstudien</span><h2>Ergebnisse unserer Kunden.</h2>')
 ergebnisse_aktuell(s)
 assert s.h.count('<h2>So sehen unsere Seiten aus.</h2>') == 1
 s.h = s.h.replace('<h2>So sehen unsere Seiten aus.</h2>', '<h2>Bezugsfertig.</h2>')  # wie auf der Websites-Seite
