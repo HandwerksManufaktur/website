@@ -23,6 +23,28 @@ QUELLE = HIER / "quelle"
 ZIEL = WURZEL if LIVE else HIER
 LIVE_START = (QUELLE / "start.html").read_text()
 
+# Kontakt-Sektion am Seitenende (Noah, 15.11.2026: „wieso ist da links schon wieder die Sektion kürzer“): am Desktop
+# füllt die Collage genau die Höhe der Textspalte (oben und unten bündig, Raster 4 × 4, Köpfe setzt main.js per data-k),
+# am Handy zwei volle Reihen statt einer angeschnittenen dritten. Dieselbe Regel steht wortgleich in ueber-uns/index.html.
+KONTAKT_STIL = ('@media (min-width:901px){.umkreis-kontakt .uk-karte{align-items:stretch!important}'
+                '.umkreis-kontakt .uk-bild{position:relative;max-height:none;overflow:visible}'
+                '.umkreis-kontakt .uk-bild .collage.mit-film{position:absolute;inset:0;grid-template-columns:repeat(4,minmax(0,1fr))!important;'
+                'grid-template-rows:repeat(4,minmax(0,1fr));grid-auto-rows:0;align-content:stretch!important;gap:8px}'
+                '.umkreis-kontakt .uk-bild .collage.mit-film img{height:100%;aspect-ratio:auto;object-fit:cover}'
+                '.umkreis-kontakt .uk-bild .collage.mit-film img:nth-child(-n+13){display:block}'
+                '.umkreis-kontakt .uk-bild .collage.mit-film img:nth-child(n+14){display:none}}'
+                '@media (max-width:760px){.umkreis-kontakt .uk-bild{max-height:none}'
+                '.umkreis-kontakt .uk-bild .collage.mit-film img:nth-child(n+4){display:none}}'
+                '.umkreis-kontakt .uk-bild .collage img,.umkreis-kontakt .uk-bild .collage .c-film{border-radius:var(--radius)}')
+
+# Leistungskarten (Startseite „Drei Baustellen …“ und „Was wir übernehmen“ der Unterseiten), Noah 15.11.2026: Apple-Regeln.
+# Ein Raster: Rand 32/22 rundum, Titel → Zeile 4, Zeile → Text 12, Text → Link 20; Text in jeder Karte einer Reihe gleich
+# viele Zeilen (am Desktop 2, am Handy bei „Was wir übernehmen“ 3), am Handy alle Karten einer Reihe gleich hoch.
+KARTEN_STIL = ('.leistungen-sek .erg-in p,.uebernehmen-sek .erg-in p{min-height:3em;min-height:2lh}'
+               '.leistungen-sek .erg .textlink{margin-top:8px}'
+               '@media (max-width:760px){.leistungen-sek .ergebnisse,.uebernehmen-sek .ergebnisse{align-items:stretch!important}'
+               '.uebernehmen-sek .erg-in p{min-height:4.5em;min-height:3lh}}')
+
 
 class Seite:
     def __init__(self, quelle):
@@ -92,7 +114,7 @@ class Seite:
                                     # „Über 50 Fotos aus den Betrieben unserer Kunden.“ dreizeilig laufen, also bekommen diese beiden Köpfe die breitere Spalte
                                     '@media (min-width:901px){.leistungen-sek .kopfzeile,.fotowand-sek .kopfzeile{grid-template-columns:minmax(0,1.4fr) minmax(0,.6fr)!important}'
                                     '.leistungen-sek .kopfzeile>h2,.fotowand-sek .kopfzeile>h2{max-width:none!important}}'
-                                    '@media (max-width:900px){.dsk-br{display:none}}</style></head>', 1)
+                                    '@media (max-width:900px){.dsk-br{display:none}}' + KONTAKT_STIL + KARTEN_STIL + '</style></head>', 1)
 
     def schreibe(self, pfad):
         # Sperren (Noah, 15.11.2026): kein Kicker mit Mittelpunkt, keine alte Kundenzahl, keine Bewertungszeile unter den Stimmen
@@ -168,16 +190,14 @@ LEISTUNGS_SEK = ('<section class="sek leistungen-sek" id="system"><div class="wr
                  # Breite („Wir lassen unsere Kunden sprechen.“ einzeilig, .stimmen h2 max-width:none), mit Lead nur 16ch.
                  # Jetzt jede linksbündige H2 höchstens 16ch, text-wrap:balance verhindert ein Einzelwort in der letzten Zeile.
                  '.sek .kopfzeile:not(.mitte)>h2{max-width:16ch}'
-                 '@media (min-width:901px){#kontakt .uk-bild .collage.mit-film{grid-template-columns:repeat(4,1fr);align-content:center}}'
                  '.uk-bild .collage img{background:var(--papier-2,#efe9df)}.uk-bild .collage img.raus{opacity:.35;transform:none}</style>')
 s.vor('<section class="sek laufband" id="gefunden">', LEISTUNGS_SEK)
 s.ersetze('<span class="kicker">Deine Website</span>', '<span class="kicker">Unsere Websites</span>')
 # Kicker ohne Mittelpunkt, der wirkt maschinell (Noah, 15.11.2026)
 s.ersetze('<span class="kicker">Kostenloses Beratungsgespräch · 30 Min.</span>', '<span class="kicker">Kostenloses Beratungsgespräch</span>')
 # „Wer dahinter steht“: klare Überschrift, „Seit 2019 nur Handwerk“ als Kicker, Noahs Vorstellung als Text (Noah, 15.11.2026)
-NOAH_TEXT = ("Ich bin Noah und in einer Handwerkerfamilie groß geworden. Meine drei Brüder haben alle eine Handwerksausbildung, "
-             "zwei davon den Meister. In der Familie gibt es mehrere Handwerksbetriebe, von der Spenglerei bis zum Tiefbau. "
-             "Deshalb weiß ich, wie ein Betrieb von innen aussieht.")
+# Noah, 15.11.2026: die fünf Zeilen über die Familie waren zu lang, genau diese zwei Sätze (auch auf /ueber-uns/)
+NOAH_TEXT = "Zwei meiner Brüder sind Meister, mein Cousin führt eine Spenglerei. Ich bin der, der ins Internet gegangen ist."
 s.ersetze('<span class="kicker">Wer dahinter steht</span><h2>Die Leute hinter deinem Auftritt.</h2><p class="lead">Dieselben Leute von Anfang bis Ende.</p>',
           f'<span class="kicker">Seit 2019 nur Handwerk</span><h2>Du bist auf der Baustelle daheim. Wir im Internet.</h2><p class="lead">{NOAH_TEXT}</p>')
 
