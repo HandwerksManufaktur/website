@@ -197,9 +197,9 @@ s.ersetze('<span class="kicker">Deine Website</span>', '<span class="kicker">Uns
 s.ersetze('<span class="kicker">Kostenloses Beratungsgespräch · 30 Min.</span>', '<span class="kicker">Kostenloses Beratungsgespräch</span>')
 # „Wer dahinter steht“: klare Überschrift, „Seit 2019 nur Handwerk“ als Kicker, Noahs Vorstellung als Text (Noah, 15.11.2026)
 # Noah, 15.11.2026: die fünf Zeilen über die Familie waren zu lang, genau diese zwei Sätze (auch auf /ueber-uns/)
-NOAH_TEXT = "Servus, ich bin Noah, Gründer der Handwerksmanufaktur. Dass wir nur fürs Handwerk arbeiten, kommt nicht von ungefähr. Meine drei Brüder haben alle im Handwerk gelernt. Zwei davon sind Meister. Zusätzlich haben wir in der Familie gleich mehrere Handwerksbetriebe. So habe ich schon von klein auf mitgekriegt, wie es im Handwerk zugeht. In den letzten 8 Jahren haben wir über 150 Firmen betreut und kennen ganz genau, wie ein Handwerksbetrieb an Aufträge und gute Mitarbeiter kommt."
+NOAH_TEXT = 'Servus, ich bin Noah, Gründer der Handwerksmanufaktur. Dass wir nur fürs Handwerk arbeiten, kommt nicht von ungefähr.</p><p class="lead" style="margin-top:20px">Meine drei Brüder haben alle im Handwerk gelernt. Zwei davon sind Meister. Zusätzlich haben wir in der Familie mehrere Handwerksbetriebe. Dadurch habe ich schon von klein auf täglich mitgekriegt, wie es im Handwerk wirklich zugeht.</p><p class="lead" style="margin-top:20px">In den letzten 8 Jahren haben wir über 150 Firmen betreut und wissen mittlerweile ganz genau, wie ein Handwerksbetrieb planbar an Aufträge und gute Mitarbeiter kommt.'
 s.ersetze('<span class="kicker">Wer dahinter steht</span><h2>Die Leute hinter deinem Auftritt.</h2><p class="lead">Dieselben Leute von Anfang bis Ende.</p>',
-          f'<span class="kicker">Über uns</span><h2>Seit 2019 nur fürs Handwerk.</h2><p class="lead">{NOAH_TEXT}</p>')
+          f'<span class="kicker">Über uns</span><h2>Du bist auf der Baustelle daheim. Wir im Internet.</h2><p class="lead">{NOAH_TEXT}</p>')
 
 
 def ergebnisse_aktuell(seite):
