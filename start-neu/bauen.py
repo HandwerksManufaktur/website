@@ -26,6 +26,10 @@ LIVE_START = (QUELLE / "start.html").read_text()
 
 class Seite:
     def __init__(self, quelle):
+        # Noah, 15.11.2026: Kundenzahl überall 150 (Meta, Logoband, Hero); die Bewertungszeile unter „Kundenstimmen“
+        # („5,0 auf Google · 57 Bewertungen · …“) ersatzlos raus, nur Kicker + Überschrift bleiben.
+        quelle = quelle.replace("Über 130 Betriebe", "Über 150 Betriebe")
+        quelle = re.sub(r'\n?<div class="zusammen reveal">[^<]*(?:<(?!/?div)[^<]*)*</div>', "", quelle)
         self.h = quelle
 
     def ersetze(self, alt, neu, menge=1):
@@ -63,9 +67,14 @@ class Seite:
             self.ersetze('<meta name="robots" content="index,follow">', '<meta name="robots" content="noindex, nofollow, noarchive">')
             self.h = re.sub(r'href="/(#[^"]*)?"', lambda m: f'href="/start-neu/{m.group(1) or ""}"', self.h)
             self.h = re.sub(r'href="/(%s)/' % "|".join(LEISTUNGEN), r'href="/start-neu/\1/', self.h)
-        self.h = self.h.replace('</head>', '<style>/* Entwurf: Tap-Ziele im Fuß mindestens 44 px breit */.fuss ul a,.fuss .unten a{min-width:44px}.lg-buehne li span b,.pb-marke,.ab-leiste span,.lang-marke,.pb-karte b,.fsz-legende span,.kal-fuss span,.kal-fuss b,.rg-lese,.pb-adr span,.pb-menue span,.pb-ruf,.pb-ok{letter-spacing:.01em!important}.ab-zoom{transition-duration:.4s!important}</style></head>', 1)
+        self.h = self.h.replace('</head>', '<style>/* Entwurf: Tap-Ziele im Fuß mindestens 44 px breit */.fuss ul a,.fuss .unten a{min-width:44px}.lg-buehne li span b,.pb-marke,.ab-leiste span,.lang-marke,.pb-karte b,.fsz-legende span,.kal-fuss span,.kal-fuss b,.rg-lese,.pb-adr span,.pb-menue span,.pb-ruf,.pb-ok{letter-spacing:.01em!important}.ab-zoom{transition-duration:.4s!important}'
+                                    # Ohne Bewertungszeile steht der Stimmen-Kopf mit demselben Abstand zum Inhalt wie jede andere Sektion
+                                    '.stimmen .kopfzeile{margin-bottom:clamp(36px,5vw,64px)}</style></head>', 1)
 
     def schreibe(self, pfad):
+        # Sperren (Noah, 15.11.2026): kein Kicker mit Mittelpunkt, keine alte Kundenzahl, keine Bewertungszeile unter den Stimmen
+        assert not re.findall(r'<span class="kicker">[^<]*·[^<]*</span>', self.h), (pfad, re.findall(r'<span class="kicker">[^<]*·[^<]*</span>', self.h))
+        assert "130 Betriebe" not in self.h and 'class="zusammen' not in self.h, pfad
         pfad.parent.mkdir(parents=True, exist_ok=True)
         pfad.write_text(self.h)
         print("✓", pfad.relative_to(WURZEL), len(self.h))
@@ -101,7 +110,7 @@ s = Seite(LIVE_START)
 s.ersetze('<h1><span class="w">Mehr Aufträge.</span> <span class="w">Mehr Bewerber.</span> <span class="w">Aus deinem Umkreis.</span></h1>',
           '<h1><span class="w">Dein Handwerk.</span> <span class="w">Unsere Baustelle.</span></h1>')  # Noah, 15.11.2026: „genau passend, ist perfekt“
 s.ersetze('<p class="lead">Website, Fotos und Social-Media-Werbung für Handwerksbetriebe.</p>',
-          '<p class="lead">Über 130 Betriebe arbeiten mit uns. Wir bauen deine Website und bringen dir Kunden und Mitarbeiter aus deinem Umkreis.</p>')
+          '<p class="lead">Über 150 Betriebe arbeiten mit uns. Wir bauen deine Website und bringen dir Kunden und Mitarbeiter aus deinem Umkreis.</p>')
 # Aufbau wie shk…/start-neu/: Firma → drei Leistungen (einfache Karten) → Ergebnisse → Stimmen → Team → Kontakt.
 # Die drei Säulen in Logo-Form stehen schon im Hero und kommen hier nicht noch einmal (Noah, 14.11.2026);
 # Problem-Szenen, Google-Mechanik und Foto-Band stehen auf den Unterseiten.
@@ -119,20 +128,35 @@ def karte(bild, alt, pos, titel, zeile, text, ziel, knopf):
 
 
 LEISTUNGS_SEK = ('<section class="sek leistungen-sek" id="system"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Unsere Leistungen</span>'
-                 '<h2>Drei Baustellen übernehmen wir für dich.</h2><p class="lead">Womit du anfängst, klären wir im Erstgespräch.</p></div><div class="ergebnisse">'
-                 + karte("zimmerei-schneider", "Zwei Zimmerer von Zimmerei Schneider in der Werkstatt", "50% 30%", "Website", "Bei Google vorne.",
-                         "Eine Seite je Leistung, mit deinem Ort drin. So findet dich, wer sucht.", "websites", "Mehr zur Website")
-                 + karte("senftleben-team-wagen", "Das Team von Senftleben Haustechnik vor den Firmenwagen", "50% 30%", "Neue Kunden", "Anfragen aus deinem Umkreis.",
-                         "Anzeigen im Umkreis. Die Anfragen kommen mit Name und Nummer zu dir, nicht aufs Portal.", "neukundengewinnung", "Mehr zu neuen Kunden")
-                 + karte("erwin-schmidt-team", "Das Team von Erwin Schmidt &amp; Sohn", "50% 30%", "Neue Mitarbeiter", "Bewerbungen aus deiner Region.",
-                         "Anzeigen bei Fachkräften im Umkreis. Die Bewerbungen kommen mit Name und Nummer zu dir.", "mitarbeitergewinnung", "Mehr zu neuen Mitarbeitern")
+                 '<h2>Drei Baustellen übernehmen wir für dich.</h2><p class="lead">Jede Leistung gibt es einzeln.</p></div><div class="ergebnisse">'
+                 # Fette Zeile = abgenommene H1 der Unterseite, Text je ein kurzer Satz (Noah, 15.11.2026)
+                 + karte("zimmerei-schneider", "Zwei Zimmerer von Zimmerei Schneider in der Werkstatt", "50% 30%", "Website", "Wir bauen. Du ziehst ein.",
+                         "Eine Seite je Leistung, mit deinem Ort drin.", "websites", "Mehr zur Website")
+                 + karte("senftleben-team-wagen", "Das Team von Senftleben Haustechnik vor den Firmenwagen", "50% 30%", "Neue Kunden", "Wir füllen dein Auftragsbuch.",
+                         "Anfragen aus deinem Umkreis, direkt an dich.", "neukundengewinnung", "Mehr zu neuen Kunden")
+                 + karte("erwin-schmidt-team", "Das Team von Erwin Schmidt &amp; Sohn", "50% 30%", "Neue Mitarbeiter", "Verstärkung ist unterwegs.",
+                         "Bewerbungen von Fachkräften aus deinem Umkreis.", "mitarbeitergewinnung", "Mehr zu neuen Mitarbeitern")
                  + f'</div><p class="leistungen-zusatz reveal">Die Fotos und Videos dafür drehen wir bei dir im Betrieb. <a class="textlink" href="/foto-video/">Foto &amp; Video {PFEIL}</a></p></div></section>'
                  '<style>/* Entwurf (start-neu/bauen.py) */.leistungen-zusatz{margin-top:28px;font-size:17px;line-height:1.5;color:var(--tinte-2)}'
                  '.leistungen-sek .erg-zeile em{font-size:clamp(24px,2.2vw,30px)}'
+                 # Kartentext in allen drei Karten gleich viele Zeilen (der dritte Satz ist breiter als die Karte, also alle drei balanciert zweizeilig)
+                 '.leistungen-sek .erg-in p{max-width:24ch;text-wrap:balance}'
+                 # Sektionsköpfe der Startseite in EINER Machart (Noah, 15.11.2026): Ohne Lead lief die H2 über die volle
+                 # Breite („Wir lassen unsere Kunden sprechen.“ einzeilig, .stimmen h2 max-width:none), mit Lead nur 16ch.
+                 # Jetzt jede linksbündige H2 höchstens 16ch, text-wrap:balance verhindert ein Einzelwort in der letzten Zeile.
+                 '.sek .kopfzeile:not(.mitte)>h2{max-width:16ch}'
                  '@media (min-width:901px){#kontakt .uk-bild .collage.mit-film{grid-template-columns:repeat(4,1fr);align-content:center}}'
                  '.uk-bild .collage img{background:var(--papier-2,#efe9df)}.uk-bild .collage img.raus{opacity:.35;transform:none}</style>')
 s.vor('<section class="sek laufband" id="gefunden">', LEISTUNGS_SEK)
-s.ersetze('<span class="kicker">Deine Website</span>', '<span class="kicker">Die Ergebnisse · Websites</span>')
+s.ersetze('<span class="kicker">Deine Website</span>', '<span class="kicker">Unsere Websites</span>')
+# Kicker ohne Mittelpunkt, der wirkt maschinell (Noah, 15.11.2026)
+s.ersetze('<span class="kicker">Kostenloses Beratungsgespräch · 30 Min.</span>', '<span class="kicker">Kostenloses Beratungsgespräch</span>')
+# „Wer dahinter steht“: klare Überschrift, „Seit 2019 nur Handwerk“ als Kicker, Noahs Vorstellung als Text (Noah, 15.11.2026)
+NOAH_TEXT = ("Ich bin Noah und in einer Handwerkerfamilie groß geworden. Meine drei Brüder haben alle eine Handwerksausbildung, "
+             "zwei davon den Meister. In der Familie gibt es mehrere Handwerksbetriebe, von der Spenglerei bis zum Tiefbau. "
+             "Deshalb weiß ich, wie ein Betrieb von innen aussieht.")
+s.ersetze('<span class="kicker">Wer dahinter steht</span><h2>Die Leute hinter deinem Auftritt.</h2><p class="lead">Dieselben Leute von Anfang bis Ende.</p>',
+          f'<span class="kicker">Seit 2019 nur Handwerk</span><h2>Du bist auf der Baustelle daheim. Wir im Internet.</h2><p class="lead">{NOAH_TEXT}</p>')
 
 
 def ergebnisse_aktuell(seite):
@@ -150,9 +174,12 @@ def ergebnisse_aktuell(seite):
     seite.h = h
 
 
-s.ersetze('<span class="kicker">Facebook &amp; Instagram</span><h2>Echte Betriebe, echte Zahlen.</h2>',
-          '<span class="kicker">Die Ergebnisse · Kunden und Mitarbeiter</span><h2>Ergebnisse unserer Kunden.</h2>')
+# Einleitung darunter war Füllstoff, die Karten sprechen für sich (Noah, 15.11.2026)
+s.ersetze('<span class="kicker">Facebook &amp; Instagram</span><h2>Echte Betriebe, echte Zahlen.</h2><p class="lead">Werbung im Umkreis des Betriebs. Gezählt ist jede Anfrage und jede Bewerbung, die angekommen ist.</p>',
+          '<span class="kicker">Die Ergebnisse</span><h2>Ergebnisse unserer Kunden.</h2>')
 ergebnisse_aktuell(s)
+assert s.h.count('<h2>So sehen unsere Seiten aus.</h2>') == 1
+s.h = s.h.replace('<h2>So sehen unsere Seiten aus.</h2>', '<h2>Bezugsfertig.</h2>')  # wie auf der Websites-Seite
 s.entwurf()
 s.schreibe(ZIEL / "index.html")
 
@@ -261,8 +288,12 @@ def fertig(seite, slug):
 
 # ── 2 · Websites
 w = unterseite("websites")
-einfach(w, 'Wir bauen deine Website mit Fotos aus deinem Betrieb und einer eigenen Seite je Leistung, damit der Kunde bei dir anruft.', ('Unsere Seiten',))
+einfach(w, 'Wir bauen deine Website mit Fotos aus deinem Betrieb und einer eigenen Seite je Leistung, damit der Kunde bei dir anruft.', ('Unsere Seiten',),
+        fragen_lead='Preis, Dauer und was mit der alten Seite passiert.')
 w.ersetze('<span class="kicker">Unsere Seiten</span><h2>Jedes Gewerk bekommt seine eigene Seite.</h2>', '<span class="kicker">Die Ergebnisse</span><h2>So sehen unsere Seiten aus.</h2>')
+# Füll-Einleitungen auf einen schlichten Satz (Noah, 15.11.2026)
+w.ersetze('<p class="lead">Jede mit Fotos aus dem eigenen Betrieb, jede auf ihr Gewerk und ihren Umkreis gebaut. Fahr über eine Seite, dann scrollt sie durch.</p>',
+          '<p class="lead">Alle live. Tipp eine an.</p>')
 w.nach('<section class="hero-klein">',
        problem('Gute Arbeit, aber keiner findet dich.',
                ['Wer abends dein Gewerk und deinen Ort googelt, findet den Wettbewerber auf Seite 1.', 'Dich findet er auf Seite 3.', 'Die alte Seite kostet dich Anfragen.'],
@@ -298,8 +329,12 @@ einfach(f, 'Wir kommen einen Tag mit Kamera und Drohne zu dir, danach hast du Bi
         ('Am Drehtag entstanden', 'Aus unseren Shootings'))
 hero_knopf(f, "/websites/#arbeiten", "#ergebnisse", "Arbeiten ansehen")
 f.ersetze('<section class="sek band auf-dunkel"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Am Drehtag entstanden</span><h2>Ein Drehtag, daraus der Film für deine Startseite und die Clips für deine Anzeigen.</h2>',
-          '<section class="sek band auf-dunkel" id="ergebnisse"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Die Ergebnisse · Filme</span><h2>Diese Filme sind am Drehtag entstanden.</h2>')
-f.ersetze('<span class="kicker">Aus unseren Shootings</span>', '<span class="kicker">Die Ergebnisse · Fotos</span>')
+          '<section class="sek band auf-dunkel" id="ergebnisse"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Die Filme</span><h2>Diese Filme sind am Drehtag entstanden.</h2>')
+f.ersetze('<span class="kicker">Aus unseren Shootings</span>', '<span class="kicker">Die Fotos</span>')
+f.ersetze('<p class="lead">Der Chef erzählt, die Drohne zeigt den Hof, die Kamera steht an der Maschine. Diese sechs Filme sind so bei unseren Kunden entstanden, gedreht im laufenden Betrieb. Die Fragen schreiben wir vorher, du musst nichts auswendig lernen.</p>',
+          '<p class="lead">Entstanden im laufenden Betrieb unserer Kunden.</p>')
+f.ersetze('<p class="lead">Hallen, Baustellen, Bäder und Werkstätten, von der Zimmerei bis zur Haustechnik. Jedes Bild ist an einem Drehtag bei einem Kunden entstanden, mit den Leuten, die dort arbeiten.</p>',
+          '<p class="lead">Jedes Bild ist an einem Drehtag bei einem Kunden entstanden.</p>')
 f.nach('<section class="hero-klein">',
        problem('Stockfotos wie überall. Der Anruf geht zum Nächsten.',
                ['„Aktuelle Fotos haben wir keine“, hören wir fast in jedem Erstgespräch.', 'Auf der Seite stehen Katalogbilder.', 'Wer vergleicht, erkennt deinen Betrieb nicht wieder.'],
@@ -334,7 +369,8 @@ fertig(n, "neukundengewinnung")
 
 # ── 6 · Mitarbeitergewinnung
 m = unterseite("mitarbeitergewinnung")
-einfach(m, 'Die Guten suchen nicht, also bringen wir deine Stelle dorthin, wo sie jeden Abend sind.', ('Fallstudie · Anlagenmechaniker SHK',))
+einfach(m, 'Die Guten suchen nicht, also bringen wir deine Stelle dorthin, wo sie jeden Abend sind.', ('Fallstudie · Anlagenmechaniker SHK',),
+        fragen_lead='Was es kostet, wie lange es dauert und was du selbst dafür tun musst.')
 hero_knopf(m, "/websites/#arbeiten", "#ergebnisse")
 m.ersetze('<section class="sek grund"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Fallstudie · Anlagenmechaniker SHK</span>',
           '<section class="sek grund" id="ergebnisse"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Die Ergebnisse</span>')
