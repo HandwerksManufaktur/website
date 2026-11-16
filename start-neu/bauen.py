@@ -23,6 +23,50 @@ QUELLE = HIER / "quelle"
 ZIEL = WURZEL if LIVE else HIER
 LIVE_START = (QUELLE / "start.html").read_text()
 
+# Nur Website-Kunden in der SEO-Rangliste (Noah, 16.11.2026: „alle Kunden, die nicht Website-Kunden sind, dürfen wir dort
+# nicht erwähnen. Generell darf [Betrieb] auch nicht erwähnt werden.“). Liste + Grund je Betrieb: system/config/rankings.yaml.
+import yaml
+NICHT_NENNEN = yaml.safe_load((WURZEL.parent.parent / "system/config/rankings.yaml").read_text(encoding="utf-8"))["nicht_auf_hwm_website"]
+
+
+def nur_website_kunden(seite):
+    """Streicht Nicht-Website-Kunden aus Rangliste und „Alle Messungen“, füllt die zwölf Kacheln mit der nächsten
+    Platz-1-Seite auf und rechnet „auf Seite 1“ / „davon auf Platz 1“ / „Alle N Messungen“ aus den übrigen Zeilen."""
+    muster = [m for e in NICHT_NENNEN for m in e["muster"]]
+    weg = lambda li: any(m in li for m in muster)
+    h = seite.h
+    ul = re.search(r'<ul class="seo-liste">(.*?)</ul>', h, re.S)
+    alle = re.findall(r'<li class="[^"]*" style="--i:\d+">.*?</li>', ul.group(1), re.S)
+    zeilen = [z for z in alle if not weg(z)]
+    plaetze = [int(p) for z in zeilen for p in re.findall(r'<span class="platz">Platz (\d+)</span>', z)]
+    seite1, platz1 = sum(p <= 10 for p in plaetze), plaetze.count(1)
+    zeilen = [re.sub(r'--i:\d+', f'--i:{i}', z, 1) for i, z in enumerate(zeilen)]
+    ol = re.search(r'<ol class="rangliste">(.*?)</ol>', h, re.S)
+    kacheln = re.findall(r'<li class="reveal">.*?</li>', ol.group(1), re.S)
+    behalten = [k for k in kacheln if not weg(k)]
+    worte = {re.search(r'<small>(.*?)</small>', k).group(1) for k in behalten}
+    for z in zeilen:
+        if len(behalten) >= len(kacheln): break
+        if '<span class="platz">Platz 1</span>' not in z: continue
+        name, wort = re.search(r'<b>(.*?)</b><small>Suchbegriff: „(.*?)“</small>', z).groups()
+        if wort in worte: continue
+        behalten.append(f'<li class="reveal"><span class="rl-platz">1</span><div><b>{name}</b><small>{wort}</small></div></li>')
+        worte.add(wort)
+    assert len(behalten) == len(kacheln), (len(behalten), len(kacheln))
+    behalten.sort(key=lambda k: re.search(r'<b>(.*?)</b>', k).group(1).casefold())
+    h = h[:ol.start(1)] + ''.join(behalten) + h[ol.end(1):]
+    ul = re.search(r'<ul class="seo-liste">(.*?)</ul>', h, re.S)
+    h = h[:ul.start(1)] + ''.join(zeilen) + h[ul.end(1):]
+    zahlen = iter((seite1, platz1))
+    h, n = re.subn(r'(<div class="rl-zahl"><span class="nr" data-zahl=")\d+(" data-nach="[^"]*">)\d+(</span>)',
+                   lambda m: f'{m.group(1)}{(v := next(zahlen))}{m.group(2)}{v}{m.group(3)}', h)
+    assert n == 2, n
+    h, n = re.subn(r'<b>Alle \d+ Messungen aufklappen</b>', f'<b>Alle {len(zeilen)} Messungen aufklappen</b>', h)
+    assert n == 1, n
+    assert not any(m in h for m in muster), [m for m in muster if m in h]
+    seite.h = h
+    return seite1
+
 # Kontakt-Sektion am Seitenende (Noah, 15.11.2026: „wieso ist da links schon wieder die Sektion kürzer“): am Desktop
 # füllt die Collage genau die Höhe der Textspalte (oben und unten bündig, Raster 4 × 4, Köpfe setzt main.js per data-k),
 # am Handy zwei volle Reihen statt einer angeschnittenen dritten. Dieselbe Regel steht wortgleich in ueber-uns/index.html.
@@ -117,6 +161,9 @@ class Seite:
                                     '@media (max-width:900px){.dsk-br{display:none}}' + KONTAKT_STIL + KARTEN_STIL + '</style></head>', 1)
 
     def schreibe(self, pfad):
+        # Sperre (Noah, 16.11.2026): „Generell darf [Betrieb] auch nicht erwähnt werden“ → kein `ueberall`-Betrieb auf irgendeiner Seite
+        treffer = [m for e in NICHT_NENNEN if e.get("ueberall") for m in e["muster"] if m in self.h]
+        assert not treffer, (pfad, treffer)
         # Sperren (Noah, 15.11.2026): kein Kicker mit Mittelpunkt, keine alte Kundenzahl, keine Bewertungszeile unter den Stimmen
         assert not re.findall(r'<span class="kicker">[^<]*·[^<]*</span>', self.h), (pfad, re.findall(r'<span class="kicker">[^<]*·[^<]*</span>', self.h))
         assert "130 Betriebe" not in self.h and 'class="zusammen' not in self.h, pfad
@@ -306,7 +353,7 @@ FASSUNG = {
                  ('<h2>So sehen unsere Seiten aus.</h2>', '<h2>Bezugsfertig.</h2>')],
     "suchmaschinenoptimierung": [('<h1>Dein nächster Kunde googelt gerade.</h1>', '<h1>Ganz oben ist dein Platz.</h1>'),
                  ('<h2>Den Weg nach vorn übernehmen wir.</h2>', '<h2>Vom ersten Suchwort bis Seite 1.</h2>'),
-                 ('<h2>77 Kundenseiten stehen auf Seite 1.</h2>', '<h2>77-mal Richtfest.</h2><p class="lead">77 Kundenseiten stehen bei Google auf Seite 1.</p>')],
+                 ('<h2>{SEITE1} Kundenseiten stehen auf Seite 1.</h2>', '<h2>{SEITE1}-mal Richtfest.</h2><p class="lead">{SEITE1} Kundenseiten stehen bei Google auf Seite 1.</p>')],
     "foto-video": [('<h1>Fotos, auf denen man deinen Betrieb wiedererkennt.</h1>', '<h1>Wir setzen dein Handwerk ins Licht.</h1>'),
                  ('<h2>Den Drehtag übernehmen wir.</h2>', '<h2>Vom ersten Bild bis zum fertigen Film.</h2>'),
                  ('<h2>Diese Filme sind am Drehtag entstanden.</h2>', '<h2>Abgedreht.</h2>')],
@@ -322,6 +369,8 @@ FASSUNG = {
 def fertig(seite, slug):
     ergebnisse_aktuell(seite)
     for alt, neu in FASSUNG.get(slug, []):
+        # Zahl der Seite-1-Kundenseiten rechnet nur_website_kunden() aus der Liste, nie fest verdrahtet (16.11.2026)
+        alt, neu = (x.replace("{SEITE1}", str(globals().get("SEITE1"))) for x in (alt, neu))
         assert seite.h.count(alt) == 1, (slug, alt, seite.h.count(alt))
         seite.h = seite.h.replace(alt, neu)
     seite.entwurf()
@@ -350,11 +399,12 @@ fertig(w, "websites")
 
 # ── 3 · Suchmaschinenoptimierung
 g = unterseite("suchmaschinenoptimierung")
+SEITE1 = nur_website_kunden(g)
 einfach(g, 'Dein nächster Kunde tippt dein Gewerk und deinen Ort ein und ruft den an, der oben steht.', ('Nachgemessen, nicht behauptet',),
         fragen_lead='Wie lange es dauert und ob es auch in der Großstadt geht.')
 hero_knopf(g, "/websites/#arbeiten", "#ergebnisse")
 g.ersetze('<section class="sek grund rangliste-sek"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Nachgemessen, nicht behauptet</span><h2>Wo unsere Kunden bei Google wirklich stehen.</h2>',
-          '<section class="sek grund rangliste-sek" id="ergebnisse"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Die Ergebnisse</span><h2>77 Kundenseiten stehen auf Seite 1.</h2>')
+          f'<section class="sek grund rangliste-sek" id="ergebnisse"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Die Ergebnisse</span><h2>{SEITE1} Kundenseiten stehen auf Seite 1.</h2>')
 g.nach('<section class="hero-klein">',
        problem('Der Wettbewerber steht vor dir.',
                ['Heizung, Bad und Wartung stehen auf einer Seite. Gefunden wird davon nichts.', 'Das Google-Profil ist nicht gepflegt.', 'Die Seite lädt am Handy vier Sekunden und rutscht ab.'],
