@@ -455,22 +455,28 @@ def hero_seo(seite):
 #   sr-resch     Resch Bau 1,37 s (Bohrer an der Bewehrung) + 2,70 s (Laser, zwei Mann) + 6,70 s (Schalung) + 8,03 s (Bewehrung binden)
 #                — Schild am Anfang (0–1,3 s) und Stallhalle (5,3–6,7 s) raus
 #   sr-koller-b  Final 5,48 s (Hof von oben) + 7,28 s (Stapler-Kabine)
-#   sr-kirchner  Drohnenflug Kirchner 0503 0,2 s (Bagger hebt Betonblock, quer)
-#   sr-cs-b      CS Metalldesign 7,97 s (Schleifen am Zylinder) + 9,97 s (Schleifer lacht)
+#   sr-kirchner  Drohnenflug Kirchner 0503 1,9–3,7 s (Bagger hebt Betonblock, quer) — Noah 18.11. abends: „darf drin bleiben, aber nur kurz“
+#   sr-cs-b      CS Metalldesign 7,97 s (Schleifen am Zylinder, 0,92 s) + 9,96–11,90 s (Schleifer lacht, ganze Einstellung, alle
+#                30-fps-Bilder mit 25 fps = 2,33 s) — Noah 18.11. abends: „ein geiles Video“ → mehr Zeit
 #   sr-koller-c  Final 12,68 s (Kappsäge, Gehörschutz) + 14,48 s (Sägeblatt im Balken)
 #   sr-baureize  Baureize 12,67 s (Formatkreissäge) + 20,67 s (grüner Linienlaser)
-# „Baureize, wo er die Treppe hochgeht“ liegt in keinem Drive-Ordner (nur Drohne + fertiger Film) → nicht drin.
 SHOWREEL = [("Zimmerei Koller", "sr-koller-a", 3.44), ("CS Metalldesign", "sr-cs-a", 3.5), ("A. Resch Bau", "sr-resch", 5.02),
-            ("Zimmerei Koller", "sr-koller-b", 3.44), ("Kirchner Thaining", "sr-kirchner", 3.5), ("CS Metalldesign", "sr-cs-b", 3.54),
+            ("Zimmerei Koller", "sr-koller-b", 3.44), ("Kirchner Thaining", "sr-kirchner", 1.8), ("CS Metalldesign", "sr-cs-b", 3.25),
             ("Zimmerei Koller", "sr-koller-c", 3.44), ("Baureize", "sr-baureize", 3.54)]
+SHOWREEL_V = {"sr-kirchner": 2, "sr-cs-b": 2}   # Versionsmarke je neu geschnittener Lage (Browser-Cache)
 assert all(SHOWREEL[i][0] != SHOWREEL[i - 1][0] for i in range(len(SHOWREEL))), "zwei Lagen vom selben Betrieb hintereinander"
 
 
+def _sr_v(html, f):
+    v = SHOWREEL_V.get(f)
+    return html.replace(f'{VID}/{f}.mp4"', f'{VID}/{f}.mp4?v={v}"').replace(f'{VID}/poster/{f}.jpg"', f'{VID}/poster/{f}.jpg?v={v}"') if v else html
+
+
 def hero_foto_video():
-    lagen = "".join(_lage(n, f, i == 0).replace('" data-url=""', f'" data-url="" data-dauer="{round(d * 1000)}"', 1)
+    lagen = "".join(_sr_v(_lage(n, f, i == 0).replace('" data-url=""', f'" data-url="" data-dauer="{round(d * 1000)}"', 1), f)
                     for i, (n, f, d) in enumerate(SHOWREEL))
-    leiste = "".join(f'<button type="button" class="{"an" if i == 0 else ""}" aria-pressed="{"true" if i == 0 else "false"}" aria-label="Film {n} zeigen">'
-                     f'<img src="{VID}/poster/{f}.jpg" alt="" loading="lazy" decoding="async"></button>' for i, (n, f, _) in enumerate(SHOWREEL))
+    leiste = "".join(_sr_v(f'<button type="button" class="{"an" if i == 0 else ""}" aria-pressed="{"true" if i == 0 else "false"}" aria-label="Film {n} zeigen">'
+                     f'<img src="{VID}/poster/{f}.jpg" alt="" loading="lazy" decoding="async"></button>', f) for i, (n, f, _) in enumerate(SHOWREEL))
     return (f'<div class="hk-film" aria-hidden="true">{lagen}</div>'
             '<div class="hk-sucher" aria-hidden="true"><span class="ec"></span><span class="ec"></span><span class="ec"></span><span class="ec"></span>'
             f'<span class="rec"><i></i>REC <b>00:00:00:00</b></span><span class="info">01 / {len(SHOWREEL):02d}</span><span class="mitte"></span></div>'
@@ -535,7 +541,18 @@ def galerie_sek():
     fotos, filme = len(GALERIE["fotos"]), len(GALERIE_FILME)
     pfeil = lambda d: f'<svg viewBox="0 0 24 24"><path d="{d}"/></svg>'
     return ('<section class="sek fv-galerie" id="ergebnisse"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Die Ergebnisse</span>'
-            f'<h2>Abgedreht.</h2><p class="lead">{fotos} Fotos und {filme} Filme aus Drehtagen bei unseren Kunden.</p></div>'
+            f'<h2>Abgedreht.</h2><p class="fv-klappe" aria-hidden="true"><i></i>REC <b>00:00:00:00</b></p></div>'
+            # Noah, 18.11.2026: Zahl-Zeile rechts raus („ist scheiße“), dafür eine Klappe im Stil des Showreel-Suchers
+            '<style>.fv-galerie .kopfzeile{display:grid!important;grid-template-columns:minmax(0,1fr) auto;align-items:end;column-gap:24px;row-gap:14px;max-width:none}'
+            '.fv-galerie .kopfzeile>.kicker{grid-column:1/-1}'
+            '.fv-galerie h2{font-size:clamp(56px,9vw,148px);line-height:.88;letter-spacing:-.045em;margin:0}.fv-galerie h2::before{display:none}'
+            '.fv-klappe{display:flex;align-items:center;gap:14px;margin:0 0 .5em;font:700 clamp(20px,2.4vw,36px)/1 var(--schrift);letter-spacing:.06em;font-variant-numeric:tabular-nums;color:var(--tinte)}'
+            '.fv-klappe i{width:.5em;height:.5em;border-radius:50%;background:#E5483A;box-shadow:0 0 14px rgba(229,72,58,.6);animation:hk-rec 1.2s steps(1) infinite}'
+            '.fv-klappe b{font-weight:700;color:var(--bronze-tief)}'
+            '@media (max-width:700px){.fv-galerie .kopfzeile{grid-template-columns:1fr}.fv-klappe{margin:0}}'
+            '@media (prefers-reduced-motion:reduce){.fv-klappe i{animation:none}}</style>'
+            '<script>(()=>{const b=document.querySelector(".fv-klappe b");if(!b||matchMedia("(prefers-reduced-motion: reduce)").matches)return;const t0=performance.now();'
+            'const z=n=>String(n).padStart(2,"0");const lauf=t=>{const f=Math.floor((t-t0)/40),s=Math.floor(f/25);b.textContent=z(Math.floor(s/3600))+":"+z(Math.floor(s/60)%60)+":"+z(s%60)+":"+z(f%25);requestAnimationFrame(lauf)};requestAnimationFrame(lauf)})()</script>'
             f'<div class="fv-raster">{alle}</div></div></section>'
             '<dialog class="fv-licht" aria-label="Lichtkasten"><div class="lk-buehne"></div><div class="lk-fuss"><div><b></b><span></span></div><span class="lk-zahl"></span></div>'
             f'<button type="button" class="lk-knopf lk-zu" aria-label="Schließen">{pfeil("M6 6l12 12M18 6 6 18")}</button>'
@@ -570,32 +587,40 @@ s.ersetze('<p class="lead">Website, Fotos und Social-Media-Werbung für Handwerk
 # Rechte Hero-Säule (Noah, 18.11.2026): „wo jetzt Anfragen und Bewerbungen steht, sollten … die Interviews, also wie auf der
 # SHK-Seite … dieses Ding, wo die ganzen Kunden drin sind, wo das dann immer switcht“ → der Kunden-Zusammenschnitt der
 # SHK-Seite (firma/website-shk/assets/reels/kunden-szenen.mp4, jeder Betrieb einmal, Match Cut) statt des Drohnen-Clips.
-s.h = s.h.replace('/static/assets/vid/saeule/baureize.jpg', '/static/assets/vid/saeule/kunden-shk.jpg?v=1')
+# Noah 18.11. abends: „nur der Ausschnitt von Patrick“ wird getauscht (alle anderen Stellen bleiben) → Szene 1 jetzt Sussmann Hooks (34)
+# ab 0,9 s (Patrick redet im Lager, Kopf ganz im Bild, gleiche Match-Cut-Lage 50 %/21,5 %), Szenen 2–8 Bild für Bild aus
+# firma/website-shk/neu/video/szenen/*.mp4 (SHK-Seite selbst unverändert).
+s.h = s.h.replace('/static/assets/vid/saeule/baureize.jpg', '/static/assets/vid/saeule/kunden-shk.jpg?v=2')
 s.ersetze('data-src="/static/assets/vid/saeule/baureize-d.mp4" data-src-mobil="/static/assets/vid/saeule/baureize-m.mp4"',
-          'data-src="/static/assets/vid/saeule/kunden-shk-d.mp4?v=1" data-src-mobil="/static/assets/vid/saeule/kunden-shk-m.mp4?v=1"')
+          'data-src="/static/assets/vid/saeule/kunden-shk-d.mp4?v=2" data-src-mobil="/static/assets/vid/saeule/kunden-shk-m.mp4?v=2"')
 assert 'baureize' not in s.h.split('<div class="saeulen">', 1)[1].split('</div></div></div>', 1)[0]
 # Noah, 18.11.2026: „das Video soll schon das ganz ausfüllen, aber … nicht, dass der Kopf … abgeschnitten ist“ → in den
 # Originalen sitzt der Kopf ganz oben → weiter gefilmte Takes (start-neu/kunden_szenen_saeule.py), Beschriftung wieder oben.
-s.h = s.h.replace('</head>', '<style>/* Noah 18.11.: Logo wie bei den Website-Konzepten „100 Mal dahinter“, nicht in Sektionen gedacht → ein Muster über die ganze helle Seite */main{background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22168%22%20height%3D%22168%22%20viewBox%3D%220%200%20168%20168%22%3E%3Cg%20fill%3D%22%23C8873A%22%20fill-opacity%3D%22.06%22%20transform%3D%22translate%2824%2026%29%20scale%28.3%29%22%3E%3Cpath%20d%3D%22M0%2C39.667%20L22%2C25%20L22%2C91%20L0%2C91%20Z%22/%3E%3Cpath%20d%3D%22M34%2C14.667%20L56%2C0%20L56%2C91%20L34%2C91%20L34%2C64.67%20L27%2C68%20L27%2C53.667%20L34%2C49%20Z%22/%3E%3Cpath%20d%3D%22M61%2C14.667%20L83%2C0%20L83%2C91%20L61%2C91%20Z%22/%3E%3C/g%3E%3Cg%20fill%3D%22%23C8873A%22%20fill-opacity%3D%22.045%22%20transform%3D%22translate%28108%20110%29%20scale%28.22%29%22%3E%3Cpath%20d%3D%22M0%2C39.667%20L22%2C25%20L22%2C91%20L0%2C91%20Z%22/%3E%3Cpath%20d%3D%22M34%2C14.667%20L56%2C0%20L56%2C91%20L34%2C91%20L34%2C64.67%20L27%2C68%20L27%2C53.667%20L34%2C49%20Z%22/%3E%3Cpath%20d%3D%22M61%2C14.667%20L83%2C0%20L83%2C91%20L61%2C91%20Z%22/%3E%3C/g%3E%3C/svg%3E");background-size:168px 168px;background-repeat:repeat}/* große Signets laufen unten weich aus statt an der Sektionskante abzubrechen */.sg-buehne{-webkit-mask-image:linear-gradient(to bottom,#000 55%,transparent 96%);mask-image:linear-gradient(to bottom,#000 55%,transparent 96%)}.sg-ruhe{height:min(82%,820px)}/* Lead neben der Überschrift auf derselben Grundlinie */.sek .kopfzeile:has(>h2+.lead)>h2,.sek .kopfzeile:has(>h2+.lead)>.lead{align-self:last baseline!important;margin-bottom:0!important}</style>' + '</head>', 1)
+s.h = s.h.replace('</head>', '<style>/* Noah 18.11.: Logo wie bei den Website-Konzepten „100 Mal dahinter“, nicht in Sektionen gedacht → ein Muster über die ganze helle Seite */main{background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22168%22%20height%3D%22168%22%20viewBox%3D%220%200%20168%20168%22%3E%3Cg%20fill%3D%22%23C8873A%22%20fill-opacity%3D%22.12%22%20transform%3D%22translate%2824%2026%29%20scale%28.3%29%22%3E%3Cpath%20d%3D%22M0%2C39.667%20L22%2C25%20L22%2C91%20L0%2C91%20Z%22/%3E%3Cpath%20d%3D%22M34%2C14.667%20L56%2C0%20L56%2C91%20L34%2C91%20L34%2C64.67%20L27%2C68%20L27%2C53.667%20L34%2C49%20Z%22/%3E%3Cpath%20d%3D%22M61%2C14.667%20L83%2C0%20L83%2C91%20L61%2C91%20Z%22/%3E%3C/g%3E%3Cg%20fill%3D%22%23C8873A%22%20fill-opacity%3D%22.085%22%20transform%3D%22translate%28108%20110%29%20scale%28.22%29%22%3E%3Cpath%20d%3D%22M0%2C39.667%20L22%2C25%20L22%2C91%20L0%2C91%20Z%22/%3E%3Cpath%20d%3D%22M34%2C14.667%20L56%2C0%20L56%2C91%20L34%2C91%20L34%2C64.67%20L27%2C68%20L27%2C53.667%20L34%2C49%20Z%22/%3E%3Cpath%20d%3D%22M61%2C14.667%20L83%2C0%20L83%2C91%20L61%2C91%20Z%22/%3E%3C/g%3E%3C/svg%3E");background-size:168px 168px;background-repeat:repeat}/* große Signets laufen unten weich aus statt an der Sektionskante abzubrechen */.sg-wachsen{top:auto!important;bottom:0;height:min(96%,1000px)!important}.sg-ruhe{top:auto!important;bottom:0;height:min(92%,880px)!important;transform:translateX(-50%)!important}.sg-wachsen{opacity:1!important}.sg-wachsen .sg-k{fill:var(--tinte)!important;fill-opacity:.07}.sg-wachsen .sg-l{stroke:var(--tinte)!important;opacity:.22!important}.sg-ruhe .sg-fuell{fill:var(--tinte)!important;opacity:.06!important}.sg-ruhe .sg-umriss{stroke:var(--tinte)!important;opacity:.35!important}@media (max-width:760px){.sg-wachsen{height:auto!important;width:min(70vw,320px)}.sg-ruhe{height:auto!important;width:min(84vw,360px)}}/* Lead neben der Überschrift auf derselben Grundlinie */.sek .kopfzeile:has(>h2+.lead)>h2,.sek .kopfzeile:has(>h2+.lead)>.lead{align-self:last baseline!important;margin-bottom:0!important}@media (min-width:901px){.sek .kopfzeile:has(>h2+.lead)>.lead{justify-self:end;text-align:right}}</style>' + '</head>', 1)
 s.h = s.h.replace('</head>', '<style>.saeule:nth-child(3) video{object-position:50% 0;transform:none}.saeule:nth-child(3) .etikett{display:none}</style></head>', 1)
-# Noah 18.11.: „Wir hatten doch beim SHK-Video die perfekten Stellen“ → das SHK-Video unverändert (kunden-shk-*.mp4 = firma/website-shk/assets/reels/kunden-szenen.mp4),
+# Noah 18.11.: „Wir hatten doch beim SHK-Video die perfekten Stellen“ → das SHK-Video (kunden-shk-*.mp4 = firma/website-shk/assets/reels/kunden-szenen.mp4, seit 18.11. abends nur Patricks Szene getauscht),
 # oben verankert (Kopf nie angeschnitten). Die Köpfe sitzen dort weit oben; eine Beschriftung oben läge auf der Stirn → in dieser Säule ohne Beschriftung.
 # Linke + mittlere Hero-Säule (Noah, 18.11.2026): „links machen wir das mit den Drohnen, dass die Drohnen geschnitten werden
 # … eine von Kreitner, eine kurze Stelle, wo man Leute sieht“ / Mitte „die vor Ort gedrehten Sachen … Detailaufnahmen von
 # Resch, Koller, Kirchner, Baureize“. Beide aus Kundenmaterial geschnitten (Drive-Rohmaterial, 600×800 Desktop, Handy 360×480
 # bzw. 360×640, stumm), Quelle/Sekunde je Clip:
-#   drohnen-*  (harte Schnitte, je 1,55 s): Koller Hof von oben (Final 5,6 s) · Wohner PV-Dach (Drohnenvideo 2, 8,2 s) ·
+#   drohnen-*  (harte Schnitte, je 1,55 s; Stand 18.11. abends: Koller-Pickup und Kirchner raus, Wohner ruhiger):
+#              Koller Dachstuhl-Überflug (Drive Leistungen/DJI_0510, 4,5 s) · Wohner Fahrt schräg aufs PV-Dach (Drohnenvideo 10, 0,3 s) ·
 #              Kreitner Werkstattflug mit Mitarbeitern (Kreitner Video 0,8 s) · Baureize Halle (DJI_…0013, 4,2 s) ·
-#              Koller Ortsansicht (Final 18,15 s) · Kirchner Bagger am Brecher (dji_…0503, 1,0 s) · CS Metalldesign Hallenflug (Drohne 1,0 s)
-#   details-*  (0,4 s Überblendung): Koller Bohrer in Spänen (Final 9,1 s) · Resch Bewehrung binden (Resch Bau 8,0 s) ·
-#              CS Schweißen (CS Metalldesign 2,05 s) · Koller Werkzeugbank (Final 21,7 s) · Baureize Brandstempel (Baureize 1,2 s) ·
-#              Kirchner Brecherzange (hero-orig 2,05 s, Laufschrift unten weggeschnitten)
-s.h = s.h.replace('/static/assets/vid/saeule/kreitner.jpg', '/static/assets/vid/saeule/drohnen.jpg?v=1')
+#              Koller Ortsansicht (Final 18,15 s) · CS Metalldesign Hallenflug (Drohne 1,0 s)
+#   details-*  (0,4 s Überblendung; Stand 18.11. abends: Kirchner raus, Baureize Treppe rein): Koller Bohrer in Spänen (Final 9,1 s) ·
+#              Resch Bewehrung binden (Resch Bau 8,0 s) · Wolfgang Reize geht die Treppe hoch (Rohmaterial C1430, 0,18–0,80 s mit
+#              halber Geschwindigkeit, nur dort ist der Kopf ganz im Bild) · CS Schweißen (CS Metalldesign 2,05 s) ·
+#              Koller Werkzeugbank (Final 21,7 s) · Baureize Brandstempel (Baureize 1,2 s)
+s.h = s.h.replace('/static/assets/vid/saeule/kreitner.jpg', '/static/assets/vid/saeule/drohnen.jpg?v=2')
 s.ersetze('data-src="/static/assets/vid/saeule/kreitner-d.mp4" data-src-mobil="/static/assets/vid/saeule/kreitner-m.mp4"',
-          'data-src="/static/assets/vid/saeule/drohnen-d.mp4?v=1" data-src-mobil="/static/assets/vid/saeule/drohnen-m.mp4?v=1"')
-s.h = s.h.replace('/static/assets/vid/saeule/hero-loop.jpg', '/static/assets/vid/saeule/details.jpg?v=1')
+          'data-src="/static/assets/vid/saeule/drohnen-d.mp4?v=2" data-src-mobil="/static/assets/vid/saeule/drohnen-m.mp4?v=2"')
+s.h = s.h.replace('/static/assets/vid/saeule/hero-loop.jpg', '/static/assets/vid/saeule/details.jpg?v=2')
 s.ersetze('data-src="/static/assets/vid/saeule/hero-loop-d.mp4" data-src-mobil="/static/assets/vid/saeule/hero-loop-m.mp4"',
-          'data-src="/static/assets/vid/saeule/details-d.mp4?v=1" data-src-mobil="/static/assets/vid/saeule/details-m.mp4?v=1"')
+          'data-src="/static/assets/vid/saeule/details-d.mp4?v=2" data-src-mobil="/static/assets/vid/saeule/details-m.mp4?v=2"')
+# Treppe: Wolfgangs Hinterkopf sitzt im Rohmaterial ganz oben → mittlere Säule ohne Scroll-Zoom (wie rechts), sonst schneidet
+# der vergrößerte Rand den Haaransatz ab.
+s.h = s.h.replace('</head>', '<style>.saeule:nth-child(2) video{object-position:50% 0;transform:none}</style></head>', 1)
 s.heraus('<section class="sek system-sek" id="system"')
 s.heraus('<section class="sek grund lagen-sek probleme pb-sek">')
 s.heraus('<section class="sek google grund">')
@@ -614,9 +639,9 @@ LEISTUNGS_SEK = ('<section class="sek leistungen-sek sg-sek" id="system">' + SIG
                  # Fette Zeile = abgenommene H1 der Unterseite, Text je ein kurzer Satz (Noah, 15.11.2026)
                  + karte("zimmerei-schneider", "Zwei Zimmerer von Zimmerei Schneider in der Werkstatt", "50% 30%", "Website", "Wir bauen. Du ziehst ein.",
                          "Eine Seite je Leistung, mit deinem Ort drin.", "websites", "Mehr zur Website")
-                 + karte("senftleben-team-wagen", "Das Team von Senftleben Haustechnik vor den Firmenwagen", "50% 30%", "Neue Kunden", "Wir füllen dein Auftragsbuch.",
+                 + karte("senftleben-team-wagen", "Das Team von Senftleben Haustechnik vor den Firmenwagen", "50% 30%", "Neue Kunden", "Du fährst hin. Den Rest machen wir.",
                          "Anfragen aus deinem Umkreis, direkt an dich.", "neukundengewinnung", "Mehr zu neuen Kunden")
-                 + karte("erwin-schmidt-team", "Das Team von Erwin Schmidt &amp; Sohn", "50% 30%", "Neue Mitarbeiter", "Verstärkung ist unterwegs.",
+                 + karte("erwin-schmidt-team", "Das Team von Erwin Schmidt &amp; Sohn", "50% 30%", "Neue Mitarbeiter", "Wir suchen. Du stellst ein.",
                          "Bewerbungen von Fachkräften aus deinem Umkreis.", "mitarbeitergewinnung", "Mehr zu neuen Mitarbeitern")
                  + f'</div><p class="leistungen-zusatz reveal">Die Fotos und Videos dafür drehen wir bei dir im Betrieb. <a class="textlink" href="/foto-video/">Foto &amp; Video {PFEIL}</a></p></div></section>'
                  '<style>/* Entwurf (start-neu/bauen.py) */.leistungen-zusatz{margin-top:28px;font-size:17px;line-height:1.5;color:var(--tinte-2)}'
@@ -754,10 +779,10 @@ FASSUNG = {
                  ('<h2>{SEITE1} Kundenseiten stehen auf Seite 1.</h2>', '<h2>{SEITE1}-mal Richtfest.</h2><p class="lead">{SEITE1} Kundenseiten stehen bei Google auf Seite 1.</p>')],
     "foto-video": [('<h1>Fotos, auf denen man deinen Betrieb wiedererkennt.</h1>', '<h1>Wir setzen dein Handwerk ins Licht.</h1>'),
                  ('<h2>Den Drehtag übernehmen wir.</h2>', '<h2>Vom ersten Bild bis zum fertigen Film.</h2>')],
-    "neukundengewinnung": [('<h1>Die Aufträge, die du willst. Nur für deinen Betrieb.</h1>', '<h1>Wir füllen dein Auftragsbuch.</h1>'),
+    "neukundengewinnung": [('<h1>Die Aufträge, die du willst. Nur für deinen Betrieb.</h1>', '<h1>Du fährst hin.<br> Den Rest machen wir.</h1>'),
                  ('<h2>Die Anzeigen übernehmen wir.</h2>', '<h2>Von der Anzeige bis zum Aufmaß.</h2>'),
                  ('<h2>„Dass so schnell so viele Anfragen kommen, hätte ich nicht gedacht.“</h2>', '<h2>Schwarz auf weiß.</h2><p class="lead">„Dass so schnell so viele Anfragen kommen, hätte ich nicht gedacht.“</p>')],
-    "mitarbeitergewinnung": [('<h1>Leute, die bei dir anfangen wollen. Aus deinem Umkreis.</h1>', '<h1>Verstärkung ist unterwegs.</h1>'),
+    "mitarbeitergewinnung": [('<h1>Leute, die bei dir anfangen wollen. Aus deinem Umkreis.</h1>', '<h1>Wir suchen.<br> Du stellst ein.</h1>'),
                  ('<h2>Die Suche übernehmen wir.</h2>', '<h2>Von der Anzeige bis zum Handschlag.</h2>'),
                  ('<h2>„Wir haben nur nicht gedacht, dass es so viele sind.“</h2>', '<h2>25 Bewerbungen. 4 Wochen. 1 Neuer.</h2><p class="lead">„Wir haben nur nicht gedacht, dass es so viele sind.“</p>')],
 }
