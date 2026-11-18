@@ -1,11 +1,11 @@
 """Kunden-Zusammenschnitt für die rechte Hero-Säule der HWM-Startseite (Noah, 18.11.2026).
 
-„wenn die Kunden da drin sind … können sie ruhig ein bisschen kleiner sein, also so weit weg wie möglich. Der Kopf von
-denen sollte eigentlich eher mittig beim rechten Balken sein“. Die Originale (alle Hochformat) haben den Kopf bei 20–33 %
-der Höhe — darum: jede Szene verkleinert, Kopf bei KOPF_Y der Säule und überall gleich groß (Match Cut), der Rand ist
-dieselbe Szene weichgezeichnet und abgedunkelt, die Kante des scharfen Bildes läuft weich aus.
-Szenen, Reihenfolge, Startbilder: firma/website-shk/neu/video/kunden_szenen.py (SZENEN), Köpfe gemessen mit dessen
-gesichter()/ruhigste_sekunde(). Aufruf (System-python3 wegen OpenCV):
+1) „können sie ruhig ein bisschen kleiner sein, also so weit weg wie möglich“ · 2) nach dem Versuch mit weichgezeichnetem
+Rand: „Nein, das Video soll schon das ganz ausfüllen, aber es sollte halt nicht so sein, dass der Kopf … abgeschnitten ist“.
+Also: jede Szene im VOLLEN Originalbild ohne Zoom (weiter weg geht nicht, ohne Rand anzustückeln), randvoll im Format der
+Säule (540 × 1056), seitlich auf den Kopf gemittelt. Kein Weichzeichner-Rand, kein Kasten.
+Prüfung: Kopf je Szene ganz im Bild und unterhalb der schrägen Oberkante + Etikett der Säule (KOPF_OBEN_MIN).
+Szenen, Reihenfolge, Startbilder: firma/website-shk/neu/video/kunden_szenen.py (SZENEN). Aufruf (System-python3 wegen OpenCV):
   SZENEN_CACHE=<ordner mit Fenstern> /usr/bin/python3 firma/website/start-neu/kunden_szenen_saeule.py
 """
 import json, os, subprocess, sys, tempfile
@@ -29,26 +29,20 @@ def maske(w, h, rand):
     return m.filter(ImageFilter.GaussianBlur(min(rx, ry) * 0.7))
 
 
+KOPF_OBEN_MIN = 0.12   # schräge Oberkante (9 %) der Säule; darüber wäre der Kopf angeschnitten
+
+
 def szene(sz, kopf, aus):
     fen = Path(kopf['datei']); s = kopf['start']
-    fh = round(KOPF_H * H / kopf['h']); fw = round(fh * kopf['W'] / kopf['H'])
-    x0 = round(W / 2 - kopf['cx'] * fw); y0 = round(KOPF_Y * H - kopf['cy'] * fh)
-    with tempfile.TemporaryDirectory() as d:
-        subprocess.run(['ffmpeg', '-v', 'error', '-i', str(fen), '-vf', f"select='between(n\\,{s}\\,{s + k.BILDER - 1})',setpts=N/30/TB,scale={fw}:{fh}:flags=lanczos",
-                        '-frames:v', str(k.BILDER), f'{d}/f_%03d.png'], check=True)
-        rand = max(24, fw // 12); mk = maske(fw, fh, rand)
-        for p in sorted(Path(d).glob('f_*.png')):
-            fg = Image.open(p).convert('RGB')
-            s_bg = max(W / fw, H / fh) * 1.08
-            bg = fg.resize((round(fw * s_bg), round(fh * s_bg)), Image.BILINEAR)
-            bx, by = round(W / 2 - kopf['cx'] * bg.width), round(H / 2 - kopf['cy'] * bg.height)
-            bx = min(0, max(W - bg.width, bx)); by = min(0, max(H - bg.height, by))
-            leinwand = Image.new('RGB', (W, H), (22, 19, 14))
-            leinwand.paste(ImageEnhance.Brightness(bg.filter(ImageFilter.GaussianBlur(28))).enhance(0.34), (bx, by))
-            leinwand.paste(fg, (x0, y0), mk)
-            leinwand.save(Path(d) / ('o_' + p.name))
-        subprocess.run(['ffmpeg', '-v', 'error', '-y', '-framerate', '30', '-i', f'{d}/o_f_%03d.png', '-c:v', 'libx264', '-crf', '16', '-pix_fmt', 'yuv420p', str(aus)], check=True)
-    return fw, fh, x0, y0
+    sw, sh = kopf['W'], kopf['H']
+    ch = sh; cw = round(sh * W / H)
+    if cw > sw: cw, ch = sw, round(sw * H / W)
+    x0 = min(max(0, round(kopf['cx'] * sw - cw / 2)), sw - cw); y0 = 0
+    vf = (f"select='between(n\\,{s}\\,{s + k.BILDER - 1})',setpts=N/30/TB,crop={cw}:{ch}:{x0}:{y0},"
+          f"scale={W}:{H}:flags=lanczos,setsar=1,format=yuv420p")
+    subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', str(fen), '-vf', vf, '-frames:v', str(k.BILDER), '-r', '30', '-an',
+                    '-c:v', 'libx264', '-crf', '16', '-preset', 'slow', str(aus)], check=True)
+    return cw, ch, x0, y0
 
 
 def main():
@@ -71,7 +65,8 @@ def main():
             f = [x for x in kd[i * k.BILDER:(i + 1) * k.BILDER] if x]
             if not f: print('  ⚠️', k.sid(sz), 'kein Kopf erkannt'); continue
             m = lambda key: sorted(x[key] for x in f)[len(f) // 2]
-            print(f"  {k.sid(sz):24s} Kopf x={m('cx'):.2f} y={m('cy'):.2f} h={m('h'):.3f} ({len(f)}/{k.BILDER} Bilder frontal)")
+            oben = m('cy') - m('h') / 2
+            print(f"  {k.sid(sz):24s} Kopf x={m('cx'):.2f} y={m('cy'):.2f} h={m('h'):.3f} Oberkante={oben:.3f} {'✓' if oben >= KOPF_OBEN_MIN else '✗ ZU HOCH'} ({len(f)}/{k.BILDER} frontal)")
 
 
 if __name__ == '__main__':

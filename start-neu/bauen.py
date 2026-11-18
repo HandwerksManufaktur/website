@@ -351,10 +351,13 @@ s.ersetze('<p class="lead">Website, Fotos und Social-Media-Werbung für Handwerk
 # Rechte Hero-Säule (Noah, 18.11.2026): „wo jetzt Anfragen und Bewerbungen steht, sollten … die Interviews, also wie auf der
 # SHK-Seite … dieses Ding, wo die ganzen Kunden drin sind, wo das dann immer switcht“ → der Kunden-Zusammenschnitt der
 # SHK-Seite (firma/website-shk/assets/reels/kunden-szenen.mp4, jeder Betrieb einmal, Match Cut) statt des Drohnen-Clips.
-s.h = s.h.replace('/static/assets/vid/saeule/baureize.jpg', '/static/assets/vid/saeule/kunden-szenen.jpg?v=2')
+s.h = s.h.replace('/static/assets/vid/saeule/baureize.jpg', '/static/assets/vid/saeule/kunden-szenen.jpg?v=3')
 s.ersetze('data-src="/static/assets/vid/saeule/baureize-d.mp4" data-src-mobil="/static/assets/vid/saeule/baureize-m.mp4"',
-          'data-src="/static/assets/vid/saeule/kunden-szenen-d.mp4?v=2" data-src-mobil="/static/assets/vid/saeule/kunden-szenen-m.mp4?v=2"')
+          'data-src="/static/assets/vid/saeule/kunden-szenen-d.mp4?v=3" data-src-mobil="/static/assets/vid/saeule/kunden-szenen-m.mp4?v=3"')
 assert 'baureize' not in s.h.split('<div class="saeulen">', 1)[1].split('</div></div></div>', 1)[0]
+# Noah, 18.11.2026: „das Video soll schon das ganz ausfüllen, aber … nicht, dass der Kopf … abgeschnitten ist“ → in den
+# Originalen sitzt der Kopf ganz oben; die Beschriftung dieser Säule steht deshalb unten, damit sie nie auf einem Gesicht liegt.
+s.h = s.h.replace('</head>', '<style>.saeule:nth-child(3) .etikett{top:auto;bottom:clamp(220px,30vh,300px)}</style></head>', 1)
 s.heraus('<section class="sek system-sek" id="system"')
 s.heraus('<section class="sek grund lagen-sek probleme pb-sek">')
 s.heraus('<section class="sek google grund">')
