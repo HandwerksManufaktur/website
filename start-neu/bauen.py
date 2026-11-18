@@ -552,7 +552,7 @@ s.ersetze('data-src="/static/assets/vid/saeule/baureize-d.mp4" data-src-mobil="/
 assert 'baureize' not in s.h.split('<div class="saeulen">', 1)[1].split('</div></div></div>', 1)[0]
 # Noah, 18.11.2026: „das Video soll schon das ganz ausfüllen, aber … nicht, dass der Kopf … abgeschnitten ist“ → in den
 # Originalen sitzt der Kopf ganz oben; die Beschriftung dieser Säule steht deshalb unten, damit sie nie auf einem Gesicht liegt.
-s.h = s.h.replace('</head>', '<style>.saeule:nth-child(3) .etikett{top:auto;bottom:clamp(220px,30vh,300px)}</style></head>', 1)
+s.h = s.h.replace('</head>', '<style>.saeule:nth-child(3) video{object-position:50% 0}.saeule:nth-child(3) .etikett{top:auto;bottom:clamp(220px,30vh,300px)}</style></head>', 1)  # Noah 18.11.: Kopf nie oben angeschnitten (breite Fenster schneiden sonst oben ab), Beschriftung wieder oben
 s.heraus('<section class="sek system-sek" id="system"')
 s.heraus('<section class="sek grund lagen-sek probleme pb-sek">')
 s.heraus('<section class="sek google grund">')
