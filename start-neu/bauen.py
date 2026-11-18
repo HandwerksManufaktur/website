@@ -597,7 +597,7 @@ assert 'baureize' not in s.h.split('<div class="saeulen">', 1)[1].split('</div><
 # Noah, 18.11.2026: „das Video soll schon das ganz ausfüllen, aber … nicht, dass der Kopf … abgeschnitten ist“ → in den
 # Originalen sitzt der Kopf ganz oben → weiter gefilmte Takes (start-neu/kunden_szenen_saeule.py), Beschriftung wieder oben.
 s.h = s.h.replace('</head>', '<style>/* Noah 18.11.: Logo wie bei den Website-Konzepten „100 Mal dahinter“, nicht in Sektionen gedacht → ein Muster über die ganze helle Seite */main{background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22168%22%20height%3D%22168%22%20viewBox%3D%220%200%20168%20168%22%3E%3Cg%20fill%3D%22%23C8873A%22%20fill-opacity%3D%22.12%22%20transform%3D%22translate%2824%2026%29%20scale%28.3%29%22%3E%3Cpath%20d%3D%22M0%2C39.667%20L22%2C25%20L22%2C91%20L0%2C91%20Z%22/%3E%3Cpath%20d%3D%22M34%2C14.667%20L56%2C0%20L56%2C91%20L34%2C91%20L34%2C64.67%20L27%2C68%20L27%2C53.667%20L34%2C49%20Z%22/%3E%3Cpath%20d%3D%22M61%2C14.667%20L83%2C0%20L83%2C91%20L61%2C91%20Z%22/%3E%3C/g%3E%3Cg%20fill%3D%22%23C8873A%22%20fill-opacity%3D%22.085%22%20transform%3D%22translate%28108%20110%29%20scale%28.22%29%22%3E%3Cpath%20d%3D%22M0%2C39.667%20L22%2C25%20L22%2C91%20L0%2C91%20Z%22/%3E%3Cpath%20d%3D%22M34%2C14.667%20L56%2C0%20L56%2C91%20L34%2C91%20L34%2C64.67%20L27%2C68%20L27%2C53.667%20L34%2C49%20Z%22/%3E%3Cpath%20d%3D%22M61%2C14.667%20L83%2C0%20L83%2C91%20L61%2C91%20Z%22/%3E%3C/g%3E%3C/svg%3E");background-size:168px 168px;background-repeat:repeat}/* große Signets laufen unten weich aus statt an der Sektionskante abzubrechen */.sg-wachsen{top:auto!important;bottom:0;height:min(96%,1000px)!important}.sg-ruhe{top:auto!important;bottom:0;height:min(92%,880px)!important;transform:translateX(-50%)!important}.sg-wachsen{opacity:1!important}.sg-wachsen .sg-k{fill:var(--tinte)!important;fill-opacity:.07}.sg-wachsen .sg-l{stroke:var(--tinte)!important;opacity:.22!important}.sg-ruhe .sg-fuell{fill:var(--tinte)!important;opacity:.06!important}.sg-ruhe .sg-umriss{stroke:var(--tinte)!important;opacity:.35!important}@media (max-width:760px){.sg-wachsen{height:auto!important;width:min(70vw,320px)}.sg-ruhe{height:auto!important;width:min(84vw,360px)}}/* Lead neben der Überschrift auf derselben Grundlinie */.sek .kopfzeile:has(>h2+.lead)>h2,.sek .kopfzeile:has(>h2+.lead)>.lead{align-self:last baseline!important;margin-bottom:0!important}@media (min-width:901px){.sek .kopfzeile:has(>h2+.lead)>.lead{justify-self:end;text-align:right}}</style>' + '</head>', 1)
-s.h = s.h.replace('</head>', '<style>.saeule:nth-child(3) video{object-position:50% 0;transform:none}.saeule:nth-child(3) .etikett{display:none}</style></head>', 1)
+s.h = s.h.replace('</head>', '<style>.saeule:nth-child(3) video{object-position:50% 0;transform:none}</style></head>', 1)
 # Noah 18.11.: „Wir hatten doch beim SHK-Video die perfekten Stellen“ → das SHK-Video (kunden-shk-*.mp4 = firma/website-shk/assets/reels/kunden-szenen.mp4, seit 18.11. abends nur Patricks Szene getauscht),
 # oben verankert (Kopf nie angeschnitten). Die Köpfe sitzen dort weit oben; eine Beschriftung oben läge auf der Stirn → in dieser Säule ohne Beschriftung.
 # Linke + mittlere Hero-Säule (Noah, 18.11.2026): „links machen wir das mit den Drohnen, dass die Drohnen geschnitten werden
@@ -608,19 +608,17 @@ s.h = s.h.replace('</head>', '<style>.saeule:nth-child(3) video{object-position:
 #              Koller Dachstuhl-Überflug (Drive Leistungen/DJI_0510, 4,5 s) · Wohner Fahrt schräg aufs PV-Dach (Drohnenvideo 10, 0,3 s) ·
 #              Kreitner Werkstattflug mit Mitarbeitern (Kreitner Video 0,8 s) · Baureize Halle (DJI_…0013, 4,2 s) ·
 #              Koller Ortsansicht (Final 18,15 s) · CS Metalldesign Hallenflug (Drohne 1,0 s)
-#   details-*  (0,4 s Überblendung; Stand 18.11. abends: Kirchner raus, Baureize Treppe rein): Koller Bohrer in Spänen (Final 9,1 s) ·
-#              Resch Bewehrung binden (Resch Bau 8,0 s) · Wolfgang Reize geht die Treppe hoch (Rohmaterial C1430, 0,18–0,80 s mit
-#              halber Geschwindigkeit, nur dort ist der Kopf ganz im Bild) · CS Schweißen (CS Metalldesign 2,05 s) ·
-#              Koller Werkzeugbank (Final 21,7 s) · Baureize Brandstempel (Baureize 1,2 s)
+#   details-*  (0,4 s Überblendung; Stand 19.11.: Kirchner und Brandstempel raus, Noah: „das Video mit Reize … wo er die Treppe
+#              hochgeht“ = die Einstellung aus dem fertigen Baureize-Film): Koller Bohrer in Spänen (Final 9,1 s) ·
+#              Resch Bewehrung binden (Resch Bau 8,0 s) · Wolfgang Reize geht die Treppe hoch (Drive „Baureize original.mp4“
+#              4,60–6,44 s, echte Geschwindigkeit, Ausschnitt folgt dem Logo) · CS Schweißen (CS Metalldesign 2,05 s) ·
+#              Koller Werkzeugbank (Final 21,7 s)
 s.h = s.h.replace('/static/assets/vid/saeule/kreitner.jpg', '/static/assets/vid/saeule/drohnen.jpg?v=2')
 s.ersetze('data-src="/static/assets/vid/saeule/kreitner-d.mp4" data-src-mobil="/static/assets/vid/saeule/kreitner-m.mp4"',
           'data-src="/static/assets/vid/saeule/drohnen-d.mp4?v=2" data-src-mobil="/static/assets/vid/saeule/drohnen-m.mp4?v=2"')
-s.h = s.h.replace('/static/assets/vid/saeule/hero-loop.jpg', '/static/assets/vid/saeule/details.jpg?v=2')
+s.h = s.h.replace('/static/assets/vid/saeule/hero-loop.jpg', '/static/assets/vid/saeule/details.jpg?v=3')
 s.ersetze('data-src="/static/assets/vid/saeule/hero-loop-d.mp4" data-src-mobil="/static/assets/vid/saeule/hero-loop-m.mp4"',
-          'data-src="/static/assets/vid/saeule/details-d.mp4?v=2" data-src-mobil="/static/assets/vid/saeule/details-m.mp4?v=2"')
-# Treppe: Wolfgangs Hinterkopf sitzt im Rohmaterial ganz oben → mittlere Säule ohne Scroll-Zoom (wie rechts), sonst schneidet
-# der vergrößerte Rand den Haaransatz ab.
-s.h = s.h.replace('</head>', '<style>.saeule:nth-child(2) video{object-position:50% 0;transform:none}</style></head>', 1)
+          'data-src="/static/assets/vid/saeule/details-d.mp4?v=3" data-src-mobil="/static/assets/vid/saeule/details-m.mp4?v=3"')
 s.heraus('<section class="sek system-sek" id="system"')
 s.heraus('<section class="sek grund lagen-sek probleme pb-sek">')
 s.heraus('<section class="sek google grund">')
@@ -654,6 +652,31 @@ LEISTUNGS_SEK = ('<section class="sek leistungen-sek sg-sek" id="system">' + SIG
                  '.sek .kopfzeile:not(.mitte)>h2{max-width:16ch}'
                  '.uk-bild .collage img{background:var(--papier-2,#efe9df)}.uk-bild .collage img.raus{opacity:.35;transform:none}</style>')
 s.vor('<section class="sek laufband" id="gefunden">', LEISTUNGS_SEK)
+# Bezugsfertig: die neuesten Seiten vorne in die Leiste (Noah, 19.11.2026: Schillinger, Wagenknecht, „die ich jetzt fertig gemacht habe“, Irlbacher)
+def _lb_karte(name, art, url, k):
+    return (f'<a class="lb-k" href="{url}" rel="noopener" title="{name} — Website live ansehen"><div class="lb-schirm">'
+            f'<video class="hero-lauf" muted loop playsinline preload="none" data-src="/static/assets/vid/hero/h{k}.webm" data-poster="/static/assets/vid/hero/h{k}.jpg" width="640" height="400" aria-label="{name} — Startseite, wie sie live läuft"></video>'
+            f'<img class="seite-bild" data-src="/static/assets/vid/hero/s{k}.webp" alt="" aria-hidden="true" loading="eager" decoding="async"></div>'
+            f'<div class="lb-fuss"><b>{name}</b><small>{art}</small></div></a>')
+LB_NEU_1 = "".join(_lb_karte(*k) for k in [("Björn Schillinger", "Schreinerei · Möbelbau", "https://meisterschillinger.de", "schillinger"),
+                                           ("Juwelier Wagenknecht", "Uhren &amp; Schmuck", "https://juwelier-wagenknecht.de", "wagenknecht"),
+                                           ("Irlbacher Gebäudetechnik", "SHK · Heizung &amp; Sanitär", "https://www.hs-irlbacher.de", "irlbacher")])
+LB_NEU_2 = "".join(_lb_karte(*k) for k in [("Malermeister Müller", "Malerbetrieb", "https://mueller-maler-meister.de", "mueller"),
+                                           ("W&amp;W Bau", "Bauunternehmen", "https://w-w-bau.com", "ww"),
+                                           ("Mehr Lebensenergie", "Qigong &amp; TCM", "https://mehrlebensenergie-praxis.de", "illenseer")])
+_a = s.h.index('<section class="sek laufband" id="gefunden">'); _e = s.h.index('</section>', _a)
+_lb = s.h[_a:_e]
+_teile = _lb.split('<div class="lb-zug">')
+assert len(_teile) == 3, len(_teile)
+def _vorne(zug, neu):
+    # der Zug enthält die Karten zweimal (nahtlose Schleife): neue Karten vor beide Hälften
+    karten = zug.split('<a class="lb-k"')
+    n = (len(karten) - 1) // 2
+    erste = '<a class="lb-k"'.join(karten[:1 + n]); zweite = '<a class="lb-k"' + '<a class="lb-k"'.join(karten[1 + n:])
+    return neu + erste + neu + zweite
+_teile[1] = _vorne(_teile[1], LB_NEU_1); _teile[2] = _vorne(_teile[2], LB_NEU_2)
+s.h = s.h[:_a] + '<div class="lb-zug">'.join(_teile) + s.h[_e:]
+
 s.ersetze('<span class="kicker">Deine Website</span>', '<span class="kicker">Unsere Websites</span>')
 # Kicker ohne Mittelpunkt, der wirkt maschinell (Noah, 15.11.2026)
 s.ersetze('<span class="kicker">Kostenloses Beratungsgespräch · 30 Min.</span>', '<span class="kicker">Kostenloses Beratungsgespräch</span>')
