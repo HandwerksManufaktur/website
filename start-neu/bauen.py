@@ -90,6 +90,146 @@ KARTEN_STIL = ('.leistungen-sek .erg-in p,.uebernehmen-sek .erg-in p{min-height:
                '.uebernehmen-sek .erg-in p{min-height:4.5em;min-height:3lh}}')
 
 
+# Fuß (Noah, 18.11.2026): „Websites für dein Gewerk“ und „Mitarbeiter finden je Gewerk“ unten noch nicht anzeigen,
+# Einsatzgebiet raus, Mail und Telefon sitzen nicht mittig zum Icon (Emoji auf der Grundlinie, Link 44 px hoch).
+# Dieselbe Fassung erzeugt build_pages.fuss() (FUSS_KONTAKT) für alle übrigen Seiten. Prüfer: start-neu/fuss_pruefen.mjs
+from fuss import FUSS_KONTAKT, fuss_neu  # noqa: E402  (eine Quelle für den Fuß)
+
+
+# Kundenstimmen (Noah, 18.11.2026): „laufen da wirklich alle Bewertungen durch, oben sowie unten, gleich viele … alle 57 …
+# zumindest überall, wo Text da steht? Ansonsten müssen wir da vielleicht auch noch mit (…) arbeiten, damit wir nicht das
+# Zitat verfälschen“. Quelle: alle 52 Google-Bewertungen mit Text (57 gesamt, 5 ohne Text), Wortlaut unverändert; nur
+# Emojis fallen weg. Lange Texte enden nach ganzen Sätzen mit „(…)“, ausgelassene Sätze in der Mitte ebenfalls „(…)“.
+# Zwei Reihen à 26, gegenläufig. Logos nur in der weißen Fassung; ohne Logo die Initialen auf derselben Kachel.
+REZENSIONEN = WURZEL.parent.parent / "marketing/google-rezensionen-2026-09-30.json"
+STIMME_WER = {  # Google-Name → (Anzeige, Zeile darunter, weißes Logo in /static/assets/img/logos/w/)
+    "Silvana Bock": ("Silvana Bock", "M+S Langmajer GmbH", "logo-elektro-langmajer.webp"),
+    "Lukas Schwaighofer": ("Lukas Schwaighofer", "Schwaighofer Betontechnik", "logo-schwaighofer-betontechnik-logo.webp"),
+    "Manfred Oswald": ("Manfred Oswald", "Oswald Bau", "logo-oswald-bau-weil.webp"),
+    "Alexander Hindelang": ("Alexander Hindelang", "Planung Hindelang", "logo-planung-hindelang.webp"),
+    "Elke Aumüller": ("Elke Aumüller", "Zimmerei Koller", "logo-zimmerei-koller.webp"),
+    "Dieter Müller": ("Dieter Müller", "Malermeister Müller", None),
+    "Peter Ehle": ("Peter Ehle", "Malerbetrieb Ehle", None),
+    "Thomas Gattinger": ("Thomas Gattinger", "Gattinger GmbH", "logo-gattinger-gmbh.webp"),
+    "Maximilian Wegele": ("Maximilian Wegele", "Wegele Bau", "logo-wegele-bau-gmbh-utting.webp"),
+    "Franz Pföderl": ("Franz Pföderl", "Zimmerei Pföderl", "logo-zimmerei-pfoederl.webp"),
+    "Yannick Stimpfle": ("Yannick Stimpfle", "Stimpfle Sanitär &amp; Heizung", "logo-yannick-stimpfle-logo.webp"),
+    "Maximilian Ruf": ("Maximilian Ruf", "Max Ruf Frischdienst", "logo-ruf-frischdienst.webp"),
+    "Nico Wohner": ("Nico Wohner", "Wohner Elektrotechnik", "wohner_elektrotechnik_weiss_cropped.webp"),
+    "Björn S.": ("Björn S.", "Schreinermeister Björn Schillinger", "logo-bjoern-schillinger.webp"),
+    "Chris": ("Chris", "Google-Bewertung", None),
+    "Ulrike Knappich": ("Ulrike Knappich", "Zimmerei Knappich", "logo-zimmerei-knappich.webp"),
+    "Alexandra Rosenberg": ("Alexandra Rosenberg", "SD Hirsch", "logo-sd-hirsch-weiss.webp"),
+    "Ralph Negele": ("Ralph Negele", "Allplast Laser", "logo-allplast-laser.webp"),
+    "Stephan Rupp": ("Stephan Rupp", "Raumausstattung &amp; Schreinerei Rupp", "logo-schreinerei-rupp.webp"),
+    "Lena": ("Lena", "Lagerhaus Graf", "logo-lagerhaus-graf.webp"),
+    "Alfred Maser": ("Alfred Maser", "Maser Tankschutz", "logo-maser-tankschutz-logo.webp"),
+    "Christoph Hirschvogel": ("Christoph Hirschvogel", "Küchenhaus Hirschvogel", "logo-kuechenhaus-hirschvogel.webp"),
+    "EckRu": ("EckRu", "CNC-Technik", "logo-eckru-cnc.webp"),
+    "Zimmerei Rauschmair": ("Zimmerei Rauschmair", "Zimmerei", "logo-zimmerei-rauschmair.webp"),
+    "Raphael Weiß": ("Raphael Weiß", "Metallbau Weiß", "logo-metallbau-weiss.webp"),
+    "Hannes Schmidt": ("Hannes Schmidt", "Hannes Schmidt GmbH", "logo-hannes-schmidt-gmbh-weiss.webp"),
+    "Robert Musch": ("Robert Musch", "Franz Musch &amp; Co.", "logo-franz-musch.webp"),
+    "Rudolf Damnig": ("Rudolf Damnig", "Schreinerei Damnig", "logo-schreinerei-damnig.webp"),
+    "Michael Hohenester": ("Michael Hohenester", "Zimmerei Hohenester", "logo-hohenester-zimmerei.webp"),
+    "Leonhard Rieger": ("Leonhard Rieger", "Selbstständig", "logo-leonhard-rieger.webp"),
+    "Thomas Hilbenz": ("Thomas Hilbenz", "Gutachter", "logo-gutachter-hilbenz.webp"),
+    "Andreas Schuster": ("Andreas Schuster", "Zimmerei Schuster", "logo-zimmerei-schuster.webp"),
+    "Inna Illenseer": ("Inna Illenseer", "TCM-Praxis", "logo-inna-illenseer.webp"),
+    "Jirka Ihr Hotelsanierer": ("Robert Jirka", "Hotelsanierung", "logo-jirka-ausbau.webp"),
+    "Thomas Vogel": ("Thomas Vogel", "Vogel Holzbau", "logo-thomas-vogel-holzbau.webp"),
+    "Andrea Süßmeier": ("Andrea Süßmeier", "Süßmeier Heizungstechnik", "logo-suessmeier-heizungstechnik.webp"),
+    "F. G.": ("Franz Gallenberger", "Sanitär-Heizung-Klimatechnik", "logo-franz-gallenberger.webp"),
+    "Alisa Kirchner": ("Alisa Kirchner", "Baustoffe Thaining Kirchner", "logo-baustoffe-thaining-kirchner.webp"),
+    "Stefan Fritsch": ("Stefan Fritsch", "FlyIn BBQ", "logo-flyin-bbq-streetfood.webp"),
+    "Dietmar Kreitner": ("Dietmar Kreitner", "Schreinerei Kreitner", "logo-schreinerei-kreitner.webp"),
+    "Autohaus Ressle": ("Autohaus Ressle", "Autohaus", "logo-autohaus-ressle.webp"),
+    "Christoph Berger": ("Christoph Berger", "Textilreinigung Berger", None),
+    "Michael Wagenknecht": ("Michael Wagenknecht", "Juwelier Wagenknecht", None),
+    "I. Weber": ("I. Weber", "Kfz-Sachverständigenbüro Eggert", "logo-eggert-kfz-sachverstaendigenbuero.webp"),
+    "Lanzinger GmbH": ("Lanzinger GmbH", "Heizung &amp; Sanitär", "logo-lanzinger-gmbh-weiss.webp"),
+    "K Dörfler": ("K. Dörfler", "Dörfler Bau", "logo-doerfler-bau.webp"),
+    "Be Se": ("Fa. Senftleben", "Sanitär Heizung, Ehingen", "logo-senftleben-haustechnik.webp"),
+    "Martin Führmann": ("Martin Führmann", "Schreinerei Die Führmänner", "logo-schreinerei-die-fuehrmaenner.webp"),
+    "Matthias Happach": ("Matthias Happach", "Happach Maschinenbau", "logo-happach-maschinenbau.webp"),
+    "Marcel Burkart": ("Marcel Burkart", "Google-Bewertung", None),
+    "Noah Velte": ("Noah Velte", "Google-Bewertung", None),
+    "Jules Frey": ("Jules Frey", "Zimmerei Schneider", "logo-zimmerei-schneider.webp"),
+}
+# Welche Sätze bei langen Bewertungen stehen bleiben (Index der Sätze); alles dazwischen und dahinter wird „(…)“.
+STIMME_SAETZE = {"Autohaus Ressle": (0, 2), "F. G.": (0, 1, 6)}
+STIMME_MAX = 260
+
+
+def _saetze(text):
+    return [s for s in re.split(r'(?<!Hr\.)(?<=[.!?])\s+(?=[A-ZÄÖÜ„"])', text) if s]
+
+
+def stimme_text(autor, text):
+    import html as _h
+    text = re.sub(r'[⭐\U0001F300-\U0001FAFF☀-➿]️?', '', text)
+    text = re.sub(r'\s+', ' ', text).strip()
+    s = _saetze(text)
+    if autor in STIMME_SAETZE:
+        wahl = STIMME_SAETZE[autor]
+    else:
+        wahl, laenge = [], 0
+        for i, satz in enumerate(s):
+            if wahl and laenge + len(satz) > STIMME_MAX: break
+            wahl.append(i); laenge += len(satz) + 1
+    teile, vorher = [], -1
+    for i in wahl:
+        if i != vorher + 1: teile.append('(…)')
+        teile.append(s[i]); vorher = i
+    if vorher < len(s) - 1: teile.append('(…)')
+    aus = ' '.join(teile)
+    # Prüfung: jedes stehen gebliebene Stück steht wörtlich in der Bewertung (nichts umformuliert)
+    assert all(st in text for st in aus.split(' (…)') if st.strip() and st.strip() != '(…)'), (autor, aus)
+    return _h.escape(aus, quote=False)
+
+
+def stimmen_alle():
+    import json, html as _h
+    alle = [r for r in json.loads(REZENSIONEN.read_text(encoding="utf-8"))["rezensionen"] if (r["text"] or "").strip()]
+    assert len(alle) == 52, len(alle)
+    karten = []
+    for r in alle:
+        name, zeile, logo = STIMME_WER[r["autor"]]
+        if logo:
+            assert (WURZEL / "static/assets/img/logos/w" / logo).exists(), logo
+            marke = f'<span class="kreis logo dunkel"><img loading="lazy" src="/static/assets/img/logos/w/{logo}" alt="" decoding="async"></span>'
+        else:
+            ini = ''.join(w[0] for w in re.sub(r'[^A-Za-zÄÖÜäöü ]', '', name).split()[:2]).upper()
+            marke = f'<span class="kreis logo dunkel"><span class="st-ini">{ini}</span></span>'
+        karten.append(f'<div class="stimme"><div class="wer">{marke}<span><b>{name}</b><small>{zeile}</small></span></div>'
+                      f'<span class="stern" aria-label="{r["sterne"]} von 5 Sternen">{"★" * r["sterne"]}</span><p>„{stimme_text(r["autor"], r["text"])}“</p></div>')
+    # Reihen mischen, damit nicht alle langen oben stehen: abwechselnd verteilen
+    oben, unten = karten[0::2], karten[1::2]
+    assert len(oben) == len(unten) == 26
+    # Tempo wie vorher (10 Karten in 90 s / 100 s), jetzt 26 Karten je Reihe
+    return (f'<div class="bahn" aria-hidden="false" style="animation-duration:234s">{"".join(oben) * 2}</div>'
+            f'<div class="bahn zurueck" style="animation-duration:260s">{"".join(unten) * 2}</div>'
+            '<style>.stimme .st-ini{font-size:18px;font-weight:800;letter-spacing:.02em;color:var(--papier)}</style>')
+
+
+STIMME_ALIAS = {"Hannes Schmidt GmbH": "Hannes Schmidt", "Fa. Senftleben": "Be Se", "Franz Gallenberger": "F. G.", "Jirka": "Jirka Ihr Hotelsanierer"}
+
+
+def stimmen_woertlich(h):
+    """Jede Stimme auf jeder Seite trägt den Google-Wortlaut (Kürzung nur mit „(…)“), nie eine still umformulierte Fassung."""
+    import json
+    roh = {r["autor"]: r for r in json.loads(REZENSIONEN.read_text(encoding="utf-8"))["rezensionen"] if (r["text"] or "").strip()}
+    def ein(m):
+        name = m.group(2)
+        autor = STIMME_ALIAS.get(name, name)
+        if autor not in roh:
+            autor = next((a for a, w in STIMME_WER.items() if w[0] == name), None)
+        if not autor or autor not in roh:
+            return m.group(0)
+        return f'{m.group(1)}„{stimme_text(autor, roh[autor]["text"])}“</p>'
+    return re.sub(r'(<div class="stimme"><div class="wer">.*?<b>(.*?)</b>.*?<p>)„.*?“</p>', ein, h, flags=re.S)
+
+
 class Seite:
     def __init__(self, quelle):
         # Noah, 15.11.2026: Kundenzahl überall 150 (Meta, Logoband, Hero); die Bewertungszeile unter „Kundenstimmen“
@@ -167,6 +307,8 @@ class Seite:
         # Sperren (Noah, 15.11.2026): kein Kicker mit Mittelpunkt, keine alte Kundenzahl, keine Bewertungszeile unter den Stimmen
         assert not re.findall(r'<span class="kicker">[^<]*·[^<]*</span>', self.h), (pfad, re.findall(r'<span class="kicker">[^<]*·[^<]*</span>', self.h))
         assert "130 Betriebe" not in self.h and 'class="zusammen' not in self.h, pfad
+        self.h = fuss_neu(self.h)
+        self.h = stimmen_woertlich(self.h)
         pfad.parent.mkdir(parents=True, exist_ok=True)
         pfad.write_text(self.h)
         print("✓", pfad.relative_to(WURZEL), len(self.h))
@@ -206,6 +348,13 @@ s.ersetze('<p class="lead">Website, Fotos und Social-Media-Werbung für Handwerk
 # Aufbau wie shk…/start-neu/: Firma → drei Leistungen (einfache Karten) → Ergebnisse → Stimmen → Team → Kontakt.
 # Die drei Säulen in Logo-Form stehen schon im Hero und kommen hier nicht noch einmal (Noah, 14.11.2026);
 # Problem-Szenen, Google-Mechanik und Foto-Band stehen auf den Unterseiten.
+# Rechte Hero-Säule (Noah, 18.11.2026): „wo jetzt Anfragen und Bewerbungen steht, sollten … die Interviews, also wie auf der
+# SHK-Seite … dieses Ding, wo die ganzen Kunden drin sind, wo das dann immer switcht“ → der Kunden-Zusammenschnitt der
+# SHK-Seite (firma/website-shk/assets/reels/kunden-szenen.mp4, jeder Betrieb einmal, Match Cut) statt des Drohnen-Clips.
+s.h = s.h.replace('/static/assets/vid/saeule/baureize.jpg', '/static/assets/vid/saeule/kunden-szenen.jpg')
+s.ersetze('data-src="/static/assets/vid/saeule/baureize-d.mp4" data-src-mobil="/static/assets/vid/saeule/baureize-m.mp4"',
+          'data-src="/static/assets/vid/saeule/kunden-szenen-d.mp4" data-src-mobil="/static/assets/vid/saeule/kunden-szenen-m.mp4"')
+assert 'baureize' not in s.h.split('<div class="saeulen">', 1)[1].split('</div></div></div>', 1)[0]
 s.heraus('<section class="sek system-sek" id="system"')
 s.heraus('<section class="sek grund lagen-sek probleme pb-sek">')
 s.heraus('<section class="sek google grund">')
@@ -246,7 +395,9 @@ s.ersetze('<span class="kicker">Kostenloses Beratungsgespräch · 30 Min.</span>
 # Noah, 15.11.2026: die fünf Zeilen über die Familie waren zu lang, genau diese zwei Sätze (auch auf /ueber-uns/)
 NOAH_TEXT = 'Servus, ich bin Noah, Gründer der Handwerksmanufaktur. Dass wir nur fürs Handwerk arbeiten, kommt nicht von ungefähr.</p><p class="lead" style="margin-top:20px">Meine drei Brüder haben alle im Handwerk gelernt. Zwei davon sind Meister. Zusätzlich haben wir in der Familie mehrere Handwerksbetriebe. Dadurch habe ich schon von klein auf täglich mitgekriegt, wie es im Handwerk wirklich zugeht.</p><p class="lead" style="margin-top:20px">In den letzten 8 Jahren haben wir über 150 Firmen betreut und wissen mittlerweile ganz genau, was ein Handwerksbetrieb online braucht, damit Kunden und Bewerber bei ihm landen.'
 s.ersetze('<span class="kicker">Wer dahinter steht</span><h2>Die Leute hinter deinem Auftritt.</h2><p class="lead">Dieselben Leute von Anfang bis Ende.</p>',
-          f'<span class="kicker">Du bist auf der Baustelle daheim. Wir im Internet.</span><h2 style="max-width:none;font-size:clamp(23px,3.75vw,54px)">Wer hinter der<br><span style="white-space:nowrap">Handwerksmanufaktur steht.</span></h2><p class="lead">{NOAH_TEXT}</p>')
+          f'<span class="kicker">Du bist auf der Baustelle daheim. Wir im Internet.</span><h2 style="max-width:none;font-size:clamp(23px,3.75vw,54px)">Wer hinter der<br><span style="white-space:nowrap">Handwerksmanufaktur steht.</span></h2>')
+# Noah, 18.11.2026: „bei der Home-Seite … den ‚Über uns‘-Text rausnehmen … dass da einfach nur das Team mit dabei steht.
+# Dann ist halt noch der Button ‚Mehr über uns‘“ — der Text steht nur noch auf /ueber-uns/.
 
 
 def ergebnisse_aktuell(seite):
@@ -268,6 +419,11 @@ def ergebnisse_aktuell(seite):
 s.ersetze('<span class="kicker">Facebook &amp; Instagram</span><h2>Echte Betriebe, echte Zahlen.</h2><p class="lead">Werbung im Umkreis des Betriebs. Gezählt ist jede Anfrage und jede Bewerbung, die angekommen ist.</p>',
           '<span class="kicker">Fallstudien</span><h2>Ergebnisse unserer Kunden.</h2>')
 ergebnisse_aktuell(s)
+_a, _e = s.bereich('<section class="sek stimmen">')
+_sek = s.h[_a:_e]
+_sek2, _n = re.subn(r'<div class="bahn" aria-hidden="false">.*</div>(?=</section>)', lambda m: stimmen_alle(), _sek, count=1, flags=re.S)
+assert _n == 1 and _sek2.count('class="stimme"') == 104, _sek2.count('class="stimme"')
+s.h = s.h[:_a] + _sek2 + s.h[_e:]
 assert s.h.count('<h2>So sehen unsere Seiten aus.</h2>') == 1
 s.h = s.h.replace('<h2>So sehen unsere Seiten aus.</h2>', '<h2>Bezugsfertig.</h2>')  # wie auf der Websites-Seite
 s.entwurf()
