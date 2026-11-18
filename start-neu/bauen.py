@@ -108,7 +108,7 @@ STIMME_WER = {  # Google-Name → (Anzeige, Zeile darunter, weißes Logo in /sta
     "Manfred Oswald": ("Manfred Oswald", "Oswald Bau", "logo-oswald-bau-weil.webp"),
     "Alexander Hindelang": ("Alexander Hindelang", "Planung Hindelang", "logo-planung-hindelang.webp"),
     "Elke Aumüller": ("Elke Aumüller", "Zimmerei Koller", "logo-zimmerei-koller.webp"),
-    "Dieter Müller": ("Dieter Müller", "Malermeister Müller", None),
+    "Dieter Müller": ("Dieter Müller", "Malermeister Müller", "logo-malermeister-mueller-weiss.webp"),
     "Peter Ehle": ("Peter Ehle", "Malerbetrieb Ehle", None),
     "Thomas Gattinger": ("Thomas Gattinger", "Gattinger GmbH", "logo-gattinger-gmbh.webp"),
     "Maximilian Wegele": ("Maximilian Wegele", "Wegele Bau", "logo-wegele-bau-gmbh-utting.webp"),
@@ -145,7 +145,7 @@ STIMME_WER = {  # Google-Name → (Anzeige, Zeile darunter, weißes Logo in /sta
     "Dietmar Kreitner": ("Dietmar Kreitner", "Schreinerei Kreitner", "logo-schreinerei-kreitner.webp"),
     "Autohaus Ressle": ("Autohaus Ressle", "Autohaus", "logo-autohaus-ressle.webp"),
     "Christoph Berger": ("Christoph Berger", "Textilreinigung Berger", None),
-    "Michael Wagenknecht": ("Michael Wagenknecht", "Juwelier Wagenknecht", None),
+    "Michael Wagenknecht": ("Michael Wagenknecht", "Juwelier Wagenknecht", "logo-juwelier-wagenknecht-weiss.webp"),
     "I. Weber": ("I. Weber", "Kfz-Sachverständigenbüro Eggert", "logo-eggert-kfz-sachverstaendigenbuero.webp"),
     "Lanzinger GmbH": ("Lanzinger GmbH", "Heizung &amp; Sanitär", "logo-lanzinger-gmbh-weiss.webp"),
     "K Dörfler": ("K. Dörfler", "Dörfler Bau", "logo-doerfler-bau.webp"),
@@ -159,6 +159,7 @@ STIMME_WER = {  # Google-Name → (Anzeige, Zeile darunter, weißes Logo in /sta
 # Welche Sätze bei langen Bewertungen stehen bleiben (Index der Sätze); alles dazwischen und dahinter wird „(…)“.
 STIMME_SAETZE = {"Autohaus Ressle": (0, 2), "F. G.": (0, 1, 6)}
 STIMME_MAX = 260
+STIMME_RAUS = {"Noah Velte", "Michael Hohenester"}
 
 
 def _saetze(text):
@@ -192,6 +193,11 @@ def stimmen_alle():
     import json, html as _h
     alle = [r for r in json.loads(REZENSIONEN.read_text(encoding="utf-8"))["rezensionen"] if (r["text"] or "").strip()]
     assert len(alle) == 52, len(alle)
+    # Noah, 18.11.2026 (2.): „möglichst … immer … mit Logo“ → nur Bewertungen mit Betriebslogo laufen durch. Ohne erkennbaren
+    # Betrieb (Ehle, Berger, Chris, Burkart) und Noah Velte (bewertet für die eigene Firma, kein Handwerk) bleiben draußen,
+    # Hohenester (ein Satz) fällt für gleich viele Karten je Reihe weg.
+    alle = [r for r in alle if STIMME_WER[r["autor"]][2] and r["autor"] not in STIMME_RAUS]
+    assert len(alle) % 2 == 0, len(alle)
     karten = []
     for r in alle:
         name, zeile, logo = STIMME_WER[r["autor"]]
@@ -201,15 +207,27 @@ def stimmen_alle():
         else:
             ini = ''.join(w[0] for w in re.sub(r'[^A-Za-zÄÖÜäöü ]', '', name).split()[:2]).upper()
             marke = f'<span class="kreis logo dunkel"><span class="st-ini">{ini}</span></span>'
-        karten.append(f'<div class="stimme"><div class="wer">{marke}<span><b>{name}</b><small>{zeile}</small></span></div>'
+        laenge = len(stimme_text(r["autor"], r["text"]))
+        art = "st-kurz" if laenge <= 95 else ("st-mittel" if laenge <= 175 else "st-lang")
+        karten.append(f'<div class="stimme {art}"><div class="wer">{marke}<span><b>{name}</b><small>{zeile}</small></span></div>'
                       f'<span class="stern" aria-label="{r["sterne"]} von 5 Sternen">{"★" * r["sterne"]}</span><p>„{stimme_text(r["autor"], r["text"])}“</p></div>')
     # Reihen mischen, damit nicht alle langen oben stehen: abwechselnd verteilen
     oben, unten = karten[0::2], karten[1::2]
-    assert len(oben) == len(unten) == 26
+    assert len(oben) == len(unten), (len(oben), len(unten))
     # Tempo wie vorher (10 Karten in 90 s / 100 s), jetzt 26 Karten je Reihe
     return (f'<div class="bahn" aria-hidden="false" style="animation-duration:234s">{"".join(oben) * 2}</div>'
             f'<div class="bahn zurueck" style="animation-duration:260s">{"".join(unten) * 2}</div>'
-            '<style>.stimme .st-ini{font-size:18px;font-weight:800;letter-spacing:.02em;color:var(--papier)}</style>')
+            '<style>.stimme .st-ini{font-size:18px;font-weight:800;letter-spacing:.02em;color:var(--papier)}'
+            # Gleich hohe Karten; die Schrift wächst bei kurzen Stimmen, ein großes Anführungszeichen trägt die Karte
+            '.sek.stimmen .stimme{position:relative;overflow:hidden;min-height:330px;grid-template-rows:auto auto 1fr;align-content:stretch;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s}'
+            '.sek.stimmen .stimme:hover{transform:translateY(-4px);box-shadow:0 18px 40px -22px rgba(22,19,14,.35),0 0 0 1px rgba(22,19,14,.08)}'
+            '.sek.stimmen .stimme::before{content:"\\201C";position:absolute;right:22px;top:6px;font-size:120px;line-height:1;font-weight:800;color:var(--bronze);opacity:.16;pointer-events:none}'
+            '.sek.stimmen .stimme p{align-self:center;color:var(--tinte)}'
+            '.sek.stimmen .st-kurz p{font-size:clamp(20px,1.6vw,23px);line-height:1.35;font-weight:600;letter-spacing:-.01em}'
+            '.sek.stimmen .st-mittel p{font-size:17.5px;line-height:1.5}'
+            '.sek.stimmen .st-lang p{font-size:15.5px;line-height:1.55}'
+            '.sek.stimmen .kreis.logo{width:132px;height:58px}.sek.stimmen .kreis.logo img{max-width:108px;max-height:40px}'
+            '@media (prefers-reduced-motion:reduce){.sek.stimmen .stimme{transition:none}}</style>')
 
 
 STIMME_ALIAS = {"Hannes Schmidt GmbH": "Hannes Schmidt", "Fa. Senftleben": "Be Se", "Franz Gallenberger": "F. G.", "Jirka": "Jirka Ihr Hotelsanierer"}
@@ -298,7 +316,9 @@ class Seite:
                                     # „Über 50 Fotos aus den Betrieben unserer Kunden.“ dreizeilig laufen, also bekommen diese beiden Köpfe die breitere Spalte
                                     '@media (min-width:901px){.leistungen-sek .kopfzeile,.fotowand-sek .kopfzeile{grid-template-columns:minmax(0,1.4fr) minmax(0,.6fr)!important}'
                                     '.leistungen-sek .kopfzeile>h2,.fotowand-sek .kopfzeile>h2{max-width:none!important}}'
-                                    '@media (max-width:900px){.dsk-br{display:none}}' + KONTAKT_STIL + KARTEN_STIL + '</style></head>', 1)
+                                    '@media (max-width:900px){.dsk-br{display:none}}' + KONTAKT_STIL + KARTEN_STIL + '</style>' + NEU_KOPF + '</head>', 1)
+        assert self.h.count('</body>') == 1
+        self.h = self.h.replace('</body>', NEU_FUSS + '</body>')
 
     def schreibe(self, pfad):
         # Sperre (Noah, 16.11.2026): „Generell darf [Betrieb] auch nicht erwähnt werden“ → kein `ueberall`-Betrieb auf irgendeiner Seite
@@ -339,6 +359,181 @@ def szene(nr, kicker, titel, grund=True):
             '.einzel-szene .lg-buehne{grid-template-columns:minmax(0,1fr)}</style>')
 
 
+# ── Neu 18.11.2026 (Noah): „Bei Foto und Video: Ich weiß nicht, ob das mit den drei Kacheln so von Vorteil ist, immer oben
+# bei den Unterseiten … Bei der Home-Seite können wir sicher auch nochmal das Logo so ein bisschen im Hintergrund mit
+# reinnehmen … bei ESM Schäfer … das geisteskranke Ding … Wenn man auf Fotos und Videos geht, soll man eine richtig geile
+# verspielte Seite sehen … Da müssen wir die besten Fotos und Videos haben … da stehe ich jetzt dreimal irgendwie mit Kunden“.
+# → Startseite: Hero mit drei Säulen bleibt, das Signet steht groß und bewegt im Hintergrund von „Unsere Leistungen“ (wächst
+#   Balken für Balken) und „Wer hinter der Handwerksmanufaktur steht“ (Umriss zeichnet sich, Bronze steigt).
+# → Unterseiten: Film-Hero je Leistung statt der drei schrägen Säulen. → Foto & Video: Galerie mit Filter, Filmen beim
+#   Drüberfahren, Lichtkasten und ein Kontaktabzug; kein Foto mit Noah und Kunde (die stehen auf /ueber-uns/).
+# Stil und Verhalten: static/seiten-neu.css + static/seiten-neu.js, Medien: start-neu/medien_bauen.py → static/assets/fv/.
+import html as _html
+import json as _json
+
+NEU_V = "2"
+NEU_KOPF = f'<link rel="stylesheet" href="/static/seiten-neu.css?v={NEU_V}">'
+NEU_FUSS = f'<script src="/static/seiten-neu.js?v={NEU_V}" defer></script>'
+SIGNET = ('M0,39.667 L22,25 L22,91 L0,91 Z', 'M34,14.667 L56,0 L56,91 L34,91 L34,64.67 L27,68 L27,53.667 L34,49 Z',
+          'M61,14.667 L83,0 L83,91 L61,91 Z')  # Fassung C (firma/branding/logo), dieselben Pfade wie das Zeichen im Kopf
+SIGNET_WACHSEN = ('<div class="sg-buehne sg-wachsen" aria-hidden="true"><svg viewBox="0 0 83 91" preserveAspectRatio="xMidYMax meet"><defs>'
+                  '<linearGradient id="sg-verlauf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9BE84"/><stop offset=".5" stop-color="#F0D6B1"/><stop offset="1" stop-color="#F4ECDF"/></linearGradient>'
+                  '<linearGradient id="sg-glanz" x1="0" y1="0" x2="1" y2=".3"><stop offset=".38" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".95"/><stop offset=".62" stop-color="#fff" stop-opacity="0"/></linearGradient>'
+                  '<radialGradient id="sg-zeiger" gradientUnits="userSpaceOnUse" cx="40" cy="45" r="0"><stop offset="0" stop-color="#E5B36E" stop-opacity=".6"/><stop offset="1" stop-color="#E5B36E" stop-opacity="0"/></radialGradient></defs>'
+                  + "".join(f'<g class="sg-b"><path class="sg-k" d="{d}"/><path class="sg-glanz" d="{d}"/><path fill="url(#sg-zeiger)" d="{d}"/>'
+                            f'<path class="sg-l" d="{d}" vector-effect="non-scaling-stroke"/></g>' for d in SIGNET) + '</svg></div>')
+SIGNET_RUHE = ('<div class="sg-buehne sg-ruhe" aria-hidden="true"><svg viewBox="0 0 83 91"><defs><clipPath id="sg-steig">'
+               '<rect class="sg-fuell-rect" x="-10" y="0" width="103" height="110"/></clipPath></defs>'
+               + "".join(f'<g class="sg-b"><path class="sg-fuell" clip-path="url(#sg-steig)" d="{d}"/><path class="sg-umriss" pathLength="1" d="{d}"/></g>' for d in SIGNET)
+               + '</svg></div>')
+
+VID = "/static/assets/vid"
+FV = "/static/assets/fv"
+
+
+def _film(mp4, poster, sofort=False):
+    p = f'poster="{poster}"' if sofort else f'poster="{poster}"'
+    return f'<video muted loop playsinline preload="none" data-hand data-src="{mp4}" {p}></video>'
+
+
+def _lage(name, film, an, url=""):
+    return (f'<div class="hk-lage{" an" if an else ""}" data-name="{name}" data-url="{url}">'
+            f'{_film(f"{VID}/{film}.mp4", f"{VID}/poster/{film}.jpg")}</div>')
+
+
+def _chip(name, zeile, klasse="hk-chip"):
+    return f'<span class="{klasse}"><i></i><span data-hk-name>{name}</span><small>{zeile}</small></span>'
+
+
+def _telefone(reels, betrieb, art):
+    tel = "".join(f'<div class="hk-tel"><div class="sc">{_film(f"{FV}/v/{r}.mp4", f"{FV}/v/{r}.jpg")}'
+                  f'<span class="ad"><i></i><span>{betrieb}<small>{art}</small></span></span></div></div>' for r in reels)
+    return f'<div class="hk-telefone" aria-hidden="true">{tel}</div>'
+
+
+# Websites: Film des Betriebs im Hintergrund, seine Website (von uns) vorne im Browser — drei Betriebe im Wechsel
+WEB_BETRIEBE = [("Schreinerei Kreitner", "kreitner", "h9", "schreinerei-kreitner.de"),
+                ("Zimmerei Koller", "koller", "hkoller", "zimmerei-koller.com"),
+                ("A. Resch Bau", "resch", "h7", "resch-kinsau.de")]
+
+
+def hero_websites():
+    lagen = "".join(_lage(n, f, i == 0, u) for i, (n, f, _, u) in enumerate(WEB_BETRIEBE))
+    fenster = "".join(f'<video class="{"an" if i == 0 else ""}" muted loop playsinline preload="none" data-hand data-src="{VID}/hero/{h}.webm" '
+                      f'poster="{VID}/hero/{h}.jpg"></video>' for i, (_, _, h, _) in enumerate(WEB_BETRIEBE))
+    return (f'<div class="hk-film" aria-hidden="true">{lagen}</div>'
+            f'<div class="hk-seite" aria-hidden="true"><div class="hk-browser"><div class="bl"><i></i><i></i><i></i><span>{WEB_BETRIEBE[0][3]}</span></div>'
+            f'<div class="bs">{fenster}</div></div>{_chip(WEB_BETRIEBE[0][0], "Film und Website von uns")}</div>'
+            + _chip(WEB_BETRIEBE[0][0], "Film und Website von uns", "hk-chip hk-chip-m"))
+
+
+def hero_seo(seite):
+    """Drohne steigt über die Halle; vorne tippt sich ein Suchbegriff und der Kunde steht auf Platz 1 (aus der Rangliste der Seite)."""
+    gern = ("dachbau", "bauunternehmen", "spenglerei", "heizung", "elektriker", "tiefbau", "zimmerei", "schreinerei", "gebäudetechnik")
+    eintraege = []
+    for name, wort in re.findall(r'<li class="reveal"><span class="rl-platz">1</span><div><b>(.*?)</b><small>(.*?)</small></div></li>', seite.h):
+        if wort.split()[0] in gern and len(wort) <= 30:
+            eintraege.append({"name": _html.unescape(name), "wort": _html.unescape(wort)})
+    assert len(eintraege) >= 3, eintraege
+    daten = _html.escape(_json.dumps(eintraege[:6], ensure_ascii=False), quote=True)
+    e0 = eintraege[0]
+    zeilen = (f'<li><span class="pl">1</span><span><b>{_html.escape(e0["name"])}</b><small>Platz 1 bei Google</small></span></li>'
+              '<li><span class="pl">2</span><span><b>·</b><small>·</small></span></li><li><span class="pl">3</span><span><b>·</b><small>·</small></span></li>')
+    return (f'<div class="hk-film" aria-hidden="true"><div class="hk-lage an hk-einzel">{_film(f"{VID}/baureize.mp4", f"{VID}/poster/baureize.jpg")}</div></div>'
+            f'<div class="hk-seite" aria-hidden="true"><div class="hk-suche" data-eintraege="{daten}"><div class="sf">'
+            f'<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><b>{_html.escape(e0["wort"])}</b></div>'
+            f'<ol>{zeilen}</ol></div>{_chip("Platz 1 bei Google", "echte Messungen unserer Kunden")}</div>'
+            + _chip("Platz 1 bei Google", _html.escape(e0["wort"]), "hk-chip hk-chip-m"))
+
+
+SHOWREEL = [("Zimmerei Koller", "koller"), ("CS Metalldesign", "cs-metall"), ("A. Resch Bau", "resch")]
+
+
+def hero_foto_video():
+    lagen = "".join(_lage(n, f, i == 0) for i, (n, f) in enumerate(SHOWREEL))
+    leiste = "".join(f'<button type="button" class="{"an" if i == 0 else ""}" aria-pressed="{"true" if i == 0 else "false"}" aria-label="Film {n} zeigen">'
+                     f'<img src="{VID}/poster/{f}.jpg" alt="" loading="lazy" decoding="async"></button>' for i, (n, f) in enumerate(SHOWREEL))
+    return (f'<div class="hk-film" aria-hidden="true">{lagen}</div>'
+            '<div class="hk-sucher" aria-hidden="true"><span class="ec"></span><span class="ec"></span><span class="ec"></span><span class="ec"></span>'
+            '<span class="rec"><i></i>REC <b>00:00:00:00</b></span><span class="info">01 / 03</span><span class="mitte"></span></div>'
+            f'<div class="hk-reel-leiste">{leiste}</div>' + _chip(SHOWREEL[0][0], "gedreht von uns"))
+
+
+def hero_anzeigen(bild, reels, mobil, betrieb, art, chip):
+    return (f'<div class="hk-film" aria-hidden="true"><img class="hk-kb hk-desk" src="{FV}/h/{bild}.webp" alt="" decoding="async" fetchpriority="high">'
+            f'<video class="hk-mobil" muted loop playsinline preload="none" data-hand data-src="{FV}/v/{mobil}.mp4" poster="{FV}/v/{mobil}.jpg"></video></div>'
+            + _telefone(reels, betrieb, art) + _chip(chip[0], chip[1], "hk-chip hk-tel-chip"))
+
+
+def hero_neu(seite, slug, buehne, takt=None):
+    """Die drei schrägen Säulen der Unterseite (.saeulen-k) weichen einem Film-Hero; Text, Knöpfe und Pause-Knopf bleiben."""
+    a = seite.h.index('<section class="hero-klein">')
+    e = seite.h.index('<button class="pause"', a)
+    assert seite.h[a:e].count('class="saeulen-k"') == 1, slug
+    t = f' data-takt="{takt}"' if takt else ''
+    seite.h = seite.h[:a] + f'<section class="hero-klein hk-neu hk-{slug}"{t}>' + buehne + seite.h[e:]
+    assert 'saeulen-k' not in seite.h, slug
+
+
+# Galerie Foto & Video: 38 Fotos (medien_bauen.py, alle von Hand angesehen) + 7 Filme, Filter nach Gewerk
+GALERIE = _json.loads((WURZEL / "static/assets/fv/galerie.json").read_text())
+FILTER = [("alle", "Alle"), ("shk", "Sanitär &amp; Heizung"), ("holz", "Holz"), ("metall", "Metall"), ("bau", "Bau &amp; Ausbau"), ("film", "Filme")]
+# (Stelle in der Fotoliste, Gewerk-Schlüssel, Gewerk, Betrieb, Seitenverhältnis, Film, Poster)
+GALERIE_FILME = [(2, "holz", "Schreinerei", "Schreinerei Kreitner", 16 / 9, f"{VID}/kreitner.mp4", f"{VID}/poster/kreitner.jpg"),
+                 (6, "shk", "Anzeige", "Erich Sussmann", 9 / 16, f"{FV}/v/su-dusche.mp4", f"{FV}/v/su-dusche.jpg"),
+                 (11, "bau", "Bau &amp; Transporte", "Kirchner Thaining, 50 Jahre", 9 / 16, f"{VID}/kirchner.mp4", f"{VID}/poster/kirchner.jpg"),
+                 (17, "shk", "Stellenanzeige", "Irlbacher Gebäudetechnik", 9 / 16, f"{FV}/v/ir-montage.mp4", f"{FV}/v/ir-montage.jpg"),
+                 (23, "", "Drohnenflug", "Baureize", 16 / 9, f"{VID}/baureize.mp4", f"{VID}/poster/baureize.jpg"),
+                 (28, "shk", "Anzeige", "Erich Sussmann", 9 / 16, f"{FV}/v/su-mirjana.mp4", f"{FV}/v/su-mirjana.jpg"),
+                 (34, "shk", "Stellenanzeige", "Irlbacher Gebäudetechnik", 9 / 16, f"{FV}/v/ir-geselle.mp4", f"{FV}/v/ir-geselle.jpg")]
+
+
+def galerie_sek():
+    def foto(d):
+        g, b = _html.escape(d["gewerk"]), _html.escape(d["betrieb"], quote=False) if d["betrieb"] else ""
+        b = b.replace("&amp;amp;", "&amp;")
+        alt = f'{g} bei {b}' if b else g
+        return (f'<figure class="fv-k" data-g="{d["g"]}" style="--r:{d["w"] / d["h"]:.4f}"><button type="button" class="fv-auf" aria-label="{alt} groß ansehen">'
+                f'<img src="{FV}/g/{d["k"]}-900.webp" srcset="{FV}/g/{d["k"]}-480.webp 480w, {FV}/g/{d["k"]}-900.webp 900w" sizes="(min-width:1100px) 22vw, (min-width:700px) 31vw, 48vw" data-gross="{FV}/g/{d["k"]}-1800.webp" alt="{alt}" loading="lazy" decoding="async" width="900" height="{round(900 * d["h"] / d["w"])}"></button>'
+                f'<figcaption><b>{g}</b><span>{b or "Drehtag bei einem Kunden"}</span></figcaption></figure>')
+
+    def film(g, gewerk, betrieb, r, mp4, poster):
+        return (f'<figure class="fv-k ist-film" data-g="{(g + " film").strip()}" style="--r:{r:.4f}"><button type="button" class="fv-auf" aria-label="Film {betrieb} groß ansehen">'
+                f'<video muted loop playsinline preload="none" data-hand data-src="{mp4}" poster="{poster}"></video><span class="fv-spiel">Film</span></button>'
+                f'<figcaption><b>{gewerk}</b><span>{betrieb}</span></figcaption></figure>')
+    karten = [foto(d) for d in GALERIE["fotos"]]
+    for stelle, *rest in reversed(GALERIE_FILME):
+        karten.insert(stelle, film(*rest))
+    alle = "".join(karten)
+    n = {k: len(re.findall(rf'data-g="[^"]*\b{k}\b', alle)) for k, _ in FILTER[1:]}
+    n["alle"] = alle.count('class="fv-k')
+    fotos, filme = len(GALERIE["fotos"]), len(GALERIE_FILME)
+    knoepfe = "".join(f'<button type="button" data-f="{k}" aria-pressed="{"true" if k == "alle" else "false"}">{t}<sup>{n[k]}</sup></button>' for k, t in FILTER)
+    pfeil = lambda d: f'<svg viewBox="0 0 24 24"><path d="{d}"/></svg>'
+    return ('<section class="sek fv-galerie" id="ergebnisse"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Die Ergebnisse</span>'
+            f'<h2>Abgedreht.</h2><p class="lead">{fotos} Fotos und {filme} Filme aus Drehtagen bei unseren Kunden.</p></div>'
+            f'<div class="fv-filter" role="toolbar" aria-label="Nach Gewerk filtern">{knoepfe}</div><div class="fv-raster">{alle}</div></div></section>'
+            '<dialog class="fv-licht" aria-label="Lichtkasten"><div class="lk-buehne"></div><div class="lk-fuss"><div><b></b><span></span></div><span class="lk-zahl"></span></div>'
+            f'<button type="button" class="lk-knopf lk-zu" aria-label="Schließen">{pfeil("M6 6l12 12M18 6 6 18")}</button>'
+            f'<button type="button" class="lk-knopf lk-zur" aria-label="Vorheriges">{pfeil("m15 5-7 7 7 7")}</button>'
+            f'<button type="button" class="lk-knopf lk-vor" aria-label="Nächstes">{pfeil("m9 5 7 7-7 7")}</button></dialog>'
+            '<div class="fv-cursor" aria-hidden="true"></div>')
+
+
+def kontaktabzug_sek():
+    """Ein Drehtag als Filmstreifen (Stimpfle, Aufnahme-Reihenfolge); Bilder, die schon in der Galerie stehen, bleiben draußen."""
+    schon = {"st36", "st43", "st47"}
+    bilder = [k for k in GALERIE["kontakt"] if k not in schon]
+    kreis = '<svg viewBox="0 0 100 66" preserveAspectRatio="none"><path pathLength="1" d="M52,5 C83,3 97,18 95,34 C93,54 70,62 46,61 C20,60 4,49 5,32 C6,15 25,5 57,7"/></svg>'
+    def rahmen(i, k, kopie):
+        return (f'<span class="kb-bild"><img src="{FV}/k/{k}.webp" alt="" loading="lazy" decoding="async" width="420" height="280">'
+                f'<em>{int(k[2:]):02d}A</em>{kreis if i % 7 == 3 and not kopie else ""}</span>')
+    spur = "".join(rahmen(i, k, False) for i, k in enumerate(bilder)) + "".join(rahmen(i, k, True) for i, k in enumerate(bilder))
+    return ('<section class="sek fv-kontakt"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Ein Drehtag</span>'
+            '<h2>Ein Tag. Ein voller Ordner.</h2><p class="lead">Ausschnitt aus dem Drehtag bei Stimpfle Sanitär &amp; Heizung, in der Reihenfolge der Aufnahmen.</p></div></div>'
+            f'<div class="kb-streifen" aria-label="Kontaktabzug eines Drehtags"><div class="kb-spur">{spur}</div></div></section>')
+
+
 # ── 1 · Startseite ────────────────────────────────────────────────────────────────────────────────
 s = Seite(LIVE_START)
 s.ersetze('<h1><span class="w">Mehr Aufträge.</span> <span class="w">Mehr Bewerber.</span> <span class="w">Aus deinem Umkreis.</span></h1>',
@@ -371,7 +566,7 @@ def karte(bild, alt, pos, titel, zeile, text, ziel, knopf):
             f'<a class="textlink" href="/{ziel}/">{knopf} {PFEIL}</a></div></article>')
 
 
-LEISTUNGS_SEK = ('<section class="sek leistungen-sek" id="system"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Unsere Leistungen</span>'
+LEISTUNGS_SEK = ('<section class="sek leistungen-sek sg-sek" id="system">' + SIGNET_WACHSEN + '<div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Unsere Leistungen</span>'
                  '<h2>Drei Baustellen<br class="dsk-br"> übernehmen wir für dich.</h2><p class="lead">Jede Leistung gibt es einzeln.</p></div><div class="ergebnisse">'
                  # Fette Zeile = abgenommene H1 der Unterseite, Text je ein kurzer Satz (Noah, 15.11.2026)
                  + karte("zimmerei-schneider", "Zwei Zimmerer von Zimmerei Schneider in der Werkstatt", "50% 30%", "Website", "Wir bauen. Du ziehst ein.",
@@ -422,10 +617,11 @@ def ergebnisse_aktuell(seite):
 s.ersetze('<span class="kicker">Facebook &amp; Instagram</span><h2>Echte Betriebe, echte Zahlen.</h2><p class="lead">Werbung im Umkreis des Betriebs. Gezählt ist jede Anfrage und jede Bewerbung, die angekommen ist.</p>',
           '<span class="kicker">Fallstudien</span><h2>Ergebnisse unserer Kunden.</h2>')
 ergebnisse_aktuell(s)
+s.ersetze('<section class="sek team-sek" id="team">', '<section class="sek team-sek sg-sek" id="team">' + SIGNET_RUHE)
 _a, _e = s.bereich('<section class="sek stimmen">')
 _sek = s.h[_a:_e]
 _sek2, _n = re.subn(r'<div class="bahn" aria-hidden="false">.*</div>(?=</section>)', lambda m: stimmen_alle(), _sek, count=1, flags=re.S)
-assert _n == 1 and _sek2.count('class="stimme"') == 104, _sek2.count('class="stimme"')
+assert _n == 1 and _sek2.count('class="stimme ') == 92, _sek2.count('class="stimme ')  # 46 mit Logo, je Reihe doppelt
 s.h = s.h[:_a] + _sek2 + s.h[_e:]
 assert s.h.count('<h2>So sehen unsere Seiten aus.</h2>') == 1
 s.h = s.h.replace('<h2>So sehen unsere Seiten aus.</h2>', '<h2>Bezugsfertig.</h2>')  # wie auf der Websites-Seite
@@ -514,8 +710,7 @@ FASSUNG = {
                  ('<h2>Den Weg nach vorn übernehmen wir.</h2>', '<h2>Vom ersten Suchwort bis Seite 1.</h2>'),
                  ('<h2>{SEITE1} Kundenseiten stehen auf Seite 1.</h2>', '<h2>{SEITE1}-mal Richtfest.</h2><p class="lead">{SEITE1} Kundenseiten stehen bei Google auf Seite 1.</p>')],
     "foto-video": [('<h1>Fotos, auf denen man deinen Betrieb wiedererkennt.</h1>', '<h1>Wir setzen dein Handwerk ins Licht.</h1>'),
-                 ('<h2>Den Drehtag übernehmen wir.</h2>', '<h2>Vom ersten Bild bis zum fertigen Film.</h2>'),
-                 ('<h2>Diese Filme sind am Drehtag entstanden.</h2>', '<h2>Abgedreht.</h2>')],
+                 ('<h2>Den Drehtag übernehmen wir.</h2>', '<h2>Vom ersten Bild bis zum fertigen Film.</h2>')],
     "neukundengewinnung": [('<h1>Die Aufträge, die du willst. Nur für deinen Betrieb.</h1>', '<h1>Wir füllen dein Auftragsbuch.</h1>'),
                  ('<h2>Die Anzeigen übernehmen wir.</h2>', '<h2>Von der Anzeige bis zum Aufmaß.</h2>'),
                  ('<h2>„Dass so schnell so viele Anfragen kommen, hätte ich nicht gedacht.“</h2>', '<h2>Schwarz auf weiß.</h2><p class="lead">„Dass so schnell so viele Anfragen kommen, hätte ich nicht gedacht.“</p>')],
@@ -525,8 +720,9 @@ FASSUNG = {
 }
 
 
-def fertig(seite, slug):
+def fertig(seite, slug, hero=None):
     ergebnisse_aktuell(seite)
+    hero_neu(seite, slug, *hero)
     for alt, neu in FASSUNG.get(slug, []):
         # Zahl der Seite-1-Kundenseiten rechnet nur_website_kunden() aus der Liste, nie fest verdrahtet (16.11.2026)
         alt, neu = (x.replace("{SEITE1}", str(globals().get("SEITE1"))) for x in (alt, neu))
@@ -554,7 +750,7 @@ w.nach('<section class="hero-klein">',
            ('u-aufnahmen', 'Zwei Männer in der Halle von CS Metalldesign', '50% 30%', 'Die Aufnahmen', 'Kamera und Drohne bei dir vor Ort.', 'Deine Leute und deine Baustellen statt Katalogbilder.'),
            ('u-freigabe', 'Handschlag in der Werkstatt der Schreinerei Kreitner', '50% 30%', 'Die Seite', 'Wir bauen, du schaust drüber.', 'Die fertige Seite kommt als Link aufs Handy und du gibst sie frei.')]))
 w.vor('<section class="sek faq">', STIMMEN)
-fertig(w, "websites")
+fertig(w, "websites", (hero_websites(), 7000))
 
 # ── 3 · Suchmaschinenoptimierung
 g = unterseite("suchmaschinenoptimierung")
@@ -573,7 +769,7 @@ g.nach('<section class="hero-klein">',
            ('u-profil', 'Dach mit Blecheindeckung von Dachbau Kraus', '50% 50%', 'Das Google-Profil', 'Aufgebaut und gepflegt.', 'Mit Leistungen und Fotos, damit dich die Karte zeigt.'),
            ('u-bewertung', 'Handschlag auf dem Hof von Kirchner in Thaining', '50% 30%', 'Die Bewertungen', 'Sie kommen von selbst.', 'Ein Link nach jedem Auftrag, der Rest läuft.')]))
 g.vor('<section class="sek faq">', STIMMEN)
-fertig(g, "suchmaschinenoptimierung")
+fertig(g, "suchmaschinenoptimierung", (hero_seo(g),))
 
 # ── 4 · Foto & Video (zwei Ergebnis-Sektionen wie die Startseite: Filme + Fotos; dafür ohne Kundenstimmen)
 f = unterseite("foto-video")
@@ -588,14 +784,26 @@ f.ersetze('<p class="lead">Der Chef erzählt, die Drohne zeigt den Hof, die Kame
 f.ersetze('<p class="lead">Hallen, Baustellen, Bäder und Werkstätten, von der Zimmerei bis zur Haustechnik. Jedes Bild ist an einem Drehtag bei einem Kunden entstanden, mit den Leuten, die dort arbeiten.</p>',
           '<p class="lead">Jedes Bild ist an einem Drehtag bei einem Kunden entstanden.</p>')
 f.nach('<section class="hero-klein">',
-       problem('Stockfotos wie überall. Der Anruf geht zum Nächsten.',
+       problem('Deine Arbeit ist besser als deine Bilder.',  # Noah, 18.11.2026: „bitte nicht so schlechte copy“
+
                ['„Aktuelle Fotos haben wir keine“, hören wir fast in jedem Erstgespräch.', 'Auf der Seite stehen Katalogbilder.', 'Wer vergleicht, erkennt deinen Betrieb nicht wieder.'],
                ['Auf den Bildern stehen deine Leute vor deinen Fahrzeugen.', 'Fotografiert wird im laufenden Betrieb.', 'Alle Fotos und Filme gehören dir, in voller Auflösung.'])
        + uebernehmen('Den Drehtag übernehmen wir.', [
-           ('u-motivliste', 'Zwei Männer im Büro von HAWE Engineering', '50% 30%', 'Die Motivliste', 'Vorher am Telefon.', 'Wir klären, was Website und Anzeigen brauchen, und haken die Liste am Drehtag ab.'),
-           ('u-drehtag', 'Zwei Männer an der Laseranlage bei Allplast', '50% 30%', 'Der Drehtag', 'Ein Tag bei dir.', 'Wir fotografieren und filmen, was bei dir ohnehin passiert, und dein Betrieb läuft weiter.'),
-           ('u-uebergabe', 'Zwei Mitarbeiter in der Fertigung von SD Hirsch', '50% 30%', 'Die Übergabe', 'Alles gehört dir.', 'Du bekommst alle Fotos und Filme in voller Auflösung.')]))
-fertig(f, "foto-video")
+           ('fv-motivliste', 'Hand zeichnet auf einem Plan bei Küchenhaus Hirschvogel', '50% 45%', 'Die Motivliste', 'Vorher am Telefon.', 'Wir klären, was Website und Anzeigen brauchen, und haken die Liste am Drehtag ab.'),
+           ('fv-drehtag', 'Fotograf Robert mit der Fernsteuerung der Drohne', '50% 8%', 'Der Drehtag', 'Ein Tag bei dir.', 'Wir fotografieren und filmen, was bei dir ohnehin passiert, und dein Betrieb läuft weiter.'),
+           ('fv-uebergabe', 'Hände legen Holzmuster bei Küchenhaus Hirschvogel auf den Tisch', '50% 50%', 'Die Übergabe', 'Alles gehört dir.', 'Du bekommst alle Fotos und Filme in voller Auflösung.')]))
+# Filme + Fotowand weichen der Galerie direkt unter dem Hero; der Kontaktabzug steht vor den Fragen (sieben Sektionen bleiben)
+f.heraus('<section class="sek band auf-dunkel" id="ergebnisse">')
+f.heraus('<section class="sek fotowand-sek">')
+f.nach('<section class="hero-klein">', galerie_sek())
+f.vor('<section class="sek faq">', kontaktabzug_sek())
+# Collage im Kontakt-Block: auf Foto & Video ohne die Bilder, auf denen Noah mit Kunden steht (Noah, 18.11.2026)
+NOAH_MIT_KUNDEN = ("c07", "c18", "c25", "c27", "c39", "c50", "c60", "c69")
+_m = re.search(r"data-pool='(\[.*?\])'", f.h)
+_pool = [e for e in _json.loads(_m.group(1)) if not any(f"/{c}.webp" in e[0] for c in NOAH_MIT_KUNDEN)]
+assert len(_pool) == len(_json.loads(_m.group(1))) - len(NOAH_MIT_KUNDEN), len(_pool)
+f.h = f.h[:_m.start(1)] + _json.dumps(_pool, separators=(",", ":")) + f.h[_m.end(1):]
+fertig(f, "foto-video", (hero_foto_video(), 6500))
 
 # ── 5 · Neukundengewinnung
 n = unterseite("neukundengewinnung")
@@ -617,7 +825,8 @@ n.nach('<section class="hero-klein">',
            ('u-umkreis', 'Senftleben Haustechnik mit Team und Firmenwagen aus der Luft', '50% 50%', 'Der Umkreis', 'Nur 25 Kilometer um deinen Betrieb.', 'Wer 60 Kilometer weiter ein Projekt plant, sieht sie nicht.'),
            ('u-filter', 'Zwei Mitarbeiter von Sussmann neben einem Speicher', '50% 30%', 'Die Filterfragen', 'Vier Fragen vor jeder Anfrage.', 'Bei dir kommt an, wer sein Projekt ernst meint, mit Name und Nummer.')]))
 n.vor('<section class="sek faq">', STIMMEN)
-fertig(n, "neukundengewinnung")
+fertig(n, "neukundengewinnung", (hero_anzeigen("h-sussmann", ("su-patrick", "su-dusche", "su-mirjana"), "su-dusche", "Erich Sussmann", "Gesponsert",
+                                                 ("Unsere Anzeigen", "für Erich Sussmann, Kirchheim")),))
 
 # ── 6 · Mitarbeitergewinnung
 m = unterseite("mitarbeitergewinnung")
@@ -635,4 +844,5 @@ m.nach('<section class="hero-klein">',
            ('u-bewerbung', 'Monteur von Erwin Schmidt &amp; Sohn mit Zange im Lager', '50% 25%', 'Die Bewerbung', 'Zwei Minuten am Handy.', 'Vier Filterfragen statt Anschreiben und Lebenslauf.'),
            ('u-gespraech', 'Drei Monteure von Heizung-Sanitär Klaß vor dem Firmenwagen', '50% 30%', 'Das Gespräch', 'Du rufst an.', 'Die Bewerbung kommt mit Nummer und Antworten, du führst nur noch die Gespräche.')]))
 m.vor('<section class="sek faq">', STIMMEN)
-fertig(m, "mitarbeitergewinnung")
+fertig(m, "mitarbeitergewinnung", (hero_anzeigen("h-irlbacher", ("ir-nummer", "ir-montage", "ir-geselle"), "ir-montage", "Irlbacher", "Gesponsert",
+                                                   ("Unsere Stellenanzeigen", "für Irlbacher")),))

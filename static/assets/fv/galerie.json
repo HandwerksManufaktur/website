@@ -1,0 +1,328 @@
+{
+ "fotos": [
+  {
+   "k": "se-hocke",
+   "g": "shk",
+   "gewerk": "Sanitär & Heizung",
+   "betrieb": "Senftleben Haustechnik",
+   "w": 4320,
+   "h": 2880
+  },
+  {
+   "k": "st-bohrhammer",
+   "g": "shk",
+   "gewerk": "Sanitär & Heizung",
+   "betrieb": "Stimpfle Sanitär & Heizung",
+   "w": 2400,
+   "h": 1593
+  },
+  {
+   "k": "ko-kluft",
+   "g": "holz",
+   "gewerk": "Zimmerei",
+   "betrieb": "Zimmerei Koller",
+   "w": 2000,
+   "h": 1333
+  },
+  {
+   "k": "cs-schweissen",
+   "g": "metall",
+   "gewerk": "Metallbau",
+   "betrieb": "CS Metalldesign",
+   "w": 1333,
+   "h": 2000
+  },
+  {
+   "k": "se-luft",
+   "g": "shk",
+   "gewerk": "Sanitär & Heizung",
+   "betrieb": "Senftleben Haustechnik",
+   "w": 4093,
+   "h": 3068
+  },
+  {
+   "k": "ki-team",
+   "g": "bau",
+   "gewerk": "Bau & Transporte",
+   "betrieb": "Kirchner Thaining",
+   "w": 2000,
+   "h": 1333
+  },
+  {
+   "k": "kr-hobel",
+   "g": "holz",
+   "gewerk": "Schreinerei",
+   "betrieb": "Schreinerei Kreitner",
+   "w": 2000,
+   "h": 1333
+  },
+  {
+   "k": "es-tragen",
+   "g": "shk",
+   "gewerk": "Sanitär & Heizung",
+   "betrieb": "Erwin Schmidt & Sohn",
+   "w": 4321,
+   "h": 2880
+  },
+  {
+   "k": "sd-roboter",
+   "g": "metall",
+   "gewerk": "Metallverarbeitung",
+   "betrieb": "SD Hirsch",
+   "w": 1920,
+   "h": 1280
+  },
+  {
+   "k": "se-armatur",
+   "g": "shk",
+   "gewerk": "Sanitär & Heizung",
+   "betrieb": "Senftleben Haustechnik",
+   "w": 4321,
+   "h": 2880
+  },
+  {
+   "k": "sn-balken",
+   "g": "holz",
+   "gewerk": "Zimmerei",
+   "betrieb": "Zimmerei Schneider",
+   "w": 2000,
+   "h": 1331
+  },
+  {
+   "k": "dach",
+   "g": "bau",
+   "gewerk": "Dach",
+   "betrieb": "Dachbau Kraus",
+   "w": 1600,
+   "h": 1067
+  },
+  {
+   "k": "st-wasserwaage",
+   "g": "shk",
+   "gewerk": "Sanitär & Heizung",
+   "betrieb": "Stimpfle Sanitär & Heizung",
+   "w": 2400,
+   "h": 1600
+  },
+  {
+   "k": "cs-hund",
+   "g": "metall",
+   "gewerk": "Metallbau",
+   "betrieb": "CS Metalldesign",
+   "w": 2000,
+   "h": 1333
+  },
+  {
+   "k": "kl-lachen",
+   "g": "shk",
+   "gewerk": "Sanitär & Heizung",
+   "betrieb": "Heizung-Sanitär Klaß",
+   "w": 2000,
+   "h": 2000
+  },
+  {
+   "k": "ki-bagger",
+   "g": "bau",
+   "gewerk": "Tiefbau",
+   "betrieb": "Kirchner Thaining",
+   "w": 2000,
+   "h": 1333
+  },
+  {
+   "k": "ko-balken",
+   "g": "holz",
+   "gewerk": "Zimmerei",
+   "betrieb": "Zimmerei Koller",
+   "w": 2000,
+   "h": 1333
+  },
+  {
+   "k": "es-kisten",
+   "g": "shk",
+   "gewerk": "Sanitär & Heizung",
+   "betrieb": "Erwin Schmidt & Sohn",
+   "w": 4321,
+   "h": 2880
+  },
+  {
+   "k": "cs-helm",
+   "g": "metall",
+   "gewerk": "Metallbau",
+   "betrieb": "CS Metalldesign",
+   "w": 1333,
+   "h": 2000
+  },
+  {
+   "k": "se-wagen",
+   "g": "shk",
+   "gewerk": "Sanitär & Heizung",
+   "betrieb": "Senftleben Haustechnik",
+   "w": 4371,
+   "h": 2880
+  },
+  {
+   "k": "pv",
+   "g": "bau",
+   "gewerk": "Elektro",
+   "betrieb": "Wohner Elektrotechnik",
+   "w": 1600,
+   "h": 1067
+  },
+  {
+   "k": "kr-regal",
+   "g": "holz",
+   "gewerk": "Schreinerei",
+   "betrieb": "Schreinerei Kreitner",
+   "w": 2000,
+   "h": 1333
+  },
+  {
+   "k": "su-lager",
+   "g": "shk",
+   "gewerk": "Sanitär & Heizung",
+   "betrieb": "Erich Sussmann",
+   "w": 1600,
+   "h": 1067
+  },
+  {
+   "k": "ki-lkw",
+   "g": "bau",
+   "gewerk": "Bau & Transporte",
+   "betrieb": "Kirchner Thaining",
+   "w": 2000,
+   "h": 1333
+  },
+  {
+   "k": "sd-rohre",
+   "g": "metall",
+   "gewerk": "Metallverarbeitung",
+   "betrieb": "SD Hirsch",
+   "w": 2000,
+   "h": 1334
+  },
+  {
+   "k": "es-faust",
+   "g": "shk",
+   "gewerk": "Sanitär & Heizung",
+   "betrieb": "Erwin Schmidt & Sohn",
+   "w": 4321,
+   "h": 2880
+  },
+  {
+   "k": "sn-stapler",
+   "g": "holz",
+   "gewerk": "Zimmerei",
+   "betrieb": "Zimmerei Schneider",
+   "w": 1920,
+   "h": 1277
+  },
+  {
+   "k": "kl-wand",
+   "g": "shk",
+   "gewerk": "Sanitär & Heizung",
+   "betrieb": "Heizung-Sanitär Klaß",
+   "w": 2000,
+   "h": 1331
+  },
+  {
+   "k": "galabau",
+   "g": "bau",
+   "gewerk": "Garten- & Landschaftsbau",
+   "betrieb": "",
+   "w": 1600,
+   "h": 1067
+  },
+  {
+   "k": "se-hammer",
+   "g": "shk",
+   "gewerk": "Sanitär & Heizung",
+   "betrieb": "Senftleben Haustechnik",
+   "w": 4321,
+   "h": 2880
+  },
+  {
+   "k": "cs-schleifen",
+   "g": "metall",
+   "gewerk": "Metallbau",
+   "betrieb": "CS Metalldesign",
+   "w": 1333,
+   "h": 2000
+  },
+  {
+   "k": "kr-team",
+   "g": "holz",
+   "gewerk": "Schreinerei",
+   "betrieb": "Schreinerei Kreitner",
+   "w": 2000,
+   "h": 1333
+  },
+  {
+   "k": "ir-lager",
+   "g": "shk",
+   "gewerk": "Sanitär & Heizung",
+   "betrieb": "Irlbacher Gebäudetechnik",
+   "w": 1600,
+   "h": 1067
+  },
+  {
+   "k": "maler",
+   "g": "bau",
+   "gewerk": "Maler",
+   "betrieb": "Malerbetrieb Wörner",
+   "w": 1536,
+   "h": 1024
+  },
+  {
+   "k": "hv-schubladen",
+   "g": "holz",
+   "gewerk": "Küchenbau",
+   "betrieb": "Küchenhaus Hirschvogel",
+   "w": 2000,
+   "h": 1333
+  },
+  {
+   "k": "ki-kabine",
+   "g": "bau",
+   "gewerk": "Tiefbau",
+   "betrieb": "Kirchner Thaining",
+   "w": 2000,
+   "h": 1333
+  },
+  {
+   "k": "st-tragen",
+   "g": "shk",
+   "gewerk": "Sanitär & Heizung",
+   "betrieb": "Stimpfle Sanitär & Heizung",
+   "w": 2400,
+   "h": 1600
+  },
+  {
+   "k": "ko-team",
+   "g": "holz",
+   "gewerk": "Zimmerei",
+   "betrieb": "Zimmerei Koller",
+   "w": 2000,
+   "h": 1333
+  }
+ ],
+ "kontakt": [
+  "st01",
+  "st05",
+  "st06",
+  "st11",
+  "st22",
+  "st25",
+  "st28",
+  "st30",
+  "st32",
+  "st37",
+  "st39",
+  "st40",
+  "st44",
+  "st46",
+  "st49",
+  "st55",
+  "st57",
+  "st59"
+ ]
+}
