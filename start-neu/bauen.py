@@ -546,13 +546,15 @@ s.ersetze('<p class="lead">Website, Fotos und Social-Media-Werbung für Handwerk
 # Rechte Hero-Säule (Noah, 18.11.2026): „wo jetzt Anfragen und Bewerbungen steht, sollten … die Interviews, also wie auf der
 # SHK-Seite … dieses Ding, wo die ganzen Kunden drin sind, wo das dann immer switcht“ → der Kunden-Zusammenschnitt der
 # SHK-Seite (firma/website-shk/assets/reels/kunden-szenen.mp4, jeder Betrieb einmal, Match Cut) statt des Drohnen-Clips.
-s.h = s.h.replace('/static/assets/vid/saeule/baureize.jpg', '/static/assets/vid/saeule/kunden-szenen.jpg?v=5')
+s.h = s.h.replace('/static/assets/vid/saeule/baureize.jpg', '/static/assets/vid/saeule/kunden-shk.jpg?v=1')
 s.ersetze('data-src="/static/assets/vid/saeule/baureize-d.mp4" data-src-mobil="/static/assets/vid/saeule/baureize-m.mp4"',
-          'data-src="/static/assets/vid/saeule/kunden-szenen-d.mp4?v=5" data-src-mobil="/static/assets/vid/saeule/kunden-szenen-m.mp4?v=5"')
+          'data-src="/static/assets/vid/saeule/kunden-shk-d.mp4?v=1" data-src-mobil="/static/assets/vid/saeule/kunden-shk-m.mp4?v=1"')
 assert 'baureize' not in s.h.split('<div class="saeulen">', 1)[1].split('</div></div></div>', 1)[0]
 # Noah, 18.11.2026: „das Video soll schon das ganz ausfüllen, aber … nicht, dass der Kopf … abgeschnitten ist“ → in den
 # Originalen sitzt der Kopf ganz oben → weiter gefilmte Takes (start-neu/kunden_szenen_saeule.py), Beschriftung wieder oben.
-s.h = s.h.replace('</head>', '<style>.saeule:nth-child(3) video{object-position:50% 0}</style></head>', 1)  # Noah 18.11.: Kopf nie oben angeschnitten (breite Fenster schneiden sonst oben ab), Beschriftung wieder oben
+s.h = s.h.replace('</head>', '<style>.saeule:nth-child(3) video{object-position:50% 0;transform:none}.saeule:nth-child(3) .etikett{display:none}</style></head>', 1)
+# Noah 18.11.: „Wir hatten doch beim SHK-Video die perfekten Stellen“ → das SHK-Video unverändert (kunden-shk-*.mp4 = firma/website-shk/assets/reels/kunden-szenen.mp4),
+# oben verankert (Kopf nie angeschnitten). Die Köpfe sitzen dort weit oben; eine Beschriftung oben läge auf der Stirn → in dieser Säule ohne Beschriftung.
 s.heraus('<section class="sek system-sek" id="system"')
 s.heraus('<section class="sek grund lagen-sek probleme pb-sek">')
 s.heraus('<section class="sek google grund">')
