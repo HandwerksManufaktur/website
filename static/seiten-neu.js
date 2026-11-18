@@ -26,10 +26,11 @@
     if (lagen.length > 1) {
       const fenster = $$('.hk-browser .bs video', hero), knoepfe = $$('.hk-reel-leiste button', hero);
       const etikett = $$('[data-hk-name]', hero), url = $('.hk-browser .bl span', hero), info = $('.hk-sucher .info', hero), tc = $('.hk-sucher .rec b', hero);
-      const dauer = +hero.dataset.takt || 7000;
+      const takt = +hero.dataset.takt || 7000, dauerVon = n => +lagen[n].dataset.dauer || takt;   // Showreel: Länge je Lage
+      let dauer = dauerVon(0);
       let i = 0, t0 = performance.now(), wartet = false;
       const zeige = n => {
-        i = (n + lagen.length) % lagen.length; t0 = performance.now();
+        i = (n + lagen.length) % lagen.length; t0 = performance.now(); dauer = dauerVon(i);
         lagen.forEach((l, k) => l.classList.toggle('an', k === i));
         fenster.forEach((v, k) => v.classList.toggle('an', k === i));
         knoepfe.forEach((b, k) => { b.classList.toggle('an', k === i); b.setAttribute('aria-pressed', k === i); });
@@ -51,7 +52,7 @@
           if (!imBild || angehalten()) { t0 = now - ((now - t0) % dauer); }
           const z = Math.min(1, (now - t0) / dauer);
           const b = knoepfe[i]; if (b) b.style.setProperty('--z', z.toFixed(3));
-          if (tc) { const s = (now - t0) / 1000 + i * (dauer / 1000); const f = Math.floor((s % 1) * 25);
+          if (tc) { const s = (now - t0) / 1000 + lagen.slice(0, i).reduce((a, _, k) => a + dauerVon(k), 0) / 1000; const f = Math.floor((s % 1) * 25);
             tc.textContent = `00:${String(Math.floor(s / 60)).padStart(2, '0')}:${String(Math.floor(s % 60)).padStart(2, '0')}:${String(f).padStart(2, '0')}`; }
           if (z >= 1 && imBild && !angehalten()) zeige(i + 1);
           requestAnimationFrame(tick);
@@ -87,19 +88,15 @@
     }
   }
 
-  /* ── 2 · Foto & Video: Galerie mit Filter, laufenden Filmen und Lichtkasten ─────────────────── */
+  /* ── 2 · Foto & Video: Galerie (Mauerwerk), laufende Filme und Lichtkasten ───────────────────── */
   const raster = $('.fv-raster');
   if (raster) {
-    const karten = $$('.fv-k', raster), knoepfe = $$('.fv-filter button');
-    let filter = 'alle';
+    const karten = $$('.fv-k', raster);
     raster.classList.add('js');
     const spalten = () => innerWidth >= 1100 ? 4 : innerWidth >= 700 ? 3 : 2;
     const legen = () => {
       const n = spalten(), gap = innerWidth >= 700 ? 14 : 10, w = raster.clientWidth, sw = (w - gap * (n - 1)) / n, hoehe = Array(n).fill(0);
       karten.forEach(k => {
-        const an = filter === 'alle' || k.dataset.g.split(' ').includes(filter);
-        k.classList.toggle('weg', !an);
-        if (!an) return;
         const r = +k.style.getPropertyValue('--r') || 1.5, h = Math.round(sw / r);
         let s = 0; for (let j = 1; j < n; j++) if (hoehe[j] < hoehe[s] - 1) s = j;
         k.style.width = sw + 'px'; k.style.height = h + 'px';
@@ -114,11 +111,6 @@
     const ioK = new IntersectionObserver(es => es.forEach((e, j) => { if (!e.isIntersecting) return; ioK.unobserve(e.target);
       setTimeout(() => e.target.classList.add('da'), ruhig ? 0 : (j % 6) * 70); }), { rootMargin: '0px 0px -6% 0px' });
     karten.forEach(k => ioK.observe(k));
-    knoepfe.forEach(b => b.addEventListener('click', () => {
-      filter = b.dataset.f; knoepfe.forEach(x => x.setAttribute('aria-pressed', x === b));
-      legen(); karten.forEach(k => { if (!k.classList.contains('weg')) k.classList.add('da'); });
-      $$('video', raster).forEach(v => { if (v.closest('.weg')) v.pause(); });
-    }));
     // Filme: am Rechner beim Drüberfahren, am Handy sobald sie zu zwei Dritteln im Bild sind
     const filme = $$('.fv-k.ist-film', raster);
     if (matchMedia('(hover:hover)').matches) filme.forEach(k => { const v = $('video', k);
@@ -137,7 +129,7 @@
     const lk = $('.fv-licht'), buehne = lk && $('.lk-buehne', lk);
     if (lk) {
       let pos = 0;
-      const liste = () => karten.filter(k => !k.classList.contains('weg'));
+      const liste = () => karten;
       const zeige = (k, von) => {
         const l = liste(); pos = l.indexOf(k);
         const alt = $('img, video', buehne); if (alt) alt.remove();

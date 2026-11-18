@@ -9,6 +9,14 @@
    "h": 2880
   },
   {
+   "k": "ko-halle",
+   "g": "holz",
+   "gewerk": "Zimmerei",
+   "betrieb": "Zimmerei Koller",
+   "w": 2000,
+   "h": 1333
+  },
+  {
    "k": "st-bohrhammer",
    "g": "shk",
    "gewerk": "Sanitär & Heizung",
@@ -21,6 +29,14 @@
    "g": "holz",
    "gewerk": "Zimmerei",
    "betrieb": "Zimmerei Koller",
+   "w": 2000,
+   "h": 1333
+  },
+  {
+   "k": "sd-biege",
+   "g": "metall",
+   "gewerk": "Metallverarbeitung",
+   "betrieb": "SD Hirsch",
    "w": 2000,
    "h": 1333
   },
@@ -41,6 +57,14 @@
    "h": 3068
   },
   {
+   "k": "kl-flex",
+   "g": "shk",
+   "gewerk": "Sanitär & Heizung",
+   "betrieb": "Heizung-Sanitär Klaß",
+   "w": 1080,
+   "h": 1350
+  },
+  {
    "k": "ki-team",
    "g": "bau",
    "gewerk": "Bau & Transporte",
@@ -57,12 +81,12 @@
    "h": 1333
   },
   {
-   "k": "es-tragen",
-   "g": "shk",
-   "gewerk": "Sanitär & Heizung",
-   "betrieb": "Erwin Schmidt & Sohn",
-   "w": 4321,
-   "h": 2880
+   "k": "cs-maske",
+   "g": "metall",
+   "gewerk": "Metallbau",
+   "betrieb": "CS Metalldesign",
+   "w": 2000,
+   "h": 1333
   },
   {
    "k": "sd-roboter",
@@ -81,6 +105,14 @@
    "h": 2880
   },
   {
+   "k": "kr-zuschnitt",
+   "g": "holz",
+   "gewerk": "Schreinerei",
+   "betrieb": "Schreinerei Kreitner",
+   "w": 2000,
+   "h": 1333
+  },
+  {
    "k": "sn-balken",
    "g": "holz",
    "gewerk": "Zimmerei",
@@ -95,6 +127,14 @@
    "betrieb": "Dachbau Kraus",
    "w": 1600,
    "h": 1067
+  },
+  {
+   "k": "ki-baggerfahrer",
+   "g": "bau",
+   "gewerk": "Tiefbau",
+   "betrieb": "Kirchner Thaining",
+   "w": 2000,
+   "h": 1333
   },
   {
    "k": "st-wasserwaage",
@@ -113,6 +153,14 @@
    "h": 1333
   },
   {
+   "k": "sn-zapfen",
+   "g": "holz",
+   "gewerk": "Zimmerei",
+   "betrieb": "Zimmerei Schneider",
+   "w": 2000,
+   "h": 1331
+  },
+  {
    "k": "kl-lachen",
    "g": "shk",
    "gewerk": "Sanitär & Heizung",
@@ -127,6 +175,14 @@
    "betrieb": "Kirchner Thaining",
    "w": 2000,
    "h": 1333
+  },
+  {
+   "k": "cs-werkbank",
+   "g": "metall",
+   "gewerk": "Metallbau",
+   "betrieb": "CS Metalldesign",
+   "w": 1333,
+   "h": 2000
   },
   {
    "k": "ko-balken",
@@ -145,6 +201,14 @@
    "h": 2880
   },
   {
+   "k": "hv-monteur",
+   "g": "holz",
+   "gewerk": "Küchenbau",
+   "betrieb": "Küchenhaus Hirschvogel",
+   "w": 2000,
+   "h": 1333
+  },
+  {
    "k": "cs-helm",
    "g": "metall",
    "gewerk": "Metallbau",
@@ -161,6 +225,14 @@
    "h": 2880
   },
   {
+   "k": "sd-stangen",
+   "g": "metall",
+   "gewerk": "Metallverarbeitung",
+   "betrieb": "SD Hirsch",
+   "w": 2000,
+   "h": 1333
+  },
+  {
    "k": "pv",
    "g": "bau",
    "gewerk": "Elektro",
@@ -173,6 +245,14 @@
    "g": "holz",
    "gewerk": "Schreinerei",
    "betrieb": "Schreinerei Kreitner",
+   "w": 2000,
+   "h": 1333
+  },
+  {
+   "k": "ki-lkw-fahrer",
+   "g": "bau",
+   "gewerk": "Bau & Transporte",
+   "betrieb": "Kirchner Thaining",
    "w": 2000,
    "h": 1333
   },
@@ -193,6 +273,14 @@
    "h": 1333
   },
   {
+   "k": "kr-fraese",
+   "g": "holz",
+   "gewerk": "Schreinerei",
+   "betrieb": "Schreinerei Kreitner",
+   "w": 2000,
+   "h": 1333
+  },
+  {
    "k": "sd-rohre",
    "g": "metall",
    "gewerk": "Metallverarbeitung",
@@ -207,6 +295,14 @@
    "betrieb": "Erwin Schmidt & Sohn",
    "w": 4321,
    "h": 2880
+  },
+  {
+   "k": "kl-wagen",
+   "g": "shk",
+   "gewerk": "Sanitär & Heizung",
+   "betrieb": "Heizung-Sanitär Klaß",
+   "w": 1080,
+   "h": 1080
   },
   {
    "k": "sn-stapler",
@@ -225,6 +321,14 @@
    "h": 1331
   },
   {
+   "k": "cs-rohrlager",
+   "g": "metall",
+   "gewerk": "Metallbau",
+   "betrieb": "CS Metalldesign",
+   "w": 2000,
+   "h": 1333
+  },
+  {
    "k": "galabau",
    "g": "bau",
    "gewerk": "Garten- & Landschaftsbau",
@@ -241,6 +345,14 @@
    "h": 2880
   },
   {
+   "k": "sn-haus",
+   "g": "holz",
+   "gewerk": "Zimmerei",
+   "betrieb": "Zimmerei Schneider",
+   "w": 2000,
+   "h": 1331
+  },
+  {
    "k": "cs-schleifen",
    "g": "metall",
    "gewerk": "Metallbau",
@@ -253,6 +365,14 @@
    "g": "holz",
    "gewerk": "Schreinerei",
    "betrieb": "Schreinerei Kreitner",
+   "w": 2000,
+   "h": 1333
+  },
+  {
+   "k": "ki-ziegel",
+   "g": "bau",
+   "gewerk": "Baustoffe",
+   "betrieb": "Kirchner Thaining",
    "w": 2000,
    "h": 1333
   },
@@ -273,6 +393,14 @@
    "h": 1024
   },
   {
+   "k": "sd-presse",
+   "g": "metall",
+   "gewerk": "Metallverarbeitung",
+   "betrieb": "SD Hirsch",
+   "w": 1920,
+   "h": 1280
+  },
+  {
    "k": "hv-schubladen",
    "g": "holz",
    "gewerk": "Küchenbau",
@@ -289,6 +417,14 @@
    "h": 1333
   },
   {
+   "k": "kr-werkstatt",
+   "g": "holz",
+   "gewerk": "Schreinerei",
+   "betrieb": "Schreinerei Kreitner",
+   "w": 2000,
+   "h": 1333
+  },
+  {
    "k": "st-tragen",
    "g": "shk",
    "gewerk": "Sanitär & Heizung",
@@ -301,6 +437,14 @@
    "g": "holz",
    "gewerk": "Zimmerei",
    "betrieb": "Zimmerei Koller",
+   "w": 2000,
+   "h": 1333
+  },
+  {
+   "k": "cs-zylinder",
+   "g": "metall",
+   "gewerk": "Metallbau",
+   "betrieb": "CS Metalldesign",
    "w": 2000,
    "h": 1333
   }

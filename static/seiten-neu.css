@@ -69,6 +69,9 @@
 .hk-reel-leiste button.an img,.hk-reel-leiste button:hover img,.hk-reel-leiste button:focus-visible img{opacity:1}
 .hk-reel-leiste button:hover{transform:translateY(-4px)}
 .hk-foto-video .hk-chip{position:absolute;z-index:3;right:var(--rand);bottom:calc(clamp(40px,7vh,72px) + 62px)}
+/* Showreel mit acht Lagen (18.11.2026): kleinere Vorschaubilder, damit die Leiste neben dem Text bleibt */
+.hk-foto-video .hk-reel-leiste{gap:6px}.hk-foto-video .hk-reel-leiste button{width:56px;height:36px;border-radius:8px}
+.hk-foto-video .hk-chip{bottom:calc(clamp(40px,7vh,72px) + 50px)}
 
 /* Neukunden / Mitarbeiter: echte Anzeigen in Telefonen, dahinter der Betrieb */
 .hk-telefone{position:absolute;z-index:3;right:calc(var(--rand) + 1vw);top:50%;transform:translateY(-46%);display:flex;align-items:center;gap:clamp(12px,1.4vw,22px)}
@@ -106,12 +109,6 @@
 
 /* ── 2 · Foto & Video: Galerie ───────────────────────────────────────────────────────────────── */
 .fv-galerie .kopfzeile{margin-bottom:22px}
-.fv-filter{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 clamp(22px,3vw,36px)}
-.fv-filter button{position:relative;min-height:44px;padding:10px 18px;border-radius:999px;border:0;background:var(--papier-2);color:var(--tinte-2);font:600 15px/1 var(--schrift);letter-spacing:-.005em;cursor:pointer;transition:background .3s var(--ease),color .3s var(--ease),transform .3s var(--ease)}
-.fv-filter button sup{margin-left:6px;font-size:12px;font-weight:600;color:var(--tinte-3);vertical-align:.25em}
-.fv-filter button:hover,.fv-filter button:focus-visible{background:var(--papier-3);transform:translateY(-2px)}
-.fv-filter button[aria-pressed="true"]{background:var(--tinte);color:var(--papier)}
-.fv-filter button[aria-pressed="true"] sup{color:var(--bronze-hell)}
 .fv-raster{position:relative;columns:3 280px;column-gap:14px}
 .fv-raster.js{columns:auto;transition:height .6s var(--ease)}
 .fv-k{position:relative;margin:0 0 14px;break-inside:avoid;border-radius:18px;overflow:hidden;background:var(--tinte);transform-origin:50% 50%}

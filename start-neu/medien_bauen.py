@@ -5,7 +5,7 @@ jetzt dreimal irgendwie mit Kunden und ich sollte da jetzt nicht unbedingt damit
 
 🔴 Nur eigenes Drehtag-Material (Robert), kein Foto, auf dem Noah mit einem Kunden steht (die liegen in
 marketing/instagram/noah-mit-kunden/ und gehören auf /ueber-uns/). Jede Auswahl unten ist von Hand angesehen.
-Quellen: marketing/instagram/karussells/<kunde>/ (2000 px), Shooting-Ordner der Kunden, firma/website-shk/assets/fotos,
+Quellen: marketing/instagram/karussells/<kunde>/ (2000 px; Bilder 01–04 je Betrieb zeigen meist Noah mit dem Kunden → nie), Shooting-Ordner der Kunden, firma/website-shk/assets/fotos,
 die Reels der Kunden (kunden/<kunde>/videos/reel/out, liegen auf der Extreme Pro).
 
 Schreibt nach static/assets/fv/ (g = Galerie, h = Hero, k = Kontaktabzug, v = Reels) und start-neu/bilder/fv-*.webp.
@@ -42,7 +42,7 @@ GALERIE = [
     ("se-luft", P(SE, 67), "shk", "Sanitär & Heizung", "Senftleben Haustechnik"),
     ("ki-team", K / "kirchner/13.jpg", "bau", "Bau & Transporte", "Kirchner Thaining"),
     ("kr-hobel", K / "kreitner/14.jpg", "holz", "Schreinerei", "Schreinerei Kreitner"),
-    ("es-tragen", P(ES, 36), "shk", "Sanitär & Heizung", "Erwin Schmidt & Sohn"),
+    # es-tragen (Erwin Schmidt Fotos (36), Team trägt eine Kollegin = Motiv ess-team-lachen) ist gesperrt (Noah, 18.11.2026)
     ("sd-roboter", K / "sd-hirsch/09.jpg", "metall", "Metallverarbeitung", "SD Hirsch"),
     ("se-armatur", P(SE, 52), "shk", "Sanitär & Heizung", "Senftleben Haustechnik"),
     ("sn-balken", K / "schneider/18.jpg", "holz", "Zimmerei", "Zimmerei Schneider"),
@@ -74,6 +74,34 @@ GALERIE = [
     ("st-tragen", P(ST, 36), "shk", "Sanitär & Heizung", "Stimpfle Sanitär & Heizung"),
     ("ko-team", K / "koller/06.jpg", "holz", "Zimmerei", "Zimmerei Koller"),
 ]
+# Noah, 18.11.2026 („Bei ‚Abgedreht‘ … können wir an sich auch noch mehr Sachen mit reinnehmen … Fotos, Videos, Filme …
+# anordnen … nicht unbedingt noch extra eingeordnet“): 19 weitere Drehtag-Fotos, je von Hand angesehen — kein Bild mit Noah
+# (die Karussell-Bilder 01–04 der Betriebe zeigen ihn mit dem Kunden), kein Kopf angeschnitten (kreitner/12 deshalb raus),
+# keine Dublette zu einem Bild oben. Sie werden zwischen die vorhandenen gemischt (Stelle = Index in der fertigen Liste).
+GALERIE_NEU = [
+    (1, ("ko-halle", K / "koller/17.jpg", "holz", "Zimmerei", "Zimmerei Koller")),
+    (4, ("sd-biege", K / "sd-hirsch/08.jpg", "metall", "Metallverarbeitung", "SD Hirsch")),
+    (7, ("kl-flex", K / "klass/11.jpg", "shk", "Sanitär & Heizung", "Heizung-Sanitär Klaß")),
+    (10, ("cs-maske", K / "cs-metalldesign/06.jpg", "metall", "Metallbau", "CS Metalldesign")),
+    (13, ("kr-zuschnitt", K / "kreitner/10.jpg", "holz", "Schreinerei", "Schreinerei Kreitner")),
+    (16, ("ki-baggerfahrer", K / "kirchner/17.jpg", "bau", "Tiefbau", "Kirchner Thaining")),
+    (19, ("sn-zapfen", K / "schneider/19.jpg", "holz", "Zimmerei", "Zimmerei Schneider")),
+    (22, ("cs-werkbank", K / "cs-metalldesign/10.jpg", "metall", "Metallbau", "CS Metalldesign")),
+    (25, ("hv-monteur", K / "hirschvogel/20.jpg", "holz", "Küchenbau", "Küchenhaus Hirschvogel")),
+    (28, ("sd-stangen", K / "sd-hirsch/11.jpg", "metall", "Metallverarbeitung", "SD Hirsch")),
+    (31, ("ki-lkw-fahrer", K / "kirchner/12.jpg", "bau", "Bau & Transporte", "Kirchner Thaining")),
+    (34, ("kr-fraese", K / "kreitner/13.jpg", "holz", "Schreinerei", "Schreinerei Kreitner")),
+    (37, ("kl-wagen", K / "klass/15.jpg", "shk", "Sanitär & Heizung", "Heizung-Sanitär Klaß")),
+    (40, ("cs-rohrlager", K / "cs-metalldesign/05.jpg", "metall", "Metallbau", "CS Metalldesign")),
+    (43, ("sn-haus", K / "schneider/20.jpg", "holz", "Zimmerei", "Zimmerei Schneider")),
+    (46, ("ki-ziegel", K / "kirchner/10.jpg", "bau", "Baustoffe", "Kirchner Thaining")),
+    (49, ("sd-presse", K / "sd-hirsch/10.jpg", "metall", "Metallverarbeitung", "SD Hirsch")),
+    (52, ("kr-werkstatt", K / "kreitner/05.jpg", "holz", "Schreinerei", "Schreinerei Kreitner")),
+    (55, ("cs-zylinder", K / "cs-metalldesign/12.jpg", "metall", "Metallbau", "CS Metalldesign")),
+]
+for _stelle, _eintrag in GALERIE_NEU:
+    GALERIE.insert(_stelle, _eintrag)
+assert len({k for k, *_ in GALERIE}) == len(GALERIE), "doppeltes Kürzel"
 # Kontaktabzug: je Motiv eine Aufnahme (Folgen fast gleicher Bilder sähen wie Dubletten aus), in Aufnahme-Reihenfolge
 KONTAKT_AUSWAHL = (1, 5, 6, 11, 13, 15, 22, 25, 28, 30, 32, 37, 39, 40, 44, 46, 49, 55, 57, 59)
 # Karten „Was wir übernehmen“ auf /foto-video/ (vorher drei Fotos mit Noah und Kunde)
