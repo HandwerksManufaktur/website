@@ -71,7 +71,7 @@ GALERIE = [
     ("maler", PRAXIS / "foto-maler-woerner-team.jpg", "bau", "Maler", "Malerbetrieb Wörner"),
     ("hv-schubladen", K / "hirschvogel/13.jpg", "holz", "Küchenbau", "Küchenhaus Hirschvogel"),
     ("ki-kabine", K / "kirchner/05.jpg", "bau", "Tiefbau", "Kirchner Thaining"),
-    ("st-tragen", P(ST, 36), "shk", "Sanitär & Heizung", "Stimpfle Sanitär & Heizung"),
+    # st-tragen (Stimpfle-Team trägt einen Kollegen) raus: gleiches Motiv wie das gesperrte Team-Foto (Noah, 18.11.2026)
     ("ko-team", K / "koller/06.jpg", "holz", "Zimmerei", "Zimmerei Koller"),
 ]
 # Noah, 18.11.2026 („Bei ‚Abgedreht‘ … können wir an sich auch noch mehr Sachen mit reinnehmen … Fotos, Videos, Filme …
