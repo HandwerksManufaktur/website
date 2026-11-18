@@ -314,7 +314,7 @@ class Seite:
                                     '.stimmen .kopfzeile{margin-bottom:clamp(36px,5vw,64px)}'
                                     # Keine Sektions-H2 mit drei Zeilen am Desktop (Noah, 15.11.2026): die 16ch-Grenze lässt „Drei Baustellen übernehmen wir für dich.“ und
                                     # „Über 50 Fotos aus den Betrieben unserer Kunden.“ dreizeilig laufen, also bekommen diese beiden Köpfe die breitere Spalte
-                                    '@media (min-width:901px){.leistungen-sek .kopfzeile,.fotowand-sek .kopfzeile{grid-template-columns:minmax(0,1.4fr) minmax(0,.6fr)!important}'
+                                    '@media (min-width:901px){.leistungen-sek .kopfzeile:has(>.lead),.fotowand-sek .kopfzeile:has(>.lead){grid-template-columns:minmax(0,1.4fr) minmax(0,.6fr)!important}'
                                     '.leistungen-sek .kopfzeile>h2,.fotowand-sek .kopfzeile>h2{max-width:none!important}}'
                                     '@media (max-width:900px){.dsk-br{display:none}}' + KONTAKT_STIL + KARTEN_STIL + '</style>' + NEU_KOPF + '</head>', 1)
         assert self.h.count('</body>') == 1
