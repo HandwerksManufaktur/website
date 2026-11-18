@@ -196,3 +196,11 @@
 }
 /* Handy: Signet bleibt ganz im Bild (Codex-Fund 18.11.2026: links/rechts abgeschnitten) */
 @media (max-width:760px){.sg-ruhe{height:auto;width:min(84vw,360px)}.sg-wachsen{right:4vw;height:auto;width:min(70vw,320px);top:24px}}
+/* Noah, 18.11.2026: „Das Logo im Hintergrund, das ist noch Shit … so dezent, bzw. wenn dann muss es farblich passen … ein bisschen dezenter“
+   → Signet nur noch als Ton-in-Ton-Fläche im Papierton, kein Verlauf, kein Glanz, feine Linie */
+.sg-wachsen{opacity:.55}
+.sg-wachsen .sg-k{fill:var(--bronze-hauch)}
+.sg-wachsen .sg-glanz{display:none}
+.sg-wachsen .sg-l{stroke:var(--bronze);stroke-width:1;opacity:.18}
+.sg-ruhe .sg-fuell{fill:var(--bronze-hauch);opacity:.45}
+.sg-ruhe .sg-umriss{opacity:.22}
