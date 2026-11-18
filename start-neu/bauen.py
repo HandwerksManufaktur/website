@@ -724,6 +724,23 @@ def unterseite(slug):
     return Seite((QUELLE / f"{slug}.html").read_text())
 
 
+# Ergebnisse auf Neukunden/Mitarbeiter = dieselben Karten wie auf der Startseite (Noah, 19.11.2026: „viel, viel zu kompliziert …
+# bei der Home-Seite siehst du, welche Simpelheit wir brauchen“). Die lange Fallstudie mit Text, Zitat, Mail-Raster und Zeilen fällt weg.
+_ea, _ee = s.bereich('<section class="sek erg-sek" id="ergebnisse">')
+ERG_HOME = s.h[_ea:_ee]
+
+
+def erg_karten(art, ohne=()):
+    karten = [k for k in re.findall(r'<article class="erg reveal">.*?</article>', ERG_HOME, re.S)
+              if f"<br><b>{art}</b>" in k and not any(o in k for o in ohne)]
+    assert 2 <= len(karten) <= 3, (art, len(karten))
+    karten = [re.sub(r'<a class="textlink"[^>]*>.*?</a>', "", k, flags=re.S) for k in karten]
+    raster = '' if len(karten) == 3 else ' style="grid-template-columns:repeat(2,minmax(0,1fr))"'
+    return ('<section class="sek erg-sek" id="ergebnisse"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Die Ergebnisse</span>'
+            f'<h2>Ergebnisse unserer Kunden.</h2></div><div class="ergebnisse"{raster}>{"".join(karten)}</div>'
+            f'<p class="erg-wisch" aria-hidden="true">Wischen für {("beide", "alle drei")[len(karten) - 2]} Betriebe</p></div></section>')
+
+
 def hero_knopf(seite, alt_href, neu_href, text="Ergebnisse ansehen"):
     seite.ersetze(f'<a class="btn btn-umriss" href="{alt_href}">Arbeiten ansehen</a>',
                   f'<a class="btn btn-umriss" href="{neu_href}">{text}</a>')
@@ -804,10 +821,10 @@ FASSUNG = {
                  ('<h2>Den Drehtag übernehmen wir.</h2>', '<h2>Vom ersten Bild bis zum fertigen Film.</h2>')],
     "neukundengewinnung": [('<h1>Die Aufträge, die du willst. Nur für deinen Betrieb.</h1>', '<h1>Du fährst hin.<br> Den Rest machen wir.</h1>'),
                  ('<h2>Die Anzeigen übernehmen wir.</h2>', '<h2>Von der Anzeige bis zum Aufmaß.</h2>'),
-                 ('<h2>„Dass so schnell so viele Anfragen kommen, hätte ich nicht gedacht.“</h2>', '<h2>Schwarz auf weiß.</h2><p class="lead">„Dass so schnell so viele Anfragen kommen, hätte ich nicht gedacht.“</p>')],
+                 ],
     "mitarbeitergewinnung": [('<h1>Leute, die bei dir anfangen wollen. Aus deinem Umkreis.</h1>', '<h1>Wir suchen.<br> Du stellst ein.</h1>'),
                  ('<h2>Die Suche übernehmen wir.</h2>', '<h2>Von der Anzeige bis zum Handschlag.</h2>'),
-                 ('<h2>„Wir haben nur nicht gedacht, dass es so viele sind.“</h2>', '<h2>25 Bewerbungen. 4 Wochen. 1 Neuer.</h2><p class="lead">„Wir haben nur nicht gedacht, dass es so viele sind.“</p>')],
+                 ],
 }
 
 
@@ -908,14 +925,14 @@ n.ersetze('<span class="nr" data-zahl="14">14</span><span class="fz-einheit">Bad
 n.ersetze('Pflicht ist es nicht — es geht auch mit deinem Vorarbeiter.', 'Pflicht ist es nicht, es geht auch mit deinem Vorarbeiter.', 2)
 n.ersetze('Sein Argument: Werbung macht man nicht erst, wenn es schlechter läuft, sondern damit man dann schon bekannt ist.',
           'Sein Argument: Wer erst wirbt, wenn es schlechter läuft, ist dann noch nicht bekannt.', 2)
+# Schlicht wie die Startseite (Noah, 19.11.2026): Hero → Was wir übernehmen → Ergebnis-Karten → Stimmen → Fragen → Kontakt
+n.heraus('<section class="sek grund" id="ergebnisse">')
 n.nach('<section class="hero-klein">',
-       problem('Drei Wochen voll, dann wieder Zufall.',
-               ['Empfehlungen kannst du nicht bestellen, wenn ein großes Projekt wegbricht.', 'Im Lead-Portal geht dieselbe Anfrage an vier Betriebe gleichzeitig.', 'Auf der Vergabeplattform bekommt den Auftrag, wer am billigsten ist.'],
-               ['Die Anzeige läuft nur 25 Kilometer um deinen Betrieb.', 'Vier Filterfragen stehen vor jeder Anfrage.', 'Jede Anfrage gehört dir allein.'])
-       + uebernehmen('Die Anzeigen übernehmen wir.', [
+       uebernehmen('Die Anzeigen übernehmen wir.', [
            ('u-anzeige', 'Patrick und Mirjana von Sussmann vor dem Firmenschild', '50% 30%', 'Die Anzeige', 'Mit deinen Leuten drauf.', 'Man erkennt den Betrieb aus dem Nachbarort, deshalb bleibt sie im Feed hängen.'),
            ('u-umkreis', 'Senftleben Haustechnik mit Team und Firmenwagen aus der Luft', '50% 50%', 'Der Umkreis', 'Nur 25 Kilometer um deinen Betrieb.', 'Wer 60 Kilometer weiter ein Projekt plant, sieht sie nicht.'),
-           ('stimpfle-werkstatt', 'Das Team von Stimpfle Sanitär und Heizung in der Werkstatt', '50% 30%', 'Die Filterfragen', 'Vier Fragen vor jeder Anfrage.', 'Bei dir kommt an, wer sein Projekt ernst meint, mit Name und Nummer.')]))
+           ('u-motivliste', 'Zwei Männer im Büro von HAWE Engineering', '50% 30%', 'Die Filterfragen', 'Vier Fragen vor jeder Anfrage.', 'Bei dir kommt an, wer sein Projekt ernst meint, mit Name und Nummer.')])
+       + erg_karten("Bad-Anfragen"))
 n.vor('<section class="sek faq">', STIMMEN)
 fertig(n, "neukundengewinnung")
 
@@ -926,14 +943,12 @@ einfach(m, 'Die Guten suchen nicht, also bringen wir deine Stelle dorthin, wo si
 hero_knopf(m, "/websites/#arbeiten", "#ergebnisse")
 m.ersetze('<section class="sek grund"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Fallstudie · Anlagenmechaniker SHK</span>',
           '<section class="sek grund" id="ergebnisse"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Die Ergebnisse</span>')
+m.heraus('<section class="sek grund" id="ergebnisse">')
 m.nach('<section class="hero-klein">',
-       problem('Die Guten suchen nicht.',
-               ['Im Stellenportal meldet sich, wer gerade keine Arbeit hat.', 'Den Aufkleber am Firmenwagen liest, wer an der Ampel hinter dir steht.', '„Wir suchen dich“ auf der eigenen Seite liest nur, wer den Betrieb schon kennt.'],
-               ['Deine Stelle läuft auf Instagram und Facebook, 30 Kilometer um deinen Betrieb.', 'Deine Mannschaft steht in der Anzeige.', 'Die Bewerbung dauert zwei Minuten, ohne Anschreiben und Lebenslauf.'])
-       + uebernehmen('Die Suche übernehmen wir.', [
+       uebernehmen('Die Suche übernehmen wir.', [
            ('irlbacher-werkstatt', 'Zwei Monteure von Irlbacher Gebäudetechnik mit Werkzeug vor dem Firmenwagen', '50% 20%', 'Die Anzeige', 'Mit deiner Mannschaft.', 'Sie läuft abends auf Instagram und Facebook, nur im Umkreis um den Betrieb.'),
            ('u-bewerbung', 'Monteur von Erwin Schmidt &amp; Sohn mit Zange im Lager', '50% 25%', 'Die Bewerbung', 'Zwei Minuten am Handy.', 'Vier Filterfragen statt Anschreiben und Lebenslauf.'),
-           ('u-gespraech', 'Drei Monteure von Heizung-Sanitär Klaß vor dem Firmenwagen', '50% 30%', 'Das Gespräch', 'Du rufst an.', 'Die Bewerbung kommt mit Nummer und Antworten, du führst nur noch die Gespräche.')]))
+           ('u-uebergabe', 'Zwei Mitarbeiter in der Fertigung von SD Hirsch', '50% 30%', 'Das Gespräch', 'Du rufst an.', 'Die Bewerbung kommt mit Nummer und Antworten, du führst nur noch die Gespräche.')]))
 # Senftleben groß (Noah, 18.11.2026: „in 18 [Tagen] Stelle besetzt … die kannst du auch groß machen … mit der Buchhaltung“), Zahlen wie SHK-Seite
 SENFT_SEK = ('<section class="sek senft-sek"><div class="wrap senft-raster"><figure class="senft-bild reveal"><img src="/static/assets/img/_h1280/fall/senftleben-team.webp" '
              'alt="Das Team von Senftleben Haustechnik vor den Firmenwagen in Ehingen" loading="lazy" decoding="async"></figure>'
@@ -946,6 +961,6 @@ SENFT_SEK = ('<section class="sek senft-sek"><div class="wrap senft-raster"><fig
              '.senft-zahl{display:flex;align-items:baseline;gap:.25em;margin:14px 0 6px;line-height:.9}.senft-zahl b{font-size:clamp(96px,13vw,200px);font-weight:800;letter-spacing:-.05em;color:var(--bronze-tief,#8F5B1D)}'
              '.senft-zahl span{font-size:clamp(28px,3vw,44px);font-weight:700;letter-spacing:-.02em}.senft-text h2{margin:0 0 12px;max-width:20ch;font-size:clamp(28px,2.8vw,42px);line-height:1.12}.senft-text h2::before{display:none}'
                           '@media (max-width:900px){.senft-raster{grid-template-columns:1fr}}</style>')
-m.nach('<section class="sek grund" id="ergebnisse">', SENFT_SEK)
+m.nach('<section class="sek uebernehmen-sek">', SENFT_SEK + erg_karten("Bewerbungen", ohne=("senftleben-team-2026",)))
 m.vor('<section class="sek faq">', STIMMEN)
 fertig(m, "mitarbeitergewinnung")
