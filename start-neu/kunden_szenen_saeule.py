@@ -35,8 +35,8 @@ ID = lambda s: s['id']
 # fen = Drive-Datei-ID, ab/dauer = Fenster im Original (s), bild = Startbild im Fenster (Sichtprüfung: Blick in die Kamera,
 # Augen offen, Lächeln, keine Hand vorm Gesicht), x = Lage der gemeinten Person im Original (bei zwei Personen im Bild).
 SZENEN = [
-    dict(id='sussmann', betrieb='Sussmann', wer='Patrick Wähnl steht vor dem Sussmann-Firmenwagen',
-         datei='CTAs/Sussmann CTAs (2).MP4', fen='1cUTuGGYPv51DZfkES-pJ6Cy2rubu8ppR', ab=18, dauer=10, bild=66, x=0.28),
+    dict(id='sussmann', betrieb='Sussmann', wer='Patrick Wähnl redet in die Kamera, Lager (lehnt am Regal)',
+         datei='Bodies/Sussmann Bodys (4).MP4', fen='1kuXUTHwEBLFEeG9FNgH5PO9TZNJdfIxP', ab=160, dauer=20, bild=420, x=0.5, h_max=0.22),   # Noah 18.11. abends: Patrick „anderes“, aktiv redend statt stumm vor dem Wagen (CTAs (2), 20,2 s)
     dict(id='stimpfle', betrieb='Stimpfle', wer='Mitarbeiterin von Stimpfle lächelt in der Werkstatt',
          datei='Arbeitsclips/h3.mp4 (= Hooks (3).MP4, Proxy)', fen='1pnyURN083iPTMSUh0KLD4RY2uX78fS1O', ab=0, dauer=9, bild=45, x=0.41),
     dict(id='erwin-schmidt', betrieb='Erwin Schmidt', wer='Mitarbeiter (Kappe) von Erwin Schmidt am Tisch',
@@ -47,6 +47,12 @@ SZENEN = [
          datei='Recruiting/MA-Interviews/Senftleben Mitarbeiter (3).MP4', fen='1bjOejFdcWlCcupT5o19dykP50gAIFH2J', ab=60, dauer=10, bild=81, x=0.29),
     dict(id='irlbacher', betrieb='Irlbacher', wer='Mitarbeiter von Irlbacher vor dem Firmenwagen',
          datei='Mitarbeiter/Interview.MP4', fen='1MqMldEOR677S8IqSsSYPYptdG7Lexh6n', ab=92, dauer=8, bild=15, x=0.53),
+    # Noah 18.11. abends: „Mirjana sollte noch mit rein. Yannick Stimpfle sollte auch mit rein.“ — von beiden gibt es keinen weiten Take,
+    # daher mehr Zoom (Kopf etwas größer als bei den übrigen), Kopf ganz, mittig, unter der Beschriftung.
+    dict(id='sussmann-mirjana', betrieb='Sussmann', wer='Mirjana Wähnl vor der Sussmann-Logowand, Blick in die Kamera',
+         datei='Hooks/Sussmann Hooks (18).MP4', fen='1XJvZpI9nt_sM9_Ua5voUnOdCOntqxUqx', ab=0, dauer=8, bild=9, x=0.5, h_max=0.22),
+    dict(id='stimpfle-yannick', betrieb='Stimpfle', wer='Yannick Stimpfle redet in die Kamera, Werkstatt',
+         datei='Arbeitsclips/h1.mp4 (= Hooks (1).MP4, Proxy)', fen='1SfErnbAQXKn4CkM8MVqErsm1hiXq73AT', ab=86, dauer=28, bild=414, x=0.5, h_max=0.24),
 ]
 # Nicht genommen (18.11.2026, Messung + Kontaktbogen): Senftleben-Mitarbeiter rechts im selben Interview (Brille, Gesicht nur
 # zeitweise frontal erkannt) — sechs Szenen, jeder Betrieb genau einmal, statt Wiederholungen; alle Sussmann-Hooks/Bodys, Meike-Takes, Senftleben LeadGen (Benjamin),
@@ -172,7 +178,7 @@ def pruefen():
         cx, cy, h = median(f, 'cx'), median(f, 'cy'), median(f, 'h')
         haar = cy - sz.get('haar', HAAR) * h                   # Kopfoberkante (Haaransatz bzw. Kappe)
         ok = (GRENZEN['y'][0] <= cy <= GRENZEN['y'][1] and GRENZEN['x'][0] <= cx <= GRENZEN['x'][1]
-              and haar >= GRENZEN['haar_min'] and h <= GRENZEN['h_max'])
+              and haar >= GRENZEN['haar_min'] and h <= sz.get('h_max', GRENZEN['h_max']))
         zeilen.append(f"  {sz['id']:18s} Kopf x={cx:.3f} y={cy:.3f} h={h:.3f} Haaransatz≈{haar:.3f} ({len(f)}/{BILDER} frontal) {'✓' if ok else '✗'}")
         if not ok: fehler.append(f"{sz['id']}: x={cx:.2f} y={cy:.2f} h={h:.2f} Haar={haar:.2f} außerhalb {GRENZEN}")
     return zeilen, fehler
@@ -185,4 +191,4 @@ if __name__ == '__main__':
     print('Folge:', ' → '.join(s['id'] for s in SZENEN)); print(*zeilen, sep='\n')
     if fehler: print('❌', *fehler, sep='\n  '); sys.exit(1)
     print(f"✅ {len(SZENEN)} Szenen, jeder Betrieb zuerst einmal, nie zweimal hintereinander (inkl. Schleife), Kopf mittig "
-          f"(y {GRENZEN['y'][0]}–{GRENZEN['y'][1]}), Haaransatz unter {GRENZEN['haar_min']}, Kopf ≤ {GRENZEN['h_max']}")
+          f"(y {GRENZEN['y'][0]}–{GRENZEN['y'][1]}), Haaransatz unter {GRENZEN['haar_min']}, Kopf ≤ {GRENZEN['h_max']} (Patrick/Mirjana ≤ 0,22, Yannick ≤ 0,24)")

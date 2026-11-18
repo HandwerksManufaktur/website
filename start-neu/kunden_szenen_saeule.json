@@ -1,11 +1,11 @@
 {
  "sussmann": {
-  "sekunde": 20.2,
-  "zoom": 1.63,
+  "sekunde": 174.0,
+  "zoom": 1.65,
   "quelle_kopf": {
-   "cx": 0.278,
-   "cy": 0.292,
-   "h": 0.066
+   "cx": 0.389,
+   "cy": 0.236,
+   "h": 0.124
   }
  },
  "stimpfle": {
@@ -51,6 +51,24 @@
    "cx": 0.574,
    "cy": 0.238,
    "h": 0.115
+  }
+ },
+ "sussmann-mirjana": {
+  "sekunde": 0.3,
+  "zoom": 1.21,
+  "quelle_kopf": {
+   "cx": 0.534,
+   "cy": 0.31,
+   "h": 0.154
+  }
+ },
+ "stimpfle-yannick": {
+  "sekunde": 99.8,
+  "zoom": 1.59,
+  "quelle_kopf": {
+   "cx": 0.5,
+   "cy": 0.256,
+   "h": 0.143
   }
  }
 }
