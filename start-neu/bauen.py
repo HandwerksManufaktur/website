@@ -26,6 +26,8 @@ LIVE_START = (QUELLE / "start.html").read_text()
 # Nur Website-Kunden in der SEO-Rangliste (Noah, 16.11.2026: „alle Kunden, die nicht Website-Kunden sind, dürfen wir dort
 # nicht erwähnen. Generell darf [Betrieb] auch nicht erwähnt werden.“). Liste + Grund je Betrieb: system/config/rankings.yaml.
 import yaml
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from kunden_links import entlinken, rest as kunden_rest
 NICHT_NENNEN = yaml.safe_load((WURZEL.parent.parent / "system/config/rankings.yaml").read_text(encoding="utf-8"))["nicht_auf_hwm_website"]
 
 
@@ -329,6 +331,9 @@ class Seite:
         assert "130 Betriebe" not in self.h and 'class="zusammen' not in self.h, pfad
         self.h = fuss_neu(self.h)
         self.h = stimmen_woertlich(self.h)
+        # Kundenseiten zeigen, nie verlinken (Noah, 19.11.2026: „nicht zum Anklicken, nicht zum Antippen“)
+        self.h = entlinken(self.h)
+        assert not kunden_rest(self.h), (pfad, kunden_rest(self.h)[:3])
         pfad.parent.mkdir(parents=True, exist_ok=True)
         pfad.write_text(self.h)
         print("✓", pfad.relative_to(WURZEL), len(self.h))
