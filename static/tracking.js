@@ -78,8 +78,6 @@ function laden() {
   if (ADS_ID) gtag('config', ADS_ID);
   const g = document.createElement('script'); g.async = true; g.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA4; document.head.appendChild(g);
   const h = document.createElement('script'); h.async = true; h.src = HOTJAR; document.head.appendChild(h);
-  // 11.11.2026: eigene Sitzungs-Aufnahmen fürs Cockpit (nur nach „Ja“, Eingaben geschwärzt, eigene Browser nie) — Hotjar hat keine Schnittstelle
-  const a = document.createElement('script'); a.async = true; a.src = 'https://seiten-zaehler.handwerksmanufaktur.workers.dev/aufnahme.js'; document.head.appendChild(a);
 }
 /* Ereignis nur senden, wenn eingewilligt und geladen — sonst geht nichts raus. */
 function ereignis(name, daten) {
@@ -170,26 +168,8 @@ if (echt && !test) {
   const Z = 'https://seiten-zaehler.handwerksmanufaktur.workers.dev/z';
   const id = Math.random().toString(36).slice(2, 12);
   const geraet = innerWidth < 768 ? 'm' : 'd';
-  // 🔴 11.11.2026 (Noah: „es MUSS ausgeklammert werden, wenn ich selber die Seite aufrufe"): einmal ?hwm-ich=1 aufrufen → dieser Browser
-  // trägt die Marke „hwm-ich" und zählt in jedem Netz (VPN, Mobilfunk, Hotel-WLAN) als eigener Besuch; ?hwm-ich=0 nimmt sie wieder weg.
-  // Nur unser Team setzt sie — bei allen anderen Besuchern steht dort nichts, und der Zähler speichert weiterhin nichts im Browser.
-  let ich = 0;
-  try {
-    const q = new URLSearchParams(location.search);
-    if (q.has('hwm-ich')) {
-      if (q.get('hwm-ich') === '0') localStorage.removeItem('hwm-ich'); else localStorage.setItem('hwm-ich', '1');
-      const hinweis = document.createElement('div');
-      hinweis.textContent = q.get('hwm-ich') === '0' ? 'Dieser Browser zählt wieder mit.' : '✓ Dieser Browser zählt nicht mit (eigener Besuch).';
-      hinweis.style.cssText = 'position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:99999;background:#111;color:#fff;font:15px/1.4 system-ui,sans-serif;padding:12px 18px;border-radius:10px';
-      addEventListener('load', () => { document.body.appendChild(hinweis); setTimeout(() => hinweis.remove(), 4000); });
-    }
-    ich = localStorage.getItem('hwm-ich') === '1' ? 1 : 0;
-  } catch (x) {}
-  // Betrieb aus dem Link (Skael-Videoseite hängt utm_content=<Token> an, eigene Links hwm_lead=…) — für „Wer kam aus der Kampagne"
-  let lead = '';
-  try { const q = new URLSearchParams(location.search); lead = (q.get('hwm_lead') || (q.get('utm_source') === 'skael' ? q.get('utm_content') : '') || '').replace(/[^\w-]/g, '').slice(0, 40); } catch (x) {}
   const senden = (t, extra) => {
-    const d = JSON.stringify(Object.assign({ t, s: location.hostname, p: location.pathname, g: geraet, id, w: innerWidth, i: ich }, lead ? { lead } : {}, extra || {}));
+    const d = JSON.stringify(Object.assign({ t, s: location.hostname, p: location.pathname, g: geraet, id }, extra || {}));
     try { if (!(navigator.sendBeacon && navigator.sendBeacon(Z, new Blob([d], { type: 'text/plain' })))) fetch(Z, { method: 'POST', body: d, keepalive: true, mode: 'no-cors' }); } catch (x) {}
   };
   let ref = 'direkt';
@@ -202,27 +182,14 @@ if (echt && !test) {
     else if (document.referrer) { const h = new URL(document.referrer).hostname.replace(/^www\./, ''); if (h && h !== location.hostname) ref = h; }
   } catch (x) {}
   senden('v', { r: ref });
-  // 11.11.2026: zusätzliche cookielose Messung (Fehler, Ladezeit, Wut-Klicks, Formular-Abbruch, Kopieren) aus dem Zähler-Worker
-  window.hwmZaehler = { s: senden, id };
-  try { const pl = document.createElement('script'); pl.async = true; pl.src = 'https://seiten-zaehler.handwerksmanufaktur.workers.dev/plus.js'; document.head.appendChild(pl); } catch (x) {}
-  // Kurzer Element-Pfad (bis 4 Ebenen, Schluss bei einer id) — damit die Klick-Karte Knöpfe auch bei anderer Fensterhöhe wiederfindet
-  const elPfad = n => { const t = []; for (let i = 0; n && n.nodeType === 1 && i < 4; i++) { let k = n.tagName.toLowerCase(); if (n.id) { t.unshift(k + '#' + n.id); break; } const c = (n.getAttribute('class') || '').trim().split(/\s+/)[0]; t.unshift(c ? k + '.' + c : k); n = n.parentElement; } return t.join('>').slice(0, 160); };
   document.addEventListener('click', e => {
     const a = e.target.closest('a, button, summary'); if (!a || a.closest('.cookie-hinweis')) return;
     const text = (a.getAttribute('aria-label') || a.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 70);
     const href = a.getAttribute && a.getAttribute('href') || '';
     const wohin = href.startsWith('tel:') ? ' → Anruf' : href.startsWith('mailto:') ? ' → Mail' : /calendly/.test(href) ? ' → Termin' : '';
-    // 11.11.2026: Klickposition für die eigene Klick-Karte im Cockpit (statt Hotjar): x in Promille der Seitenbreite, y in px ab Seitenanfang
-    const de = document.documentElement;
-    senden('k', { z: (text || a.tagName.toLowerCase()) + wohin, x: Math.round(e.pageX / Math.max(1, de.scrollWidth) * 1000), y: Math.round(e.pageY), el: elPfad(a) });
+    senden('k', { z: (text || a.tagName.toLowerCase()) + wohin });
   }, { capture: true });
   document.addEventListener('hwm:lead', e => senden('f', { z: (e.detail && e.detail.formular) || 'formular' }));
-  // Verweildauer (09.11.2026, Noah: „wie lange waren die Leute auf der Seite"): sichtbare Sekunden je Aufruf, gemeldet beim
-  // Verstecken/Verlassen als Summe bisher — der Zähler nimmt je Aufruf den größten Wert. Nichts wird im Browser gespeichert.
-  let sicht = 0, ab = document.visibilityState === 'visible' ? Date.now() : 0;
-  const dauer = () => { if (ab) { sicht += Date.now() - ab; ab = 0; } const sek = Math.round(sicht / 1000); if (sek > 0) senden('d', { z: String(sek) }); };
-  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') dauer(); else ab = Date.now(); });
-  addEventListener('pagehide', dauer);
   const marken = [25, 50, 75, 100], erreicht = new Set();
   let lauf = false;
   const tiefe = () => {
