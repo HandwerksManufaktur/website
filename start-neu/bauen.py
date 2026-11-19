@@ -465,10 +465,16 @@ def hero_seo(seite):
 #                30-fps-Bilder mit 25 fps = 2,33 s) — Noah 18.11. abends: „ein geiles Video“ → mehr Zeit
 #   sr-koller-c  Final 12,68 s (Kappsäge, Gehörschutz) + 14,48 s (Sägeblatt im Balken)
 #   sr-baureize  Baureize 12,67 s (Formatkreissäge) + 20,67 s (grüner Linienlaser)
+#   sr-baureize  (19.11.2026) erst der grüne Linienlaser, dann Wolfgang an der Formatkreissäge als letzte Einstellung
+#                (Noah: „bei baureize das video wo er an der säge steht mach da bei ihm als letztes hin“)
+#   sr-fischer   (19.11.2026) Fischer-Team am Transporter (Imagefilm 2026, 7,6 s) + Bettina Tittmann lächelnd in der Badausstellung
+#                (Imagefilm 2026, 30,0 s, neu gedreht) — Noah: „nimm tittmann da rein auch noch“; das Hochkant-Lachen (Bodys (2)) wäre im
+#                Hero nur ein Riesengesicht, es steht hochkant in der Galerie
 SHOWREEL = [("Zimmerei Koller", "sr-koller-a", 3.44), ("CS Metalldesign", "sr-cs-a", 3.5), ("A. Resch Bau", "sr-resch", 5.02),
+            ("Fischer Bad Heizung Solar", "sr-fischer", 3.6),
             ("Zimmerei Koller", "sr-koller-b", 3.44), ("Kirchner Thaining", "sr-kirchner", 1.8), ("CS Metalldesign", "sr-cs-b", 3.25),
             ("Zimmerei Koller", "sr-koller-c", 3.44), ("Baureize", "sr-baureize", 3.54)]
-SHOWREEL_V = {"sr-kirchner": 2, "sr-cs-b": 2}   # Versionsmarke je neu geschnittener Lage (Browser-Cache)
+SHOWREEL_V = {"sr-kirchner": 2, "sr-cs-b": 2, "sr-baureize": 2, "sr-fischer": 2}   # Versionsmarke je neu geschnittener Lage (Browser-Cache)
 assert all(SHOWREEL[i][0] != SHOWREEL[i - 1][0] for i in range(len(SHOWREEL))), "zwei Lagen vom selben Betrieb hintereinander"
 
 
