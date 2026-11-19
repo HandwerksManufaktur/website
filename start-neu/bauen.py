@@ -467,14 +467,14 @@ def hero_seo(seite):
 #   sr-baureize  Baureize 12,67 s (Formatkreissäge) + 20,67 s (grüner Linienlaser)
 #   sr-baureize  (19.11.2026) erst der grüne Linienlaser, dann Wolfgang an der Formatkreissäge als letzte Einstellung
 #                (Noah: „bei baureize das video wo er an der säge steht mach da bei ihm als letztes hin“)
-#   sr-fischer   (19.11.2026) Fischer-Team am Transporter (Imagefilm 2026, 7,6 s) + Bettina Tittmann lächelnd in der Badausstellung
-#                (Imagefilm 2026, 30,0 s, neu gedreht) — Noah: „nimm tittmann da rein auch noch“; das Hochkant-Lachen (Bodys (2)) wäre im
-#                Hero nur ein Riesengesicht, es steht hochkant in der Galerie
+#   sr-fischer   (19.11.2026) aus dem Imagefilm 2026: Team am Transporter 7,6 s · Drohne Haus mit PV 101,2 s · Drohne Firmengebäude
+#                112,8 s — Noah: „Fischer schon … das mit dem Team … Drohnen-Aufnahmen … drei kurze Sachen zusammenschneiden“, Bettina
+#                selbst nicht auf Foto & Video (sie steht stehend und lächelnd im Kundenvideo der Startseite)
 SHOWREEL = [("Zimmerei Koller", "sr-koller-a", 3.44), ("CS Metalldesign", "sr-cs-a", 3.5), ("A. Resch Bau", "sr-resch", 5.02),
-            ("Fischer Bad Heizung Solar", "sr-fischer", 3.6),
+            ("Fischer Bad Heizung Solar", "sr-fischer", 4.4),
             ("Zimmerei Koller", "sr-koller-b", 3.44), ("Kirchner Thaining", "sr-kirchner", 1.8), ("CS Metalldesign", "sr-cs-b", 3.25),
             ("Zimmerei Koller", "sr-koller-c", 3.44), ("Baureize", "sr-baureize", 3.54)]
-SHOWREEL_V = {"sr-kirchner": 2, "sr-cs-b": 2, "sr-baureize": 2, "sr-fischer": 2}   # Versionsmarke je neu geschnittener Lage (Browser-Cache)
+SHOWREEL_V = {"sr-kirchner": 2, "sr-cs-b": 2, "sr-baureize": 2, "sr-fischer": 3}   # Versionsmarke je neu geschnittener Lage (Browser-Cache)
 assert all(SHOWREEL[i][0] != SHOWREEL[i - 1][0] for i in range(len(SHOWREEL))), "zwei Lagen vom selben Betrieb hintereinander"
 
 
@@ -517,9 +517,7 @@ GALERIE = _json.loads((WURZEL / "static/assets/fv/galerie.json").read_text())
 # (Stelle in der Fotoliste, Gewerk-Schlüssel, Gewerk, Betrieb, Seitenverhältnis, Film, Poster)
 GALERIE_FILME = [(2, "holz", "Schreinerei", "Schreinerei Kreitner", 16 / 9, f"{VID}/kreitner.mp4", f"{VID}/poster/kreitner.jpg"),
                  (6, "shk", "Anzeige", "Erich Sussmann", 9 / 16, f"{FV}/v/su-dusche.mp4", f"{FV}/v/su-dusche.jpg"),
-                 # Bettina Tittmann lacht in die Kamera (Rohmaterial Bodys (2), 34,3–38,9 s) — Noah, 19.11.2026: „genug Stellen mit Bettina
-                 # Tittmann, wo sie lacht … einen kurzen Ausschnitt … bei Foto und Video … hochkant“
-                 (9, "shk", "Anzeige", "Fischer Bad Heizung Solar", 9 / 16, f"{FV}/v/fi-bettina.mp4", f"{FV}/v/fi-bettina.jpg"),
+                 # Bettina selbst nicht auf Foto & Video (Noah, 19.11.2026: „Ich will Bettina nicht in der Foto- und Videoseite haben … Fischer schon“)
                  (11, "bau", "Bau &amp; Transporte", "Kirchner Thaining, 50 Jahre", 9 / 16, f"{VID}/kirchner.mp4", f"{VID}/poster/kirchner.jpg"),
                  (15, "holz", "Zimmerei", "Zimmerei Koller", 16 / 9, f"{VID}/koller.mp4", f"{VID}/poster/koller.jpg"),
                  (19, "shk", "Stellenanzeige", "Irlbacher Gebäudetechnik", 9 / 16, f"{FV}/v/ir-montage.mp4", f"{FV}/v/ir-montage.jpg"),
@@ -606,9 +604,9 @@ s.ersetze('<p class="lead">Website, Fotos und Social-Media-Werbung für Handwerk
 # Noah 18.11. abends: „nur der Ausschnitt von Patrick“ wird getauscht (alle anderen Stellen bleiben) → Szene 1 jetzt Sussmann Hooks (34)
 # ab 0,9 s (Patrick redet im Lager, Kopf ganz im Bild, gleiche Match-Cut-Lage 50 %/21,5 %), Szenen 2–8 Bild für Bild aus
 # firma/website-shk/neu/video/szenen/*.mp4 (SHK-Seite selbst unverändert).
-s.h = s.h.replace('/static/assets/vid/saeule/baureize.jpg', '/static/assets/vid/saeule/kunden-shk.jpg?v=2')
+s.h = s.h.replace('/static/assets/vid/saeule/baureize.jpg', '/static/assets/vid/saeule/kunden-shk.jpg?v=3')
 s.ersetze('data-src="/static/assets/vid/saeule/baureize-d.mp4" data-src-mobil="/static/assets/vid/saeule/baureize-m.mp4"',
-          'data-src="/static/assets/vid/saeule/kunden-shk-d.mp4?v=2" data-src-mobil="/static/assets/vid/saeule/kunden-shk-m.mp4?v=2"')
+          'data-src="/static/assets/vid/saeule/kunden-shk-d.mp4?v=3" data-src-mobil="/static/assets/vid/saeule/kunden-shk-m.mp4?v=3"')  # v3 (19.11.2026): Bettina stehend und lächelnd (Kampagnen-Aufnahme Bodys (2) ab 2,4 s) statt im Lager an der Kiste
 assert 'baureize' not in s.h.split('<div class="saeulen">', 1)[1].split('</div></div></div>', 1)[0]
 # Noah, 18.11.2026: „das Video soll schon das ganz ausfüllen, aber … nicht, dass der Kopf … abgeschnitten ist“ → in den
 # Originalen sitzt der Kopf ganz oben → weiter gefilmte Takes (start-neu/kunden_szenen_saeule.py), Beschriftung wieder oben.
