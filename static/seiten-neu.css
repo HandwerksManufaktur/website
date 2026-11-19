@@ -125,7 +125,7 @@
 .fv-k .fv-spiel::before{content:"";width:0;height:0;border-left:8px solid var(--bronze-hell);border-top:5px solid transparent;border-bottom:5px solid transparent}
 .fv-k:hover img,.fv-k:hover video,.fv-k:focus-within img,.fv-k:focus-within video{transform:scale(1.05)}
 .fv-k:hover figcaption,.fv-k:focus-within figcaption{opacity:1;transform:none}
-@media (hover:hover){.fv-raster.js:hover .fv-k.da:not(:hover){filter:saturate(.55) brightness(.82)}}
+/* Kein Ausgrauen der Nachbarbilder beim Drüberfahren (Noah, 19.11.2026: „er soll nicht ausgrauen wenn man wo drüber fährt“) */
 @media (hover:none){.fv-k figcaption{opacity:1;transform:none;padding:26px 10px 8px}.fv-k figcaption b{display:none}.fv-k figcaption span{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
 @media (max-width:699px){.fv-k{border-radius:12px}.fv-k .fv-spiel{right:8px;top:8px;padding:4px 8px 4px 6px;font-size:11px}}
 .fv-cursor{position:fixed;left:0;top:0;z-index:50;width:86px;height:86px;margin:-43px 0 0 -43px;border-radius:50%;display:grid;place-items:center;background:var(--bronze-hell);color:var(--tinte);font:700 13px/1 var(--schrift);letter-spacing:.04em;pointer-events:none;transform:translate(var(--x,-200px),var(--y,-200px)) scale(var(--s,0));transition:transform .18s ease-out}
