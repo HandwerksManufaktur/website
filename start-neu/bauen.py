@@ -695,6 +695,32 @@ def _vorne(zug, neu):
     mitte = starts[len(starts) // 2]
     return neu + zug[:mitte] + neu + zug[mitte:]
 _teile[1] = _vorne(_teile[1], LB_NEU_1); _teile[2] = _vorne(_teile[2], LB_NEU_2)
+# Reihenfolge wie im Websites-Raster (Noah, 19.11.2026 abends: Wagenknecht „nicht ganz oben“, SD Hirsch, Schillinger, Koller,
+# Dinkel, W&W Bau weiter nach vorn). Obere Leiste = erste Hälfte des Rasters, untere = zweite.
+LB_FOLGE = [["Irlbacher Gebäudetechnik", "SD Hirsch", "Björn Schillinger", "Zimmerei Koller", "Dinkel Metallbau", "W&amp;W Bau",
+             "Zimmerei Knappich", "Küchenhaus Hirschvogel", "Baustoffe Kirchner", "Wohner Elektrotechnik", "Baureize", "Resch Bau"],
+            ["Planung Hindelang", "Dachbau Kraus", "Schwaighofer", "Erwin Schmidt &amp; Sohn", "Vogel Holzbau", "Maser Tankschutz",
+             "Schreinerei Kreitner", "Schuster Erisried", "Senftleben Haustechnik", "Juwelier Wagenknecht", "Mehr Lebensenergie", "Malermeister Müller"]]
+
+
+def _lb_karten(zug):
+    starts = [m.start() for m in re.finditer(r'<(?:a|div) class="lb-k"', zug)]
+    karten = {}
+    for st in starts:
+        fuss = zug.index('</small></div>', st) + len('</small></div>')
+        ende = fuss + len(re.match(r'</(?:a|div)>', zug[fuss:]).group(0))
+        karten.setdefault(re.search(r'<b>(.*?)</b>', zug[st:ende]).group(1), zug[st:ende])
+    return karten, (starts[0], ende)
+
+
+_alle = {}
+_spannen = []
+for _i in (1, 2):
+    _k, _sp = _lb_karten(_teile[_i]); _alle.update(_k); _spannen.append(_sp)
+assert sorted(_alle) == sorted(LB_FOLGE[0] + LB_FOLGE[1]), set(_alle) ^ set(LB_FOLGE[0] + LB_FOLGE[1])
+for _i, (_st, _en) in zip((1, 2), _spannen):
+    _zug = "".join(_alle[n] for n in LB_FOLGE[_i - 1])
+    _teile[_i] = _teile[_i][:_st] + _zug + _zug + _teile[_i][_en:]
 s.h = s.h[:_a] + '<div class="lb-zug">'.join(_teile) + s.h[_e:]
 
 s.ersetze('<span class="kicker">Deine Website</span>', '<span class="kicker">Unsere Websites</span>')
