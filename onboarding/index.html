@@ -1030,7 +1030,7 @@ async function submitForm() {
     if (!createdFolders) {
       const s1 = addStep('Ordnerstruktur wird erstellt');
       setStepStatus(s1, 'active');
-      const r = await fetch(API_BASE + '/create-folders', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ firmaName, leistungen, serviceType: 'webdesign', formData: collectFormData(), missing: collectMissing(leistungen), clientV: 5 }) });
+      const r = await fetch(API_BASE + '/create-folders', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ firmaName, leistungen, serviceType: 'webdesign', formData: collectFormData(), missing: collectMissing(leistungen), clientV: 6 }) });
       const { folderIds, error } = await r.json();
       if (error) throw new Error(error);
       createdFolders = folderIds;
@@ -1249,5 +1249,8 @@ window.UX_CFG = {
   if (stepSeq.length) showStep(currentIdx);
 })();
 </script>
+<!-- Auswahl-Schicht (19.11.2026): Chips statt Freitext, Gewerk-Vorschläge, Vorbelegung per ?k=… — gebaut von system/apps/onboarding-auswahl/ -->
+<script>window.HWM_ART='webdesign';</script>
+<script src="auswahl.js"></script>
 </body>
 </html>
