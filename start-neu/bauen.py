@@ -956,21 +956,48 @@ _sek = w.h[_a:_e]
 _arts = re.findall(r'<article class="projekt[^"]*">.*?</article>(?=<article|</div>)', _sek, re.S)
 _klassen = re.findall(r'<article class="(projekt[^"]*)">', _sek)
 assert len(_arts) == len(_klassen) == 24, (len(_arts), len(_klassen))
-_vorn = [next(x for x in _arts if f"<b>{n}</b>" in x) for n in ("Irlbacher Gebäudetechnik", "Juwelier Wagenknecht", "Björn Schillinger")]
-# Irlbacher steht in der großen Kachel: dort wie die anderen großen Kacheln die ganze Seite zum Durchscrollen (sonst Leerraum unter dem Film)
-_vorn[0] = re.sub(r'<div class="schirm">.*?</div>(?=<div class="unten">)',
-                  '<div class="schirm lang"><img class="lang-bild" src="/static/assets/img/work/web/nachher-irlbacher.webp" '
-                  'alt="Irlbacher Gebäudetechnik — die ganze Seite" loading="lazy" decoding="async" width="1000"><span class="lang-marke">Ganze Seite</span></div>',
-                  _vorn[0], count=1, flags=re.S)
-assert "nachher-irlbacher.webp" in _vorn[0]
-_neu = _vorn + [x for x in _arts if x not in _vorn]
-_neu = [re.sub(r'^<article class="projekt[^"]*">', f'<article class="{k}">', x) for x, k in zip(_neu, _klassen)]
-_sek2 = _sek
-for x in _arts:
-    _sek2 = _sek2.replace(x, "\x00", 1)
-for x in _neu:
-    _sek2 = _sek2.replace("\x00", x, 1)
-assert "\x00" not in _sek2 and _sek2.index("<b>Irlbacher Gebäudetechnik</b>") < _sek2.index("<b>SD Hirsch</b>")
+# Reihenfolge und Größen nach Noah, 19.11.2026 abends: „Wagenknecht … nicht ganz oben … rechts oben … SD Hirsch, Schillinger
+# einigermaßen, Zimmerei Koller kann ziemlich weit hoch, Dinkel Metallbau auch … anstatt Resch Bau größer darzustellen, weil bei
+# Resch Bau dann irgendwie so ein ewiger Absatz unten drunter ist … genauso wie bei Planung Hindelang … Irlbacher haben wir
+# doppelt drin … W&W Bau kann ein bisschen weiter hoch … Wohner kannst du gerne groß machen“.
+# Groß wird nur, wer ein ganzes Seitenbild hat (Film + Seitenbild in der großen Kachel lässt unten einen leeren Streifen).
+# 3 Spalten: eine große Kachel belegt 2 × 2, die zwei kleinen danach füllen die freie Spalte.
+_GROSS = {"Irlbacher Gebäudetechnik": "irlbacher", "Zimmerei Koller": "koller", "Wohner Elektrotechnik": "wohner", "Erwin Schmidt &amp; Sohn": "ess"}
+_FOLGE = [("Irlbacher Gebäudetechnik", "gross"), "SD Hirsch", "Björn Schillinger",
+          ("Zimmerei Koller", "gross rechts"), "Dinkel Metallbau", "W&amp;W Bau",
+          "Zimmerei Knappich", "Küchenhaus Hirschvogel", "Baustoffe Kirchner",
+          ("Wohner Elektrotechnik", "gross"), "Baureize", "Resch Bau",
+          "Planung Hindelang", "Dachbau Kraus", "Schwaighofer",
+          ("Erwin Schmidt &amp; Sohn", "gross rechts"), "Vogel Holzbau", "Maser Tankschutz",
+          "Schreinerei Kreitner", "Schuster Erisried", "Senftleben Haustechnik",
+          "Juwelier Wagenknecht", "Mehr Lebensenergie", "Malermeister Müller"]
+# Der zweite Irlbacher fällt weg; Malermeister Müller (bisher nur im Laufband) füllt den Platz, damit die letzte Reihe voll bleibt
+_arts.append('<article class="projekt reveal"><div class="schirm"><video class="hero-lauf" muted loop playsinline preload="none" '
+             'data-src="/static/assets/vid/hero/hmueller.webm" data-poster="/static/assets/vid/hero/hmueller.jpg" width="640" height="400" '
+             'aria-label="Malermeister Müller — Startseite, wie sie live läuft"></video><img class="seite-bild" data-src="/static/assets/vid/hero/smueller.webp" '
+             'alt="" aria-hidden="true" loading="eager" decoding="async"></div><div class="unten"><small>Malerbetrieb</small><b>Malermeister Müller</b>'
+             '<div class="zeile"><img loading="lazy" src="/static/assets/img/logos/logo-malermeister-mueller.png" alt=""></div></div></article>')
+
+
+def _karte(eintrag):
+    name, gross = eintrag if isinstance(eintrag, tuple) else (eintrag, "")
+    x = next(a for a in _arts if f"<b>{name}</b>" in a)
+    if gross:
+        x = re.sub(r'<div class="schirm">.*?</div>(?=<div class="unten">)',
+                   f'<div class="schirm lang"><img class="lang-bild" src="/static/assets/img/work/web/nachher-{_GROSS[name]}.webp" '
+                   f'alt="{name} — die ganze Seite" loading="lazy" decoding="async" width="1000"><span class="lang-marke">Ganze Seite</span></div>',
+                   x, count=1, flags=re.S)
+        assert f"nachher-{_GROSS[name]}.webp" in x, name
+    return re.sub(r'^<article class="projekt[^"]*">', f'<article class="projekt{" " + gross if gross else ""} reveal">', x)
+
+
+_neu = [_karte(e) for e in _FOLGE]
+assert len(_neu) == 24 and sum(1 for e in _FOLGE if isinstance(e, tuple)) == 4
+assert len({re.search(r"<b>(.*?)</b>", x).group(1) for x in _neu}) == 24, "Betrieb doppelt im Raster"
+_ra = _sek.index(_arts[0][:60])
+_re = _sek.rindex("</article>") + len("</article>")
+_sek2 = _sek[:_ra] + "".join(_neu) + _sek[_re:]
+assert _sek2.count("<b>Irlbacher Gebäudetechnik</b>") == 1 and _sek2.count('<article class="projekt') == 24
 w.h = w.h[:_a] + _sek2 + w.h[_e:]
 w.ersetze('<p class="lead">Jede mit Fotos aus dem eigenen Betrieb, jede auf ihr Gewerk und ihren Umkreis gebaut. Fahr über eine Seite, dann scrollt sie durch.</p>',
           '<p class="lead">Alle live. Tipp eine an.</p>')
