@@ -219,3 +219,8 @@
 .kopfzeile.kurz:not(.mitte):has(> .lead) > .lead{margin:0}}
 .kopfzeile.kurz > .lead{font-size:clamp(18px,1.4vw,21px);color:var(--tinte-2)}
 .sek .kopfzeile.kurz:has(>h2+.lead)>.lead{justify-self:start;text-align:left}
+/* Websites-Raster: große Kachel zeigt den Hero-Film über die ganze Fläche (19.11.2026) */
+.projekt.gross .schirm.film{flex:1;aspect-ratio:auto;min-height:320px}
+.projekt.gross .schirm.film video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:0 50%}
+.projekt.gross .schirm.film .seite-bild{display:none}
+@media (max-width:1000px){.projekt.gross .schirm.film{flex:none;aspect-ratio:16/11;min-height:0}}

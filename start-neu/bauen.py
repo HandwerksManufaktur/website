@@ -665,7 +665,7 @@ LEISTUNGS_SEK = ('<section class="sek leistungen-sek" id="system">' + '<div clas
                  + karte("erwin-schmidt-team", "Das Team von Erwin Schmidt &amp; Sohn", "50% 30%", "Neue Mitarbeiter", "Wir suchen. Du stellst ein.",
                          "Bewerbungen von Fachkräften aus deinem Umkreis.", "mitarbeitergewinnung", "Mehr zu neuen Mitarbeitern")
                  + f'</div><p class="leistungen-zusatz reveal">Die Fotos und Videos dafür drehen wir bei dir im Betrieb. <a class="textlink" href="/foto-video/">Foto &amp; Video {PFEIL}</a></p></div></section>'
-                 '<style>/* Entwurf (start-neu/bauen.py) */.leistungen-zusatz{margin-top:28px;font-size:17px;line-height:1.5;color:var(--tinte-2)}'
+                 '<style>/* Entwurf (start-neu/bauen.py) */.leistungen-zusatz{margin-top:28px;font-size:17px;line-height:1.5;color:var(--tinte-2);text-align:center}'
                  '.leistungen-sek .erg-zeile em{font-size:clamp(24px,2.2vw,30px)}'
                  # Kartentext in allen drei Karten gleich viele Zeilen (der dritte Satz ist breiter als die Karte, also alle drei balanciert zweizeilig)
                  '.leistungen-sek .erg-in p{max-width:24ch;text-wrap:balance}'
@@ -772,13 +772,73 @@ assert _n == 1 and _sek2.count('class="stimme ') == 92, _sek2.count('class="stim
 s.h = s.h[:_a] + _sek2 + s.h[_e:]
 assert s.h.count('<h2>So sehen unsere Seiten aus.</h2>') == 1
 s.h = s.h.replace('<h2>So sehen unsere Seiten aus.</h2>', '<h2>Bezugsfertig.</h2>')  # wie auf der Websites-Seite
-# Unter „Wer hinter der Handwerksmanufaktur steht“ ein Bild-Block (Noah, 19.11.2026: „darunter noch ein anderes geiles
-# Content-Ding“): der laufende Kontaktabzug eines Drehtags, mit Weg zu Foto & Video.
-_kb = kontaktabzug_sek().replace('<span class="kicker">Ein Drehtag</span>', '<span class="kicker">Foto &amp; Video</span>', 1)
-_kb = _kb.replace('in der Reihenfolge der Aufnahmen.</p>', 'in der Reihenfolge der Aufnahmen. <a class="textlink" href="/foto-video/">'
-                  'Mehr zu Foto &amp; Video <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p>', 1)
-assert 'href="/foto-video/"' in _kb
-s.nach('<section class="sek team-sek" id="team">', _kb)
+s.ersetze('Von der Zimmerei bis zum Autohaus.', 'Von der Zimmerei über den Heizungsbauer bis zum Autohaus.')
+# Unter „Wer hinter der Handwerksmanufaktur steht“: Foto & Video (Noah, 19.11.2026 abends: „nicht nur ein Shooting … sondern die
+# kompletten Fotos/Videos … dass die dann irgendwie durchlaufen … was so richtig crazy geisteskrank ausschaut“) → eine schräg
+# gestellte Wand aus drei Bahnen, gegenläufig, mit allen Fotos der Galerie, allen Filmen und dem Drehtag-Kontaktabzug.
+def wand_sek():
+    teile = []
+    for d in GALERIE["fotos"]:
+        teile.append(("bild", f'{FV}/g/{d["k"]}-480.webp', d["w"] / d["h"], _html.unescape(d["betrieb"] or "")))
+    for _, _, _, betrieb, r, mp4, poster in GALERIE_FILME:
+        teile.append(("film", mp4, r, _html.unescape(betrieb).split(",")[0], poster))
+    for k in GALERIE["kontakt"]:
+        teile.append(("bild", f"{FV}/k/{k}.webp", 1.5, "Stimpfle Sanitär & Heizung"))
+    # Filme gleichmäßig verteilen, dann je Bahn nie zwei vom selben Betrieb nebeneinander
+    filme = [x for x in teile if x[0] == "film"]; bilder = [x for x in teile if x[0] == "bild"]
+    schritt = max(1, len(bilder) // (len(filme) + 1))
+    folge = []
+    for i, b in enumerate(bilder):
+        folge.append(b)
+        if (i + 1) % schritt == 0 and filme:
+            folge.append(filme.pop(0))
+    folge += filme
+    bahnen = [folge[i::3] for i in range(3)]
+    for bahn in bahnen:
+        for i in range(1, len(bahn)):
+            if bahn[i][3] and bahn[i][3] == bahn[i - 1][3]:
+                j = next((x for x in range(i + 1, len(bahn)) if bahn[x][3] != bahn[i - 1][3]), None)
+                if j: bahn[i], bahn[j] = bahn[j], bahn[i]
+
+    def kachel(x):
+        stil = f'style="--r:{x[2]:.4f}"'
+        if x[0] == "film":
+            return (f'<span class="wd-k ist-film" {stil}><video muted loop playsinline preload="none" data-wand="{x[1]}" poster="{x[4]}"></video>'
+                    '<i class="wd-rec">REC</i></span>')
+        return f'<span class="wd-k" {stil}><img data-wand="{x[1]}" alt="" decoding="async"></span>'
+    spuren = "".join(f'<div class="wd-bahn" style="--t:{t}s"><div class="wd-spur">{"".join(kachel(x) for x in bahn) * 2}</div></div>'
+                     for bahn, t in zip(bahnen, (95, 120, 105)))
+    betriebe = {x[3] for x in teile if x[3]}
+    n_bild, n_film = sum(1 for x in teile if x[0] == "bild"), sum(1 for x in teile if x[0] == "film")
+    return ('<section class="sek band auf-dunkel wd-sek"><div class="wrap"><div class="kopfzeile mitte reveal"><span class="kicker">Foto &amp; Video</span>'
+            '<h2>Alles bei unseren Kunden gedreht.</h2>'
+            f'<p class="lead">{n_bild} Fotos und {n_film} Filme aus {len(betriebe)} Betrieben. <a class="textlink" href="/foto-video/">Mehr zu Foto &amp; Video '
+            '<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p></div></div>'
+            f'<div class="wd" aria-hidden="true"><div class="wd-kipp">{spuren}</div></div></section>'
+            '<style>.wd-sek{overflow:hidden;padding-bottom:clamp(60px,8vw,120px)}.wd-sek .lead .textlink{color:var(--bronze-hell)}'
+            '.wd{position:relative;margin-top:clamp(30px,5vw,70px);height:calc(var(--wh) * 3 + 2 * var(--wg) + 12vw);--wh:clamp(118px,15vw,230px);--wg:clamp(8px,1vw,14px)}'
+            '.wd::before,.wd::after{content:"";position:absolute;top:0;bottom:0;width:12vw;z-index:2;pointer-events:none}'
+            '.wd::before{left:0;background:linear-gradient(90deg,var(--tinte),transparent)}.wd::after{right:0;background:linear-gradient(270deg,var(--tinte),transparent)}'
+            '.wd-kipp{position:absolute;left:-10%;right:-10%;top:6vw;display:grid;gap:var(--wg);transform:rotate(-5deg)}'
+            '.wd-bahn{overflow:visible}.wd-spur{display:flex;gap:var(--wg);width:max-content;animation:wd-lauf var(--t) linear infinite}'
+            '.wd-bahn:nth-child(2) .wd-spur{animation-direction:reverse}'
+            '.wd-bahn:hover .wd-spur{animation-play-state:paused}'
+            '.wd-k{position:relative;flex:none;height:var(--wh);width:calc(var(--wh) * var(--r));border-radius:14px;overflow:hidden;background:#24201a;'
+            'box-shadow:0 18px 40px -22px rgba(0,0,0,.8);transition:transform .45s var(--ease),filter .45s var(--ease);filter:saturate(.9)}'
+            '.wd-k img,.wd-k video{width:100%;height:100%;object-fit:cover;display:block}'
+            '.wd-k:hover{transform:scale(1.12) rotate(2deg);z-index:3;filter:none}'
+            '.wd-rec{position:absolute;left:10px;top:10px;font:700 11px/1 var(--schrift);letter-spacing:.12em;color:#fff;font-style:normal;display:flex;align-items:center;gap:6px;'
+            'background:rgba(0,0,0,.45);padding:5px 8px;border-radius:999px}.wd-rec::before{content:"";width:7px;height:7px;border-radius:50%;background:#E5483A;animation:hk-rec 1.2s steps(1) infinite}'
+            '@keyframes wd-lauf{to{transform:translateX(-50%)}}'
+            '@media (prefers-reduced-motion:reduce){.wd-spur{animation:none}.wd-bahn{overflow-x:auto}}</style>'
+            # Bilder laden, sobald die Wand naht; jeder Film lädt und läuft nur, solange er selbst im Bild ist (Startseite bleibt leicht)
+            '<script>(()=>{const w=document.querySelector(".wd");if(!w)return;let an=false;'
+            'new IntersectionObserver(es=>{if(es[0].isIntersecting&&!an){an=true;w.querySelectorAll("img[data-wand]").forEach(x=>{x.src=x.dataset.wand})}},{rootMargin:"800px 0px"}).observe(w);'
+            'const vio=new IntersectionObserver(es=>{for(const e of es){const v=e.target;if(e.isIntersecting){if(!v.getAttribute("src"))v.src=v.dataset.wand;v.play().catch(()=>{})}else{v.pause()}}},{rootMargin:"200px"});'
+            'w.querySelectorAll("video[data-wand]").forEach(v=>vio.observe(v))})()</script>')
+
+
+s.nach('<section class="sek team-sek" id="team">', wand_sek())
 
 s.entwurf()
 s.schreibe(ZIEL / "index.html")
@@ -1016,11 +1076,10 @@ def _karte(eintrag):
     name, gross = eintrag if isinstance(eintrag, tuple) else (eintrag, "")
     x = next(a for a in _arts if f"<b>{name}</b>" in a)
     if gross:
-        x = re.sub(r'<div class="schirm">.*?</div>(?=<div class="unten">)',
-                   f'<div class="schirm lang"><img class="lang-bild" src="/static/assets/img/work/web/nachher-{_GROSS[name]}.webp" '
-                   f'alt="{name} — die ganze Seite" loading="lazy" decoding="async" width="1000"><span class="lang-marke">Ganze Seite</span></div>',
-                   x, count=1, flags=re.S)
-        assert f"nachher-{_GROSS[name]}.webp" in x, name
+        # Große Kachel = der Hero-Film der Seite über die ganze Kachel (Noah, 19.11.2026: Irlbacher „nicht gut reinpositioniert“,
+        # Koller „ganz unten am Footer … immer jeweils das, was am Hero läuft“) — kein Seitenbild, das bis zum Fuß läuft
+        assert '<div class="schirm"><video class="hero-lauf"' in x, name
+        x = x.replace('<div class="schirm"><video class="hero-lauf"', '<div class="schirm film"><video class="hero-lauf"', 1)
     return re.sub(r'^<article class="projekt[^"]*">', f'<article class="projekt{" " + gross if gross else ""} reveal">', x)
 
 
@@ -1055,14 +1114,49 @@ _WU = [("foto", "Fotos aus deinem Betrieb", "Wir kommen vorbei und fotografieren
        ("google", "Gefunden bei Google", "Schnell, sauber am Handy, alte Adressen weitergeleitet. Du verlierst nichts."),
        ("anfrage", "Anfragen direkt zu dir", "Anruf-Knopf und Formular. Jede Anfrage landet sofort bei dir."),
        ("danach", "Nach dem Start", "Updates, Sicherheit, kleine Änderungen. Ein Satz an uns genügt.")]
-_wu_k = "".join(f'<article class="wu-k reveal"><span class="wu-ic"><svg viewBox="0 0 24 24" aria-hidden="true">{_IC[i]}</svg></span>'
-                f'<b>{titel}</b><p>{text}</p></article>' for i, titel, text in _WU)
-WU_SEK = ('<section class="sek grund wu-sek"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Was wir übernehmen</span>'
+# Gleicher Baustein wie „Was wir übernehmen“ auf Neukunden/Mitarbeiter/SEO (Noah, 19.11.2026: „ähnlich wie die Sektion bei
+# Neukundengewinnung, Mitarbeitergewinnung … dass sich das Design halt mehr durch die Seite generell noch durchzieht“):
+# dunkles Band, Kacheln mit Nummer, bewegtem Bild, Titel, einem Satz.
+_ic = lambda k: f'<span class="web-ic" aria-hidden="true"><svg viewBox="0 0 24 24">{_IC[k]}</svg></span>'
+_seite = "M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6"
+_post = "M4 6h16v12H4zM4 7l8 6 8-6"
+_web_zellen = [
+    '<article class="zelle z-3 hoch mit-handys web-fotos"><div class="handys-k" aria-hidden="true">'
+    f'<img src="{FV}/g/kl-flex-480.webp" alt="" loading="lazy" decoding="async"><img src="{FV}/g/cs-schweissen-480.webp" alt="" loading="lazy" decoding="async"></div>'
+    f'<span class="nummer">01</span><h3>{_WU[0][1]}</h3><p>{_WU[0][2]}</p></article>',
+    '<article class="zelle z-4 mit-tickets web-seiten">' + _tickets([("Badsanierung", "Eigene Seite · mit deinem Ort", "online"),
+                                                                       ("Dachstuhl neu", "Eigene Seite · mit deinem Ort", "online"),
+                                                                       ("Treppen aus Holz", "Eigene Seite · mit deinem Ort", "online")], _seite)
+    + f'<span class="nummer">02</span><h3>{_WU[1][1]}</h3><p>{_WU[1][2]}</p></article>',
+    '<article class="zelle z-4 mit-tickets web-anfragen">' + _tickets([("Neue Anfrage: Badsanierung", "Formular · mit Fotos und Nummer", "neu"),
+                                                                         ("Rückruf gewünscht", "Anruf-Knopf am Handy", "neu"),
+                                                                         ("Neue Anfrage: Carport", "Formular · mit Fotos und Nummer", "neu")], _post)
+    + f'<span class="nummer">03</span><h3>{_WU[4][1]}</h3><p>{_WU[4][2]}</p></article>',
+] + [f'<article class="zelle z-klein">{_ic(i)}<span class="nummer">0{n}</span><h3>{titel}</h3><p>{text}</p></article>'
+     for n, (i, titel, text) in enumerate([_WU[2], _WU[3], _WU[5]], 4)]
+WU_SEK = ('<section class="sek band auf-dunkel bento-sek ablauf-web"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Was wir übernehmen</span>'
           '<h2>Du lieferst den Betrieb. Wir den Rest.</h2>'
           '<p class="lead">Deine Website ist dein Schaufenster: Wer dich sucht, sieht deine Arbeit und ruft dich an statt den Nächsten.</p></div>'
-          f'<div class="wu">{_wu_k}</div></div></section>')
+          f'<div class="bento">{"".join(_web_zellen)}</div></div></section>'
+          '<style>@media (min-width:901px){.ablauf-web .bento{grid-template-columns:repeat(6,minmax(0,1fr))}'
+          '.ablauf-web .web-fotos{grid-column:1/span 2;grid-row:1/span 2;min-height:0}'
+          '.ablauf-web .web-fotos .handys-k{left:0;right:0;top:clamp(40px,4vw,64px);justify-content:center;gap:16px}'
+          '.ablauf-web .web-seiten{grid-column:3/span 4;grid-row:1}.ablauf-web .web-anfragen{grid-column:3/span 4;grid-row:2}'
+          '.ablauf-web .z-klein{grid-column:span 2;min-height:260px}}'
+          '.ablauf-web .handys-k img{width:clamp(150px,13vw,196px);aspect-ratio:9/16;border-radius:16px;object-fit:cover;border:2px solid rgba(250,247,241,.28);'
+          'transform:rotate(3deg);box-shadow:0 20px 40px -20px rgba(0,0,0,.7);transition:transform .5s var(--ease)}'
+          '.ablauf-web .handys-k img:nth-child(2){transform:rotate(-3deg) translateY(14px)}'
+          '.ablauf-web .web-fotos:hover .handys-k img{transform:rotate(5deg) translateY(-6px)}.ablauf-web .web-fotos:hover .handys-k img:nth-child(2){transform:rotate(-5deg) translateY(8px)}'
+          '.ablauf-web .web-ic{width:56px;height:56px;border-radius:16px;background:rgba(250,247,241,.08);box-shadow:inset 0 0 0 1px rgba(250,247,241,.12);display:grid;place-items:center;'
+          'margin:18px 0 auto;transition:transform var(--schnell),background var(--schnell)}'
+          '.ablauf-web .web-ic svg{width:26px;height:26px;fill:none;stroke:var(--bronze-hell);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}'
+          '.ablauf-web .z-klein:hover .web-ic{transform:rotate(-6deg) scale(1.08);background:rgba(250,247,241,.14)}'
+          '.ablauf-web .z-klein h3{margin-top:28px}'
+          '.ablauf-web .ticket .ok{white-space:nowrap}'
+          '@media (max-width:900px){.ablauf-web .zelle.web-fotos .handys-k{display:flex;position:relative;right:auto;top:auto;justify-content:center;margin:6px 0 22px}'
+          '.ablauf-web .handys-k img{width:min(132px,34vw)}.ablauf-web .z-klein{min-height:0}}</style>')
 w.nach('<section class="hero-klein">', WU_SEK)
-assert w.h.count('class="wu-k') == 6
+assert w.h.count('<article class="zelle') == 6 and "ablauf-web" in w.h
 w.vor('<section class="sek faq">', STIMMEN)
 fertig(w, "websites")
 
