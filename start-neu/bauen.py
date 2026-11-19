@@ -511,11 +511,16 @@ GALERIE = _json.loads((WURZEL / "static/assets/fv/galerie.json").read_text())
 # (Stelle in der Fotoliste, Gewerk-Schlüssel, Gewerk, Betrieb, Seitenverhältnis, Film, Poster)
 GALERIE_FILME = [(2, "holz", "Schreinerei", "Schreinerei Kreitner", 16 / 9, f"{VID}/kreitner.mp4", f"{VID}/poster/kreitner.jpg"),
                  (6, "shk", "Anzeige", "Erich Sussmann", 9 / 16, f"{FV}/v/su-dusche.mp4", f"{FV}/v/su-dusche.jpg"),
+                 # Bettina Tittmann lacht in die Kamera (Rohmaterial Bodys (2), 34,3–38,9 s) — Noah, 19.11.2026: „genug Stellen mit Bettina
+                 # Tittmann, wo sie lacht … einen kurzen Ausschnitt … bei Foto und Video … hochkant“
+                 (9, "shk", "Anzeige", "Fischer Bad Heizung Solar", 9 / 16, f"{FV}/v/fi-bettina.mp4", f"{FV}/v/fi-bettina.jpg"),
                  (11, "bau", "Bau &amp; Transporte", "Kirchner Thaining, 50 Jahre", 9 / 16, f"{VID}/kirchner.mp4", f"{VID}/poster/kirchner.jpg"),
                  (15, "holz", "Zimmerei", "Zimmerei Koller", 16 / 9, f"{VID}/koller.mp4", f"{VID}/poster/koller.jpg"),
                  (19, "shk", "Stellenanzeige", "Irlbacher Gebäudetechnik", 9 / 16, f"{FV}/v/ir-montage.mp4", f"{FV}/v/ir-montage.jpg"),
                  (24, "", "Drohnenflug", "Baureize", 16 / 9, f"{VID}/baureize.mp4", f"{VID}/poster/baureize.jpg"),
                  (29, "metall", "Metallbau", "CS Metalldesign", 16 / 9, f"{VID}/cs-metall.mp4", f"{VID}/poster/cs-metall.jpg"),
+                 # Fischer-Team am Transporter, aus dem neu gedrehten Imagefilm 2026 (Crafter-Intro) — Noah, 19.11.2026: „Video-Sequenz … was wir bei Fischer gemacht haben“
+                 (32, "shk", "Imagefilm", "Fischer Bad Heizung Solar", 16 / 9, f"{FV}/v/fi-team.mp4", f"{FV}/v/fi-team.jpg"),
                  (35, "shk", "Anzeige", "Erich Sussmann", 9 / 16, f"{FV}/v/su-mirjana.mp4", f"{FV}/v/su-mirjana.jpg"),
                  (38, "bau", "Bau", "A. Resch Bau", 16 / 9, f"{FV}/v/g-resch.mp4", f"{FV}/v/g-resch.jpg"),
                  (44, "shk", "Stellenanzeige", "Irlbacher Gebäudetechnik", 9 / 16, f"{FV}/v/ir-geselle.mp4", f"{FV}/v/ir-geselle.jpg"),
