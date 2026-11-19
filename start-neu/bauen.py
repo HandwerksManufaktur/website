@@ -658,9 +658,10 @@ def _lb_karte(name, art, url, k):
             f'<video class="hero-lauf" muted loop playsinline preload="none" data-src="/static/assets/vid/hero/h{k}.webm" data-poster="/static/assets/vid/hero/h{k}.jpg" width="640" height="400" aria-label="{name} — Startseite, wie sie live läuft"></video>'
             f'<img class="seite-bild" data-src="/static/assets/vid/hero/s{k}.webp" alt="" aria-hidden="true" loading="eager" decoding="async"></div>'
             f'<div class="lb-fuss"><b>{name}</b><small>{art}</small></div></a>')
-LB_NEU_1 = "".join(_lb_karte(*k) for k in [("Björn Schillinger", "Schreinerei · Möbelbau", "https://meisterschillinger.de", "schillinger"),
+# Irlbacher vorne (Noah, 19.11.2026: „irlbacher ruhig bisschen präsent“)
+LB_NEU_1 = "".join(_lb_karte(*k) for k in [("Irlbacher Gebäudetechnik", "SHK · Heizung &amp; Sanitär", "https://www.hs-irlbacher.de", "irlbacher"),
                                            ("Juwelier Wagenknecht", "Uhren &amp; Schmuck", "https://juwelier-wagenknecht.de", "wagenknecht"),
-                                           ("Irlbacher Gebäudetechnik", "SHK · Heizung &amp; Sanitär", "https://www.hs-irlbacher.de", "irlbacher")])
+                                           ("Björn Schillinger", "Schreinerei · Möbelbau", "https://meisterschillinger.de", "schillinger")])
 LB_NEU_2 = "".join(_lb_karte(*k) for k in [("Malermeister Müller", "Malerbetrieb", "https://mueller-maler-meister.de", "mueller"),
                                            ("W&amp;W Bau", "Bauunternehmen", "https://w-w-bau.com", "ww"),
                                            ("Mehr Lebensenergie", "Qigong &amp; TCM", "https://mehrlebensenergie-praxis.de", "illenseer")])
@@ -918,6 +919,30 @@ einfach(w, 'Wir bauen deine Website mit Fotos aus deinem Betrieb und einer eigen
         fragen_lead='Preis, Dauer und was mit der alten Seite passiert.')
 w.ersetze('<span class="kicker">Unsere Seiten</span><h2>Jedes Gewerk bekommt seine eigene Seite.</h2>', '<span class="kicker">Die Ergebnisse</span><h2>So sehen unsere Seiten aus.</h2>')
 # Füll-Einleitungen auf einen schlichten Satz (Noah, 15.11.2026)
+# Neueste Seiten nach vorn: Irlbacher als große erste Kachel, dann Wagenknecht und Schillinger (Noah, 19.11.2026:
+# „die ganzen neuen seiten schillinger, irlbacher, juwelier … irlbacher ruhig bisschen präsent … vor allem auch bei den website konzepten“).
+# Die Größe hängt an der Position im Raster (gross / gross rechts), deshalb Klassen nach dem Umsortieren neu vergeben.
+_a, _e = w.bereich('<section class="sek" id="arbeiten">')
+_sek = w.h[_a:_e]
+_arts = re.findall(r'<article class="projekt[^"]*">.*?</article>(?=<article|</div>)', _sek, re.S)
+_klassen = re.findall(r'<article class="(projekt[^"]*)">', _sek)
+assert len(_arts) == len(_klassen) == 24, (len(_arts), len(_klassen))
+_vorn = [next(x for x in _arts if f"<b>{n}</b>" in x) for n in ("Irlbacher Gebäudetechnik", "Juwelier Wagenknecht", "Björn Schillinger")]
+# Irlbacher steht in der großen Kachel: dort wie die anderen großen Kacheln die ganze Seite zum Durchscrollen (sonst Leerraum unter dem Film)
+_vorn[0] = re.sub(r'<div class="schirm">.*?</div>(?=<div class="unten">)',
+                  '<div class="schirm lang"><img class="lang-bild" src="/static/assets/img/work/web/nachher-irlbacher.webp" '
+                  'alt="Irlbacher Gebäudetechnik — die ganze Seite" loading="lazy" decoding="async" width="1000"><span class="lang-marke">Ganze Seite</span></div>',
+                  _vorn[0], count=1, flags=re.S)
+assert "nachher-irlbacher.webp" in _vorn[0]
+_neu = _vorn + [x for x in _arts if x not in _vorn]
+_neu = [re.sub(r'^<article class="projekt[^"]*">', f'<article class="{k}">', x) for x, k in zip(_neu, _klassen)]
+_sek2 = _sek
+for x in _arts:
+    _sek2 = _sek2.replace(x, "\x00", 1)
+for x in _neu:
+    _sek2 = _sek2.replace("\x00", x, 1)
+assert "\x00" not in _sek2 and _sek2.index("<b>Irlbacher Gebäudetechnik</b>") < _sek2.index("<b>SD Hirsch</b>")
+w.h = w.h[:_a] + _sek2 + w.h[_e:]
 w.ersetze('<p class="lead">Jede mit Fotos aus dem eigenen Betrieb, jede auf ihr Gewerk und ihren Umkreis gebaut. Fahr über eine Seite, dann scrollt sie durch.</p>',
           '<p class="lead">Alle live. Tipp eine an.</p>')
 # Durchgezogen (Noah, 19.11.2026: „jo und des ziehst du jetzt durch“): keine Problem-Kästen, keine Kundenfoto-Karten im Ablauf,
