@@ -687,10 +687,11 @@ _teile = _lb.split('<div class="lb-zug">')
 assert len(_teile) == 3, len(_teile)
 def _vorne(zug, neu):
     # der Zug enthält die Karten zweimal (nahtlose Schleife): neue Karten vor beide Hälften
-    karten = zug.split('<a class="lb-k"')
-    n = (len(karten) - 1) // 2
-    erste = '<a class="lb-k"'.join(karten[:1 + n]); zweite = '<a class="lb-k"' + '<a class="lb-k"'.join(karten[1 + n:])
-    return neu + erste + neu + zweite
+    # Kartenanfang als <a> (alte Vorlage) oder <div> (seit 19.11.2026 ohne Link, kunden_links.py) — nie nur eine Form suchen
+    starts = [m.start() for m in re.finditer(r'<(?:a|div) class="lb-k"', zug)]
+    assert len(starts) >= 2 and len(starts) % 2 == 0, len(starts)
+    mitte = starts[len(starts) // 2]
+    return neu + zug[:mitte] + neu + zug[mitte:]
 _teile[1] = _vorne(_teile[1], LB_NEU_1); _teile[2] = _vorne(_teile[2], LB_NEU_2)
 s.h = s.h[:_a] + '<div class="lb-zug">'.join(_teile) + s.h[_e:]
 
