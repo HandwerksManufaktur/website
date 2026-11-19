@@ -632,7 +632,9 @@ def karte(bild, alt, pos, titel, zeile, text, ziel, knopf):
             f'<a class="textlink" href="/{ziel}/">{knopf} {PFEIL}</a></div></article>')
 
 
-LEISTUNGS_SEK = ('<section class="sek leistungen-sek sg-sek" id="system">' + SIGNET_WACHSEN + '<div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Unsere Leistungen</span>'
+# Große Bühnen-Signets raus (Noah, 19.11.2026: „als wären die Sachen abgeschnitten, mit dem Haar, was daraus überall rausfährt“):
+# die Balken standen als graue Kästen unter den Karten, ihre Umrisslinien liefen durch die Team-Überschrift. Das Logo-Muster bleibt.
+LEISTUNGS_SEK = ('<section class="sek leistungen-sek" id="system">' + '<div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Unsere Leistungen</span>'
                  '<h2>Drei Baustellen<br class="dsk-br"> übernehmen wir für dich.</h2></div><div class="ergebnisse">'
                  # Fette Zeile = abgenommene H1 der Unterseite, Text je ein kurzer Satz (Noah, 15.11.2026)
                  + karte("zimmerei-schneider", "Zwei Zimmerer von Zimmerei Schneider in der Werkstatt", "50% 30%", "Website", "Wir bauen. Du ziehst ein.",
@@ -709,7 +711,7 @@ def ergebnisse_aktuell(seite):
 s.ersetze('<span class="kicker">Facebook &amp; Instagram</span><h2>Echte Betriebe, echte Zahlen.</h2><p class="lead">Werbung im Umkreis des Betriebs. Gezählt ist jede Anfrage und jede Bewerbung, die angekommen ist.</p>',
           '<span class="kicker">Fallstudien</span><h2>Ergebnisse unserer Kunden.</h2>')
 ergebnisse_aktuell(s)
-s.ersetze('<section class="sek team-sek" id="team">', '<section class="sek team-sek sg-sek" id="team">' + SIGNET_RUHE)
+# Team-Sektion ohne Bühnen-Signet (siehe LEISTUNGS_SEK)
 _a, _e = s.bereich('<section class="sek stimmen">')
 _sek = s.h[_a:_e]
 _sek2, _n = re.subn(r'<div class="bahn" aria-hidden="false">.*</div>(?=</section>)', lambda m: stimmen_alle(), _sek, count=1, flags=re.S)
