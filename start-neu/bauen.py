@@ -753,6 +753,35 @@ def ablauf_animiert(slug, h2, texte):
             '.ablauf-ani .zelle.z-2{grid-column:3/span 4;grid-row:1;min-height:260px}.ablauf-ani .zelle.mit-tickets{grid-column:3/span 4;grid-row:2}}</style>')
 
 
+def _tickets(zeilen, pfad):
+    return '<div class="tickets" aria-hidden="true">' + "".join(
+        f'<div class="ticket" style="--d:{i * 0.14:.2f}s"><span class="tic"><svg viewBox="0 0 24 24"><path d="{pfad}"/></svg></span>'
+        f'<span><b>{b}</b><small>{s}</small></span><span class="ok">{ok}</span></div>' for i, (b, s, ok) in enumerate(zeilen)) + '</div>'
+
+
+def seo_ablauf():
+    """SEO „Was wir übernehmen“ im selben animierten Baustein wie Neukunden/Mitarbeiter: Seiten-Liste, Karten-Radar, Bewertungen."""
+    seite = "M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6"
+    stern = "M12 3l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9z"
+    radar = ('<svg class="umkreis" viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="92"/><circle cx="100" cy="100" r="64"/>'
+             '<circle cx="100" cy="100" r="36"/><circle class="puls" cx="100" cy="100" r="92"/><circle class="kern" cx="100" cy="100" r="7"/></svg>')
+    zellen = [
+        '<article class="zelle z-4 mit-tickets">' + _tickets([("Badsanierung Landsberg", "Ort im Titel", "eigene Seite"),
+                                                              ("Wärmepumpe Landsberg", "Ort im Titel", "eigene Seite"),
+                                                              ("Heizungswartung Landsberg", "Ort im Titel", "eigene Seite")], seite)
+        + '<span class="nummer">01</span><h3>Eine Seite je Leistung</h3><p>„Badsanierung Landsberg“ bekommt eine eigene Seite, mit deinem Ort drin.</p></article>',
+        f'<article class="zelle z-2">{radar}<span class="nummer">02</span><h3>Dein Google-Profil</h3><p>Mit Leistungen und Fotos, damit dich die Karte zeigt.</p></article>',
+        '<article class="zelle z-6 mit-tickets">' + _tickets([("Christoph Hirschvogel", "Küchenhaus Hirschvogel", "★★★★★"),
+                                                              ("Lena", "Lagerhaus Graf", "★★★★★"),
+                                                              ("Alfred Maser", "Maser Tankschutz", "★★★★★")], stern)
+        + '<span class="nummer">03</span><h3>Die Bewertungen kommen von selbst</h3><p>Ein Link nach jedem Auftrag, der Rest läuft.</p></article>']
+    return ('<section class="sek band auf-dunkel bento-sek ablauf-ani ablauf-seo"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Was wir übernehmen</span>'
+            f'<h2>Den Weg nach vorn übernehmen wir.</h2></div><div class="bento">{"".join(zellen)}</div></div></section>'
+            '<style>@media (min-width:1001px){.ablauf-seo .zelle.z-4{grid-column:1/span 4;grid-row:1}.ablauf-seo .zelle.z-2{grid-column:5/span 2;grid-row:1}'
+            '.ablauf-seo .zelle.z-6{grid-column:1/span 6;grid-row:2}.ablauf-seo .zelle.z-6 .tickets{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}}'
+            '.ablauf-seo .ticket .ok{white-space:nowrap}.ablauf-seo .zelle.z-6{min-height:0}.ablauf-seo .zelle.z-6 h3{margin-top:clamp(22px,2.4vw,32px)}</style>')
+
+
 def erg_karten(art, ohne=()):
     karten = [k for k in re.findall(r'<article class="erg reveal">.*?</article>', ERG_HOME, re.S)
               if f"<br><b>{art}</b>" in k and not any(o in k for o in ohne)]
@@ -867,20 +896,15 @@ def fertig(seite, slug, hero=None):
 
 # ── 2 · Websites
 w = unterseite("websites")
-einfach(w, 'Wir bauen deine Website mit Fotos aus deinem Betrieb und einer eigenen Seite je Leistung, damit der Kunde bei dir anruft.', ('Unsere Seiten',),
+einfach(w, 'Wir bauen deine Website mit Fotos aus deinem Betrieb und einer eigenen Seite je Leistung, damit der Kunde bei dir anruft.', ('Unsere Seiten', 'Aufbau einer Seite'),
         fragen_lead='Preis, Dauer und was mit der alten Seite passiert.')
 w.ersetze('<span class="kicker">Unsere Seiten</span><h2>Jedes Gewerk bekommt seine eigene Seite.</h2>', '<span class="kicker">Die Ergebnisse</span><h2>So sehen unsere Seiten aus.</h2>')
 # Füll-Einleitungen auf einen schlichten Satz (Noah, 15.11.2026)
 w.ersetze('<p class="lead">Jede mit Fotos aus dem eigenen Betrieb, jede auf ihr Gewerk und ihren Umkreis gebaut. Fahr über eine Seite, dann scrollt sie durch.</p>',
           '<p class="lead">Alle live. Tipp eine an.</p>')
-w.nach('<section class="hero-klein">',
-       problem('Gute Arbeit, aber keiner findet dich.',
-               ['Wer abends dein Gewerk und deinen Ort googelt, findet den Wettbewerber auf Seite 1.', 'Dich findet er auf Seite 3.', 'Die alte Seite kostet dich Anfragen.'],
-               ['Jede Leistung hat ihre eigene Seite, mit deinem Ort drin.', 'Auf der Seite stehen Fotos aus deinem Betrieb statt Katalogbilder.', 'Die Anfrage steht im ersten Bild, bevor jemand scrollt.'])
-       + uebernehmen('Die ganze Seite übernehmen wir.', [
-           ('u-ziel', 'Zwei Männer am Tisch mit Laptop im Küchenhaus Hirschvogel', '50% 30%', 'Das Ziel', 'Zuerst klären wir die Richtung.', 'Welche Aufträge die Seite bringen soll und wo dich die alte Seite heute Anfragen kostet.'),
-           ('u-aufnahmen', 'Zwei Männer in der Halle von CS Metalldesign', '50% 30%', 'Die Aufnahmen', 'Kamera und Drohne bei dir vor Ort.', 'Deine Leute und deine Baustellen statt Katalogbilder.'),
-           ('u-freigabe', 'Handschlag in der Werkstatt der Schreinerei Kreitner', '50% 30%', 'Die Seite', 'Wir bauen, du schaust drüber.', 'Die fertige Seite kommt als Link aufs Handy und du gibst sie frei.')]))
+# Durchgezogen (Noah, 19.11.2026: „jo und des ziehst du jetzt durch“): keine Problem-Kästen, keine Kundenfoto-Karten im Ablauf,
+# stattdessen der ursprüngliche animierte Baustein „Aufbau einer Seite“ (Browser mit fünf Stellen, die nacheinander aufleuchten)
+w.ersetze('<span class="kicker">Aufbau einer Seite</span><h2>Vom Suchbegriff bis zum Anruf.</h2>', '<span class="kicker">Was wir übernehmen</span><h2>Die ganze Seite übernehmen wir.</h2>')
 w.vor('<section class="sek faq">', STIMMEN)
 fertig(w, "websites")
 
@@ -892,21 +916,14 @@ einfach(g, 'Dein nächster Kunde tippt dein Gewerk und deinen Ort ein und ruft d
 hero_knopf(g, "/websites/#arbeiten", "#ergebnisse")
 g.ersetze('<section class="sek grund rangliste-sek"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Nachgemessen, nicht behauptet</span><h2>Wo unsere Kunden bei Google wirklich stehen.</h2>',
           f'<section class="sek grund rangliste-sek" id="ergebnisse"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Die Ergebnisse</span><h2>{SEITE1} Kundenseiten stehen auf Seite 1.</h2>')
-g.nach('<section class="hero-klein">',
-       problem('Der Wettbewerber steht vor dir.',
-               ['Heizung, Bad und Wartung stehen auf einer Seite. Gefunden wird davon nichts.', 'Das Google-Profil ist nicht gepflegt.', 'Die Seite lädt am Handy vier Sekunden und rutscht ab.'],
-               ['Jede Leistung hat ihre eigene Seite mit Ort.', 'Dein Google-Profil ist aufgebaut und gepflegt.', 'Die Seite lädt schnell, auch am Handy.'])
-       + uebernehmen('Den Weg nach vorn übernehmen wir.', [
-           ('u-leistung-ort', 'Haus mit Photovoltaik-Anlage von Wohner Elektrotechnik aus der Luft', '50% 50%', 'Die Seiten', 'Eine je Leistung, mit Ort.', '„Badsanierung Landsberg“ bekommt eine eigene Seite.'),
-           ('u-profil', 'Dach mit Blecheindeckung von Dachbau Kraus', '50% 50%', 'Das Google-Profil', 'Aufgebaut und gepflegt.', 'Mit Leistungen und Fotos, damit dich die Karte zeigt.'),
-           ('u-bewertung', 'Handschlag auf dem Hof von Kirchner in Thaining', '50% 30%', 'Die Bewertungen', 'Sie kommen von selbst.', 'Ein Link nach jedem Auftrag, der Rest läuft.')]))
+g.nach('<section class="hero-klein">', seo_ablauf())
 g.vor('<section class="sek faq">', STIMMEN)
 fertig(g, "suchmaschinenoptimierung")
 
 # ── 4 · Foto & Video (zwei Ergebnis-Sektionen wie die Startseite: Filme + Fotos; dafür ohne Kundenstimmen)
 f = unterseite("foto-video")
 einfach(f, 'Wir kommen einen Tag mit Kamera und Drohne zu dir, danach hast du Bilder und Filme für deine Website und deine Anzeigen.',
-        ('Am Drehtag entstanden', 'Aus unseren Shootings'))
+        ('Am Drehtag entstanden', 'Aus unseren Shootings', 'So läuft der Drehtag'))
 hero_knopf(f, "/websites/#arbeiten", "#ergebnisse", "Arbeiten ansehen")
 f.ersetze('<section class="sek band auf-dunkel"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Am Drehtag entstanden</span><h2>Ein Drehtag, daraus der Film für deine Startseite und die Clips für deine Anzeigen.</h2>',
           '<section class="sek band auf-dunkel" id="ergebnisse"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Die Filme</span><h2>Diese Filme sind am Drehtag entstanden.</h2>')
@@ -915,15 +932,10 @@ f.ersetze('<p class="lead">Der Chef erzählt, die Drohne zeigt den Hof, die Kame
           '<p class="lead">Entstanden im laufenden Betrieb unserer Kunden.</p>')
 f.ersetze('<p class="lead">Hallen, Baustellen, Bäder und Werkstätten, von der Zimmerei bis zur Haustechnik. Jedes Bild ist an einem Drehtag bei einem Kunden entstanden, mit den Leuten, die dort arbeiten.</p>',
           '<p class="lead">Jedes Bild ist an einem Drehtag bei einem Kunden entstanden.</p>')
-f.nach('<section class="hero-klein">',
-       problem('Deine Arbeit ist besser als deine Bilder.',  # Noah, 18.11.2026: „bitte nicht so schlechte copy“
-
-               ['„Aktuelle Fotos haben wir keine“, hören wir fast in jedem Erstgespräch.', 'Auf der Seite stehen Katalogbilder.', 'Wer vergleicht, erkennt deinen Betrieb nicht wieder.'],
-               ['Auf den Bildern stehen deine Leute vor deinen Fahrzeugen.', 'Fotografiert wird im laufenden Betrieb.', 'Alle Fotos und Filme gehören dir, in voller Auflösung.'])
-       + uebernehmen('Den Drehtag übernehmen wir.', [
-           ('fv-motivliste', 'Hand zeichnet auf einem Plan bei Küchenhaus Hirschvogel', '50% 45%', 'Die Motivliste', 'Vorher am Telefon.', 'Wir klären, was Website und Anzeigen brauchen, und haken die Liste am Drehtag ab.'),
-           ('fv-drehtag', 'Fotograf Robert mit der Fernsteuerung der Drohne', '50% 8%', 'Der Drehtag', 'Ein Tag bei dir.', 'Wir fotografieren und filmen, was bei dir ohnehin passiert, und dein Betrieb läuft weiter.'),
-           ('fv-uebergabe', 'Hände legen Holzmuster bei Küchenhaus Hirschvogel auf den Tisch', '50% 50%', 'Die Übergabe', 'Alles gehört dir.', 'Du bekommst alle Fotos und Filme in voller Auflösung.')]))
+# Ablauf ohne Kundenfotos: die ursprüngliche Treppe „So läuft der Drehtag“ (vier Schritte mit Symbol) statt drei Fotokarten
+f.h, _n = re.subn(r'<span class="kicker">So läuft der Drehtag</span><h2>Ein Tag bei dir, und dein Betrieb läuft dabei weiter\.</h2><p class="lead">.*?</p>',
+                  '<span class="kicker">Was wir übernehmen</span><h2>Den Drehtag übernehmen wir.</h2>', f.h, count=1, flags=re.S)
+assert _n == 1
 # Filme + Fotowand weichen der Galerie direkt unter dem Hero; der Kontaktabzug steht vor den Fragen (sieben Sektionen bleiben)
 f.heraus('<section class="sek band auf-dunkel" id="ergebnisse">')
 f.heraus('<section class="sek fotowand-sek">')
