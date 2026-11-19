@@ -782,10 +782,11 @@ def seo_ablauf():
     radar = ('<svg class="umkreis" viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="92"/><circle cx="100" cy="100" r="64"/>'
              '<circle cx="100" cy="100" r="36"/><circle class="puls" cx="100" cy="100" r="92"/><circle class="kern" cx="100" cy="100" r="7"/></svg>')
     zellen = [
-        '<article class="zelle z-4 mit-tickets">' + _tickets([("Drehkranzservice", "Drehkranz Josef Schwarz", "Platz 1"),
-                                                              ("Tankschutz Landsberg", "Maser Tankschutz", "Platz 1"),
-                                                              ("Galabau Gilching", "Peine + Wilhelm", "Platz 1")], seite)
-    # gemischte Gewerke, große Orte oder bundesweite Begriffe, nicht BMS (Noah, 19.11.2026); Plätze aus rankings.yaml  # echte Messung 19.10.2026 aus der Rangliste (Noah, 19.11.2026: „sachen nehmen wo auch kunden von uns kommen“)
+        '<article class="zelle z-4 mit-tickets">' + _tickets([("Drehkranz Liebherr", "Drehkranz Josef Schwarz", "Seite 1"),
+                                                              ("Abbruch Ammersee", "Kirchner Thaining", "Seite 1"),
+                                                              ("Zimmerei Schongau", "Zimmerei Knappich", "Seite 1")], seite)
+    # Noahs Wahl 19.11.2026: „abbruch ammersee … kirchner oben, drehkranz liebherr – er steht auf 1, ich habs gemessen – zimmerei schongau“.
+    # Pille „Seite 1“ statt Platz: Knappich stand am 23.09. auf Platz 2, Abbruch Ammersee ist von uns nicht nachgemessen.  # echte Messung 19.10.2026 aus der Rangliste (Noah, 19.11.2026: „sachen nehmen wo auch kunden von uns kommen“)
         + '<span class="nummer">01</span><h3>Eine Seite je Leistung</h3><p>Jede Leistung bekommt eine eigene Seite, mit deinem Ort drin.</p></article>',
         f'<article class="zelle z-2">{radar}<span class="nummer">02</span><h3>Dein Google-Profil</h3><p>Mit Leistungen und Fotos, damit dich die Karte zeigt.</p></article>',
         '<article class="zelle z-6 mit-tickets">' + _tickets([("Christoph Hirschvogel", "Küchenhaus Hirschvogel", "★★★★★"),
