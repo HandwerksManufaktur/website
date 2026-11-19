@@ -722,6 +722,9 @@ for _i, (_st, _en) in zip((1, 2), _spannen):
     _zug = "".join(_alle[n] for n in LB_FOLGE[_i - 1])
     _teile[_i] = _teile[_i][:_st] + _zug + _zug + _teile[_i][_en:]
 s.h = s.h[:_a] + '<div class="lb-zug">'.join(_teile) + s.h[_e:]
+# „Wie wir Seiten bauen“ fällt weg (Noah, 19.11.2026 abends: „brauchen nicht erklären – es geht drum was der Kunde hat“);
+# der Knopf „Alle Arbeiten ansehen“ führt zu den fertigen Seiten.
+s.ersetze('<a class="btn btn-rand" href="/websites/">Wie wir Seiten bauen</a>', '')
 
 s.ersetze('<span class="kicker">Deine Website</span>', '<span class="kicker">Unsere Websites</span>')
 # Kicker ohne Mittelpunkt, der wirkt maschinell (Noah, 15.11.2026)
@@ -938,7 +941,6 @@ def einfach(seite, lead, behalten, fragen_lead=None):
 # (Startseite folgt, sobald er dort gewählt hat). Je Seite: H1, „Was wir übernehmen“, Ergebnisse.
 FASSUNG = {
     "websites": [('<h1>Die Website, die abends um zehn den Auftrag holt.</h1>', '<h1>Wir bauen. Du ziehst ein.</h1>'),
-                 ('<h2>Die ganze Seite übernehmen wir.</h2>', '<h2>Vom Rohbau bis zur Schlüsselübergabe.</h2>'),
                  ('<h2>So sehen unsere Seiten aus.</h2>', '<h2>Bezugsfertig.</h2>')],
     "suchmaschinenoptimierung": [('<h1>Dein nächster Kunde googelt gerade.</h1>', '<h1>Ganz oben ist dein Platz.</h1>'),
                  ('<h2>Den Weg nach vorn übernehmen wir.</h2>', '<h2>Vom ersten Suchwort bis Seite 1.</h2>'),
@@ -1029,7 +1031,10 @@ w.ersetze('<p class="lead">Jede mit Fotos aus dem eigenen Betrieb, jede auf ihr 
           '<p class="lead">Alle live. Tipp eine an.</p>')
 # Durchgezogen (Noah, 19.11.2026: „jo und des ziehst du jetzt durch“): keine Problem-Kästen, keine Kundenfoto-Karten im Ablauf,
 # stattdessen der ursprüngliche animierte Baustein „Aufbau einer Seite“ (Browser mit fünf Stellen, die nacheinander aufleuchten)
-w.ersetze('<span class="kicker">Aufbau einer Seite</span><h2>Vom Suchbegriff bis zum Anruf.</h2>', '<span class="kicker">Was wir übernehmen</span><h2>Die ganze Seite übernehmen wir.</h2>')
+# Raus (Noah, 19.11.2026 abends: „die sektion raus - brauchen nicht erklären - es geht drum was der kunde hat - kunde braucht nicht
+# wissen“): auf der Websites-Seite zeigen die fertigen Seiten, was der Kunde bekommt; wie eine Seite aufgebaut ist, erklären wir nicht.
+w.heraus('<section class="sek grund aufbau-sek">')
+assert "aufbau-sek" not in w.h and "Aufbau einer Seite" not in w.h
 w.vor('<section class="sek faq">', STIMMEN)
 fertig(w, "websites")
 
