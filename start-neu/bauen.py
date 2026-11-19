@@ -730,6 +730,29 @@ _ea, _ee = s.bereich('<section class="sek erg-sek" id="ergebnisse">')
 ERG_HOME = s.h[_ea:_ee]
 
 
+def ablauf_animiert(slug, h2, texte):
+    """„Was wir übernehmen“ als der ursprüngliche animierte Baustein (Handy-Anzeigen, Umkreis-Radar, Filterfragen „passt“) statt
+    Kundenfoto-Karten (Noah, 19.11.2026: „das macht ja so kein sinn da die kundenbilder reinzumachen, da könnte diese ursprüngliche
+    art animations ding hin“). Die Kachel mit dem Kundenfoto bleibt draußen, Texte so kurz wie auf der Startseite."""
+    q = (QUELLE / f"{slug}.html").read_text()
+    a = q.index('<section class="sek band auf-dunkel bento-sek">')
+    sek = q[a:q.index("</section>", a) + len("</section>")]
+    zellen = re.findall(r'<article class="zelle[^"]*">.*?</article>', sek, re.S)
+    assert len(zellen) == 4 and "<img" in zellen[0] and "handys-k" in zellen[1] and "umkreis" in zellen[2] and "tickets" in zellen[3], slug
+    neu = []
+    for i, (z, (titel, text)) in enumerate(zip(zellen[1:], texte), 1):
+        z = re.sub(r'<span class="nummer">\d+</span><h3>.*?</h3><p>.*?</p>', f'<span class="nummer">0{i}</span><h3>{titel}</h3><p>{text}</p>', z, count=1, flags=re.S)
+        assert f"<h3>{titel}</h3>" in z, (slug, i)
+        neu.append(z)
+    return ('<section class="sek band auf-dunkel bento-sek ablauf-ani"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Was wir übernehmen</span>'
+            f'<h2>{h2}</h2></div><div class="bento">{"".join(neu)}</div></div></section>'
+            '<style>@media (min-width:1001px){.ablauf-ani .bento{grid-template-columns:repeat(6,minmax(0,1fr))}'
+            '.ablauf-ani .zelle.mit-handys{grid-column:1/span 2;grid-row:1/span 2;min-height:0}'
+            '.ablauf-ani .zelle.mit-handys .handys-k{left:0;right:0;top:clamp(40px,4vw,64px);justify-content:center;gap:16px}'
+            '.ablauf-ani .zelle.mit-handys .handys-k video{width:clamp(140px,11.5vw,172px)}'
+            '.ablauf-ani .zelle.z-2{grid-column:3/span 4;grid-row:1;min-height:260px}.ablauf-ani .zelle.mit-tickets{grid-column:3/span 4;grid-row:2}}</style>')
+
+
 def erg_karten(art, ohne=()):
     karten = [k for k in re.findall(r'<article class="erg reveal">.*?</article>', ERG_HOME, re.S)
               if f"<br><b>{art}</b>" in k and not any(o in k for o in ohne)]
@@ -928,10 +951,10 @@ n.ersetze('Sein Argument: Werbung macht man nicht erst, wenn es schlechter läuf
 # Schlicht wie die Startseite (Noah, 19.11.2026): Hero → Was wir übernehmen → Ergebnis-Karten → Stimmen → Fragen → Kontakt
 n.heraus('<section class="sek grund" id="ergebnisse">')
 n.nach('<section class="hero-klein">',
-       uebernehmen('Die Anzeigen übernehmen wir.', [
-           ('u-anzeige', 'Patrick und Mirjana von Sussmann vor dem Firmenschild', '50% 30%', 'Die Anzeige', 'Mit deinen Leuten drauf.', 'Man erkennt den Betrieb aus dem Nachbarort, deshalb bleibt sie im Feed hängen.'),
-           ('u-umkreis', 'Senftleben Haustechnik mit Team und Firmenwagen aus der Luft', '50% 50%', 'Der Umkreis', 'Nur 25 Kilometer um deinen Betrieb.', 'Wer 60 Kilometer weiter ein Projekt plant, sieht sie nicht.'),
-           ('u-motivliste', 'Zwei Männer im Büro von HAWE Engineering', '50% 30%', 'Die Filterfragen', 'Vier Fragen vor jeder Anfrage.', 'Bei dir kommt an, wer sein Projekt ernst meint, mit Name und Nummer.')])
+       ablauf_animiert("neukundengewinnung", 'Die Anzeigen übernehmen wir.', [
+           ("Die Anzeige mit deinen Leuten", "Man erkennt den Betrieb aus dem Nachbarort, deshalb bleibt sie im Feed hängen."),
+           ("Nur 25 Kilometer um deinen Betrieb", "Wer 60 Kilometer weiter ein Projekt plant, sieht sie nicht."),
+           ("Vier Filterfragen vor jeder Anfrage", "Bei dir kommt an, wer sein Projekt ernst meint, mit Name und Nummer.")])
        + erg_karten("Bad-Anfragen"))
 n.vor('<section class="sek faq">', STIMMEN)
 fertig(n, "neukundengewinnung")
@@ -945,10 +968,10 @@ m.ersetze('<section class="sek grund"><div class="wrap"><div class="kopfzeile re
           '<section class="sek grund" id="ergebnisse"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Die Ergebnisse</span>')
 m.heraus('<section class="sek grund" id="ergebnisse">')
 m.nach('<section class="hero-klein">',
-       uebernehmen('Die Suche übernehmen wir.', [
-           ('irlbacher-werkstatt', 'Zwei Monteure von Irlbacher Gebäudetechnik mit Werkzeug vor dem Firmenwagen', '50% 20%', 'Die Anzeige', 'Mit deiner Mannschaft.', 'Sie läuft abends auf Instagram und Facebook, nur im Umkreis um den Betrieb.'),
-           ('u-bewerbung', 'Monteur von Erwin Schmidt &amp; Sohn mit Zange im Lager', '50% 25%', 'Die Bewerbung', 'Zwei Minuten am Handy.', 'Vier Filterfragen statt Anschreiben und Lebenslauf.'),
-           ('u-uebergabe', 'Zwei Mitarbeiter in der Fertigung von SD Hirsch', '50% 30%', 'Das Gespräch', 'Du rufst an.', 'Die Bewerbung kommt mit Nummer und Antworten, du führst nur noch die Gespräche.')]))
+       ablauf_animiert("mitarbeitergewinnung", 'Die Suche übernehmen wir.', [
+           ("Deine Mannschaft in der Anzeige", "Sie läuft abends auf Instagram und Facebook, wo die Fachkräfte ohnehin sind."),
+           ("Nur 30 Kilometer um deinen Betrieb", "Wer 90 Kilometer weg wohnt, sieht sie nicht."),
+           ("Bewerbung in zwei Minuten", "Vier Filterfragen statt Anschreiben und Lebenslauf, du rufst nur noch an.")]))
 # Senftleben groß (Noah, 18.11.2026: „in 18 [Tagen] Stelle besetzt … die kannst du auch groß machen … mit der Buchhaltung“), Zahlen wie SHK-Seite
 SENFT_SEK = ('<section class="sek senft-sek"><div class="wrap senft-raster"><figure class="senft-bild reveal"><img src="/static/assets/img/_h1280/fall/senftleben-team.webp" '
              'alt="Das Team von Senftleben Haustechnik vor den Firmenwagen in Ehingen" loading="lazy" decoding="async"></figure>'
@@ -961,6 +984,6 @@ SENFT_SEK = ('<section class="sek senft-sek"><div class="wrap senft-raster"><fig
              '.senft-zahl{display:flex;align-items:baseline;gap:.25em;margin:14px 0 6px;line-height:.9}.senft-zahl b{font-size:clamp(96px,13vw,200px);font-weight:800;letter-spacing:-.05em;color:var(--bronze-tief,#8F5B1D)}'
              '.senft-zahl span{font-size:clamp(28px,3vw,44px);font-weight:700;letter-spacing:-.02em}.senft-text h2{margin:0 0 12px;max-width:20ch;font-size:clamp(28px,2.8vw,42px);line-height:1.12}.senft-text h2::before{display:none}'
                           '@media (max-width:900px){.senft-raster{grid-template-columns:1fr}}</style>')
-m.nach('<section class="sek uebernehmen-sek">', SENFT_SEK + erg_karten("Bewerbungen", ohne=("senftleben-team-2026",)))
+m.nach('<section class="sek band auf-dunkel bento-sek ablauf-ani">', SENFT_SEK + erg_karten("Bewerbungen", ohne=("senftleben-team-2026",)))
 m.vor('<section class="sek faq">', STIMMEN)
 fertig(m, "mitarbeitergewinnung")
