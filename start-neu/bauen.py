@@ -701,7 +701,9 @@ def ergebnisse_aktuell(seite):
                   '<img src="/start-neu/bilder/stimpfle-werkstatt.webp" alt="Das Team von Stimpfle Sanitär und Heizung in der Werkstatt" loading="lazy" decoding="async" style="object-position:50% 30%">')
     h = h.replace('<em>3 Bad-Anfragen</em><span>in den ersten 3 Tagen</span>', '<em>7 Bad-Anfragen</em><span>3 Vor-Ort-Termine in den ersten 3 Tagen</span>')
     h = h.replace('Die Werbung läuft seit dem 29. Oktober im Umkreis von Stadtbergen.', 'Die Anzeigen laufen seit dem 29. Oktober im Umkreis von Stadtbergen.')
-    h = h.replace('die Werbung pausiert deshalb bis Februar.', 'die Anzeigen pausieren deshalb bis Februar.')
+    # Ob Anzeigen pausieren oder ein Kunde weitermacht, steht nie auf der Seite (Noah, 19.11.2026: „das NIE erwähnen“)
+    h = h.replace(', die Werbung pausiert deshalb bis Februar.', '.').replace(', die Anzeigen pausieren deshalb bis Februar.', '.')
+    assert not re.search(r'pausier|verlängert', re.sub(r'<script.*?</script>', '', h, flags=re.S)), 'Kundenstatus (pausiert/verlängert) auf der Seite'
     h = h.replace('<p class="lead">Werbung im Umkreis des Betriebs. Gezählt ist', '<p class="lead">Anzeigen im Umkreis des Betriebs. Gezählt ist')
     h = h.replace('<h2>Du kümmerst dich um nichts davon.</h2>', '<h2>Wir lassen unsere Kunden sprechen.</h2>')
     seite.h = h
