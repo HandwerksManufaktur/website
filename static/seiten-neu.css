@@ -201,3 +201,21 @@
 .sg-wachsen .sg-l{stroke:var(--bronze);stroke-width:1;opacity:.18}
 .sg-ruhe .sg-fuell{fill:var(--bronze-hauch);opacity:.45}
 .sg-ruhe .sg-umriss{opacity:.22}
+
+/* Websites · Was wir übernehmen (19.11.2026): sechs Karten, je ein Icon, ein Titel, ein Satz */
+.wu{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
+.wu-k{background:var(--papier);border-radius:var(--radius);box-shadow:0 0 0 1px rgba(22,19,14,.06);padding:clamp(24px,2.6vw,34px);display:grid;gap:10px;align-content:start;transition:transform var(--schnell),box-shadow var(--schnell)}
+.wu-k:hover{transform:translateY(-4px);box-shadow:0 30px 60px -30px rgba(22,19,14,.4),0 0 0 1px rgba(22,19,14,.08)}
+.wu-ic{width:48px;height:48px;border-radius:14px;background:var(--tinte);color:var(--bronze);display:grid;place-items:center;margin-bottom:6px;transition:transform var(--schnell)}
+.wu-k:hover .wu-ic{transform:rotate(-6deg) scale(1.06)}
+.wu-ic svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.wu-k b{font-size:clamp(19px,1.5vw,22px);line-height:1.25}
+.wu-k p{margin:0;font-size:17px;line-height:1.5;color:var(--tinte-2)}
+@media (max-width:1000px){.wu{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.wu{grid-template-columns:1fr}}
+/* Kurze Zeile neben der Überschrift („Alle live.“) steht direkt darunter, nie allein in der rechten Spalte (Noah, 19.11.2026:
+   „das ist irgendwo in der Mitte, dann auf einmal random“) — bauen.py setzt .kurz an jede Kopfzeile mit Lead unter 40 Zeichen */
+@media (min-width:1100px){.kopfzeile.kurz:not(.mitte):has(> .lead){grid-template-columns:minmax(0,1fr);max-width:780px;row-gap:12px}
+.kopfzeile.kurz:not(.mitte):has(> .lead) > .lead{margin:0}}
+.kopfzeile.kurz > .lead{font-size:clamp(18px,1.4vw,21px);color:var(--tinte-2)}
+.sek .kopfzeile.kurz:has(>h2+.lead)>.lead{justify-self:start;text-align:left}

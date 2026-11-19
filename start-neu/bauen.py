@@ -331,6 +331,11 @@ class Seite:
         assert "130 Betriebe" not in self.h and 'class="zusammen' not in self.h, pfad
         self.h = fuss_neu(self.h)
         self.h = stimmen_woertlich(self.h)
+        # Kurze Zeile („Alle live.“) steht unter der Überschrift, nicht allein rechts in der Mitte (Noah, 19.11.2026: „random“)
+        def _kurz(m):
+            lead = re.sub(r"<[^>]+>", "", m.group(2)).strip()
+            return m.group(0).replace('<div class="kopfzeile', '<div class="kopfzeile kurz', 1) if len(lead) < 40 else m.group(0)
+        self.h = re.sub(r'(<div class="kopfzeile(?! kurz)(?:(?!</div>).)*?<p class="lead">)(.*?)</p></div>', _kurz, self.h, flags=re.S)
         # Kundenseiten zeigen, nie verlinken (Noah, 19.11.2026: „nicht zum Anklicken, nicht zum Antippen“)
         self.h = entlinken(self.h)
         assert not kunden_rest(self.h), (pfad, kunden_rest(self.h)[:3])
@@ -376,7 +381,7 @@ def szene(nr, kicker, titel, grund=True):
 import html as _html
 import json as _json
 
-NEU_V = "6"
+NEU_V = "7"
 NEU_KOPF = f'<link rel="stylesheet" href="/static/seiten-neu.css?v={NEU_V}">'
 NEU_FUSS = f'<script src="/static/seiten-neu.js?v={NEU_V}" defer></script>'
 SIGNET = ('M0,39.667 L22,25 L22,91 L0,91 Z', 'M34,14.667 L56,0 L56,91 L34,91 L34,64.67 L27,68 L27,53.667 L34,49 Z',
@@ -1031,10 +1036,33 @@ w.ersetze('<p class="lead">Jede mit Fotos aus dem eigenen Betrieb, jede auf ihr 
           '<p class="lead">Alle live. Tipp eine an.</p>')
 # Durchgezogen (Noah, 19.11.2026: „jo und des ziehst du jetzt durch“): keine Problem-Kästen, keine Kundenfoto-Karten im Ablauf,
 # stattdessen der ursprüngliche animierte Baustein „Aufbau einer Seite“ (Browser mit fünf Stellen, die nacheinander aufleuchten)
-# Raus (Noah, 19.11.2026 abends: „die sektion raus - brauchen nicht erklären - es geht drum was der kunde hat - kunde braucht nicht
-# wissen“): auf der Websites-Seite zeigen die fertigen Seiten, was der Kunde bekommt; wie eine Seite aufgebaut ist, erklären wir nicht.
+# Raus (Noah, 19.11.2026 abends: „die sektion raus - brauchen nicht erklären - es geht drum was der kunde hat“): kein Bauplan einer
+# Seite. Stattdessen, was der Kunde bekommt (Noah, gleich danach: „so eine Sektion … was wir übernehmen … und wofür sie da ist …
+# was wir alles machen, zack, zack, zack“): ein Satz, wofür die Seite da ist, dann sechs Karten, jede ein Ding, das er nicht selbst macht.
 w.heraus('<section class="sek grund aufbau-sek">')
 assert "aufbau-sek" not in w.h and "Aufbau einer Seite" not in w.h
+_IC = {
+    "foto": '<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>',
+    "seiten": '<rect x="4" y="3" width="12" height="15" rx="1.5"/><path d="M8 21h11a1 1 0 0 0 1-1V7M7.5 8h5M7.5 11.5h5"/>',
+    "text": '<path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>',
+    "google": '<circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/>',
+    "anfrage": '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"/>',
+    "danach": '<path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/>',
+}
+_WU = [("foto", "Fotos aus deinem Betrieb", "Wir kommen vorbei und fotografieren dein Team, deine Fahrzeuge und deine Arbeit."),
+       ("seiten", "Eine Seite je Leistung", "Bad, Dach, Treppe: Jede Leistung bekommt ihre eigene Seite, damit Google sie findet."),
+       ("text", "Alle Texte", "Wir schreiben alles. Du liest einmal drüber und sagst, was anders soll."),
+       ("google", "Gefunden bei Google", "Schnell, sauber am Handy, alte Adressen weitergeleitet. Du verlierst nichts."),
+       ("anfrage", "Anfragen direkt zu dir", "Anruf-Knopf und Formular. Jede Anfrage landet sofort bei dir."),
+       ("danach", "Nach dem Start", "Updates, Sicherheit, kleine Änderungen. Ein Satz an uns genügt.")]
+_wu_k = "".join(f'<article class="wu-k reveal"><span class="wu-ic"><svg viewBox="0 0 24 24" aria-hidden="true">{_IC[i]}</svg></span>'
+                f'<b>{titel}</b><p>{text}</p></article>' for i, titel, text in _WU)
+WU_SEK = ('<section class="sek grund wu-sek"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Was wir übernehmen</span>'
+          '<h2>Du lieferst den Betrieb. Wir den Rest.</h2>'
+          '<p class="lead">Deine Website ist dein Schaufenster: Wer dich sucht, sieht deine Arbeit und ruft dich an statt den Nächsten.</p></div>'
+          f'<div class="wu">{_wu_k}</div></div></section>')
+w.nach('<section class="hero-klein">', WU_SEK)
+assert w.h.count('class="wu-k') == 6
 w.vor('<section class="sek faq">', STIMMEN)
 fertig(w, "websites")
 
