@@ -730,6 +730,17 @@ _ea, _ee = s.bereich('<section class="sek erg-sek" id="ergebnisse">')
 ERG_HOME = s.h[_ea:_ee]
 
 
+# Die HWM-Seite ist für alle Gewerke, nicht nur SHK (Noah, 19.11.2026: „wir müssen ja auf der HWM seite nicht nur auf shk gehen“)
+GEWERKE_MISCHEN = {
+    "neukundengewinnung": [("<b>Wärmepumpe statt Ölheizung</b><small>Eigentümer · Start dieses Jahr · 14 km entfernt</small>",
+                            "<b>Einbauküche nach Maß</b><small>Eigentümer · Start dieses Jahr · 14 km entfernt</small>")],
+    "mitarbeitergewinnung": [("<b>Kundendienst-Monteur</b><small>Führerschein BE · wechselbereit in 3 Monaten</small>",
+                              "<b>Zimmerer</b><small>Führerschein BE · wechselbereit in 3 Monaten</small>"),
+                             ("<b>Geselle, 2 Jahre</b><small>Führerschein B · ab sofort · 7 km entfernt</small>",
+                              "<b>Elektroniker, 2 Jahre Geselle</b><small>Führerschein B · ab sofort · 7 km entfernt</small>")],
+}
+
+
 def ablauf_animiert(slug, h2, texte):
     """„Was wir übernehmen“ als der ursprüngliche animierte Baustein (Handy-Anzeigen, Umkreis-Radar, Filterfragen „passt“) statt
     Kundenfoto-Karten (Noah, 19.11.2026: „das macht ja so kein sinn da die kundenbilder reinzumachen, da könnte diese ursprüngliche
@@ -744,6 +755,11 @@ def ablauf_animiert(slug, h2, texte):
         z = re.sub(r'<span class="nummer">\d+</span><h3>.*?</h3><p>.*?</p>', f'<span class="nummer">0{i}</span><h3>{titel}</h3><p>{text}</p>', z, count=1, flags=re.S)
         assert f"<h3>{titel}</h3>" in z, (slug, i)
         neu.append(z)
+    html = "".join(neu)
+    for alt, neu_t in GEWERKE_MISCHEN.get(slug, []):
+        assert html.count(alt) == 1, (slug, alt)
+        html = html.replace(alt, neu_t)
+    neu = [html]
     return ('<section class="sek band auf-dunkel bento-sek ablauf-ani"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Was wir übernehmen</span>'
             f'<h2>{h2}</h2></div><div class="bento">{"".join(neu)}</div></div></section>'
             '<style>@media (min-width:1001px){.ablauf-ani .bento{grid-template-columns:repeat(6,minmax(0,1fr))}'
@@ -766,9 +782,9 @@ def seo_ablauf():
     radar = ('<svg class="umkreis" viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="92"/><circle cx="100" cy="100" r="64"/>'
              '<circle cx="100" cy="100" r="36"/><circle class="puls" cx="100" cy="100" r="92"/><circle class="kern" cx="100" cy="100" r="7"/></svg>')
     zellen = [
-        '<article class="zelle z-4 mit-tickets">' + _tickets([("Haustechnik Ehingen", "Senftleben Haustechnik", "Platz 1"),
-                                                              ("Gebäudetechnik Schöngeising", "Goldacker Gebäudetechnik", "Platz 1"),
-                                                              ("Heizung Krün", "Hannes Schmidt", "Platz 1")], seite)  # echte Messung 19.10.2026 aus der Rangliste (Noah, 19.11.2026: „sachen nehmen wo auch kunden von uns kommen“)
+        '<article class="zelle z-4 mit-tickets">' + _tickets([("Dachbau Schwabmünchen", "Dachbau Kraus", "Platz 1"),
+                                                              ("Schreinerei Pähl", "Die Führmänner", "Platz 1"),
+                                                              ("Tiefbau Landsberg", "BMS GmbH", "Platz 1")], seite)  # gemischte Gewerke, HWM ist nicht nur SHK (Noah, 19.11.2026)  # echte Messung 19.10.2026 aus der Rangliste (Noah, 19.11.2026: „sachen nehmen wo auch kunden von uns kommen“)
         + '<span class="nummer">01</span><h3>Eine Seite je Leistung</h3><p>Jede Leistung bekommt eine eigene Seite, mit deinem Ort drin.</p></article>',
         f'<article class="zelle z-2">{radar}<span class="nummer">02</span><h3>Dein Google-Profil</h3><p>Mit Leistungen und Fotos, damit dich die Karte zeigt.</p></article>',
         '<article class="zelle z-6 mit-tickets">' + _tickets([("Christoph Hirschvogel", "Küchenhaus Hirschvogel", "★★★★★"),
