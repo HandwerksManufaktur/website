@@ -91,6 +91,27 @@
   /* ── 2 · Foto & Video: Galerie (Mauerwerk), laufende Filme und Lichtkasten ───────────────────── */
   const raster = $('.fv-raster');
   if (raster) {
+    // Bei jedem Aufruf neu gemischt (Noah, 19.11.2026: „sollen sich die Fotos und Videos jedes Mal bei ‚Abgedreht‘ neu anpassen
+    // und anordnen“) — nie zwei Karten desselben Betriebs direkt hintereinander
+    (() => {
+      const alle = [...raster.children].filter(e => e.classList.contains('fv-k'));
+      const b = k => k.dataset.b || '';
+      const zaehle = m => m.filter((k, i) => i && b(k) && b(k) === b(m[i - 1])).length;
+      let best = null;
+      for (let versuch = 0; versuch < 30; versuch++) {
+        const m = alle.slice();
+        for (let i = m.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [m[i], m[j]] = [m[j], m[i]]; }
+        // Nachsortieren: steht eine Karte direkt hinter einer vom selben Betrieb, tauscht sie mit einer passenden weiter hinten
+        for (let i = 1; i < m.length; i++) {
+          if (!b(m[i]) || b(m[i]) !== b(m[i - 1])) continue;
+          const j = m.findIndex((k, x) => x > i && b(k) !== b(m[i - 1]) && (x + 1 >= m.length || b(m[x + 1]) !== b(m[i])) && b(m[x - 1]) !== b(m[i]));
+          if (j > 0) [m[i], m[j]] = [m[j], m[i]];
+        }
+        if (!best || zaehle(m) < zaehle(best)) best = m;
+        if (!zaehle(best)) break;
+      }
+      best.forEach(k => raster.appendChild(k));
+    })();
     const karten = $$('.fv-k', raster);
     raster.classList.add('js');
     const spalten = () => innerWidth >= 1100 ? 4 : innerWidth >= 700 ? 3 : 2;

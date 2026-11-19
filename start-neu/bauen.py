@@ -376,7 +376,7 @@ def szene(nr, kicker, titel, grund=True):
 import html as _html
 import json as _json
 
-NEU_V = "5"
+NEU_V = "6"
 NEU_KOPF = f'<link rel="stylesheet" href="/static/seiten-neu.css?v={NEU_V}">'
 NEU_FUSS = f'<script src="/static/seiten-neu.js?v={NEU_V}" defer></script>'
 SIGNET = ('M0,39.667 L22,25 L22,91 L0,91 Z', 'M34,14.667 L56,0 L56,91 L34,91 L34,64.67 L27,68 L27,53.667 L34,49 Z',
@@ -470,11 +470,12 @@ def hero_seo(seite):
 #   sr-fischer   (19.11.2026) aus dem Imagefilm 2026: Team am Transporter 7,6 s · Drohne Haus mit PV 101,2 s · Drohne Firmengebäude
 #                112,8 s — Noah: „Fischer schon … das mit dem Team … Drohnen-Aufnahmen … drei kurze Sachen zusammenschneiden“, Bettina
 #                selbst nicht auf Foto & Video (sie steht stehend und lächelnd im Kundenvideo der Startseite)
-SHOWREEL = [("Zimmerei Koller", "sr-koller-a", 3.44), ("CS Metalldesign", "sr-cs-a", 3.5), ("A. Resch Bau", "sr-resch", 5.02),
-            ("Fischer Bad Heizung Solar", "sr-fischer", 4.4),
-            ("Zimmerei Koller", "sr-koller-b", 3.44), ("Kirchner Thaining", "sr-kirchner", 1.8), ("CS Metalldesign", "sr-cs-b", 3.25),
-            ("Zimmerei Koller", "sr-koller-c", 3.44), ("Baureize", "sr-baureize", 3.54)]
-SHOWREEL_V = {"sr-kirchner": 2, "sr-cs-b": 2, "sr-baureize": 2, "sr-fischer": 3}   # Versionsmarke je neu geschnittener Lage (Browser-Cache)
+# Stand 19.11.2026 abends: jede Lage DREI Einstellungen (showreel_szenen.py), CS-Schleifer zuerst (Noah: „das kommt als
+# Allererstes, weil dieses Video richtig geil ist“); nie zwei Lagen vom selben Betrieb hintereinander, auch nicht über die Schleife.
+SHOWREEL = [("CS Metalldesign", "sr-cs-b", 4.45), ("Zimmerei Koller", "sr-koller-a", 4.2), ("A. Resch Bau", "sr-resch", 5.02),
+            ("Fischer Bad Heizung Solar", "sr-fischer", 4.4), ("Zimmerei Koller", "sr-koller-b", 4.0), ("Kirchner Thaining", "sr-kirchner", 2.6),
+            ("CS Metalldesign", "sr-cs-a", 4.5), ("Zimmerei Koller", "sr-koller-c", 3.9), ("Baureize", "sr-baureize", 4.8)]
+SHOWREEL_V = {"sr-cs-b": 3, "sr-koller-a": 2, "sr-fischer": 3, "sr-koller-b": 2, "sr-kirchner": 3, "sr-cs-a": 2, "sr-koller-c": 2, "sr-baureize": 3}
 assert all(SHOWREEL[i][0] != SHOWREEL[i - 1][0] for i in range(len(SHOWREEL))), "zwei Lagen vom selben Betrieb hintereinander"
 
 
@@ -528,6 +529,7 @@ GALERIE_FILME = [(2, "holz", "Schreinerei", "Schreinerei Kreitner", 16 / 9, f"{V
                  (35, "shk", "Anzeige", "Erich Sussmann", 9 / 16, f"{FV}/v/su-mirjana.mp4", f"{FV}/v/su-mirjana.jpg"),
                  (38, "bau", "Bau", "A. Resch Bau", 16 / 9, f"{FV}/v/g-resch.mp4", f"{FV}/v/g-resch.jpg"),
                  (44, "shk", "Stellenanzeige", "Irlbacher Gebäudetechnik", 9 / 16, f"{FV}/v/ir-geselle.mp4", f"{FV}/v/ir-geselle.jpg"),
+                 (47, "shk", "Drohnenflug", "Fischer Bad Heizung Solar", 16 / 9, f"{FV}/v/fi-drohne.mp4", f"{FV}/v/fi-drohne.jpg"),
                  (50, "bau", "Drohnenflug", "Wohner Elektrotechnik", 16 / 9, f"{FV}/v/g-wohner.mp4", f"{FV}/v/g-wohner.jpg")]
 
 
@@ -536,12 +538,12 @@ def galerie_sek():
         g, b = _html.escape(d["gewerk"]), _html.escape(d["betrieb"], quote=False) if d["betrieb"] else ""
         b = b.replace("&amp;amp;", "&amp;")
         alt = f'{g} bei {b}' if b else g
-        return (f'<figure class="fv-k" data-g="{d["g"]}" style="--r:{d["w"] / d["h"]:.4f}"><button type="button" class="fv-auf" aria-label="{alt} groß ansehen">'
+        return (f'<figure class="fv-k" data-g="{d["g"]}" data-b="{_html.escape(_html.unescape(d["betrieb"] or ""))}" style="--r:{d["w"] / d["h"]:.4f}"><button type="button" class="fv-auf" aria-label="{alt} groß ansehen">'
                 f'<img src="{FV}/g/{d["k"]}-900.webp" srcset="{FV}/g/{d["k"]}-480.webp 480w, {FV}/g/{d["k"]}-900.webp 900w" sizes="(min-width:1100px) 22vw, (min-width:700px) 31vw, 48vw" data-gross="{FV}/g/{d["k"]}-1800.webp" alt="{alt}" loading="lazy" decoding="async" width="900" height="{round(900 * d["h"] / d["w"])}"></button>'
                 f'<figcaption><b>{g}</b><span>{b or "Drehtag bei einem Kunden"}</span></figcaption></figure>')
 
     def film(g, gewerk, betrieb, r, mp4, poster):
-        return (f'<figure class="fv-k ist-film" data-g="{(g + " film").strip()}" style="--r:{r:.4f}"><button type="button" class="fv-auf" aria-label="Film {betrieb} groß ansehen">'
+        return (f'<figure class="fv-k ist-film" data-g="{(g + " film").strip()}" data-b="{_html.escape(_html.unescape(betrieb).split(",")[0])}" style="--r:{r:.4f}"><button type="button" class="fv-auf" aria-label="Film {betrieb} groß ansehen">'
                 f'<video muted loop playsinline preload="none" data-hand data-src="{mp4}" poster="{poster}"></video><span class="fv-spiel">Film</span></button>'
                 f'<figcaption><b>{gewerk}</b><span>{betrieb}</span></figcaption></figure>')
     karten = [foto(d) for d in GALERIE["fotos"]]
@@ -604,9 +606,9 @@ s.ersetze('<p class="lead">Website, Fotos und Social-Media-Werbung für Handwerk
 # Noah 18.11. abends: „nur der Ausschnitt von Patrick“ wird getauscht (alle anderen Stellen bleiben) → Szene 1 jetzt Sussmann Hooks (34)
 # ab 0,9 s (Patrick redet im Lager, Kopf ganz im Bild, gleiche Match-Cut-Lage 50 %/21,5 %), Szenen 2–8 Bild für Bild aus
 # firma/website-shk/neu/video/szenen/*.mp4 (SHK-Seite selbst unverändert).
-s.h = s.h.replace('/static/assets/vid/saeule/baureize.jpg', '/static/assets/vid/saeule/kunden-shk.jpg?v=3')
+s.h = s.h.replace('/static/assets/vid/saeule/baureize.jpg', '/static/assets/vid/saeule/kunden-shk.jpg?v=4')
 s.ersetze('data-src="/static/assets/vid/saeule/baureize-d.mp4" data-src-mobil="/static/assets/vid/saeule/baureize-m.mp4"',
-          'data-src="/static/assets/vid/saeule/kunden-shk-d.mp4?v=3" data-src-mobil="/static/assets/vid/saeule/kunden-shk-m.mp4?v=3"')  # v3 (19.11.2026): Bettina stehend und lächelnd (Kampagnen-Aufnahme Bodys (2) ab 2,4 s) statt im Lager an der Kiste
+          'data-src="/static/assets/vid/saeule/kunden-shk-d.mp4?v=4" data-src-mobil="/static/assets/vid/saeule/kunden-shk-m.mp4?v=4"')  # v4 (19.11.2026): Bettina stehend und lächelnd (Kampagnen-Aufnahme Bodys (2) ab 2,4 s) statt im Lager an der Kiste, an Stelle 4 zwischen Benjamin Senftleben und Yannick Stimpfle (Noah: „nicht direkt nach Erwin Schmidt“)
 assert 'baureize' not in s.h.split('<div class="saeulen">', 1)[1].split('</div></div></div>', 1)[0]
 # Noah, 18.11.2026: „das Video soll schon das ganz ausfüllen, aber … nicht, dass der Kopf … abgeschnitten ist“ → in den
 # Originalen sitzt der Kopf ganz oben → weiter gefilmte Takes (start-neu/kunden_szenen_saeule.py), Beschriftung wieder oben.
@@ -736,6 +738,14 @@ assert _n == 1 and _sek2.count('class="stimme ') == 92, _sek2.count('class="stim
 s.h = s.h[:_a] + _sek2 + s.h[_e:]
 assert s.h.count('<h2>So sehen unsere Seiten aus.</h2>') == 1
 s.h = s.h.replace('<h2>So sehen unsere Seiten aus.</h2>', '<h2>Bezugsfertig.</h2>')  # wie auf der Websites-Seite
+# Unter „Wer hinter der Handwerksmanufaktur steht“ ein Bild-Block (Noah, 19.11.2026: „darunter noch ein anderes geiles
+# Content-Ding“): der laufende Kontaktabzug eines Drehtags, mit Weg zu Foto & Video.
+_kb = kontaktabzug_sek().replace('<span class="kicker">Ein Drehtag</span>', '<span class="kicker">Foto &amp; Video</span>', 1)
+_kb = _kb.replace('in der Reihenfolge der Aufnahmen.</p>', 'in der Reihenfolge der Aufnahmen. <a class="textlink" href="/foto-video/">'
+                  'Mehr zu Foto &amp; Video <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p>', 1)
+assert 'href="/foto-video/"' in _kb
+s.nach('<section class="sek team-sek" id="team">', _kb)
+
 s.entwurf()
 s.schreibe(ZIEL / "index.html")
 
