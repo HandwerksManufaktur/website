@@ -224,10 +224,9 @@ def stimmen_alle():
             '.sek.stimmen .stimme{position:relative;overflow:hidden;min-height:330px;grid-template-rows:auto auto 1fr;align-content:stretch;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s}'
             '.sek.stimmen .stimme:hover{transform:translateY(-4px);box-shadow:0 18px 40px -22px rgba(22,19,14,.35),0 0 0 1px rgba(22,19,14,.08)}'
             '.sek.stimmen .stimme::before{content:"\\201C";position:absolute;right:22px;top:6px;font-size:120px;line-height:1;font-weight:800;color:var(--bronze);opacity:.16;pointer-events:none}'
-            '.sek.stimmen .stimme p{align-self:center;color:var(--tinte)}'
-            '.sek.stimmen .st-kurz p{font-size:clamp(20px,1.6vw,23px);line-height:1.35;font-weight:600;letter-spacing:-.01em}'
-            '.sek.stimmen .st-mittel p{font-size:17.5px;line-height:1.5}'
-            '.sek.stimmen .st-lang p{font-size:15.5px;line-height:1.55}'
+            # Eine Schrift für alle Stimmen, oben bündig unter den Sternen (Noah, 20.11.2026: „die Abstände passen nicht … auf
+            # einmal ist da Knappich … fett“ — kurze Stimmen standen größer, fett und tiefer)
+            '.sek.stimmen .stimme p{align-self:start;color:var(--tinte);font-size:16px;line-height:1.55;font-weight:400;letter-spacing:0}'
             '.sek.stimmen .kreis.logo{width:132px;height:58px}.sek.stimmen .kreis.logo img{max-width:108px;max-height:40px}'
             '@media (prefers-reduced-motion:reduce){.sek.stimmen .stimme{transition:none}}</style>')
 
@@ -294,7 +293,7 @@ class Seite:
         h, n1 = re.subn(r'\n?<button type="button" class="uk-rechner" data-rechner>.*?</button>', "", h, flags=re.S)
         h, n2 = re.subn(r'<dialog class="rd" id="rechner-dialog".*?</dialog>', "", h, flags=re.S)
         h = h.replace('<a class="btn btn-bronze" href="#rechner-auf">Potenzial durchrechnen ', '<a class="btn btn-bronze" href="/kontakt/">Erstgespräch vereinbaren ')
-        assert n1 == 1 and n2 == 1, (n1, n2)
+        assert (n1, n2) in ((1, 1), (0, 0)), (n1, n2)  # (0, 0): fertig() hat Knopf und Dialog schon entfernt
         assert not re.search(r'rechner|durchrechnen|Rechner', h), re.findall(r'.{40}(?:rechner|durchrechnen|Rechner).{40}', h)[:3]
         self.h = h
 
@@ -331,6 +330,10 @@ class Seite:
         assert "130 Betriebe" not in self.h and 'class="zusammen' not in self.h, pfad
         self.h = fuss_neu(self.h)
         self.h = stimmen_woertlich(self.h)
+        # Neue Seitenbilder (Durchlauf beim Drüberfahren) bekommen eine Version, sonst zeigt der Browser das alte (20.11.2026:
+        # Schillinger mit dem neu gesetzten Porträt)
+        for _k, _v in SEITENBILD_V.items():
+            self.h = self.h.replace(f'/static/assets/vid/hero/s{_k}.webp"', f'/static/assets/vid/hero/s{_k}.webp?v={_v}"')
         # Kurze Zeile („Alle live.“) steht unter der Überschrift, nicht allein rechts in der Mitte (Noah, 19.11.2026: „random“)
         def _kurz(m):
             lead = re.sub(r"<[^>]+>", "", m.group(2)).strip()
@@ -381,7 +384,8 @@ def szene(nr, kicker, titel, grund=True):
 import html as _html
 import json as _json
 
-NEU_V = "7"
+NEU_V = "8"
+SEITENBILD_V = {"schillinger": 2}  # Porträt „Der Meister“ neu gesetzt (20.11.2026)
 NEU_KOPF = f'<link rel="stylesheet" href="/static/seiten-neu.css?v={NEU_V}">'
 NEU_FUSS = f'<script src="/static/seiten-neu.js?v={NEU_V}" defer></script>'
 SIGNET = ('M0,39.667 L22,25 L22,91 L0,91 Z', 'M34,14.667 L56,0 L56,91 L34,91 L34,64.67 L27,68 L27,53.667 L34,49 Z',
@@ -520,6 +524,11 @@ def hero_neu(seite, slug, buehne, takt=None):
 # (Noah, 18.11.2026: „Da muss man es sich nicht unbedingt noch extra eingeordnet lassen“). Nie zwei Karten vom selben
 # Betrieb nebeneinander (assert in galerie_sek).
 GALERIE = _json.loads((WURZEL / "static/assets/fv/galerie.json").read_text())
+# Nur, was unser Foto-/Videograf gedreht hat (Noah, 20.11.2026: „ausschließlich Content, den wir gemacht haben … Stockfoto … muss raus
+# … Martin Wörner … das Bild hat er mir geschickt“): die vier Bilder aus static/assets/img/praxis sind Kunden- bzw. Stockbilder
+NICHT_GEDREHT = {"dach", "pv", "galabau", "maler"}
+GALERIE["fotos"] = [d for d in GALERIE["fotos"] if d["k"] not in NICHT_GEDREHT]
+assert not any(d["k"] in NICHT_GEDREHT for d in GALERIE["fotos"])
 # (Stelle in der Fotoliste, Gewerk-Schlüssel, Gewerk, Betrieb, Seitenverhältnis, Film, Poster)
 GALERIE_FILME = [(2, "holz", "Schreinerei", "Schreinerei Kreitner", 16 / 9, f"{VID}/kreitner.mp4", f"{VID}/poster/kreitner.jpg"),
                  (6, "shk", "Anzeige", "Erich Sussmann", 9 / 16, f"{FV}/v/su-dusche.mp4", f"{FV}/v/su-dusche.jpg"),
@@ -556,6 +565,14 @@ def galerie_sek():
     for stelle, *rest in reversed(GALERIE_FILME):
         karten.insert(stelle, film(*rest))
         betriebe.insert(stelle, _html.unescape(rest[2]).split(",")[0])
+    # Nach dem Herausnehmen fremder Bilder (20.11.2026) kann ein Betrieb doppelt nebeneinander stehen: mit der nächsten passenden Karte tauschen
+    for i in range(1, len(betriebe)):
+        if betriebe[i] and betriebe[i] == betriebe[i - 1]:
+            j = next((x for x in range(len(betriebe)) if x not in (i - 1, i) and betriebe[x] != betriebe[i]
+                      and (x == 0 or betriebe[x - 1] != betriebe[i]) and (x + 1 >= len(betriebe) or betriebe[x + 1] != betriebe[i])
+                      and betriebe[i - 1] != betriebe[x] and (i + 1 >= len(betriebe) or betriebe[i + 1] != betriebe[x])), None)
+            if j is not None:
+                betriebe[i], betriebe[j] = betriebe[j], betriebe[i]; karten[i], karten[j] = karten[j], karten[i]
     nachbarn = [(i, betriebe[i]) for i in range(1, len(betriebe)) if betriebe[i] and betriebe[i] == betriebe[i - 1]]
     assert not nachbarn, f"zwei Karten vom selben Betrieb nebeneinander: {nachbarn}"
     alle = "".join(karten)
@@ -613,7 +630,7 @@ s.ersetze('<p class="lead">Website, Fotos und Social-Media-Werbung für Handwerk
 # firma/website-shk/neu/video/szenen/*.mp4 (SHK-Seite selbst unverändert).
 s.h = s.h.replace('/static/assets/vid/saeule/baureize.jpg', '/static/assets/vid/saeule/kunden-shk.jpg?v=4')
 s.ersetze('data-src="/static/assets/vid/saeule/baureize-d.mp4" data-src-mobil="/static/assets/vid/saeule/baureize-m.mp4"',
-          'data-src="/static/assets/vid/saeule/kunden-shk-d.mp4?v=4" data-src-mobil="/static/assets/vid/saeule/kunden-shk-m.mp4?v=4"')  # v4 (19.11.2026): Bettina stehend und lächelnd (Kampagnen-Aufnahme Bodys (2) ab 2,4 s) statt im Lager an der Kiste, an Stelle 4 zwischen Benjamin Senftleben und Yannick Stimpfle (Noah: „nicht direkt nach Erwin Schmidt“)
+          'data-src="/static/assets/vid/saeule/kunden-shk-d.mp4?v=5" data-src-mobil="/static/assets/vid/saeule/kunden-shk-m.mp4?v=5"')  # v4 (19.11.2026): Bettina stehend und lächelnd (Kampagnen-Aufnahme Bodys (2) ab 2,4 s) statt im Lager an der Kiste, an Stelle 4 zwischen Benjamin Senftleben und Yannick Stimpfle (Noah: „nicht direkt nach Erwin Schmidt“)
 assert 'baureize' not in s.h.split('<div class="saeulen">', 1)[1].split('</div></div></div>', 1)[0]
 # Noah, 18.11.2026: „das Video soll schon das ganz ausfüllen, aber … nicht, dass der Kopf … abgeschnitten ist“ → in den
 # Originalen sitzt der Kopf ganz oben → weiter gefilmte Takes (start-neu/kunden_szenen_saeule.py), Beschriftung wieder oben.
@@ -736,11 +753,23 @@ s.ersetze('<span class="kicker">Deine Website</span>', '<span class="kicker">Uns
 s.ersetze('<span class="kicker">Kostenloses Beratungsgespräch · 30 Min.</span>', '<span class="kicker">Kostenloses Beratungsgespräch</span>')
 # „Wer dahinter steht“: klare Überschrift, „Seit 2019 nur Handwerk“ als Kicker, Noahs Vorstellung als Text (Noah, 15.11.2026)
 # Noah, 15.11.2026: die fünf Zeilen über die Familie waren zu lang, genau diese zwei Sätze (auch auf /ueber-uns/)
-NOAH_TEXT = 'Servus, ich bin Noah, Gründer der Handwerksmanufaktur. Dass wir nur fürs Handwerk arbeiten, kommt nicht von ungefähr.</p><p class="lead" style="margin-top:20px">Meine drei Brüder haben alle im Handwerk gelernt. Zwei davon sind Meister. Zusätzlich haben wir in der Familie mehrere Handwerksbetriebe. Dadurch habe ich schon von klein auf täglich mitgekriegt, wie es im Handwerk wirklich zugeht.</p><p class="lead" style="margin-top:20px">In den letzten 8 Jahren haben wir über 150 Firmen betreut und wissen mittlerweile ganz genau, was ein Handwerksbetrieb online braucht, damit Kunden und Bewerber bei ihm landen.'
+NOAH_TEXT = 'Servus, ich bin Noah, Inhaber der Handwerksmanufaktur. Dass wir nur fürs Handwerk arbeiten, kommt nicht von ungefähr.</p><p class="lead" style="margin-top:20px">Meine drei Brüder haben alle im Handwerk gelernt. Zwei davon sind Meister. Zusätzlich haben wir in der Familie mehrere Handwerksbetriebe. Dadurch habe ich schon von klein auf täglich mitgekriegt, wie es im Handwerk wirklich zugeht.</p><p class="lead" style="margin-top:20px">In den letzten 8 Jahren haben wir über 150 Firmen betreut und wissen mittlerweile ganz genau, was ein Handwerksbetrieb online braucht, damit Kunden und Bewerber bei ihm landen.'
 s.ersetze('<span class="kicker">Wer dahinter steht</span><h2>Die Leute hinter deinem Auftritt.</h2><p class="lead">Dieselben Leute von Anfang bis Ende.</p>',
           f'<span class="kicker">Du bist auf der Baustelle daheim. Wir im Internet.</span><h2 style="max-width:none;font-size:clamp(23px,3.75vw,54px)">Wer hinter der<br><span style="white-space:nowrap">Handwerksmanufaktur steht.</span></h2>')
 # Noah, 18.11.2026: „bei der Home-Seite … den ‚Über uns‘-Text rausnehmen … dass da einfach nur das Team mit dabei steht.
 # Dann ist halt noch der Button ‚Mehr über uns‘“ — der Text steht nur noch auf /ueber-uns/.
+
+
+# Je Karte zwei Zeilen (Noah, 20.11.2026: „wir wollen überall 2 Zeilen“); Sussmann mit dem ersten Auftrag über 10.000 €,
+# Senftleben ohne „sechs Angebote“, dafür die Umkreis-Zeile
+ERG_TEXTE = [
+    ('Alles in zwei Monaten, der erste Auftrag kam nach 18 Tagen. Inzwischen warten Kunden fast drei Wochen auf einen Termin.',
+     'Erster Auftrag über 10.000 € nach 18 Tagen. Kunden warten fast drei Wochen auf Termine.'),
+    ('Sechs Angebote sind schon raus. Dieses Jahr ist voll, die nächsten Bäder plant Senftleben schon fürs neue Jahr.',
+     'Qualifizierte Anfragen aus dem 30-km-Umkreis, dieses Jahr ist schon voll.'),
+    ('Gesucht war ein Anlagenmechaniker. Aufkleber auf dem Wagen und die Stelle auf der eigenen Seite hatten vorher kaum etwas gebracht.',
+     'Gesucht war ein Anlagenmechaniker. Aufkleber und Stellenseite hatten vorher nichts gebracht.'),
+]
 
 
 def ergebnisse_aktuell(seite):
@@ -757,6 +786,8 @@ def ergebnisse_aktuell(seite):
     assert not re.search(r'pausier|verlängert', re.sub(r'<script.*?</script>', '', h, flags=re.S)), 'Kundenstatus (pausiert/verlängert) auf der Seite'
     h = h.replace('<p class="lead">Werbung im Umkreis des Betriebs. Gezählt ist', '<p class="lead">Anzeigen im Umkreis des Betriebs. Gezählt ist')
     h = h.replace('<h2>Du kümmerst dich um nichts davon.</h2>', '<h2>Wir lassen unsere Kunden sprechen.</h2>')
+    for alt, neu in ERG_TEXTE:
+        h = h.replace(alt, neu)
     seite.h = h
 
 
@@ -773,18 +804,20 @@ s.h = s.h[:_a] + _sek2 + s.h[_e:]
 assert s.h.count('<h2>So sehen unsere Seiten aus.</h2>') == 1
 s.h = s.h.replace('<h2>So sehen unsere Seiten aus.</h2>', '<h2>Bezugsfertig.</h2>')  # wie auf der Websites-Seite
 s.ersetze('Von der Zimmerei bis zum Autohaus.', 'Von der Zimmerei über den Heizungsbauer bis zum Autohaus.')
-# Unter „Wer hinter der Handwerksmanufaktur steht“: Foto & Video (Noah, 19.11.2026 abends: „nicht nur ein Shooting … sondern die
-# kompletten Fotos/Videos … dass die dann irgendwie durchlaufen … was so richtig crazy geisteskrank ausschaut“) → eine schräg
-# gestellte Wand aus drei Bahnen, gegenläufig, mit allen Fotos der Galerie, allen Filmen und dem Drehtag-Kontaktabzug.
+# Unter „Wer hinter der Handwerksmanufaktur steht“: Foto & Video. Noah, 20.11.2026: „einfach eine Art Bildergalerie … sehr
+# strukturiert, mit Bildern, die … langsam durchläuft … ausschließlich Content, den wir gemacht haben … und auch nicht so quer …
+# kann ein bisschen dezenter sein“ (ersetzt die schräge, laute Wand vom 19.11.): zwei gerade Reihen, alle Kacheln gleich groß
+# (3 : 2), langsam gegenläufig, nur Querformat-Fotos unserer Drehtage und unsere Querformat-Filme, keine Zahl-Zeile.
 def wand_sek():
     teile = []
     for d in GALERIE["fotos"]:
-        teile.append(("bild", f'{FV}/g/{d["k"]}-480.webp', d["w"] / d["h"], _html.unescape(d["betrieb"] or "")))
+        if d["w"] > d["h"]:
+            teile.append(("bild", f'{FV}/g/{d["k"]}-480.webp', _html.unescape(d["betrieb"] or "")))
     for _, _, _, betrieb, r, mp4, poster in GALERIE_FILME:
-        teile.append(("film", mp4, r, _html.unescape(betrieb).split(",")[0], poster))
+        if r > 1:
+            teile.append(("film", mp4, _html.unescape(betrieb).split(",")[0], poster))
     for k in GALERIE["kontakt"]:
-        teile.append(("bild", f"{FV}/k/{k}.webp", 1.5, "Stimpfle Sanitär & Heizung"))
-    # Filme gleichmäßig verteilen, dann je Bahn nie zwei vom selben Betrieb nebeneinander
+        teile.append(("bild", f"{FV}/k/{k}.webp", "Stimpfle Sanitär & Heizung"))
     filme = [x for x in teile if x[0] == "film"]; bilder = [x for x in teile if x[0] == "bild"]
     schritt = max(1, len(bilder) // (len(filme) + 1))
     folge = []
@@ -793,45 +826,36 @@ def wand_sek():
         if (i + 1) % schritt == 0 and filme:
             folge.append(filme.pop(0))
     folge += filme
-    bahnen = [folge[i::3] for i in range(3)]
+    bahnen = [folge[i::2] for i in range(2)]
     for bahn in bahnen:
         for i in range(1, len(bahn)):
-            if bahn[i][3] and bahn[i][3] == bahn[i - 1][3]:
-                j = next((x for x in range(i + 1, len(bahn)) if bahn[x][3] != bahn[i - 1][3]), None)
+            if bahn[i][2] and bahn[i][2] == bahn[i - 1][2]:
+                j = next((x for x in range(i + 1, len(bahn)) if bahn[x][2] != bahn[i - 1][2]), None)
                 if j: bahn[i], bahn[j] = bahn[j], bahn[i]
 
     def kachel(x):
-        stil = f'style="--r:{x[2]:.4f}"'
         if x[0] == "film":
-            return (f'<span class="wd-k ist-film" {stil}><video muted loop playsinline preload="none" data-wand="{x[1]}" poster="{x[4]}"></video>'
-                    '<i class="wd-rec">REC</i></span>')
-        return f'<span class="wd-k" {stil}><img data-wand="{x[1]}" alt="" decoding="async"></span>'
-    spuren = "".join(f'<div class="wd-bahn" style="--t:{t}s"><div class="wd-spur">{"".join(kachel(x) for x in bahn) * 2}</div></div>'
-                     for bahn, t in zip(bahnen, (95, 120, 105)))
-    betriebe = {x[3] for x in teile if x[3]}
-    n_bild, n_film = sum(1 for x in teile if x[0] == "bild"), sum(1 for x in teile if x[0] == "film")
-    return ('<section class="sek band auf-dunkel wd-sek"><div class="wrap"><div class="kopfzeile mitte reveal"><span class="kicker">Foto &amp; Video</span>'
-            '<h2>Alles bei unseren Kunden gedreht.</h2>'
-            f'<p class="lead">{n_bild} Fotos und {n_film} Filme aus {len(betriebe)} Betrieben. <a class="textlink" href="/foto-video/">Mehr zu Foto &amp; Video '
+            return f'<span class="wd-k"><video muted loop playsinline preload="none" data-wand="{x[1]}" poster="{x[3]}"></video></span>'
+        return f'<span class="wd-k"><img data-wand="{x[1]}" alt="" decoding="async"></span>'
+    spuren = "".join(f'<div class="wd-bahn"><div class="wd-spur" style="--t:{t}s">{"".join(kachel(x) for x in bahn) * 2}</div></div>'
+                     for bahn, t in zip(bahnen, (210, 250)))
+    return ('<section class="sek wd-sek"><div class="wrap"><div class="kopfzeile mitte reveal"><span class="kicker">Foto &amp; Video</span>'
+            '<h2>Bei unseren Kunden gedreht.</h2>'
+            '<p class="lead"><a class="textlink" href="/foto-video/">Mehr zu Foto &amp; Video '
             '<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p></div></div>'
-            f'<div class="wd" aria-hidden="true"><div class="wd-kipp">{spuren}</div></div></section>'
-            '<style>.wd-sek{overflow:hidden;padding-bottom:clamp(60px,8vw,120px)}.wd-sek .lead .textlink{color:var(--bronze-hell)}'
-            '.wd{position:relative;margin-top:clamp(30px,5vw,70px);height:calc(var(--wh) * 3 + 2 * var(--wg) + 12vw);--wh:clamp(118px,15vw,230px);--wg:clamp(8px,1vw,14px)}'
-            '.wd::before,.wd::after{content:"";position:absolute;top:0;bottom:0;width:12vw;z-index:2;pointer-events:none}'
-            '.wd::before{left:0;background:linear-gradient(90deg,var(--tinte),transparent)}.wd::after{right:0;background:linear-gradient(270deg,var(--tinte),transparent)}'
-            '.wd-kipp{position:absolute;left:-10%;right:-10%;top:6vw;display:grid;gap:var(--wg);transform:rotate(-5deg)}'
-            '.wd-bahn{overflow:visible}.wd-spur{display:flex;gap:var(--wg);width:max-content;animation:wd-lauf var(--t) linear infinite}'
+            f'<div class="wd" aria-hidden="true">{spuren}</div></section>'
+            '<style>.wd-sek{overflow:hidden}.wd-sek .kopfzeile>.lead{justify-self:center!important;text-align:center!important}'
+            '.wd{position:relative;display:grid;gap:12px;margin-top:clamp(24px,3vw,40px);--wh:clamp(120px,13vw,200px)}'
+            '.wd::before,.wd::after{content:"";position:absolute;top:0;bottom:0;width:8vw;z-index:2;pointer-events:none}'
+            '.wd::before{left:0;background:linear-gradient(90deg,var(--papier),transparent)}.wd::after{right:0;background:linear-gradient(270deg,var(--papier),transparent)}'
+            '.wd-spur{display:flex;gap:12px;width:max-content;animation:wd-lauf var(--t) linear infinite}'
             '.wd-bahn:nth-child(2) .wd-spur{animation-direction:reverse}'
-            '.wd-bahn:hover .wd-spur{animation-play-state:paused}'
-            '.wd-k{position:relative;flex:none;height:var(--wh);width:calc(var(--wh) * var(--r));border-radius:14px;overflow:hidden;background:#24201a;'
-            'box-shadow:0 18px 40px -22px rgba(0,0,0,.8);transition:transform .45s var(--ease),filter .45s var(--ease);filter:saturate(.9)}'
+            '.wd:hover .wd-spur{animation-play-state:paused}'
+            '.wd-k{flex:none;height:var(--wh);aspect-ratio:3/2;border-radius:var(--radius);overflow:hidden;background:var(--papier-2,#efe9df)}'
             '.wd-k img,.wd-k video{width:100%;height:100%;object-fit:cover;display:block}'
-            '.wd-k:hover{transform:scale(1.12) rotate(2deg);z-index:3;filter:none}'
-            '.wd-rec{position:absolute;left:10px;top:10px;font:700 11px/1 var(--schrift);letter-spacing:.12em;color:#fff;font-style:normal;display:flex;align-items:center;gap:6px;'
-            'background:rgba(0,0,0,.45);padding:5px 8px;border-radius:999px}.wd-rec::before{content:"";width:7px;height:7px;border-radius:50%;background:#E5483A;animation:hk-rec 1.2s steps(1) infinite}'
             '@keyframes wd-lauf{to{transform:translateX(-50%)}}'
             '@media (prefers-reduced-motion:reduce){.wd-spur{animation:none}.wd-bahn{overflow-x:auto}}</style>'
-            # Bilder laden, sobald die Wand naht; jeder Film lädt und läuft nur, solange er selbst im Bild ist (Startseite bleibt leicht)
+            # Bilder laden, sobald die Galerie naht; jeder Film lädt und läuft nur, solange er selbst im Bild ist
             '<script>(()=>{const w=document.querySelector(".wd");if(!w)return;let an=false;'
             'new IntersectionObserver(es=>{if(es[0].isIntersecting&&!an){an=true;w.querySelectorAll("img[data-wand]").forEach(x=>{x.src=x.dataset.wand})}},{rootMargin:"800px 0px"}).observe(w);'
             'const vio=new IntersectionObserver(es=>{for(const e of es){const v=e.target;if(e.isIntersecting){if(!v.getAttribute("src"))v.src=v.dataset.wand;v.play().catch(()=>{})}else{v.pause()}}},{rootMargin:"200px"});'
@@ -927,12 +951,17 @@ def seo_ablauf():
 def erg_karten(art, ohne=()):
     karten = [k for k in re.findall(r'<article class="erg reveal">.*?</article>', ERG_HOME, re.S)
               if f"<br><b>{art}</b>" in k and not any(o in k for o in ohne)]
-    assert 2 <= len(karten) <= 3, (art, len(karten))
+    assert 1 <= len(karten) <= 3, (art, len(karten))
     karten = [re.sub(r'<a class="textlink"[^>]*>.*?</a>', "", k, flags=re.S) for k in karten]
-    raster = '' if len(karten) == 3 else ' style="grid-template-columns:repeat(2,minmax(0,1fr))"'
+    raster = {3: '', 2: ' style="grid-template-columns:repeat(2,minmax(0,1fr))"', 1: ' data-einzel style="grid-template-columns:minmax(0,1fr)"'}[len(karten)]
+    # Eine Karte allein steht quer über die ganze Breite (Bild links, Zahlen rechts), sonst bleibt die halbe Sektion leer
+    einzel = ('<style>@media (min-width:901px){.erg-sek .ergebnisse[data-einzel] .erg{grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);grid-template-rows:none}'
+              '.erg-sek .ergebnisse[data-einzel] .erg-film{aspect-ratio:16/10;height:100%}.erg-sek .ergebnisse[data-einzel] .erg-in{align-self:center;padding:clamp(28px,3vw,48px)}'
+              '.erg-sek .ergebnisse[data-einzel] .erg-zeile em{font-size:clamp(30px,2.6vw,40px)}}</style>') if len(karten) == 1 else ''
     return ('<section class="sek erg-sek" id="ergebnisse"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Die Ergebnisse</span>'
             f'<h2>Ergebnisse unserer Kunden.</h2></div><div class="ergebnisse"{raster}>{"".join(karten)}</div>'
-            f'<p class="erg-wisch" aria-hidden="true">Wischen für {("beide", "alle drei")[len(karten) - 2]} Betriebe</p></div></section>')
+            + (f'<p class="erg-wisch" aria-hidden="true">Wischen für {("beide", "alle drei")[len(karten) - 2]} Betriebe</p>' if len(karten) > 1 else '')
+            + '</div></section>' + einzel)
 
 
 def hero_knopf(seite, alt_href, neu_href, text="Ergebnisse ansehen"):
@@ -1023,6 +1052,13 @@ FASSUNG = {
 
 def fertig(seite, slug, hero=None):
     ergebnisse_aktuell(seite)
+    # „Erst selbst durchrechnen … kommt überall raus“ und „die Galerie genauso groß wie die Sektion rechts“ (Noah, 20.11.2026)
+    seite.h = re.sub(r'\n?<(button|a)[^>]*class="uk-rechner"[^>]*>.*?</\1>', "", seite.h, flags=re.S)
+    seite.h = re.sub(r'<dialog class="rd" id="rechner-dialog".*?</dialog>', "", seite.h, flags=re.S)
+    seite.h = seite.h.replace('<a class="btn btn-bronze" href="#rechner-auf">Potenzial durchrechnen ', '<a class="btn btn-bronze" href="/kontakt/">Erstgespräch vereinbaren ')
+    assert "uk-rechner" not in seite.h and "durchrechnen" not in seite.h, (slug, re.findall(r'.{60}durchrechnen.{20}', seite.h)[:2])
+    if "uk-karte{align-items:stretch" not in seite.h:
+        seite.h = seite.h.replace("</head>", f"<style>{KONTAKT_STIL}</style></head>", 1)
     if hero:  # Noah, 18.11.2026 abends: Leistungsseiten wieder mit den drei Säulen („davor fand ich es cleaner“), nur Foto & Video behält den Film-Hero
         hero_neu(seite, slug, *hero)
     for alt, neu in FASSUNG.get(slug, []):
@@ -1208,7 +1244,7 @@ hero_knopf(n, "/websites/#arbeiten", "#ergebnisse")
 n.ersetze('<section class="sek grund"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Fallstudie · Badsanierung</span>',
           '<section class="sek grund" id="ergebnisse"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Die Ergebnisse</span>')
 n.ersetze('<span class="nr" data-zahl="14">14</span><span class="fz-einheit">Bad-Anfragen</span></div><p>Daraus sieben Termine vor Ort und nach 18 Tagen der erste Auftrag.</p>',
-          '<span class="nr" data-zahl="37">37</span><span class="fz-einheit">Bad-Anfragen</span></div><p>Daraus zwölf Termine vor Ort, der erste Auftrag kam nach 18 Tagen.</p>')  # Stand wie Startseite (37 / 12)
+          '<span class="nr" data-zahl="37">37</span><span class="fz-einheit">Bad-Anfragen</span></div><p>Daraus zwölf Termine vor Ort, der erste Auftrag über 10.000 € war nach 18 Tagen unterschrieben.</p>')  # Stand wie Startseite (37 / 12)
 n.ersetze('Pflicht ist es nicht — es geht auch mit deinem Vorarbeiter.', 'Pflicht ist es nicht, es geht auch mit deinem Vorarbeiter.', 2)
 n.ersetze('Sein Argument: Werbung macht man nicht erst, wenn es schlechter läuft, sondern damit man dann schon bekannt ist.',
           'Sein Argument: Wer erst wirbt, wenn es schlechter läuft, ist dann noch nicht bekannt.', 2)
@@ -1248,6 +1284,9 @@ SENFT_SEK = ('<section class="sek senft-sek"><div class="wrap senft-raster"><fig
              '.senft-zahl{display:flex;align-items:baseline;gap:.25em;margin:14px 0 6px;line-height:.9}.senft-zahl b{font-size:clamp(96px,13vw,200px);font-weight:800;letter-spacing:-.05em;color:var(--bronze-tief,#8F5B1D)}'
              '.senft-zahl span{font-size:clamp(28px,3vw,44px);font-weight:700;letter-spacing:-.02em}.senft-text h2{margin:0 0 12px;max-width:20ch;font-size:clamp(28px,2.8vw,42px);line-height:1.12}.senft-text h2::before{display:none}'
                           '@media (max-width:900px){.senft-raster{grid-template-columns:1fr}}</style>')
-m.nach('<section class="sek band auf-dunkel bento-sek ablauf-ani">', SENFT_SEK + erg_karten("Bewerbungen", ohne=("senftleben-team-2026",)))
+# Noah, 20.11.2026: „da wollen wir nicht unbedingt Meike drin haben … Klaß und Senftleben“ → Erwin Schmidt raus
+m.nach('<section class="sek band auf-dunkel bento-sek ablauf-ani">', SENFT_SEK + erg_karten("Bewerbungen", ohne=("senftleben-team-2026", "Erwin Schmidt")))
 m.vor('<section class="sek faq">', STIMMEN)
+# „Fragen, die fast jeder Betrieb vorher stellt … kannst du erst mal ausmachen“ (Noah, 20.11.2026)
+m.heraus('<section class="sek faq">')
 fertig(m, "mitarbeitergewinnung")
