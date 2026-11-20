@@ -385,7 +385,7 @@ import html as _html
 import json as _json
 
 NEU_V = "8"
-SEITENBILD_V = {"schillinger": 2}  # Porträt „Der Meister“ neu gesetzt (20.11.2026)
+SEITENBILD_V = {"schillinger": 3}  # Porträt „Der Meister“ neu gesetzt (20.11.2026)
 NEU_KOPF = f'<link rel="stylesheet" href="/static/seiten-neu.css?v={NEU_V}">'
 NEU_FUSS = f'<script src="/static/seiten-neu.js?v={NEU_V}" defer></script>'
 SIGNET = ('M0,39.667 L22,25 L22,91 L0,91 Z', 'M34,14.667 L56,0 L56,91 L34,91 L34,64.67 L27,68 L27,53.667 L34,49 Z',
