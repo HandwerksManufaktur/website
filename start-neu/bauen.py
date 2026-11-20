@@ -722,7 +722,7 @@ _teile[1] = _vorne(_teile[1], LB_NEU_1); _teile[2] = _vorne(_teile[2], LB_NEU_2)
 LB_FOLGE = [["Irlbacher Gebäudetechnik", "SD Hirsch", "Björn Schillinger", "Zimmerei Koller", "Dinkel Metallbau", "W&amp;W Bau",
              "Zimmerei Knappich", "Küchenhaus Hirschvogel", "Baustoffe Kirchner", "Wohner Elektrotechnik", "Baureize", "Resch Bau"],
             ["Planung Hindelang", "Dachbau Kraus", "Schwaighofer", "Erwin Schmidt &amp; Sohn", "Vogel Holzbau", "Maser Tankschutz",
-             "Schreinerei Kreitner", "Schuster Erisried", "Senftleben Haustechnik", "Juwelier Wagenknecht", "Mehr Lebensenergie", "Malermeister Müller"]]
+             "Schreinerei Kreitner", "Schuster Erisried", "Senftleben Haustechnik", "Juwelier Wagenknecht", "Weber Metallbau", "Malermeister Müller"]]
 
 
 def _lb_karten(zug):
@@ -739,6 +739,8 @@ _alle = {}
 _spannen = []
 for _i in (1, 2):
     _k, _sp = _lb_karten(_teile[_i]); _alle.update(_k); _spannen.append(_sp)
+_alle.pop("Mehr Lebensenergie")  # Inna Illenseer raus (Noah, 20.11.2026)
+_alle["Weber Metallbau"] = _lb_karte("Weber Metallbau", "Metallbau · Laser &amp; Blech", "https://weber-metalltechnik.com", "weber")
 assert sorted(_alle) == sorted(LB_FOLGE[0] + LB_FOLGE[1]), set(_alle) ^ set(LB_FOLGE[0] + LB_FOLGE[1])
 for _i, (_st, _en) in zip((1, 2), _spannen):
     _zug = "".join(_alle[n] for n in LB_FOLGE[_i - 1])
@@ -862,7 +864,7 @@ def wand_sek():
             'w.querySelectorAll("video[data-wand]").forEach(v=>vio.observe(v))})()</script>')
 
 
-s.nach('<section class="sek team-sek" id="team">', wand_sek())
+# s.nach('<section class="sek team-sek" id="team">', wand_sek())  — raus (Noah, 20.11.2026: „mach die sektion bei startseite einfach raus“)
 
 s.entwurf()
 s.schreibe(ZIEL / "index.html")
@@ -1099,7 +1101,14 @@ _FOLGE = [("Irlbacher Gebäudetechnik", "gross"), "SD Hirsch", "Björn Schilling
           "Planung Hindelang", "Dachbau Kraus", "Schwaighofer",
           ("Erwin Schmidt &amp; Sohn", "gross rechts"), "Vogel Holzbau", "Maser Tankschutz",
           "Schreinerei Kreitner", "Schuster Erisried", "Senftleben Haustechnik",
-          "Juwelier Wagenknecht", "Mehr Lebensenergie", "Malermeister Müller"]
+          "Juwelier Wagenknecht", "Weber Metallbau", "Malermeister Müller"]
+# Mehr Lebensenergie (Inna Illenseer) raus (Noah, 20.11.2026: „brauchst nicht … bei projekten … eher sogar raus“), dafür Weber
+# Metallbau (eigene Seite, live auf GitHub), damit die letzte Reihe voll bleibt. Film + Seitenbild vom 20.11.2026.
+_arts.append('<article class="projekt reveal"><div class="schirm"><video class="hero-lauf" muted loop playsinline preload="none" '
+             'data-src="/static/assets/vid/hero/hweber.webm" data-poster="/static/assets/vid/hero/hweber.jpg" width="640" height="400" '
+             'aria-label="Weber Metallbau — Startseite, wie sie live läuft"></video><img class="seite-bild" data-src="/static/assets/vid/hero/sweber.webp" '
+             'alt="" aria-hidden="true" loading="eager" decoding="async"></div><div class="unten"><small>Metallbau · Laser &amp; Blech</small><b>Weber Metallbau</b>'
+             '<div class="zeile"><img loading="lazy" src="/static/assets/img/logos/w/logo-weber-metallbau.webp" alt=""></div></div></article>')
 # Der zweite Irlbacher fällt weg; Malermeister Müller (bisher nur im Laufband) füllt den Platz, damit die letzte Reihe voll bleibt
 _arts.append('<article class="projekt reveal"><div class="schirm"><video class="hero-lauf" muted loop playsinline preload="none" '
              'data-src="/static/assets/vid/hero/hmueller.webm" data-poster="/static/assets/vid/hero/hmueller.jpg" width="640" height="400" '
@@ -1122,6 +1131,7 @@ def _karte(eintrag):
 _neu = [_karte(e) for e in _FOLGE]
 assert len(_neu) == 24 and sum(1 for e in _FOLGE if isinstance(e, tuple)) == 4
 assert len({re.search(r"<b>(.*?)</b>", x).group(1) for x in _neu}) == 24, "Betrieb doppelt im Raster"
+assert not any("Mehr Lebensenergie" in x or "Illenseer" in x for x in _neu)
 _ra = _sek.index(_arts[0][:60])
 _re = _sek.rindex("</article>") + len("</article>")
 _sek2 = _sek[:_ra] + "".join(_neu) + _sek[_re:]
