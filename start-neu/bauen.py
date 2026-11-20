@@ -630,7 +630,7 @@ s.ersetze('<p class="lead">Website, Fotos und Social-Media-Werbung für Handwerk
 # firma/website-shk/neu/video/szenen/*.mp4 (SHK-Seite selbst unverändert).
 s.h = s.h.replace('/static/assets/vid/saeule/baureize.jpg', '/static/assets/vid/saeule/kunden-shk.jpg?v=4')
 s.ersetze('data-src="/static/assets/vid/saeule/baureize-d.mp4" data-src-mobil="/static/assets/vid/saeule/baureize-m.mp4"',
-          'data-src="/static/assets/vid/saeule/kunden-shk-d.mp4?v=5" data-src-mobil="/static/assets/vid/saeule/kunden-shk-m.mp4?v=5"')  # v4 (19.11.2026): Bettina stehend und lächelnd (Kampagnen-Aufnahme Bodys (2) ab 2,4 s) statt im Lager an der Kiste, an Stelle 4 zwischen Benjamin Senftleben und Yannick Stimpfle (Noah: „nicht direkt nach Erwin Schmidt“)
+          'data-src="/static/assets/vid/saeule/kunden-shk-d.mp4?v=6" data-src-mobil="/static/assets/vid/saeule/kunden-shk-m.mp4?v=6"')  # v4 (19.11.2026): Bettina stehend und lächelnd (Kampagnen-Aufnahme Bodys (2) ab 2,4 s) statt im Lager an der Kiste, an Stelle 4 zwischen Benjamin Senftleben und Yannick Stimpfle (Noah: „nicht direkt nach Erwin Schmidt“)
 assert 'baureize' not in s.h.split('<div class="saeulen">', 1)[1].split('</div></div></div>', 1)[0]
 # Noah, 18.11.2026: „das Video soll schon das ganz ausfüllen, aber … nicht, dass der Kopf … abgeschnitten ist“ → in den
 # Originalen sitzt der Kopf ganz oben → weiter gefilmte Takes (start-neu/kunden_szenen_saeule.py), Beschriftung wieder oben.
@@ -906,6 +906,12 @@ def ablauf_animiert(slug, h2, texte):
         assert f"<h3>{titel}</h3>" in z, (slug, i)
         neu.append(z)
     html = "".join(neu)
+    if slug == "neukundengewinnung":
+        # Bettina (Fischer) mit „Du willst dein Bad schon sehen, bevor die erste Fliese fällt?“ statt Josef (Noah, 20.11.2026:
+        # „ist n guter clip … auch bei Unterseite Neukundengewinnung“), ab knapp vor ihrer Zeigegeste
+        alt_v = 'data-src="/static/assets/vid/josef.mp4" data-poster="/static/assets/vid/poster/josef.jpg"'
+        assert html.count(alt_v) == 1, html.count(alt_v)
+        html = html.replace(alt_v, 'data-src="/static/assets/vid/bettina-fliese.mp4" data-poster="/static/assets/vid/poster/bettina-fliese.jpg"')
     for alt, neu_t in GEWERKE_MISCHEN.get(slug, []):
         assert html.count(alt) == 1, (slug, alt)
         html = html.replace(alt, neu_t)
