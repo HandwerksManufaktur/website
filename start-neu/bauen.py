@@ -601,7 +601,7 @@ s = Seite(LIVE_START)
 s.ersetze('<h1><span class="w">Mehr Aufträge.</span> <span class="w">Mehr Bewerber.</span> <span class="w">Aus deinem Umkreis.</span></h1>',
           '<h1><span class="w">Dein Handwerk.</span> <span class="w">Unsere Baustelle.</span></h1>')  # Noah, 15.11.2026: „genau passend, ist perfekt“
 s.ersetze('<p class="lead">Website, Fotos und Social-Media-Werbung für Handwerksbetriebe.</p>',
-          '<p class="lead">Wir bauen deine Website und bringen dir qualifizierte Kunden<br class="dsk-br"> und Mitarbeiter aus deinem Umkreis.</p>')  # Noah, 18.11.2026: „und Mitarbeiter“ in die nächste Zeile
+          '<p class="lead">Wir bauen deine Website und bringen dir<br class="dsk-br"> qualifizierte Kunden und Mitarbeiter aus deinem Umkreis.</p>')  # Noah, 20.11.2026: „qualifizierte Kunden und Mitarbeiter aus deinem Umkreis.“ in die nächste Zeile (ersetzt 18.11.)
 # Aufbau wie shk…/start-neu/: Firma → drei Leistungen (einfache Karten) → Ergebnisse → Stimmen → Team → Kontakt.
 # Die drei Säulen in Logo-Form stehen schon im Hero und kommen hier nicht noch einmal (Noah, 14.11.2026);
 # Problem-Szenen, Google-Mechanik und Foto-Band stehen auf den Unterseiten.
