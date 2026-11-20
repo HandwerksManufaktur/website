@@ -224,3 +224,8 @@
 .projekt.gross .schirm.film video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:0 50%}
 .projekt.gross .schirm.film .seite-bild{display:none}
 @media (max-width:1000px){.projekt.gross .schirm.film{flex:none;aspect-ratio:16/11;min-height:0}}
+/* Breite Kachel über alle Spalten (Entenmann, 20.11.2026): Film 2:1 wie aufgenommen, am Handy 16:11 mit der Überschrift links im Bild */
+.projekt.breit{grid-column:1 / -1;display:flex;flex-direction:column}
+.projekt.breit .schirm.film{aspect-ratio:2/1}
+.projekt.breit .schirm.film video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:0 50%}
+@media (max-width:1000px){.projekt.breit .schirm.film{aspect-ratio:16/11}}

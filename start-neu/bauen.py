@@ -719,7 +719,7 @@ def _vorne(zug, neu):
 _teile[1] = _vorne(_teile[1], LB_NEU_1); _teile[2] = _vorne(_teile[2], LB_NEU_2)
 # Reihenfolge wie im Websites-Raster (Noah, 19.11.2026 abends: Wagenknecht „nicht ganz oben“, SD Hirsch, Schillinger, Koller,
 # Dinkel, W&W Bau weiter nach vorn). Obere Leiste = erste Hälfte des Rasters, untere = zweite.
-LB_FOLGE = [["Irlbacher Gebäudetechnik", "SD Hirsch", "Björn Schillinger", "Zimmerei Koller", "Dinkel Metallbau", "W&amp;W Bau",
+LB_FOLGE = [["Entenmann Haustechnik", "Irlbacher Gebäudetechnik", "SD Hirsch", "Björn Schillinger", "Zimmerei Koller", "Dinkel Metallbau", "W&amp;W Bau",
              "Zimmerei Knappich", "Küchenhaus Hirschvogel", "Baustoffe Kirchner", "Wohner Elektrotechnik", "Baureize", "Resch Bau"],
             ["Planung Hindelang", "Dachbau Kraus", "Schwaighofer", "Erwin Schmidt &amp; Sohn", "Vogel Holzbau", "Maser Tankschutz",
              "Schreinerei Kreitner", "Schuster Erisried", "Senftleben Haustechnik", "Juwelier Wagenknecht", "Weber Metallbau", "Malermeister Müller"]]
@@ -740,6 +740,8 @@ _spannen = []
 for _i in (1, 2):
     _k, _sp = _lb_karten(_teile[_i]); _alle.update(_k); _spannen.append(_sp)
 _alle.pop("Mehr Lebensenergie")  # Inna Illenseer raus (Noah, 20.11.2026)
+# Entenmann Haustechnik vorn (Noah, 20.11.2026: „als Referenz … kann auf jeden Fall gut präsent sein, auch bei den Projekten“)
+_alle["Entenmann Haustechnik"] = _lb_karte("Entenmann Haustechnik", "SHK · Heizung &amp; Wärmepumpe", "https://entenmann-haustechnik.de", "entenmann")
 _alle["Weber Metallbau"] = _lb_karte("Weber Metallbau", "Metallbau · Laser &amp; Blech", "https://weber-metalltechnik.com", "weber")
 assert sorted(_alle) == sorted(LB_FOLGE[0] + LB_FOLGE[1]), set(_alle) ^ set(LB_FOLGE[0] + LB_FOLGE[1])
 for _i, (_st, _en) in zip((1, 2), _spannen):
@@ -1138,11 +1140,19 @@ _neu = [_karte(e) for e in _FOLGE]
 assert len(_neu) == 24 and sum(1 for e in _FOLGE if isinstance(e, tuple)) == 4
 assert len({re.search(r"<b>(.*?)</b>", x).group(1) for x in _neu}) == 24, "Betrieb doppelt im Raster"
 assert not any("Mehr Lebensenergie" in x or "Illenseer" in x for x in _neu)
+# Entenmann Haustechnik als breite Kachel über die ganze Rasterbreite ganz oben (Noah, 20.11.2026: „gut präsent … auch bei den
+# Projekten“). Eine eigene Reihe, damit die 24 darunter voll bleiben (25 Kacheln gehen im Dreierraster nie auf).
+_ENTENMANN = ('<article class="projekt breit reveal"><div class="schirm film"><video class="hero-lauf" muted loop playsinline preload="none" '
+              'data-src="/static/assets/vid/hero/hentenmann-breit.webm" data-poster="/static/assets/vid/hero/hentenmann-breit.jpg" width="1280" height="640" '
+              'aria-label="Entenmann Haustechnik — Startseite, wie sie live läuft"></video></div><div class="unten"><small>SHK · Heizung, Bad &amp; Wärmepumpe</small>'
+              '<b>Entenmann Haustechnik</b><div class="zeile"><img loading="lazy" src="/static/assets/img/logos/logo-entenmann-haustechnik.png" alt=""></div></div></article>')
+_neu.insert(0, _ENTENMANN)
 _ra = _sek.index(_arts[0][:60])
 _re = _sek.rindex("</article>") + len("</article>")
 _sek2 = _sek[:_ra] + "".join(_neu) + _sek[_re:]
-assert _sek2.count("<b>Irlbacher Gebäudetechnik</b>") == 1 and _sek2.count('<article class="projekt') == 24
+assert _sek2.count("<b>Irlbacher Gebäudetechnik</b>") == 1 and _sek2.count('<article class="projekt') == 25
 w.h = w.h[:_a] + _sek2 + w.h[_e:]
+w.ersetze('Wischen für alle 24 Seiten', 'Wischen für alle 25 Seiten')
 w.ersetze('<p class="lead">Jede mit Fotos aus dem eigenen Betrieb, jede auf ihr Gewerk und ihren Umkreis gebaut. Fahr über eine Seite, dann scrollt sie durch.</p>',
           '<p class="lead">Alle live. Tipp eine an.</p>')
 # Durchgezogen (Noah, 19.11.2026: „jo und des ziehst du jetzt durch“): keine Problem-Kästen, keine Kundenfoto-Karten im Ablauf,
