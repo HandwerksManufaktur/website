@@ -8,12 +8,16 @@ Stumm, H.264 faststart, harte Schnitte, 8 bis 15 s Schleife. Foto & Video behäl
 Quellen:
   Entenmann-Headerfilm  kunden/entenmann/material/shooting-final/Entenmann Headervideo Website 4K.mp4 (Schnittgrenzen B wie in
                         kunden/entenmann/website/videos_schneiden.py)
+  Koller-Shooting       Extreme Pro  /2026/Deutschland/Shooting Koller/Kamera Videos/C23xx.MP4 (Sony, S-Log3-Cine → NS 06) und
+                        Drohe Shots/DJI_*.MP4 (Rec709 → GRADE)
+  Kreitner-Film         Extreme Pro  /2025/Kunden/Shooting Schreinerei Kreitner/Schreinerei Kreitner Video.mp4 (4K, schon gegradet)
   Websitefilme          static/assets/vid/*.mp4 und static/assets/fv/v/*.mp4 (schon im Repo)
   Noah am Laptop        Extreme Pro  /2025/Kapstadt, Südafrika/Kamera Videos/C1697.MP4 (Hände auf der Laptop-Tastatur, S-Log3)
                         Extreme Pro  /2026/Kuala Lumpur, Malaysia/Kamera Videos/C2246.MP4 (Noah im Café am Laptop, S-Log3, gespiegelt,
                         damit er rechts sitzt und die Überschrift links frei bleibt)
                         S-Log3-Quellen: NS 06 Filmprint (system/apps/lut-fabrik/ausgabe). Die 4K-Dateien vorher auf die Platte kopieren
-                        (QUELLEN=<ordner> mit C1697.MP4 und C2246.MP4), von der exFAT-Platte aus ist das Springen zu langsam.
+                        (QUELLEN=<ordner> mit Kopien gleichen Namens, z. B. C1697.MP4, C2362.MP4), von der exFAT-Platte aus ist das
+                        Springen zu langsam; was in QUELLEN fehlt, wird vom Originalpfad gelesen.
 
 Aufruf:  QUELLEN=<ordner> /Users/noahs/CEO-GPT/.venv/bin/python firma/website/start-neu/hero_unterseiten_schneiden.py [seite ...]
 """
@@ -26,6 +30,8 @@ VID = WURZEL / "static/assets/vid"
 FV = WURZEL / "static/assets/fv/v"
 QUELLEN = Path(os.environ.get("QUELLEN", "."))
 ENT = Path("/Users/noahs/CEO-GPT/kunden/entenmann/material/shooting-final/Entenmann Headervideo Website 4K.mp4")
+KOLLER = Path("/Volumes/Extreme Pro/2026/Deutschland/Shooting Koller")
+KREITNER = Path("/Volumes/Extreme Pro/2025/Kunden/Shooting Schreinerei Kreitner/Schreinerei Kreitner Video.mp4")
 LUT = "/Users/noahs/CEO-GPT/system/apps/lut-fabrik/ausgabe/NS 06 Filmprint A7IV SLog3.cube"
 # Rec709-Material ohne Look (flach, kalt, überbelichtet) an den warmen Filmlook der anderen Heros angleichen
 # (Noah, 21.11.2026: „colorgrading bei der unterseite neukundengewinnung ist noch trash“)
@@ -38,6 +44,16 @@ B = [0, 1.0677, 2.1355, 3.2032, 4.2376, 5.3053, 6.3397, 7.3740, 8.4084, 9.4428, 
 ENT_MX = {1: .50, 3: .46, 4: .60, 5: .60, 7: .55, 10: .35, 15: .60, 19: .75, 22: .55}
 
 
+def quelle(p):
+    """Kopie gleichen Namens in QUELLEN bevorzugen (exFAT-Platte ist zum Springen zu langsam)."""
+    k = QUELLEN / Path(p).name
+    return k if k.exists() else Path(p)
+
+
+def kol(name):
+    return KOLLER / ("Drohe Shots" if name.startswith("DJI") else "Kamera Videos") / name
+
+
 def ent(n):
     return (ENT, B[n - 1] + .05, B[n] - B[n - 1] - .10, ENT_MX[n], "")
 
@@ -46,15 +62,30 @@ def ent(n):
 SEITEN = {
     # Websites: Entenmann, das Vorzeigeprojekt (neun Einstellungen aus dem Headerfilm)
     "websites": [ent(n) for n in (4, 5, 7, 10, 19, 22, 15, 3, 1)],
-    # Neukundengewinnung: Fischer Bad Heizung Solar (Team am Transporter, Solardach von oben)
-    "neukundengewinnung": [(FV / "fi-team.mp4", .6, 6.2, .50, "grade"), (FV / "fi-drohne.mp4", .2, 3.6, .45, "grade")],
-    # Mitarbeitergewinnung: Resch Bau, Zimmerei Koller, Schreinerei Kreitner bei der Arbeit
-    "mitarbeitergewinnung": [(VID / "resch.mp4", 0.0, 2.9, .55, ""), (VID / "resch.mp4", 4.4, 3.7, .50, ""),
-                             (VID / "koller.mp4", 0.0, 2.0, .40, ""), (VID / "koller.mp4", 5.0, 1.8, .50, ""),
-                             (VID / "kreitner.mp4", 6.0, 2.5, .50, "")],
-    # Suchmaschinenoptimierung: Drohnenflüge über Betriebe (Baureize, Wohner, Koller, Fischer)
-    "suchmaschinenoptimierung": [(VID / "baureize.mp4", .9, 3.5, .50, "grade"), (FV / "g-wohner.mp4", .3, 3.5, .50, "grade"),
-                                 (VID / "koller.mp4", 3.0, 2.0, .45, "grade"), (FV / "fi-drohne.mp4", 4.1, 1.5, .50, "grade")],
+    # Neukundengewinnung (Noah, 21.11.2026: Fischer-Film „trash“, nur 960×540 hochskaliert, Drohne „nicht clean in einer Linie“
+    # → komplett ersetzt): Koller-Shooting 4K (S-Log3 → LUT, Drohne Rec709 → GRADE) + zwei Entenmann-Einstellungen, die auf
+    # /websites/ nicht laufen (Transporter vor dem Kundenhaus, Monteure an der Haustür)
+    "neukundengewinnung": [(kol("DJI_20260428175407_0005_D.MP4"), 19.5, 2.2, .52, "grade"),  # Drohne senkrecht, steht still, Transporter fahren aus dem Hof
+                           (kol("C2415.MP4"), 0.0, 1.2, .85, "lut"),     # Zimmerer steigt lachend in den Transporter
+                           (kol("C2416.MP4"), 1.6, 1.8, .32, "lut"),     # Transporter-Front mit Logo, Kamera gleitet (vor 1,5 s Bewegungsunschärfe)
+                           (kol("C2374.MP4"), 21.0, 2.0, .40, "lut"),    # Transporter fährt los, auf die Kamera zu
+                           (ENT, B[15] + .05, B[16] - B[15] - .10, .40, ""),   # Entenmann-Transporter vor dem Kundenhaus
+                           (ENT, B[20] + .05, B[21] - B[20] - .10, .50, "")],  # Monteure an der Haustür
+    # Mitarbeitergewinnung (Noah, 21.11.2026: „nicht einfach das von Resch, sondern da kannst du das von Koller nehmen“):
+    # Koller-Team im 4K-Original, S-Log3 über NS 06
+    "mitarbeitergewinnung": [(kol("C2362.MP4"), 2.5, 2.0, .50, "lut"),   # Team läuft vor den Transportern auf die Kamera zu
+                             (kol("C2367.MP4"), 0.0, 1.35, .45, "lut"),  # lachender Zimmerer
+                             (kol("C2412.MP4"), 1.4, 1.8, .58, "lut"),   # Säge mit Gehörschutz (C2384 Kreissäge raus: Kopf angeschnitten)
+                             (kol("C2371.MP4"), 0.3, 1.6, .50, "lut"),   # junger Zimmerer
+                             (kol("C2391.MP4"), 1.0, 1.6, .42, "lut"),   # Akkuschrauber am Balken
+                             (kol("C2409.MP4"), 3.0, 1.8, .55, "lut")],  # Stapler, winkt
+    # Suchmaschinenoptimierung (Noah, 21.11.2026: „nimmst du dann einfach das Video von dem, was bei Kreitner bei Foto und Video
+    # drin ist“): dieselben Motive wie static/assets/vid/kreitner.mp4, aber aus dem fertig gegradeten 4K-Film des Shootings
+    "suchmaschinenoptimierung": [(KREITNER, 0.3, 2.0, .50, ""),    # Flug durch die Werkstatt, Eingang
+                                 (KREITNER, 12.3, 2.0, .50, ""),   # Team mit Kundin, lachend
+                                 (KREITNER, 5.9, 1.8, .55, ""),    # Flug den Gang entlang, Schreiner läuft voraus
+                                 (KREITNER, 17.4, 2.0, .45, ""),   # Formatkreissäge
+                                 (KREITNER, 20.8, 1.8, .62, "")],  # zwei tragen eine Platte an die Maschine
     # Über uns: Noah am Laptop (Hände auf der Tastatur, Noah im Café)
     "ueber-uns": [(QUELLEN / "C1697.MP4", 2.0, 5.5, .50, "lut"), (QUELLEN / "C2246.MP4", 12.0, 5.0, .58, "lut,flip"),
                   (QUELLEN / "C1697.MP4", 10.5, 3.5, .50, "lut")],
@@ -88,7 +119,7 @@ def schneiden(seite):
     teile = SEITEN[seite]
     ein = []
     for datei, ab, dauer, _, _ in teile:
-        ein += ["-ss", f"{ab:.3f}", "-t", f"{dauer:.3f}", "-i", str(datei)]
+        ein += ["-ss", f"{ab:.3f}", "-t", f"{dauer:.3f}", "-i", str(quelle(datei))]
     gem = ["-an", "-c:v", "libx264", "-preset", "slow", "-pix_fmt", "yuv420p", "-movflags", "+faststart", "-g", "50"]
     ZIEL.mkdir(parents=True, exist_ok=True)
     ff(*ein, "-filter_complex", kette(teile, False), "-map", "[v]", *gem, "-crf", "28", "-maxrate", "2200k", "-bufsize", "4400k", str(ZIEL / f"{seite}-d.mp4"))
