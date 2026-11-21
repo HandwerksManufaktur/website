@@ -1547,12 +1547,14 @@ FOLGE_BLOECKE = "".join([
            "Zwei Monteure von Heizung-Sanitär Klaß vor dem Firmenwagen", "35", "Bewerbungen", "16 davon mit Erfahrung im Fach.", pos="70% 40%"),
     _folge(4, "Kirchner in Thaining am Ammersee", "Für die offene Stelle.", "/static/assets/fv/g/ki-team-1800.webp",
            "Das Team von Kirchner Thaining vor einem Container", "25", "Bewerbungen", "16 davon mit passendem Führerschein.", pos="50% 40%"),
-    _folge(5, "Planung Hindelang", "Ein Planer wird gesucht.", "", "Logo von Planung Hindelang",
-           lead="Die Anzeige lief auf Facebook und Instagram, mit eigener Bewerbungsseite.", logo="/static/assets/img/logos/w/logo-planung-hindelang.webp", dunkel=True),
-    _folge(6, "Autohaus Ressle", "Für die offene Stelle.", "", "Logo von Autohaus Ressle",
-           zahl="14", einheit="Bewerbungen", logo="/static/assets/img/logos/w/logo-autohaus-ressle.webp", dunkel=True),
-    _folge(7, "HAWE Engineering", "Für die offene Stelle.", "", "Logo von HAWE Engineering",
-           zahl="100+", einheit="Bewerbungen", lead="In nur vier Wochen.", logo="/static/assets/img/logos/w/logo-hawe-engineering.webp", dunkel=True),
+    # Fotos statt Logo (Noah, 21.11.2026: „bei planung hindelang nimmst einfach das bild von ihm … ohne creative“,
+    # „autohaus ressle hatten wir ja auch die bilder und hawe auch“) – Originale aus dem Drive des Kunden
+    _folge(5, "Planung Hindelang", "Ein Planer wird gesucht.", "/static/assets/img/_h1280/fall/hindelang-alex.webp",
+           "Alexander Hindelang, Inhaber von Planung Hindelang", lead="Die Anzeige lief auf Facebook und Instagram, mit eigener Bewerbungsseite.", pos="50% 30%"),
+    _folge(6, "Autohaus Ressle", "Für die offene Stelle.", "/static/assets/img/_h1280/fall/ressle-inhaberinnen.webp",
+           "Die Inhaberinnen von Autohaus Ressle vor ihren Fahrzeugen", zahl="14", einheit="Bewerbungen", pos="50% 50%"),
+    _folge(7, "HAWE Engineering", "Für die offene Stelle.", "/static/assets/img/_h1280/fall/hawe-inhaber.webp",
+           "Der Inhaber von HAWE Engineering am Arbeitsplatz", zahl="100+", einheit="Bewerbungen", lead="In nur vier Wochen.", pos="50% 45%"),
 ])
 # Senftleben groß (Noah, 18.11.2026: „in 18 [Tagen] Stelle besetzt … die kannst du auch groß machen … mit der Buchhaltung“), Zahlen wie SHK-Seite
 SENFT_SEK = ('<section class="sek senft-sek" id="ergebnisse"><div class="wrap senft-raster"><figure class="senft-bild reveal"><img src="/static/assets/img/_h1280/fall/senftleben-team.webp" '

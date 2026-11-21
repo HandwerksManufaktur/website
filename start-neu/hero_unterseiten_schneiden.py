@@ -32,6 +32,7 @@ QUELLEN = Path(os.environ.get("QUELLEN", "."))
 ENT = Path("/Users/noahs/CEO-GPT/kunden/entenmann/material/shooting-final/Entenmann Headervideo Website 4K.mp4")
 KOLLER = Path("/Volumes/Extreme Pro/2026/Deutschland/Shooting Koller")
 KREITNER = Path("/Volumes/Extreme Pro/2025/Kunden/Shooting Schreinerei Kreitner/Schreinerei Kreitner Video.mp4")
+BAUREIZE = Path("/Volumes/Extreme Pro/2025/Kunden/Shooting Baureize/Drone-Shots")
 LUT = "/Users/noahs/CEO-GPT/system/apps/lut-fabrik/ausgabe/NS 06 Filmprint A7IV SLog3.cube"
 # Rec709-Material ohne Look (flach, kalt, überbelichtet) an den warmen Filmlook der anderen Heros angleichen
 # (Noah, 21.11.2026: „colorgrading bei der unterseite neukundengewinnung ist noch trash“)
@@ -73,19 +74,27 @@ SEITEN = {
                            (ENT, B[20] + .05, B[21] - B[20] - .10, .50, "")],  # Monteure an der Haustür
     # Mitarbeitergewinnung (Noah, 21.11.2026: „nicht einfach das von Resch, sondern da kannst du das von Koller nehmen“):
     # Koller-Team im 4K-Original, S-Log3 über NS 06
-    "mitarbeitergewinnung": [(kol("C2362.MP4"), 2.5, 2.0, .50, "lut"),   # Team läuft vor den Transportern auf die Kamera zu
-                             (kol("C2367.MP4"), 0.0, 1.35, .45, "lut"),  # lachender Zimmerer
-                             (kol("C2412.MP4"), 1.4, 1.8, .58, "lut"),   # Säge mit Gehörschutz (C2384 Kreissäge raus: Kopf angeschnitten)
-                             (kol("C2371.MP4"), 0.3, 1.6, .50, "lut"),   # junger Zimmerer
-                             (kol("C2391.MP4"), 1.0, 1.6, .42, "lut"),   # Akkuschrauber am Balken
-                             (kol("C2409.MP4"), 3.0, 1.8, .55, "lut")],  # Stapler, winkt
+    # Noah, 21.11.2026: „kürzere zusammengeschnittene clips nimm einfach die was wir bei koller so auch drin hatten nur bisschen anders
+    # gecutted“ → 11 Szenen à ~1 s aus demselben Koller-Shooting, wechselnd nah/weit
+    "mitarbeitergewinnung": [(kol("C2362.MP4"), 2.7, 1.0, .50, "lut"),   # Team läuft vor den Transportern auf die Kamera zu
+                             (kol("C2367.MP4"), 0.1, 0.9, .45, "lut"),   # lachender Zimmerer
+                             (kol("C2390.MP4"), 1.0, 0.9, .50, "lut"),   # Hände reißen am Balken an
+                             (kol("C2412.MP4"), 1.6, 1.0, .58, "lut"),   # Säge mit Gehörschutz
+                             (kol("C2371.MP4"), 0.4, 0.9, .50, "lut"),   # junger Zimmerer
+                             (kol("C2379.MP4"), 1.5, 1.0, .50, "lut"),   # Zimmerer mit Balken
+                             (kol("C2391.MP4"), 1.2, 0.9, .42, "lut"),   # Akkuschrauber am Balken
+                             (kol("C2399.MP4"), 1.5, 1.0, .50, "lut"),   # Bohren
+                             (kol("C2363.MP4"), 1.0, 1.0, .50, "lut"),   # Team nah
+                             (kol("C2418.MP4"), 1.5, 0.9, .62, "lut"),   # Planung am Bildschirm
+                             (kol("C2409.MP4"), 3.4, 1.1, .55, "lut")],  # Stapler, Fahrer winkt
     # Suchmaschinenoptimierung (Noah, 21.11.2026: „nimmst du dann einfach das Video von dem, was bei Kreitner bei Foto und Video
     # drin ist“): dieselben Motive wie static/assets/vid/kreitner.mp4, aber aus dem fertig gegradeten 4K-Film des Shootings
-    "suchmaschinenoptimierung": [(KREITNER, 0.3, 2.0, .50, ""),    # Flug durch die Werkstatt, Eingang
-                                 (KREITNER, 12.3, 2.0, .50, ""),   # Team mit Kundin, lachend
-                                 (KREITNER, 5.9, 1.8, .55, ""),    # Flug den Gang entlang, Schreiner läuft voraus
-                                 (KREITNER, 17.4, 2.0, .45, ""),   # Formatkreissäge
-                                 (KREITNER, 20.8, 1.8, .62, "")],  # zwei tragen eine Platte an die Maschine
+    # Noah, 21.11.2026: „da kannst meinetwegen das gruppen-ding von kreitner nehmen … aber rest was anderes, nicht kreitner drohne“
+    # → Drohnenflüge über Betriebe (Koller über dem Ort, Baureize-Halle) in 4K, dazwischen die Kreitner-Gruppe
+    "suchmaschinenoptimierung": [(kol("DJI_20260428175516_0006_D.MP4"), 15.0, 2.4, .50, "grade"),   # Koller: Flug über den Ort
+                                 (BAUREIZE / "DJI_20251031155531_0013_D.MP4", 4.0, 2.4, .50, "grade"),  # Baureize: Halle, Drohne steigt
+                                 (KREITNER, 12.3, 2.2, .50, ""),                                      # Kreitner: Team mit Kundin, lachend
+                                 (BAUREIZE / "DJI_20251031155847_0019_D.MP4", 5.2, 2.4, .50, "grade")], # Baureize: Halle von der Wiese
     # Über uns: Noah am Laptop (Hände auf der Tastatur, Noah im Café)
     "ueber-uns": [(QUELLEN / "C1697.MP4", 2.0, 5.5, .50, "lut"), (QUELLEN / "C2246.MP4", 12.0, 5.0, .58, "lut,flip"),
                   (QUELLEN / "C1697.MP4", 10.5, 3.5, .50, "lut")],
