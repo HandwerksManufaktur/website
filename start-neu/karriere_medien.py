@@ -30,13 +30,14 @@ ORTE = [
 ]
 
 # Hero-Film: (Pfad, Start, Dauer); der Laptop-Film vom Kontakt-Hero als Anker „hier wird gearbeitet“
-FILM = [
-    (str(WURZEL / "static/assets/vid/hero-unter/kontakt-d.mp4"), 1.0, 3.2, False),
-    (f"{EP}/2025/Kapstadt, Südafrika/Linos Head/Videos/C1604.MP4", 2.6, 2.6, True),
-    (f"{EP}/2025/Singapur/Videos Sony A7IV/C0585.MP4", 5.4, 2.6, True),
-    (f"{EP}/2026/Da Nang, Vietnam/Kamera Videos/C2068.MP4", 28.8, 2.6, True),
+FILM = [  # Noah, 21.11.2026: Hout-Bay-Clip (C1921, Blick in die Kamera) raus, Globus-Dreher und Tippen auf der Tastatur rein
+    (str(WURZEL / "static/assets/vid/hero-unter/kontakt-d.mp4"), 1.0, 3.0, False),                         # Laptop in KL
+    (f"{EP}/2025/Kapstadt, Südafrika/Kamera Videos/C1693.MP4", 35.1, 2.4, True),                         # Tippen auf der Tastatur
+    (f"{EP}/2025/Kapstadt, Südafrika/Kamera Videos/C1536.MP4", 0.6, 2.6, True),                          # Globus drehen (★)
+    (f"{EP}/2025/Kapstadt, Südafrika/Linos Head/Videos/C1604.MP4", 2.6, 2.4, True),
+    (f"{EP}/2025/Singapur/Videos Sony A7IV/C0585.MP4", 5.4, 2.4, True),
+    (f"{EP}/2026/Da Nang, Vietnam/Kamera Videos/C2068.MP4", 28.8, 2.4, True),
     (f"{EP}/2026/Kuala Lumpur, Malaysia/Kamera Videos/C2223.MP4", 5.0, 2.6, True),
-    (f"{EP}/2025/Kapstadt, Südafrika/Kamera Videos/C1921.MP4", 3.0, 2.6, True),
 ]
 
 
@@ -68,7 +69,7 @@ def film():
         graph = (f"[0:v]scale=-2:1280:flags=bicubic{farbe},fps=25,format=yuv420p,split=2[a][b];"
                  "[a]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080[d];"
                  "[b]crop=720:1280[m]")
-        ff("-hwaccel", "videotoolbox", "-ss", str(start), "-t", str(dauer), "-i", pfad, "-an", "-filter_complex", graph,
+        ff("-ss", str(start), "-t", str(dauer), "-i", pfad, "-an", "-filter_complex", graph,
            "-map", "[d]", "-c:v", "libx264", "-preset", "medium", "-crf", "18", str(VID / f"_teil{i}d.mp4"),
            "-map", "[m]", "-c:v", "libx264", "-preset", "medium", "-crf", "18", str(VID / f"_teil{i}m.mp4"))
         print("  Szene", i, flush=True)
@@ -78,7 +79,7 @@ def film():
         liste.write_text("".join(f"file '_teil{i}{art}.mp4'\n" for i in teile))
         ff("-f", "concat", "-safe", "0", "-i", str(liste), "-c:v", "libx264", "-preset", "slow", "-crf", crf,
            "-movflags", "+faststart", "-pix_fmt", "yuv420p", str(VID / f"hero-{art}.mp4"))
-        ff("-ss", "4.2", "-i", str(VID / f"hero-{art}.mp4"), "-frames:v", "1", "-q:v", "4", str(VID / f"hero-{art}.jpg"))
+        ff("-ss", "1.5", "-i", str(VID / f"hero-{art}.mp4"), "-frames:v", "1", "-q:v", "4", str(VID / f"hero-{art}.jpg"))
     for f in VID.glob("_*"):
         f.unlink()
     print("✓ Film", [(f.name, f.stat().st_size // 1024) for f in sorted(VID.iterdir())])
@@ -86,7 +87,7 @@ def film():
 
 # Handy-Fassung aus dem Desktop-Film: je Szene ein eigener Ausschnitt, damit Noah im Bild bleibt (Mitte schnitt ihn in
 # Singapur und Da Nang ab). (Dauer, Bildmitte horizontal 0–1) in der Reihenfolge von FILM.
-HANDY_MITTE = [0.56, 0.5, 0.75, 0.76, 0.42, 0.66]
+HANDY_MITTE = [0.56, 0.5, 0.52, 0.5, 0.75, 0.76, 0.42]
 
 
 def handy():
@@ -103,7 +104,7 @@ def handy():
         (Path(tmp) / "l.txt").write_text("".join(liste))
         ff("-f", "concat", "-safe", "0", "-i", str(Path(tmp) / "l.txt"), "-c:v", "libx264", "-preset", "slow", "-crf", "27",
            "-movflags", "+faststart", "-pix_fmt", "yuv420p", str(VID / "hero-m.mp4"))
-    ff("-ss", "4.2", "-i", str(VID / "hero-m.mp4"), "-frames:v", "1", "-q:v", "4", str(VID / "hero-m.jpg"))
+    ff("-ss", "1.5", "-i", str(VID / "hero-m.mp4"), "-frames:v", "1", "-q:v", "4", str(VID / "hero-m.jpg"))
     print("✓ Handy-Film", (VID / "hero-m.mp4").stat().st_size // 1024, "KB")
 
 
