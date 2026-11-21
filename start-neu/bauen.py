@@ -668,9 +668,9 @@ s.h = s.h.replace('</head>', '<style>.saeule:nth-child(3) video{object-position:
 s.h = s.h.replace('/static/assets/vid/saeule/kreitner.jpg', '/static/assets/vid/saeule/details.jpg?v=3')
 s.ersetze('data-src="/static/assets/vid/saeule/kreitner-d.mp4" data-src-mobil="/static/assets/vid/saeule/kreitner-m.mp4"',
           'data-src="/static/assets/vid/saeule/details-d.mp4?v=3" data-src-mobil="/static/assets/vid/saeule/details-m.mp4?v=3"')
-s.h = s.h.replace('/static/assets/vid/saeule/hero-loop.jpg', '/static/assets/vid/saeule/drohnen.jpg?v=5')
+s.h = s.h.replace('/static/assets/vid/saeule/hero-loop.jpg', '/static/assets/vid/saeule/drohnen.jpg?v=6')
 s.ersetze('data-src="/static/assets/vid/saeule/hero-loop-d.mp4" data-src-mobil="/static/assets/vid/saeule/hero-loop-m.mp4"',
-          'data-src="/static/assets/vid/saeule/drohnen-d.mp4?v=5" data-src-mobil="/static/assets/vid/saeule/drohnen-m.mp4?v=5"')
+          'data-src="/static/assets/vid/saeule/drohnen-d.mp4?v=6" data-src-mobil="/static/assets/vid/saeule/drohnen-m.mp4?v=6"')
 s.heraus('<section class="sek system-sek" id="system"')
 s.heraus('<section class="sek grund lagen-sek probleme pb-sek">')
 s.heraus('<section class="sek google grund">')
