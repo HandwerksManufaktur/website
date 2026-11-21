@@ -180,7 +180,7 @@ def main_html():
                  '</div></div></section>')
     wen = ('<section class="sek kr-wen-sek"><div class="wrap"><div class="duo"><div class="text reveal"><span class="kicker">Wen wir suchen</span>'
            '<h2>Leute, die richtig gut sein wollen.</h2>'
-           '<p class="lead">Erfahrung ist schön, aber kein Muss. Was du mitbringen musst, ist Leistungsbereitschaft.</p>'
+           '<p class="lead">Erfahrung ist schön, aber kein Muss.<br>Wichtiger ist, dass du Bock hast und dranbleibst.<br>Was du mitbringen musst, ist Leistungsbereitschaft.</p>'
            + liste(["Du bist bereit, mehr zu arbeiten als in einem normalen Job.", "Du gibst Vollgas, auch wenn’s mal zäh wird.", "Du übernimmst Verantwortung für deine Ergebnisse.",
                     "Du hast Bock auf ein Team, das sich gegenseitig pusht."]) +
            f'<div class="knopfzeile"><a class="btn btn-bronze" href="#stellen">Offene Stellen ansehen {PFEIL}</a></div></div>'
