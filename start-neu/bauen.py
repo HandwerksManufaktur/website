@@ -1354,7 +1354,7 @@ WU_SEK = ('<section class="sek band auf-dunkel bento-sek ablauf-web"><div class=
           f'<div class="bento">{"".join(_web_zellen)}</div></div></section>'
           '<style>@media (min-width:901px){.ablauf-web .bento{grid-template-columns:repeat(9,minmax(0,1fr))}'
           '.ablauf-web .web-fotos{grid-column:1/span 3;grid-row:1/span 2;min-height:0}'
-          '.ablauf-web .web-fotos .handys-k{left:0;right:0;top:clamp(40px,4vw,64px);justify-content:center;gap:0}''.ablauf-web .web-fotos .handys-k img{width:clamp(170px,15.5vw,228px)}.ablauf-web .web-fotos .handys-k img+img{margin-left:-96px}'
+          '.ablauf-web .web-fotos .handys-k{left:0;right:0;top:clamp(40px,4vw,64px);justify-content:center;gap:0}''.ablauf-web .web-fotos .handys-k img{width:clamp(170px,15.5vw,228px)}.ablauf-web .web-fotos .handys-k img+img{margin-left:-96px}.ablauf-web .web-fotos .handys-k img:first-child{position:relative;z-index:2}'  # Monteur vorn, sein Kopf bleibt frei
           '.ablauf-web .web-seiten{grid-column:4/span 6;grid-row:1}'
           '.ablauf-web .z-klein{grid-column:span 2;grid-row:2;min-height:260px}'
           '.ablauf-web .web-zwei{display:grid;grid-template-columns:1fr 1fr;gap:12px}.ablauf-web .web-zwei .tickets{margin:8px 0 22px}'
