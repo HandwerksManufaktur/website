@@ -1213,6 +1213,11 @@ def _logo_mass(datei):
     return round(b), round(h)
 
 
+def _vq(datei):
+    # Versionsnummer aus der Dateizeit, damit der Browser nach einer Neuaufnahme nie das alte Video zeigt (21.11.2026)
+    return f"?v={int((WURZEL / 'static/assets/vid/raster' / datei).stat().st_mtime)}"
+
+
 def _raster_karte(name, k, form, logo, satz):
     assert len(satz) <= 45 and "·" not in satz, (name, len(satz))  # kurz, sonst drückt der Satz die Kachel hoch (Noah, 21.11.2026)
     fw, fh = _FILM[form]
@@ -1225,11 +1230,11 @@ def _raster_karte(name, k, form, logo, satz):
     assert (WURZEL / f"static/assets/vid/raster/s{k}.webp").exists(), k
     lb, lh = _logo_mass(logo)
     return (f'<article class="projekt{" " + form if form else ""} reveal" data-k="{k}"><div class="schirm ra{film}">'
-            f'<video class="hero-lauf" muted loop playsinline preload="none" data-src="{_V}/h{k}{q}.webm" data-poster="{_V}/h{k}{q}.jpg" '
-            + (f'data-src-mobil="{_V}/h{k}.webm" ' if q else "")
+            f'<video class="hero-lauf" muted loop playsinline preload="none" data-src="{_V}/h{k}{q}.webm{_vq(f'h{k}{q}.webm')}" data-poster="{_V}/h{k}{q}.jpg{_vq(f'h{k}{q}.jpg')}" '
+            + (f'data-src-mobil="{_V}/h{k}.webm{_vq(f"h{k}.webm")}" ' if q else "")
             + f'width="{fw}" height="{fh}" aria-label="{name} — Startseite, wie sie live läuft"></video>'
-            f'<img class="ra-seite" data-src="{_V}/s{k}.webp" alt="" aria-hidden="true" decoding="async">'
-            + (f'<img class="ra-alt" data-src="{_V}/v{k}.webp" alt="Die alte Website von {name}" decoding="async">'
+            f'<img class="ra-seite" data-src="{_V}/s{k}.webp{_vq(f's{k}.webp')}" alt="" aria-hidden="true" decoding="async">'
+            + (f'<img class="ra-alt" data-src="{_V}/v{k}.webp{_vq(f'v{k}.webp')}" alt="Die alte Website von {name}" decoding="async">'
                f'<button class="ra-vorher" type="button" aria-pressed="false" aria-label="Alte Website von {name} zeigen">Vorher</button>' if vorher else "")
             # Logo rechts neben dem ganzen Text (Noah, 21.11.2026: „das logo kann doch einfach da rechts neben den text da jeweils“)
             + f'</div><div class="unten"><div class="ra-text"><small>{KATEGORIE[name]}</small><b>{name}</b><p class="ra-satz">{satz}</p></div>'
