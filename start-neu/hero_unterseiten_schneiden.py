@@ -27,6 +27,10 @@ FV = WURZEL / "static/assets/fv/v"
 QUELLEN = Path(os.environ.get("QUELLEN", "."))
 ENT = Path("/Users/noahs/CEO-GPT/kunden/entenmann/material/shooting-final/Entenmann Headervideo Website 4K.mp4")
 LUT = "/Users/noahs/CEO-GPT/system/apps/lut-fabrik/ausgabe/NS 06 Filmprint A7IV SLog3.cube"
+# Rec709-Material ohne Look (flach, kalt, überbelichtet) an den warmen Filmlook der anderen Heros angleichen
+# (Noah, 21.11.2026: „colorgrading bei der unterseite neukundengewinnung ist noch trash“)
+GRADE = ("curves=all='0/0.025 0.25/0.19 0.5/0.48 0.75/0.79 1/0.93',"
+         "colorbalance=rs=-0.07:bs=0.06:rm=0.03:bm=-0.03:rh=0.07:gh=0.02:bh=-0.07,eq=saturation=1.06,vignette=PI/5")
 
 B = [0, 1.0677, 2.1355, 3.2032, 4.2376, 5.3053, 6.3397, 7.3740, 8.4084, 9.4428, 10.5105, 11.5449, 12.5792, 13.6136,
      14.6480, 15.6823, 16.7167, 17.7844, 18.8522, 19.8532, 20.9209, 21.9886, 23.0230, 24.0574, 25.0584, 26.0927,
@@ -38,19 +42,19 @@ def ent(n):
     return (ENT, B[n - 1] + .05, B[n] - B[n - 1] - .10, ENT_MX[n], "")
 
 
-# (Datei, Start s, Länge s, Mitte x des Handy-Ausschnitts 0–1 (nach dem Spiegeln), Zusatz: "lut" | "lut,flip" | "")
+# (Datei, Start s, Länge s, Mitte x des Handy-Ausschnitts 0–1 (nach dem Spiegeln), Zusatz: "lut" | "lut,flip" | "grade" | "")
 SEITEN = {
     # Websites: Entenmann, das Vorzeigeprojekt (neun Einstellungen aus dem Headerfilm)
     "websites": [ent(n) for n in (4, 5, 7, 10, 19, 22, 15, 3, 1)],
     # Neukundengewinnung: Fischer Bad Heizung Solar (Team am Transporter, Solardach von oben)
-    "neukundengewinnung": [(FV / "fi-team.mp4", .6, 6.2, .50, ""), (FV / "fi-drohne.mp4", .2, 3.6, .45, "")],
+    "neukundengewinnung": [(FV / "fi-team.mp4", .6, 6.2, .50, "grade"), (FV / "fi-drohne.mp4", .2, 3.6, .45, "grade")],
     # Mitarbeitergewinnung: Resch Bau, Zimmerei Koller, Schreinerei Kreitner bei der Arbeit
     "mitarbeitergewinnung": [(VID / "resch.mp4", 0.0, 2.9, .55, ""), (VID / "resch.mp4", 4.4, 3.7, .50, ""),
                              (VID / "koller.mp4", 0.0, 2.0, .40, ""), (VID / "koller.mp4", 5.0, 1.8, .50, ""),
                              (VID / "kreitner.mp4", 6.0, 2.5, .50, "")],
     # Suchmaschinenoptimierung: Drohnenflüge über Betriebe (Baureize, Wohner, Koller, Fischer)
-    "suchmaschinenoptimierung": [(VID / "baureize.mp4", .9, 3.5, .50, ""), (FV / "g-wohner.mp4", .3, 3.5, .50, ""),
-                                 (VID / "koller.mp4", 3.0, 2.0, .45, ""), (FV / "fi-drohne.mp4", 4.1, 1.5, .50, "")],
+    "suchmaschinenoptimierung": [(VID / "baureize.mp4", .9, 3.5, .50, "grade"), (FV / "g-wohner.mp4", .3, 3.5, .50, "grade"),
+                                 (VID / "koller.mp4", 3.0, 2.0, .45, "grade"), (FV / "fi-drohne.mp4", 4.1, 1.5, .50, "grade")],
     # Über uns: Noah am Laptop (Hände auf der Tastatur, Noah im Café)
     "ueber-uns": [(QUELLEN / "C1697.MP4", 2.0, 5.5, .50, "lut"), (QUELLEN / "C2246.MP4", 12.0, 5.0, .58, "lut,flip"),
                   (QUELLEN / "C1697.MP4", 10.5, 3.5, .50, "lut")],
@@ -69,6 +73,8 @@ def kette(teile, mobil):
         v = f"[{i}:v]setpts=PTS-STARTPTS,scale=1920:1080:flags=lanczos"
         if "lut" in extra:
             v += f",lut3d='{LUT}'"
+        if "grade" in extra:
+            v += "," + GRADE
         if "flip" in extra:
             v += ",hflip"
         if mobil:

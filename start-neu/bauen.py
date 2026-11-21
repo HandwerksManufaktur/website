@@ -523,9 +523,11 @@ def hero_neu(seite, slug, buehne, takt=None):
 def hero_unter(seite):
     """Ein eigener Film je Unterseite über die volle Breite (Noah, 21.11.2026), geschnitten von hero_unterseiten_schneiden.py."""
     d = f"{VID}/hero-unter"
+    # Versionsnummer aus der Dateizeit: nach neuem Schnitt/Grading zeigt kein Browser den alten Film (21.11.2026)
+    v = lambda n: f"{d}/{n}?v={int((WURZEL / 'static/assets/vid/hero-unter' / n).stat().st_mtime)}"
     return (f'<div class="hk-film" aria-hidden="true"><div class="hk-lage an hk-einzel">'
-            f'<video class="hk-desk" muted loop playsinline preload="none" data-hand data-src="{d}/{seite}-d.mp4" poster="{d}/{seite}.jpg"></video>'
-            f'<video class="hk-mobil" muted loop playsinline preload="none" data-hand data-src="{d}/{seite}-m.mp4" poster="{d}/{seite}-m.jpg"></video>'
+            f'<video class="hk-desk" muted loop playsinline preload="none" data-hand data-src="{v(seite + "-d.mp4")}" poster="{v(seite + ".jpg")}"></video>'
+            f'<video class="hk-mobil" muted loop playsinline preload="none" data-hand data-src="{v(seite + "-m.mp4")}" poster="{v(seite + "-m.jpg")}"></video>'
             '</div></div>', None)
 
 
@@ -1220,6 +1222,8 @@ def _vq(datei):
 
 
 def _raster_karte(name, k, form, logo, satz):
+    # Farblogo ohne schwarzen Kasten (Noah, 21.11.2026: „logo da noch bisschen größer der firmen - und in farbe, ohne schwarzen hintergrund“)
+    logo = f"farbe/{k}.png"
     assert len(satz) <= 45 and "·" not in satz, (name, len(satz))  # kurz, sonst drückt der Satz die Kachel hoch (Noah, 21.11.2026)
     fw, fh = _FILM[form]
     film = " film" if form in ("gross", "gross rechts", "breit", "zwei") else ""
@@ -1229,7 +1233,13 @@ def _raster_karte(name, k, form, logo, satz):
     for x in ("webm", "jpg"):
         assert (WURZEL / f"static/assets/vid/raster/h{k}{q}.{x}").exists() and (WURZEL / f"static/assets/vid/raster/h{k}.{x}").exists(), (k, x)
     assert (WURZEL / f"static/assets/vid/raster/s{k}.webp").exists(), k
-    lb, lh = _logo_mass(logo)
+    from PIL import Image as _Im
+    _w, _h = _Im.open(WURZEL / ("static/assets/img/logos/" + logo)).size
+    _r = _w / _h
+    lh = max(44, min(80, (10500 / _r) ** .5)); lb = lh * _r  # größer (Noah, 21.11.2026: „logo da noch bisschen größer“)
+    if lb > 200:
+        lb = 200; lh = lb / _r
+    lb, lh = round(lb), round(lh)
     return (f'<article class="projekt{" " + form if form else ""} reveal" data-k="{k}"><div class="schirm ra{film}">'
             f'<video class="hero-lauf" muted loop playsinline preload="none" data-src="{_V}/h{k}{q}.webm{_vq(f'h{k}{q}.webm')}" data-poster="{_V}/h{k}{q}.jpg{_vq(f'h{k}{q}.jpg')}" '
             + (f'data-src-mobil="{_V}/h{k}.webm{_vq(f"h{k}.webm")}" ' if q else "")
@@ -1238,8 +1248,8 @@ def _raster_karte(name, k, form, logo, satz):
             + (f'<img class="ra-alt" data-src="{_V}/v{k}.webp{_vq(f'v{k}.webp')}" alt="Die alte Website von {name}" decoding="async">'
                f'<button class="ra-vorher" type="button" aria-pressed="false" aria-label="Alte Website von {name} zeigen">Vorher</button>' if vorher else "")
             # Logo rechts neben dem ganzen Text (Noah, 21.11.2026: „das logo kann doch einfach da rechts neben den text da jeweils“)
-            + f'</div><div class="unten"><div class="ra-text"><small>{KATEGORIE[name]}</small><b>{name}</b><p class="ra-satz">{satz}</p></div>'
-            f'<span class="ra-logo"><img loading="lazy" src="{_LG}{logo}" alt="Logo {name}" width="{lb}" height="{lh}" style="width:{lb}px;height:{lh}px"></span></div></article>')
+            + f'</div><div class="unten" style="--lb:{lb}px;--lh:{lh}px"><div class="ra-text"><small>{KATEGORIE[name]}</small><b>{name}</b><p class="ra-satz">{satz}</p></div>'
+            f'<span class="ra-logo"><img loading="lazy" src="{_LG}{logo}" alt="Logo {name}" width="{lb}" height="{lh}"></span></div></article>')
 
 
 _namen_quelle = {re.search(r"<b>(.*?)</b>", x).group(1) for x in _arts}
@@ -1282,6 +1292,16 @@ RASTER_STIL = (
     '#arbeiten .ra-logo{height:48px}#arbeiten .ra-satz{font-size:15px}}'
     # doppelt breite Kachel: Film genau so hoch wie der Film der Nachbarkachel (16:10 einer Spalte), sonst steht ihr Name tiefer (Design-Tor A)
     '@media (min-width:1001px){#arbeiten .projekte .projekt.zwei .schirm.film{flex:none;aspect-ratio:auto;min-height:0;height:calc((100cqw - 2 * var(--gap)) / 3 * 10 / 16)}}'
+    # Farblogo frei auf der Karte, kein schwarzer Kasten; Breite schrumpft mit schmaler Kachel (30cqi), Design-Tor G hält Name und Branche einzeilig
+    '#arbeiten .projekt .unten .ra-logo{background:none!important;padding:0!important;height:auto!important;min-width:0!important;border-radius:0!important;box-shadow:none!important}'
+    # Raster der Fußzeile: Branche und Name links (immer volle Breite), Logo rechts daneben bis zu seiner Größe, Satz darunter
+    # (schmale Kachel: Satz über die volle Breite). Das Logo schrumpft, nie der Name.
+    '#arbeiten .projekt .unten{display:grid!important;grid-template-columns:minmax(max-content,1fr) minmax(0,min(var(--lb),40cqi))!important;grid-template-areas:"k l" "n l" "s l";column-gap:clamp(12px,3cqi,22px);row-gap:6px;align-items:start}'
+    '#arbeiten .projekt .unten .ra-text{display:contents}'
+    '#arbeiten .projekt .unten .ra-text small{grid-area:k}#arbeiten .projekt .unten .ra-text b{grid-area:n}#arbeiten .projekt .unten .ra-satz{grid-area:s;width:0;min-width:100%}'
+    '#arbeiten .projekt .unten .ra-logo{grid-area:l;align-self:center;justify-self:stretch;display:flex;justify-content:flex-end;min-width:0!important}'
+    '#arbeiten .projekt .unten .ra-logo img{width:100%!important;max-width:var(--lb)!important;height:auto!important;max-height:var(--lh)!important;object-fit:contain;object-position:right center}'
+    '@container (max-width:460px){#arbeiten .projekt .unten{grid-template-areas:"k l" "n l" "s s"}#arbeiten .projekt .unten .ra-logo img{max-height:min(var(--lh),42px)!important}}'
     '</style>')
 RASTER_JS = (
     '<script>(()=>{const sek=document.getElementById("arbeiten");if(!sek)return;'
