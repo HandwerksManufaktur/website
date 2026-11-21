@@ -30,6 +30,8 @@ VID = WURZEL / "static/assets/vid"
 FV = WURZEL / "static/assets/fv/v"
 QUELLEN = Path(os.environ.get("QUELLEN", "."))
 ENT = Path("/Users/noahs/CEO-GPT/kunden/entenmann/material/shooting-final/Entenmann Headervideo Website 4K.mp4")
+CSFILM = Path("/Volumes/Extreme Pro/2025/Kunden/Shooting CS Metalldesign/CS Metalldesign.mp4")
+BAUREIZEFILM = Path("/Volumes/Extreme Pro/2025/Kunden/Shooting Baureize/Baureize original.mp4")
 KAPSTADT = Path("/Volumes/Extreme Pro/2025/Kapstadt, Südafrika/Kamera Videos")
 KOLLER = Path("/Volumes/Extreme Pro/2026/Deutschland/Shooting Koller")
 KREITNER = Path("/Volumes/Extreme Pro/2025/Kunden/Shooting Schreinerei Kreitner/Schreinerei Kreitner Video.mp4")
@@ -80,7 +82,7 @@ SEITEN = {
     "mitarbeitergewinnung": [(kol("C2362.MP4"), 2.4, 1.0, .50, "lut"),   # Team läuft auf die Kamera zu
                              # (Noah, 21.11.2026 abends: „zweiter und dritter clip muss da raus“ → Säge 1,4 s + lachender Zimmerer raus)
                              (kol("C2391.MP4"), 1.2, 1.0, .42, "lut"),   # Akkuschrauber am Balken
-                             (kol("C2362.MP4"), 4.3, 1.0, .50, "lut"),   # Team, näher
+                             # (Noah, 21.11.2026: „nicht zwei clips wo sie hinlaufen bei koller, unnötig“ → zweite Team-Szene raus)
                              (kol("C2412.MP4"), 2.6, 0.9, .58, "lut"),   # Säge, zweiter Moment
                              (kol("C2391.MP4"), 4.6, 0.9, .42, "lut"),   # Akkuschrauber, zweiter Moment
                              (kol("C2409.MP4"), 3.4, 1.2, .55, "lut")],  # Stapler, Fahrer winkt
@@ -90,7 +92,14 @@ SEITEN = {
     # → Drohnenflüge über Betriebe (Koller über dem Ort, Baureize-Halle) in 4K, dazwischen die Kreitner-Gruppe
     # Noah, 21.11.2026 abends: „bei seo nimm die schlechten videos raus“ → graue Drohnenflüge (Koller-Ort, Baureize-Halle) raus,
     # nur die freigegebene Kreitner-Gruppe bleibt
-    "suchmaschinenoptimierung": [(KREITNER, 12.1, 3.4, .50, "")],   # Kreitner: Team mit Kundin, lachend
+    # Noah, 21.11.2026: „nicht nur kreitner … wo sind die guten clips cs metalldesign … bei baureize mit dem laser … und paar andere gut“
+    # → die im Showreel freigegebenen Stellen aus den 4K-Originalfilmen (CS Metalldesign.mp4, Baureize original.mp4), schon gegradet
+    "suchmaschinenoptimierung": [(CSFILM, 2.04, 1.6, .55, ""),        # CS: Schweißen, rote Handschuhe
+                                 (BAUREIZEFILM, 20.67, 1.6, .55, ""),  # Baureize: grüner Linienlaser
+                                 (KREITNER, 12.1, 2.4, .50, ""),       # Kreitner: Team mit Kundin, lachend
+                                 (CSFILM, 9.96, 1.9, .50, ""),         # CS: Schleifer lacht
+                                 (BAUREIZEFILM, 12.67, 1.9, .50, ""),  # Baureize: Wolfgang an der Formatkreissäge
+                                 (CSFILM, 5.97, 1.5, .45, "")],        # CS: Schweißen mit Maske
     # Über uns: Noah am Laptop, nur die Hände auf der Tastatur (Kapstadt C1697).
     # Noah, 21.11.2026: „mach bei über uns das video von mir in singapur raus“ → Café-Szene C2246 raus, auch bei Kontakt
     "ueber-uns": [(KAPSTADT / "C1697.MP4", 2.0, 5.5, .50, "lut"), (KAPSTADT / "C1697.MP4", 10.5, 3.5, .50, "lut")],

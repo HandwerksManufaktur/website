@@ -1134,7 +1134,9 @@ FASSUNG = {
                  ('<h2>So sehen unsere Seiten aus.</h2>', '<h2>Bezugsfertig.</h2>')],
     "suchmaschinenoptimierung": [('<h1>Dein nächster Kunde googelt gerade.</h1>', '<h1>Ganz oben ist dein Platz.</h1>'),
                  ('<h2>Den Weg nach vorn übernehmen wir.</h2>', '<h2>Vom ersten Suchwort bis Seite 1.</h2>'),
-                 ('<h2>{SEITE1} Kundenseiten stehen auf Seite 1.</h2>', '<h2>{SEITE1}-mal Richtfest.</h2><p class="lead">{SEITE1} Kundenseiten stehen bei Google auf Seite 1.</p>')],
+                 ('<h2>{SEITE1} Kundenseiten stehen auf Seite 1.</h2>', '<h2>{SEITE1}-mal Richtfest.</h2>'),
+                 # Noah, 21.11.2026: „zu viel erklärung“ → Satz „Stand 19. Oktober …“ raus, die Zahlen-Kacheln darunter sagen es
+                 ('<p class="lead">Stand 19. Oktober 2026: Wir haben jede Kundenseite mit dem Wort gesucht, das ein Kunde im Umkreis eintippt. Ohne Anmeldung, Anzeigen zählen nicht mit.</p>', '')],
     "foto-video": [('<h1>Fotos, auf denen man deinen Betrieb wiedererkennt.</h1>', '<h1>Wir setzen dein Handwerk ins Licht.</h1>'),
                  ('<h2>Den Drehtag übernehmen wir.</h2>', '<h2>Vom ersten Bild bis zum fertigen Film.</h2>')],
     "neukundengewinnung": [('<h1>Die Aufträge, die du willst. Nur für deinen Betrieb.</h1>', '<h1>Du fährst hin.<br> Den Rest machen wir.</h1>'),
@@ -1554,8 +1556,8 @@ def _folge(nr, kicker, h2, bild, alt, zahl=None, einheit="", lead="", pos="50% 4
     else:
         fig = (f'<figure class="senft-bild reveal"><img src="{bild}" alt="{alt}" loading="lazy" decoding="async" style="object-position:{pos}"></figure>')
     z = f'<p class="senft-zahl"><b>{zahl}</b><span>{einheit}</span></p>' if zahl else ''
-    return (f'<div class="wrap senft-raster folge{gespiegelt}">{fig}<div class="senft-text reveal"><span class="kicker">{kicker}</span>{senft_marke(marke) if marke else ""}'
-            f'{z}<h2>{h2}</h2>' + (f'<p class="lead">{lead}</p>' if lead else '') + '</div></div>')
+    return (f'<div class="wrap senft-raster folge{gespiegelt}">{fig}<div class="senft-text reveal"><span class="kicker">{kicker}</span>'
+            f'{z}<h2>{h2}</h2>' + (f'<p class="lead">{lead}</p>' if lead else '') + (senft_marke(marke) if marke else '') + '</div></div>')
 
 
 FOLGE_BLOECKE = "".join([
@@ -1566,7 +1568,7 @@ FOLGE_BLOECKE = "".join([
     # Fotos statt Logo (Noah, 21.11.2026: „bei planung hindelang nimmst einfach das bild von ihm … ohne creative“,
     # „autohaus ressle hatten wir ja auch die bilder und hawe auch“) – Originale aus dem Drive des Kunden
     # Noah, 21.11.2026 abends: „bei hindelang das bild von der baustelle“, „bei ressle nehmen wir das bild vom servicetechniker“
-    _folge(5, "Planung Hindelang", "Ein Planer wird gesucht.", "/static/assets/img/_h1280/fall/hindelang-baustelle.webp",
+    _folge(5, "Planung Hindelang", "Für die Stelle als Planer.", "/static/assets/img/_h1280/fall/hindelang-baustelle.webp",
            "Alexander Hindelang mit dem 3D-Laserscanner im Dachstuhl einer Baustelle", lead="Die Anzeige lief auf Facebook und Instagram, mit eigener Bewerbungsseite.", pos="55% 40%", marke="hindelang"),
     _folge(6, "Autohaus Ressle", "Für die offene Stelle.", "/static/assets/img/_h1280/fall/ressle-servicetechniker.webp",
            "Servicetechniker von Autohaus Ressle unter einem Fahrzeug auf der Hebebühne", zahl="14", einheit="Bewerbungen", pos="40% 45%", marke="autohaus-ressle"),
@@ -1576,23 +1578,23 @@ FOLGE_BLOECKE = "".join([
 # Senftleben groß (Noah, 18.11.2026: „in 18 [Tagen] Stelle besetzt … die kannst du auch groß machen … mit der Buchhaltung“), Zahlen wie SHK-Seite
 SENFT_SEK = ('<section class="sek senft-sek" id="ergebnisse"><div class="wrap senft-raster"><figure class="senft-bild reveal"><img src="/static/assets/img/_h1280/fall/senftleben-team.webp" '
              'alt="Das Team von Senftleben Haustechnik vor den Firmenwagen in Ehingen" loading="lazy" decoding="async"></figure>'
-             '<div class="senft-text reveal"><span class="kicker">Senftleben Haustechnik in Ehingen</span>' + senft_marke("senftleben") + ''
+             '<div class="senft-text reveal"><span class="kicker">Senftleben Haustechnik in Ehingen</span>'
              '<p class="senft-zahl"><b>18</b><span>Tage</span></p><h2>Bis die Stelle besetzt war.</h2>'
-             '<p class="lead">21 qualifizierte Bewerbungen sind gekommen.</p>'
+             '<p class="lead">21 qualifizierte Bewerbungen sind gekommen.</p>' + senft_marke("senftleben") +
              '</div></div>'
              # Erwin Schmidt darunter (Noah, 21.11.2026: „dann darunter noch erwin schmidt - da hats ja auch nicht soo lange gedauert“);
              # Zahlen wie auf der SHK-Seite (25 Bewerbungen, Stelle in 4 Wochen besetzt), Foto ohne Meike (Noah, 20.11.2026)
              '<div class="wrap senft-raster gespiegelt"><figure class="senft-bild reveal"><img src="/static/assets/img/_h1280/fall/ess-zwei-monteure.webp" '
              'alt="Zwei Monteure von Erwin Schmidt &amp; Sohn in der Ausstellung in Sindelfingen" loading="lazy" decoding="async" style="object-position:50% 25%"></figure>'
-             '<div class="senft-text reveal"><span class="kicker">Erwin Schmidt &amp; Sohn in Sindelfingen</span>' + senft_marke("ess") + ''
+             '<div class="senft-text reveal"><span class="kicker">Erwin Schmidt &amp; Sohn in Sindelfingen</span>'
              '<p class="senft-zahl"><b>4</b><span>Wochen</span></p><h2>Bis die Stelle besetzt war.</h2>'
-             '<p class="lead">25 Bewerbungen sind gekommen.</p>'
+             '<p class="lead">25 Bewerbungen sind gekommen.</p>' + senft_marke("ess") +
              '</div></div>'
              + FOLGE_BLOECKE + '</section>'
              '<style>.senft-raster.gespiegelt,.senft-raster.folge{margin-top:clamp(56px,7vw,110px)}.senft-logo{display:flex;align-items:center;justify-content:center;background:var(--papier);border:1px solid rgba(22,19,14,.1);padding:clamp(28px,5vw,72px)}.senft-bild.senft-logo img[src*=hindelang]{width:min(38%,190px)}.senft-logo.dunkel{background:var(--tinte);border-color:transparent}.senft-bild.senft-logo img{width:min(70%,360px);height:auto;object-fit:contain}@media (min-width:901px){.senft-raster.gespiegelt{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr)}.senft-raster.gespiegelt .senft-bild{order:2}}'
              '.senft-raster{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(28px,4vw,72px);align-items:center}'
              '.senft-bild{margin:0;border-radius:var(--radius);overflow:hidden;aspect-ratio:4/3}.senft-bild img{width:100%;height:100%;object-fit:cover;object-position:50% 45%;display:block}'
-             '.senft-text{min-width:0}.senft-marke{display:flex;align-items:center;height:44px;margin:10px 0 0}.senft-marke img{display:block;max-width:140px;max-height:44px}.senft-zahl{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 .25em;margin:14px 0 6px;line-height:.9}.senft-zahl b{font-size:clamp(96px,13vw,200px);font-weight:800;letter-spacing:-.05em;color:var(--bronze-tief,#8F5B1D)}'
+             '.senft-text{min-width:0}.senft-marke{display:flex;align-items:center;height:44px;margin:26px 0 0}.senft-marke img{display:block;max-width:140px;max-height:44px}.senft-zahl{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 .25em;margin:14px 0 6px;line-height:.9}.senft-zahl b{font-size:clamp(96px,13vw,200px);font-weight:800;letter-spacing:-.05em;color:var(--bronze-tief,#8F5B1D)}'
              '.senft-zahl span{font-size:clamp(28px,3vw,44px);font-weight:700;letter-spacing:-.02em}.senft-text h2{margin:0 0 12px;max-width:24ch;font-size:clamp(28px,2.8vw,42px);line-height:1.12}.senft-text h2::before{display:none}'
                           '@media (max-width:900px){.senft-raster{grid-template-columns:1fr}}</style>')
 # Noah, 20.11.2026: „da wollen wir nicht unbedingt Meike drin haben … Klaß und Senftleben“ → Erwin Schmidt raus
