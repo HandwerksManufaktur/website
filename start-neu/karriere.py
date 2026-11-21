@@ -141,7 +141,7 @@ def main_html():
         '<article class="kb kb-zahl reveal"><b class="kb-gross">150+</b><h3>Betriebe betreut</h3><p>Ein ehrliches Produkt, das für die Betriebe funktioniert.</p></article>'
         '<article class="kb kb-zahl reveal"><b class="kb-gross">5,0<span>★</span></b><h3>Sterne bei Google</h3><p>Bei über 50 Bewertungen von unseren Kunden.</p></article>'
         '<article class="kb kb-team reveal"><span class="kb-kicker">Das Team</span><h3>Ein Kern-Team, das sich gegenseitig pusht.</h3>'
-        '<p>Klein, schnell und jeder gibt Gas. Wenn einer rausfindet, was funktioniert, kriegen es alle mit. So wächst jeder über sich hinaus.</p></article>'
+        '<p>Wir sind klein, und jeder gibt Vollgas. Was bei einem funktioniert, teilen wir direkt mit allen. So wird jeder von Woche zu Woche besser.</p></article>'
         f'<article class="kb reveal">{ic(IC_WACHSEN)}<h3>Du wächst mit</h3><p>Wer Gas gibt, übernimmt schnell mehr Verantwortung.</p><span class="kb-leiter"><span>Opener</span><i>→</i><span>Setter</span><i>→</i><span>Closer</span></span></article>'
         f'<article class="kb reveal">{ic(IC_INHABER)}<h3>1-zu-1 mit Noah</h3><p>Step by step an die Hand genommen, mit Wissen aus fünfstelligen Coachings.</p></article>'
         f'<article class="kb kb-breit reveal">{ic(IC_KI)}<h3>Viel läuft automatisch</h3><p>Unsere KI-Agents übernehmen einen großen Teil vom Kleinkram. Du kümmerst dich um das, was wirklich zählt.</p>'
