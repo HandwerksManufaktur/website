@@ -520,6 +520,15 @@ def hero_neu(seite, slug, buehne, takt=None):
     assert 'saeulen-k' not in seite.h, slug
 
 
+def hero_unter(seite):
+    """Ein eigener Film je Unterseite über die volle Breite (Noah, 21.11.2026), geschnitten von hero_unterseiten_schneiden.py."""
+    d = f"{VID}/hero-unter"
+    return (f'<div class="hk-film" aria-hidden="true"><div class="hk-lage an hk-einzel">'
+            f'<video class="hk-desk" muted loop playsinline preload="none" data-hand data-src="{d}/{seite}-d.mp4" poster="{d}/{seite}.jpg"></video>'
+            f'<video class="hk-mobil" muted loop playsinline preload="none" data-hand data-src="{d}/{seite}-m.mp4" poster="{d}/{seite}-m.jpg"></video>'
+            '</div></div>', None)
+
+
 # Galerie Foto & Video: 56 Fotos (medien_bauen.py, alle von Hand angesehen) + 11 Filme, als Mauerwerk ohne Filter
 # (Noah, 18.11.2026: „Da muss man es sich nicht unbedingt noch extra eingeordnet lassen“). Nie zwei Karten vom selben
 # Betrieb nebeneinander (assert in galerie_sek).
@@ -727,7 +736,24 @@ _teile[1] = _vorne(_teile[1], LB_NEU_1); _teile[2] = _vorne(_teile[2], LB_NEU_2)
 LB_FOLGE = [["Entenmann Haustechnik", "Irlbacher Gebäudetechnik", "SD Hirsch", "Björn Schillinger", "Zimmerei Koller", "Dinkel Metallbau", "W&amp;W Bau",
              "Zimmerei Knappich", "Küchenhaus Hirschvogel", "Baustoffe Kirchner", "Wohner Elektrotechnik", "Baureize", "Resch Bau"],
             ["Planung Hindelang", "Dachbau Kraus", "Schwaighofer", "Erwin Schmidt &amp; Sohn", "Vogel Holzbau", "Maser Tankschutz",
-             "Schreinerei Kreitner", "Schuster Erisried", "Senftleben Haustechnik", "Juwelier Wagenknecht", "Weber Metallbau", "Malermeister Müller"]]
+             "Schreinerei Kreitner", "Schuster Erisried", "Juwelier Wagenknecht", "Weber Metallbau", "Malermeister Müller"]]
+# Senftleben raus (Noah, 21.11.2026: „bei websites brauchen wir die seite von senftleben eigentlich nicht mit reinnehmen“)
+# Kategorie je Betrieb gegen die eigene Live-Seite geprüft (Noah, 21.11.2026: „sind nicht passend einkategorisiert“) —
+# gilt für das Laufband hier und das Websites-Raster (RASTER weiter unten), damit beide gleich bleiben.
+KATEGORIE = {
+    "Entenmann Haustechnik": "SHK · Heizung, Bad &amp; Wärmepumpe", "Irlbacher Gebäudetechnik": "SHK · Heizung, Sanitär &amp; Lüftung",
+    "SD Hirsch": "Rohrformteile · Auto &amp; Energie", "Björn Schillinger": "Schreinerei · Möbel nach Maß",
+    "Zimmerei Koller": "Zimmerei · Holzhausbau", "Dinkel Metallbau": "Metallbau · Treppen &amp; Geländer",
+    "W&amp;W Bau": "Bau · Altbausanierung &amp; Hochbau", "Zimmerei Knappich": "Zimmerei · Massivholz &amp; Dach",
+    "Küchenhaus Hirschvogel": "Küchenstudio", "Baustoffe Kirchner": "Tiefbau · Baustoffe &amp; Container",
+    "Wohner Elektrotechnik": "Elektro · PV, Speicher &amp; Wallbox", "Baureize": "Maurer · Mauerwerk &amp; Estrich",
+    "Resch Bau": "Baugeschäft · Massivbau", "Planung Hindelang": "Holzbauplanung · Energieberatung",
+    "Dachbau Kraus": "Dach · Flachdach &amp; Fassade", "Schwaighofer": "Betonbau · Landwirtschaft",
+    "Erwin Schmidt &amp; Sohn": "SHK · Heizung &amp; Bad", "Vogel Holzbau": "Zimmerei · Holzbau &amp; Hallen",
+    "Maser Tankschutz": "Tankschutz · Heizöltanks", "Schreinerei Kreitner": "Schreinerei · Barrierefreies Wohnen",
+    "Schuster Erisried": "Landtechnik · Service &amp; Handel", "Juwelier Wagenknecht": "Uhrmacher · Schmuck &amp; Ankauf",
+    "Weber Metallbau": "Laserschneiden &amp; Abkanten", "Malermeister Müller": "Maler · Fassade &amp; Innenraum",
+}
 
 
 def _lb_karten(zug):
@@ -745,10 +771,15 @@ _spannen = []
 for _i in (1, 2):
     _k, _sp = _lb_karten(_teile[_i]); _alle.update(_k); _spannen.append(_sp)
 _alle.pop("Mehr Lebensenergie")  # Inna Illenseer raus (Noah, 20.11.2026)
+_alle.pop("Senftleben Haustechnik")
 # Entenmann Haustechnik vorn (Noah, 20.11.2026: „als Referenz … kann auf jeden Fall gut präsent sein, auch bei den Projekten“)
 _alle["Entenmann Haustechnik"] = _lb_karte("Entenmann Haustechnik", "SHK · Heizung &amp; Wärmepumpe", "https://entenmann-haustechnik.de", "entenmann")
 _alle["Weber Metallbau"] = _lb_karte("Weber Metallbau", "Metallbau · Laser &amp; Blech", "https://weber-metalltechnik.com", "weber")
 assert sorted(_alle) == sorted(LB_FOLGE[0] + LB_FOLGE[1]), set(_alle) ^ set(LB_FOLGE[0] + LB_FOLGE[1])
+assert sorted(_alle) == sorted(KATEGORIE), set(_alle) ^ set(KATEGORIE)
+for _n in _alle:
+    assert _alle[_n].count("<small>") == 1, _n
+    _alle[_n] = re.sub(r"<small>.*?</small>", f"<small>{KATEGORIE[_n]}</small>", _alle[_n])
 for _i, (_st, _en) in zip((1, 2), _spannen):
     _zug = "".join(_alle[n] for n in LB_FOLGE[_i - 1])
     _teile[_i] = _teile[_i][:_st] + _zug + _zug + _teile[_i][_en:]
@@ -1129,58 +1160,145 @@ assert len(_arts) == len(_klassen) == 24, (len(_arts), len(_klassen))
 # doppelt drin … W&W Bau kann ein bisschen weiter hoch … Wohner kannst du gerne groß machen“.
 # Groß wird nur, wer ein ganzes Seitenbild hat (Film + Seitenbild in der großen Kachel lässt unten einen leeren Streifen).
 # 3 Spalten: eine große Kachel belegt 2 × 2, die zwei kleinen danach füllen die freie Spalte.
-_GROSS = {"Irlbacher Gebäudetechnik": "irlbacher", "Zimmerei Koller": "koller", "Wohner Elektrotechnik": "wohner", "Erwin Schmidt &amp; Sohn": "ess"}
-_FOLGE = [("Irlbacher Gebäudetechnik", "gross"), "SD Hirsch", "Björn Schillinger",
-          ("Zimmerei Koller", "gross rechts"), "Dinkel Metallbau", "W&amp;W Bau",
-          "Zimmerei Knappich", "Küchenhaus Hirschvogel", "Baustoffe Kirchner",
-          ("Wohner Elektrotechnik", "gross"), "Baureize", "Resch Bau",
-          "Planung Hindelang", "Dachbau Kraus", "Schwaighofer",
-          ("Erwin Schmidt &amp; Sohn", "gross rechts"), "Vogel Holzbau", "Maser Tankschutz",
-          "Schreinerei Kreitner", "Schuster Erisried", "Senftleben Haustechnik",
-          "Juwelier Wagenknecht", "Weber Metallbau", "Malermeister Müller"]
-# Mehr Lebensenergie (Inna Illenseer) raus (Noah, 20.11.2026: „brauchst nicht … bei projekten … eher sogar raus“), dafür Weber
-# Metallbau (eigene Seite, live auf GitHub), damit die letzte Reihe voll bleibt. Film + Seitenbild vom 20.11.2026.
-_arts.append('<article class="projekt reveal"><div class="schirm"><video class="hero-lauf" muted loop playsinline preload="none" '
-             'data-src="/static/assets/vid/hero/hweber.webm" data-poster="/static/assets/vid/hero/hweber.jpg" width="640" height="400" '
-             'aria-label="Weber Metallbau — Startseite, wie sie live läuft"></video><img class="seite-bild" data-src="/static/assets/vid/hero/sweber.webp" '
-             'alt="" aria-hidden="true" loading="eager" decoding="async"></div><div class="unten"><small>Metallbau · Laser &amp; Blech</small><b>Weber Metallbau</b>'
-             '<div class="zeile"><img loading="lazy" src="/static/assets/img/logos/w/logo-weber-metallbau.webp" alt=""></div></div></article>')
-# Der zweite Irlbacher fällt weg; Malermeister Müller (bisher nur im Laufband) füllt den Platz, damit die letzte Reihe voll bleibt
-_arts.append('<article class="projekt reveal"><div class="schirm"><video class="hero-lauf" muted loop playsinline preload="none" '
-             'data-src="/static/assets/vid/hero/hmueller.webm" data-poster="/static/assets/vid/hero/hmueller.jpg" width="640" height="400" '
-             'aria-label="Malermeister Müller — Startseite, wie sie live läuft"></video><img class="seite-bild" data-src="/static/assets/vid/hero/smueller.webp" '
-             'alt="" aria-hidden="true" loading="eager" decoding="async"></div><div class="unten"><small>Malerbetrieb</small><b>Malermeister Müller</b>'
-             '<div class="zeile"><img loading="lazy" src="/static/assets/img/logos/logo-malermeister-mueller.png" alt=""></div></div></article>')
+# ── Raster neu (Noah, 21.11.2026): „bei den seiten … will ich immer überall noch son vorher button - und die logos größer - und dann
+# ne ein-satz beschreibung, was wir gemacht haben - und da können die seiten schon auch durchscrollen“ · „die seiten da schauen richtig
+# unscharf aus“ · „nicht passend einkategorisiert“ · „die seite von senftleben eigentlich nicht mit reinnehmen“.
+# Jede Kachel: Hero-Film der Live-Seite (1280×800), beim Drüberfahren läuft die ganze Seite durch (1440 px breit, am Handy beim
+# Ins-Bild-Kommen bzw. per Antippen), „Vorher“-Knopf zeigt die alte Website in derselben Kachel (nur wo eine belegte Aufnahme
+# existiert, raster_aufnahmen.vorher_quellen()). Aufnahmen: start-neu/raster_aufnahmen.py → static/assets/vid/raster/.
+# Kategorien gegen die Live-Seiten geprüft (21.11.2026), dieselben stehen im Laufband der Startseite (KATEGORIE oben).
+# Raster ohne Lücke: 23 Kacheln unter Entenmann. Eine große Kachel belegt 4 Plätze, also ginge es im Dreierraster nie auf —
+# Kreitner liegt deshalb als „zwei“ (2 Spalten × 1 Reihe) neben Schuster Erisried; im Zweierraster sind zwei/groß/breit volle Reihen.
+_V = "/static/assets/vid/raster"
+_LG = "/static/assets/img/logos/"
+RASTER = [  # (Name, k, Form, Logo, Satz „was wir gemacht haben“ — nur was auf der neuen Seite zu sehen ist)
+    ("Entenmann Haustechnik", "entenmann", "breit", "logo-entenmann-haustechnik.png", "Eine Seite je Leistung, dazu Wartung und Notdienst auf einer eigenen Seite."),
+    ("Irlbacher Gebäudetechnik", "irlbacher", "gross", "logo-irlbacher.png", "Eigene Seite je Leistung, Fotos vom Shooting und eine Jobseite für Anlagenmechaniker."),
+    ("SD Hirsch", "sdhirsch", "", "logo-sd-hirsch-weiss.png", "Eine Seite je Produktgruppe und Anwendung, dazu Downloads und englische Fassung."),
+    ("Björn Schillinger", "schillinger", "", "logo-bjoern-schillinger.png", "Eigene Seiten für Schränke, Küchen und Garderoben, dazu Referenzen und Projektanfrage."),
+    ("Zimmerei Koller", "koller", "gross rechts", "logo-zimmerei-koller.png", "Eigene Seiten für Holzhausbau, Aufstockung, Dachgauben und den Außenbereich."),
+    ("Dinkel Metallbau", "dinkel", "", "logo-dinkel-metallbau-weiss.png", "Eigene Seite je Gewerk von Treppen bis Zäune, ausgerichtet auf Tübingen und Rottenburg."),
+    ("W&amp;W Bau", "ww", "", "logo-ww-bau.png", "Sieben Leistungsseiten von Altbausanierung bis Bauleitung, dazu Referenzen und Jobs."),
+    ("Zimmerei Knappich", "knappich", "", "logo-zimmerei-knappich.png", "Projektgalerie nach Gewerk sortiert, vom Massivholzhaus bis zum Carport, dazu Teamseite."),
+    ("Küchenhaus Hirschvogel", "hirschvogel", "", "logo-kuechenhaus-hirschvogel.png", "Eine Seite je Küchenlinie, dazu ein Beispielkauf und Kundenstimmen."),
+    ("Baustoffe Kirchner", "kirchner", "", "logo-baustoffe-thaining-kirchner.png", "Eine Seite je Leistung von Tiefbau bis Containerdienst, dazu Teamseite und Jobs."),
+    ("Wohner Elektrotechnik", "wohner", "gross", "wohner_elektrotechnik_weiss_cropped.png", "Eine Seite für PV, Speicher und Wallbox mit Projekten, Kundenstimmen und Anfrage."),
+    ("Baureize", "baureize", "", "logo-baureize.png", "Schlanke Seite für Maurer- und Estricharbeiten mit Galerie und Teamseite."),
+    ("Resch Bau", "resch", "", "logo-resch-bau.png", "Seiten für Leistungen, Massivhausbau und Team, dazu der AwSV-Fachbetrieb."),
+    ("Planung Hindelang", "hindelang", "", "logo-planung-hindelang.png", "Je Leistung eine Seite, von Laserscanning über Drohne bis Heizlast und Energieausweis."),
+    ("Dachbau Kraus", "kraus", "", "logo-dachbau-kraus-gmbh.png", "Eine Seite je Dacharbeit und Fassade für Gewerbe, dazu Galerie und Karriereseite."),
+    ("Schwaighofer", "schwaighofer", "", "logo-schwaighofer-betontechnik-logo.png", "Eine Seite je Bauart, von Hallenbau bis Melkroboterumbau, für die Landwirtschaft."),
+    ("Erwin Schmidt &amp; Sohn", "ess", "gross rechts", "logo-erwin-schmidt-sohn-weiss.png", "Seiten für Sanitär, Heizung und Erneuerbare, dazu Ratgeber und Jobseite."),
+    ("Vogel Holzbau", "vogel", "", "logo-thomas-vogel-holzbau.png", "Eigene Seiten für Holzrahmenbau, Massivholz, Hallen und Sanierung, dazu ein Leitfaden."),
+    ("Maser Tankschutz", "maser", "", "logo-maser-tankschutz-logo.png", "Eine Seite je Tankarbeit von Demontage bis Neuaufstellung, die Zertifizierung gut sichtbar."),
+    ("Schreinerei Kreitner", "kreitner", "zwei", "logo-schreinerei-kreitner.png", "Seiten für Bad, Küche, Türen, Treppen und Fenster, Schwerpunkt barrierefreies Wohnen."),
+    ("Schuster Erisried", "erisried", "", "logo-schuster-landmaschinen-agrartechnik.png", "Seiten für Werkstatt, Landwirtschaft, Güterverkehr und Unimog-Teile, dazu Karriereseite."),
+    ("Juwelier Wagenknecht", "wagenknecht", "", "logo-juwelier-wagenknecht-farbe.png", "Werkstatt und Ankauf im Fokus, die Hausgeschichte seit 1908 als Bildfolge."),
+    ("Weber Metallbau", "weber", "", "w/logo-weber-metallbau.webp", "Vom Blechstapel zum fertigen Teil als Bildstrecke, dazu Anlagendaten und Anfrage."),
+    ("Malermeister Müller", "mueller", "", "logo-malermeister-mueller.png", "Eigene Seite je Arbeit von Fassade bis Beschriftung, Projektanfrage direkt oben."),
+]
+_FILM = {"": (1280, 800), "gross": (1280, 800), "gross rechts": (1280, 800), "breit": (1920, 960), "zwei": (1600, 640)}
 
 
-def _karte(eintrag):
-    name, gross = eintrag if isinstance(eintrag, tuple) else (eintrag, "")
-    x = next(a for a in _arts if f"<b>{name}</b>" in a)
-    if gross:
-        # Große Kachel = der Hero-Film der Seite über die ganze Kachel (Noah, 19.11.2026: Irlbacher „nicht gut reinpositioniert“,
-        # Koller „ganz unten am Footer … immer jeweils das, was am Hero läuft“) — kein Seitenbild, das bis zum Fuß läuft
-        assert '<div class="schirm"><video class="hero-lauf"' in x, name
-        x = x.replace('<div class="schirm"><video class="hero-lauf"', '<div class="schirm film"><video class="hero-lauf"', 1)
-    return re.sub(r'^<article class="projekt[^"]*">', f'<article class="projekt{" " + gross if gross else ""} reveal">', x)
+def _logo_mass(datei):
+    # Gleiche optische Größe: gleiche Fläche je Logo, Höhe 30–62 px, Breite höchstens 190 px (aus dem echten Bildinhalt gerechnet)
+    from PIL import Image
+    im = Image.open(WURZEL / ("static/assets/img/logos/" + datei)).convert("RGBA")
+    bb = im.getchannel("A").getbbox() or (0, 0, *im.size)
+    r = (bb[2] - bb[0]) / max(1, bb[3] - bb[1])
+    h = max(30, min(62, (7200 / r) ** .5)); b = h * r
+    if b > 190:
+        b = 190; h = b / r
+    return round(b), round(h)
 
 
-_neu = [_karte(e) for e in _FOLGE]
-assert len(_neu) == 24 and sum(1 for e in _FOLGE if isinstance(e, tuple)) == 4
-assert len({re.search(r"<b>(.*?)</b>", x).group(1) for x in _neu}) == 24, "Betrieb doppelt im Raster"
-assert not any("Mehr Lebensenergie" in x or "Illenseer" in x for x in _neu)
-# Entenmann Haustechnik als breite Kachel über die ganze Rasterbreite ganz oben (Noah, 20.11.2026: „gut präsent … auch bei den
-# Projekten“). Eine eigene Reihe, damit die 24 darunter voll bleiben (25 Kacheln gehen im Dreierraster nie auf).
-_ENTENMANN = ('<article class="projekt breit reveal"><div class="schirm film"><video class="hero-lauf" muted loop playsinline preload="none" '
-              'data-src="/static/assets/vid/hero/hentenmann-breit.webm" data-poster="/static/assets/vid/hero/hentenmann-breit.jpg" width="1280" height="640" '
-              'aria-label="Entenmann Haustechnik — Startseite, wie sie live läuft"></video></div><div class="unten"><small>SHK · Heizung, Bad &amp; Wärmepumpe</small>'
-              '<b>Entenmann Haustechnik</b><div class="zeile"><img loading="lazy" src="/static/assets/img/logos/logo-entenmann-haustechnik.png" alt=""></div></div></article>')
-_neu.insert(0, _ENTENMANN)
+def _raster_karte(name, k, form, logo, satz):
+    assert len(satz) <= 92 and "·" not in satz, (name, len(satz))
+    fw, fh = _FILM[form]
+    film = " film" if form in ("gross", "gross rechts", "breit", "zwei") else ""
+    vorher = (WURZEL / f"static/assets/vid/raster/v{k}.webp").exists()
+    for x in ("webm", "jpg"):
+        assert (WURZEL / f"static/assets/vid/raster/h{k}.{x}").exists(), (k, x)
+    assert (WURZEL / f"static/assets/vid/raster/s{k}.webp").exists(), k
+    lb, lh = _logo_mass(logo)
+    return (f'<article class="projekt{" " + form if form else ""} reveal" data-k="{k}"><div class="schirm ra{film}">'
+            f'<video class="hero-lauf" muted loop playsinline preload="none" data-src="{_V}/h{k}.webm" data-poster="{_V}/h{k}.jpg" '
+            f'width="{fw}" height="{fh}" aria-label="{name} — Startseite, wie sie live läuft"></video>'
+            f'<img class="ra-seite" data-src="{_V}/s{k}.webp" alt="" aria-hidden="true" decoding="async">'
+            + (f'<img class="ra-alt" data-src="{_V}/v{k}.webp" alt="Die alte Website von {name}" decoding="async">'
+               f'<button class="ra-vorher" type="button" aria-pressed="false" aria-label="Alte Website von {name} zeigen">Vorher</button>' if vorher else "")
+            + f'</div><div class="unten"><small>{KATEGORIE[name]}</small><b>{name}</b><p class="ra-satz">{satz}</p>'
+            f'<div class="zeile"><span class="ra-logo"><img loading="lazy" src="{_LG}{logo}" alt="Logo {name}" width="{lb}" height="{lh}" style="width:{lb}px;height:{lh}px"></span></div></div></article>')
+
+
+_namen_quelle = {re.search(r"<b>(.*?)</b>", x).group(1) for x in _arts}
+assert "Senftleben Haustechnik" in _namen_quelle  # steht noch in der Vorlage, fällt hier raus (Noah, 21.11.2026)
+_neu = [_raster_karte(*r) for r in RASTER]
+assert len(_neu) == 24 and len({r[0] for r in RASTER}) == 24 and not any("Senftleben" in x for x in _neu)
+# Plätze im Dreierraster: breit 3, groß 4, zwei 2, normal 1 → muss aufgehen (sonst Lücke in der letzten Reihe)
+assert sum({"breit": 3, "gross": 4, "gross rechts": 4, "zwei": 2, "": 1}[r[2]] for r in RASTER) % 3 == 0
+# Zweierraster: breit/groß/zwei je eine volle Reihe, die normalen paarweise
+assert sum(1 for r in RASTER if not r[2]) % 2 == 0
+RASTER_STIL = (
+    '<style>/* Websites-Raster (start-neu/bauen.py, 21.11.2026) */'
+    '#arbeiten .schirm.ra img{animation:none!important}'
+    '#arbeiten .schirm.ra .ra-seite,#arbeiten .schirm.ra .ra-alt{position:absolute;left:0;top:0;width:100%;height:auto;max-width:none;opacity:0;'
+    'transition:opacity .3s var(--ease);pointer-events:none;will-change:transform;z-index:1}'
+    '#arbeiten .schirm.ra .ra-alt{z-index:2;min-height:100%;object-fit:cover;object-position:top center;background:var(--papier-2)}'
+    '#arbeiten .schirm.ra.zeigt .ra-seite,#arbeiten .schirm.ra.alt .ra-alt{opacity:1}'
+    '#arbeiten .ra-vorher{position:absolute;top:12px;right:12px;z-index:3;min-height:36px;padding:0 15px;border:0;border-radius:var(--pille,999px);'
+    'background:rgba(22,19,14,.82);color:#faf7f1;font:600 14px/1 inherit;letter-spacing:.02em;cursor:pointer;'
+    'box-shadow:0 6px 18px -8px rgba(22,19,14,.6);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:background var(--schnell),transform var(--schnell)}'
+    '#arbeiten .ra-vorher:hover{transform:translateY(-1px);background:rgba(22,19,14,.95)}'
+    '#arbeiten .ra-vorher:focus-visible{outline:2px solid var(--bronze);outline-offset:2px}'
+    '#arbeiten .schirm.ra.alt .ra-vorher{background:var(--bronze);color:var(--tinte)}'
+    '#arbeiten .ra-vorher::before{content:"";position:absolute;inset:-4px}'
+    # Kachel nie breiter als ihre Spalte: ohne feste Spalte rechnete die 16:10-Fläche ihre Breite aus der Reihenhöhe (736 statt 399 px)
+    '#arbeiten .projekt{grid-template-columns:minmax(0,1fr)}#arbeiten .projekt .schirm{width:100%;min-width:0}'
+    '#arbeiten .projekt .unten{display:flex;flex-direction:column;gap:6px;min-width:0}'
+    '#arbeiten .ra-satz{margin:2px 0 0;font-size:16px;line-height:1.45;color:var(--tinte-2);max-width:44ch}'
+    '#arbeiten .projekt .unten .zeile{margin-top:auto;padding-top:10px}'
+    '#arbeiten .ra-logo{display:inline-flex;align-items:center;justify-content:center;height:78px;min-width:96px;padding:0 16px;border-radius:10px;background:var(--tinte)}'
+    '#arbeiten .projekt .unten .zeile .ra-logo img{display:block;max-width:100%;max-height:100%;object-fit:contain;background:none;padding:0;border-radius:0}'
+    '#arbeiten .projekt.zwei{grid-column:span 2;display:flex;flex-direction:column}'
+    '#arbeiten .projekt.zwei .schirm.film{flex:1;aspect-ratio:auto;min-height:220px}'
+    '#arbeiten .schirm.film video.hero-lauf{object-fit:cover;object-position:left top}'
+    '@media (max-width:1000px){#arbeiten .projekt.zwei{grid-column:1 / -1}#arbeiten .projekt.zwei .schirm.film{flex:none;aspect-ratio:2/1;min-height:0}}'
+    '@media (max-width:700px){#arbeiten .projekt.zwei .schirm.film,#arbeiten .projekt.breit .schirm.film{aspect-ratio:16/10}'
+    '#arbeiten .ra-logo{height:64px}#arbeiten .ra-satz{font-size:15px}}'
+    '</style>')
+RASTER_JS = (
+    '<script>(()=>{const sek=document.getElementById("arbeiten");if(!sek)return;'
+    'const ruhig=matchMedia("(prefers-reduced-motion: reduce)").matches,maus=matchMedia("(hover:hover) and (pointer:fine)").matches,TEMPO=120;'
+    'sek.querySelectorAll(".schirm.ra").forEach(schirm=>{'
+    'const seite=schirm.querySelector(".ra-seite"),alt=schirm.querySelector(".ra-alt"),knopf=schirm.querySelector(".ra-vorher"),karte=schirm.closest(".projekt");'
+    'let lauf=null,an=false,uhr=0;'
+    'const aktiv=()=>schirm.classList.contains("alt")?alt:seite;'
+    'const laden=(b,f)=>{if(!b)return;if(!b.getAttribute("src"))b.src=b.dataset.src;if(!f)return;if(b.complete&&b.naturalHeight)f();else b.addEventListener("load",f,{once:true})};'
+    'const stand=b=>new DOMMatrix(getComputedStyle(b).transform).m42||0;'
+    'const fahr=(b,ziel,dauer,kurve)=>{const von=stand(b);lauf&&lauf.cancel();'
+    'lauf=b.animate([{transform:`translateY(${von}px)`},{transform:`translateY(${ziel}px)`}],{duration:dauer(von),easing:kurve,fill:"forwards"});lauf.b=b};'
+    'const start=()=>{an=true;const b=aktiv();if(b===seite)schirm.classList.add("zeigt");'
+    'laden(b,()=>{if(!an||aktiv()!==b||ruhig)return;const weg=b.offsetHeight-schirm.clientHeight;if(weg<=8)return;'
+    'fahr(b,-weg,von=>Math.max(1500,(weg+von)/TEMPO*1000),"cubic-bezier(.35,0,.3,1)")})};'
+    'const stop=()=>{an=false;clearTimeout(uhr);if(lauf)fahr(lauf.b,0,()=>450,"cubic-bezier(.2,.7,.2,1)");schirm.classList.remove("zeigt")};'
+    'if(knopf)knopf.addEventListener("click",e=>{e.stopPropagation();const neu=!schirm.classList.contains("alt");'
+    'lauf&&lauf.cancel();lauf=null;[seite,alt].filter(Boolean).forEach(b=>b.getAnimations().forEach(a=>a.cancel()));'
+    'schirm.classList.toggle("alt",neu);knopf.setAttribute("aria-pressed",String(neu));knopf.textContent=neu?"Nachher":"Vorher";'
+    'knopf.setAttribute("aria-label",(neu?"Neue":"Alte")+" Website zeigen");laden(alt);if(an)start()});'
+    'if(maus){karte.addEventListener("pointerenter",e=>{if(e.pointerType==="mouse")start()});karte.addEventListener("pointerleave",e=>{if(e.pointerType==="mouse")stop()});'
+    'new IntersectionObserver((es,o)=>{if(es[0].isIntersecting){o.disconnect();(window.requestIdleCallback||setTimeout)(()=>laden(seite))}},{rootMargin:"300px 0px"}).observe(schirm)}'
+    'else{schirm.addEventListener("click",()=>an?stop():start());'
+    'new IntersectionObserver(es=>es.forEach(e=>{clearTimeout(uhr);if(e.isIntersecting)uhr=setTimeout(start,1400);else if(an)stop()}),{threshold:.6}).observe(schirm)}'
+    '})})()</script>')
 _ra = _sek.index(_arts[0][:60])
 _re = _sek.rindex("</article>") + len("</article>")
 _sek2 = _sek[:_ra] + "".join(_neu) + _sek[_re:]
-assert _sek2.count("<b>Irlbacher Gebäudetechnik</b>") == 1 and _sek2.count('<article class="projekt') == 25
+assert _sek2.count('<article class="projekt') == 24 and _sek2.count('class="ra-vorher"') == sum(
+    (WURZEL / f"static/assets/vid/raster/v{r[1]}.webp").exists() for r in RASTER)
+_sek2 = _sek2[:-len("</section>")] + RASTER_STIL + RASTER_JS + "</section>"
 w.h = w.h[:_a] + _sek2 + w.h[_e:]
-w.ersetze('Wischen für alle 24 Seiten', 'Wischen für alle 25 Seiten')
+assert 'Wischen für alle 24 Seiten' in w.h
 w.ersetze('<p class="lead">Jede mit Fotos aus dem eigenen Betrieb, jede auf ihr Gewerk und ihren Umkreis gebaut. Fahr über eine Seite, dann scrollt sie durch.</p>',
           '<p class="lead">Alle live. Tipp eine an.</p>')
 # Durchgezogen (Noah, 19.11.2026: „jo und des ziehst du jetzt durch“): keine Problem-Kästen, keine Kundenfoto-Karten im Ablauf,
@@ -1254,7 +1372,7 @@ WU_SEK = ('<section class="sek band auf-dunkel bento-sek ablauf-web"><div class=
 w.nach('<section class="hero-klein">', WU_SEK)
 assert w.h.count('<article class="zelle') == 5 and "ablauf-web" in w.h
 w.vor('<section class="sek faq">', STIMMEN)
-fertig(w, "websites")
+fertig(w, "websites", hero_unter("websites"))
 
 # ── 3 · Suchmaschinenoptimierung
 g = unterseite("suchmaschinenoptimierung")
@@ -1266,7 +1384,7 @@ g.ersetze('<section class="sek grund rangliste-sek"><div class="wrap"><div class
           f'<section class="sek grund rangliste-sek" id="ergebnisse"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Die Ergebnisse</span><h2>{SEITE1} Kundenseiten stehen auf Seite 1.</h2>')
 g.nach('<section class="hero-klein">', seo_ablauf())
 g.vor('<section class="sek faq">', STIMMEN)
-fertig(g, "suchmaschinenoptimierung")
+fertig(g, "suchmaschinenoptimierung", hero_unter("suchmaschinenoptimierung"))
 
 # ── 4 · Foto & Video (zwei Ergebnis-Sektionen wie die Startseite: Filme + Fotos; dafür ohne Kundenstimmen)
 f = unterseite("foto-video")
@@ -1317,7 +1435,7 @@ n.nach('<section class="hero-klein">',
            ("Vier Filterfragen vor jeder Anfrage", "Bei dir kommt an, wer sein Projekt ernst meint, mit Name und Nummer.")])
        + erg_karten("Bad-Anfragen"))
 n.vor('<section class="sek faq">', STIMMEN)
-fertig(n, "neukundengewinnung")
+fertig(n, "neukundengewinnung", hero_unter("neukundengewinnung"))
 
 # ── 6 · Mitarbeitergewinnung
 m = unterseite("mitarbeitergewinnung")
@@ -1358,4 +1476,4 @@ m.nach('<section class="sek band auf-dunkel bento-sek ablauf-ani">', SENFT_SEK +
 m.vor('<section class="sek faq">', STIMMEN)
 # „Fragen, die fast jeder Betrieb vorher stellt … kannst du erst mal ausmachen“ (Noah, 20.11.2026)
 m.heraus('<section class="sek faq">')
-fertig(m, "mitarbeitergewinnung")
+fertig(m, "mitarbeitergewinnung", hero_unter("mitarbeitergewinnung"))
