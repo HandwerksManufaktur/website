@@ -196,7 +196,6 @@ def main_html():
 <form class="kr-form kr-quiz reveal" action="#" method="post" novalidate><input type="hidden" name="access_key" value="9a4e6ba4-58e9-4782-8953-e53eed867640"><input type="hidden" name="subject" value="Neue Bewerbung über handwerksmanufaktur.digital"><input type="hidden" name="from_name" value="HWM-Seite · Bewerbung"><input type="checkbox" name="botcheck" class="rd-honig" tabindex="-1" autocomplete="off" aria-hidden="true">
 <button type="button" class="kq-zurueck" hidden>{ZURUECK} Zurück</button>
 <fieldset class="kq-schritt an" data-k="stelle"><legend>Für welche Stelle willst du dich bewerben?</legend><div class="kq-wahl">{wahl}</div></fieldset>
-<fieldset class="kq-schritt" data-k="telefonzeit" hidden><legend>Kannst du Mo–Do zwischen 7 und 17 Uhr und Fr zwischen 7 und 13 Uhr täglich mindestens 5 Stunden telefonieren?</legend><div class="kq-wahl kq-zwei"><label class="kq-opt"><input type="radio" name="telefonzeit" value="Ja"><span>Ja, passt</span></label><label class="kq-opt"><input type="radio" name="telefonzeit" value="Nein"><span>Nein</span></label></div><p class="kq-hinweis" hidden>Die Telefonzeit ist bei dieser Stelle Voraussetzung, weil wir die Betriebe nur dann erreichen. Schau dir gern die anderen Stellen an.</p></fieldset>
 <fieldset class="kq-schritt" data-k="name" hidden><legend>Wie heißt du?</legend><div class="kq-zeile"><input type="text" name="name" autocomplete="name" placeholder="Vor- und Nachname"><button type="button" class="btn btn-bronze kq-weiter">Weiter {PFEIL}</button></div></fieldset>
 <fieldset class="kq-schritt" data-k="telefon" hidden><legend>Unter welcher Nummer erreichen wir dich?</legend><div class="kq-zeile"><input type="tel" name="telefon" autocomplete="tel" inputmode="tel" placeholder="z. B. 0170 1234567"><button type="button" class="btn btn-bronze kq-weiter">Weiter {PFEIL}</button></div></fieldset>
 <fieldset class="kq-schritt" data-k="email" hidden><legend>Und deine E-Mail-Adresse?</legend><div class="kq-zeile"><input type="email" name="email" autocomplete="email" inputmode="email" placeholder="name@beispiel.de"><button type="button" class="btn btn-bronze kq-weiter">Weiter {PFEIL}</button></div></fieldset>
@@ -364,8 +363,7 @@ SKRIPT = r"""<script>
 (()=>{const f=document.querySelector('.kr-quiz');if(!f)return;const $=(s,r=f)=>r.querySelector(s),$$=(s,r=f)=>[...r.querySelectorAll(s)];
 const schritte=$$('.kq-schritt'),zur=$('.kq-zurueck'),bal=$('.kq-balken i'),stand=$('.kq-stand'),fehler=$('.kq-fehler');let weg=[0];
 const idx=k=>schritte.findIndex(s=>s.dataset.k===k);
-const opener=()=>{const c=$('input[name=stelle]:checked');return c&&c.dataset.id==='opener'};
-const reihe=()=>['stelle',...(opener()?['telefonzeit']:[]),'name','telefon','email','start','aktuell'];
+const reihe=()=>['stelle','name','telefon','email','start','aktuell'];
 // Balken startet schon bei gut einem Drittel und wirkt weiter, als er ist
 const zeig=i=>{schritte.forEach((s,j)=>{s.hidden=j!==i;s.classList.toggle('an',j===i)});const r=reihe(),pos=r.indexOf(schritte[i].dataset.k);
  const anteil=0.38+0.6*(pos/(r.length-1));bal.style.transform=`scaleX(${anteil})`;stand.textContent=pos>=r.length-2?'Fast geschafft':pos===0?'Dauert nur eine Minute':'Gleich geschafft';
@@ -378,8 +376,6 @@ const pruef=s=>{const e=$('input:not([type=radio])',s);if(!e)return true;const v
 $$('.kq-weiter').forEach(b=>b.addEventListener('click',()=>{if(pruef(b.closest('.kq-schritt')))weiter()}));
 $$('.kq-schritt input:not([type=radio])').forEach(e=>e.addEventListener('keydown',ev=>{if(ev.key==='Enter'){ev.preventDefault();if(pruef(e.closest('.kq-schritt')))weiter()}}));
 $$('.kq-opt input').forEach(r=>r.addEventListener('click',()=>{const s=r.closest('.kq-schritt');if(s.hidden)return;
- if(s.dataset.k==='telefonzeit'){const nein=r.value==='Nein';$('.kq-hinweis',s).hidden=!nein;if(nein)return}
- if(s.dataset.k!=='telefonzeit')$$('input[name=telefonzeit]').forEach(x=>{if(!opener())x.checked=false});
  setTimeout(weiter,220)}));
 const waehle=id=>{const i=$(`input[name=stelle][data-id="${id}"]`);if(!i)return;i.checked=true;weg=[0];weiter()};
 document.querySelectorAll('[data-stelle]').forEach(a=>a.addEventListener('click',()=>waehle(a.dataset.stelle)));
