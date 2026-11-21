@@ -135,7 +135,7 @@ def main_html():
                     for i, (t, x) in enumerate(WERTE))
     ic = lambda d: f'<span class="kr-ic"><svg viewBox="0 0 24 24" aria-hidden="true">{d}</svg></span>'
     bieten = (
-        '<article class="kb kb-a reveal"><img src="/static/assets/img/karriere/a-calls-1400.webp" alt="Call mit Laptop am Strand" loading="lazy" decoding="async">'
+        '<article class="kb kb-a reveal"><div class="kb-collage"><img src="/static/assets/img/karriere/a-calls-1400.webp" alt="Call mit Laptop am Strand" loading="lazy" decoding="async"><img src="/static/assets/img/karriere/a-vietnam-800.webp" alt="Laptop am Fenster über der Stadt" loading="lazy" decoding="async"><img src="/static/assets/img/karriere/a-mexico-800.webp" alt="Laptop am Pool unter dem Sonnenschirm" loading="lazy" decoding="async"></div>'
         '<span class="kr-verlauf" aria-hidden="true"></span><div class="kb-text"><span class="kb-kicker">100 % remote</span><h3>Arbeite von überall.</h3>'
         '<p>Du brauchst einen Laptop, gutes Internet und den Anspruch, Ergebnisse zu liefern. Von wo aus, ist uns egal.</p></div></article>'
         '<article class="kb kb-zahl reveal"><b class="kb-gross">150+</b><h3>Betriebe betreut</h3><p>Ein ehrliches Produkt, das für die Betriebe funktioniert.</p></article>'
@@ -156,7 +156,7 @@ def main_html():
         ("mission", "Unsere Mission", "Wir sorgen dafür, dass Handwerksbetriebe online gefunden werden und neue Kunden & Mitarbeiter bekommen.", "Noah mit einem Kunden auf dem Betriebshof", "50% 30%"),
         ("geschichte", "Unsere Geschichte", "Noah kommt selbst aus einer Handwerkerfamilie und hat die HandwerksManufaktur 2019 gegründet. Mittlerweile haben wir über 150 Betriebe betreut.", "Noah am Laptop", "60% 35%"),
         ("setup", "Unser Setup", "Wir arbeiten komplett remote. Wo du sitzt, ist im Endeffekt egal, Hauptsache die Ergebnisse passen.", "Arbeitsplatz mit Laptop am Strand", "50% 50%"),
-        ("kultur", "Unsere Kultur", "Wir bauen ein Team aus A-Playern, die Vollgas geben und sich gegenseitig pushen. Feedback gibt’s bei uns direkt und ehrlich.", "Noah und ein Kollege lachen beim gemeinsamen Arbeiten", "50% 40%"),
+        ("kultur", "Unsere Kultur", "Wir bauen ein Team aus A-Playern, die Vollgas geben und sich gegenseitig pushen. Feedback gibt’s bei uns direkt und ehrlich.", "Noah mit zwei Kollegen beim Arbeiten im Café", "50% 64%"),
     ]
     kennen = ('<section class="sek kr-kennen-sek" id="kennenlernen"><div class="wrap"><div class="kopfzeile mitte reveal"><span class="kicker">Lerne uns kennen</span>'
               '<h2>Wir sind die HandwerksManufaktur.</h2></div><div class="kr-kennen">' + "".join(
@@ -184,7 +184,7 @@ def main_html():
            + liste(["Du gibst Vollgas, auch wenn’s mal zäh wird.", "Du übernimmst Verantwortung für deine Ergebnisse.",
                     "Du hast Bock auf ein Team, das sich gegenseitig pusht."]) +
            f'<div class="knopfzeile"><a class="btn btn-bronze" href="#stellen">Offene Stellen ansehen {PFEIL}</a></div></div>'
-           '<div class="bild reveal auf"><img src="/static/assets/img/karriere/a-pool-1400.webp" alt="Laptop am Pool mit Blick ins Grüne" loading="lazy" style="object-position:50% 60%"></div></div></div></section>')
+           '<div class="bild reveal auf"><img src="/static/assets/img/karriere/a-wen-1400.webp" alt="Noah und ein Kollege lachen beim gemeinsamen Arbeiten" loading="lazy" style="object-position:50% 40%"></div></div></div></section>')
     fragen = "".join(f'<details{" open" if i == 0 else ""}><summary>{q}{PLUS}</summary><p>{a}</p></details>' for i, (q, a) in enumerate(FRAGEN))
     wahl = "".join(f'<label class="kq-opt"><input type="radio" name="stelle" value="{s["titel"]}" data-id="{s["id"]}"><span>{s["kurz"]}</span></label>'
                    for s in STELLEN) + '<label class="kq-opt"><input type="radio" name="stelle" value="Initiativbewerbung" data-id="initiativ"><span>Initiativ</span></label>'
@@ -267,7 +267,7 @@ STIL = """<style>
 .kb h3{margin:0;font-size:clamp(20px,1.8vw,24px);letter-spacing:-.02em;line-height:1.2;color:var(--papier)}.kb p{margin:0;color:#CFC7B8;font-size:15.5px;line-height:1.55}
 .kb .kr-ic{margin-bottom:10px}
 .kb-a{grid-column:1/3;grid-row:1/3;padding:0;justify-content:flex-end;min-height:540px}
-.kb-a img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:86% 50%;transition:transform 1s var(--ease)}.kb-a:hover img{transform:scale(1.05)}
+.kb-collage{position:absolute;inset:0;display:grid;grid-template-columns:1.35fr 1fr;grid-template-rows:1fr 1fr;gap:6px;overflow:hidden}.kb-collage img{width:100%;height:100%;min-height:0;object-fit:cover;transition:transform 1s var(--ease)}.kb-collage img:first-child{grid-row:1/3;object-position:50% 50%}.kb-collage img:nth-child(2){object-position:50% 55%}.kb-collage img:nth-child(3){object-position:50% 78%}.kb-a:hover .kb-collage img{transform:scale(1.04)}
 .kb-text{position:relative;z-index:2;padding:clamp(24px,3vw,40px);display:grid;gap:12px}.kb-a h3{font-size:clamp(34px,3.6vw,54px);letter-spacing:-.035em;line-height:1}.kb-a p{color:#EAE3D6;max-width:34ch;font-size:16.5px}
 .kb-kicker{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--bronze-hell)}
 .kb-gross{display:block;margin-bottom:14px;font-size:clamp(64px,6.4vw,104px);font-weight:800;letter-spacing:-.055em;line-height:.9;color:var(--bronze-hell)}.kb-gross span{font-size:.45em;margin-left:.08em;vertical-align:.7em}

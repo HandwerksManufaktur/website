@@ -171,9 +171,10 @@ def handy():
 
 # Noahs eigene Arbeitsfotos aus dem Bewerber-Funnel (firma/sales-funnel/assets/Arbeit) für „Lerne uns kennen“ und „Was wir bieten“
 ARBEIT = WURZEL.parent / "sales-funnel/assets/Arbeit"
+# Noah, 21.11.2026: Kultur = Café in Split mit Kollegen, das bisherige Kultur-Bild geht zu „Wen wir suchen“, „Arbeite von überall“ als Mini-Collage
 FOTOS = {"mission": "Bild mit Kunde.JPG", "geschichte": "Einzelbild.jpg", "setup": "arbeiten am strand 3.JPG",
-         "kultur": "gemeinsam arbeiten 1.jpg", "team": "gemeinsam arbeiten 2.JPG", "calls": "calls am strand.JPG",
-         "pool": "arbeiten aus thailand.JPG"}
+         "kultur": "gemeinsam arbeiten split.JPG", "wen": "gemeinsam arbeiten 1.jpg", "calls": "calls am strand.JPG",
+         "vietnam": "arbeiten aus vietnam.JPG", "mexico": "arbeiten aus mexico.JPG"}
 
 
 def fotos():
