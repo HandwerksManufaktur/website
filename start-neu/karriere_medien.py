@@ -36,7 +36,7 @@ FILM = [  # Noah, 21.11.2026: Hout-Bay-Clip (C1921, Blick in die Kamera) raus, G
     (f"{EP}/2025/Kapstadt, Südafrika/Kamera Videos/C1536.MP4", 1.0, 1.4, True),                          # Globus, erst wenn er sich schon dreht (Noah 21.11.: „kürzer oder wo es schon in motion ist“)
     (f"{EP}/2025/Kapstadt, Südafrika/Linos Head/Videos/C1604.MP4", 2.6, 2.4, True),
     (f"{EP}/2025/Singapur/Videos Sony A7IV/C0585.MP4", 5.4, 2.4, True),
-    (f"{EP}/2026/Da Nang, Vietnam/Kamera Videos/C2068.MP4", 28.8, 2.4, True),
+    (f"{EP}/2025/Tulum, Mexico/Kamera Videos/C1184.MP4", 86.8, 2.4, True),                            # Arbeiten am Strand in Tulum (Noah 21.11.: statt Motorrad-Clip lieber ein Work-Clip)
     (f"{EP}/2026/Kuala Lumpur, Malaysia/Kamera Videos/C2223.MP4", 5.0, 2.6, True),
 ]
 
@@ -148,7 +148,7 @@ def film():
 
 # Handy-Fassung aus dem Desktop-Film: je Szene ein eigener Ausschnitt, damit Noah im Bild bleibt (Mitte schnitt ihn in
 # Singapur und Da Nang ab). (Dauer, Bildmitte horizontal 0–1) in der Reihenfolge von FILM.
-HANDY_MITTE = [0.56, 0.5, 0.5, 0.5, 0.75, 0.76, 0.42]
+HANDY_MITTE = [0.56, 0.5, 0.5, 0.5, 0.75, 0.44, 0.42]
 
 
 def handy():
