@@ -1198,25 +1198,31 @@ _web_zellen = [
     '<article class="zelle z-3 hoch mit-handys web-fotos"><div class="handys-k" aria-hidden="true">'
     f'<img src="{FV}/g/kl-flex-480.webp" alt="" loading="lazy" decoding="async"><img src="{FV}/g/cs-schweissen-480.webp" alt="" loading="lazy" decoding="async"></div>'
     f'<span class="nummer">01</span><h3>{_WU[0][1]}</h3><p>{_WU[0][2]}</p></article>',
-    '<article class="zelle z-4 mit-tickets web-seiten">' + _tickets([("Badsanierung", "Eigene Seite · mit deinem Ort", "online"),
+    # 02 + 03 in einer Kachel (Noah, 21.11.2026: „sektion 02 und 03 lassen sich verknüpfen … sodass die sektion kleiner ist und
+    # dann darunter einfach die … anderen sachen kommen“): Seiten links, Anfragen rechts, eine Überschrift; die drei kleinen
+    # Kacheln stehen darunter rechts neben 01 (Raster 9 Spalten: 01 = 3, rechts 6 = Doppelkachel bzw. 3 × 2).
+    '<article class="zelle mit-tickets web-seiten"><div class="web-zwei">' + _tickets([("Badsanierung", "Eigene Seite · mit deinem Ort", "online"),
                                                                        ("Dachstuhl neu", "Eigene Seite · mit deinem Ort", "online"),
                                                                        ("Treppen aus Holz", "Eigene Seite · mit deinem Ort", "online")], _seite)
-    + f'<span class="nummer">02</span><h3>{_WU[1][1]}</h3><p>{_WU[1][2]}</p></article>',
-    '<article class="zelle z-4 mit-tickets web-anfragen">' + _tickets([("Neue Anfrage: Badsanierung", "Formular · mit Fotos und Nummer", "neu"),
-                                                                         ("Rückruf gewünscht", "Anruf-Knopf am Handy", "neu"),
-                                                                         ("Neue Anfrage: Carport", "Formular · mit Fotos und Nummer", "neu")], _post)
-    + f'<span class="nummer">03</span><h3>{_WU[4][1]}</h3><p>{_WU[4][2]}</p></article>',
+    + _tickets([("Neue Anfrage: Badsanierung", "Formular · mit Fotos und Nummer", "neu"),
+                ("Rückruf gewünscht", "Anruf-Knopf am Handy", "neu"),
+                ("Neue Anfrage: Carport", "Formular · mit Fotos und Nummer", "neu")], _post)
+    + '</div><span class="nummer">02</span><h3>Eine Seite je Leistung. Jede Anfrage direkt zu dir.</h3>'
+      '<p>Bad, Dach, Treppe: Jede Leistung bekommt ihre eigene Seite, damit Google sie findet. Anruf-Knopf und Formular bringen jede Anfrage sofort zu dir.</p></article>',
 ] + [f'<article class="zelle z-klein">{_ic(i)}<span class="nummer">0{n}</span><h3>{titel}</h3><p>{text}</p></article>'
-     for n, (i, titel, text) in enumerate([_WU[2], _WU[3], _WU[5]], 4)]
+     for n, (i, titel, text) in enumerate([_WU[2], _WU[3], _WU[5]], 3)]
 WU_SEK = ('<section class="sek band auf-dunkel bento-sek ablauf-web"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Was wir übernehmen</span>'
           '<h2>Du lieferst den Betrieb. Wir den Rest.</h2>'
           '<p class="lead">Deine Website ist dein Schaufenster: Wer dich sucht, sieht deine Arbeit und ruft dich an statt den Nächsten.</p></div>'
           f'<div class="bento">{"".join(_web_zellen)}</div></div></section>'
-          '<style>@media (min-width:901px){.ablauf-web .bento{grid-template-columns:repeat(6,minmax(0,1fr))}'
-          '.ablauf-web .web-fotos{grid-column:1/span 2;grid-row:1/span 2;min-height:0}'
+          '<style>@media (min-width:901px){.ablauf-web .bento{grid-template-columns:repeat(9,minmax(0,1fr))}'
+          '.ablauf-web .web-fotos{grid-column:1/span 3;grid-row:1/span 2;min-height:0}'
           '.ablauf-web .web-fotos .handys-k{left:0;right:0;top:clamp(40px,4vw,64px);justify-content:center;gap:16px}'
-          '.ablauf-web .web-seiten{grid-column:3/span 4;grid-row:1}.ablauf-web .web-anfragen{grid-column:3/span 4;grid-row:2}'
-          '.ablauf-web .z-klein{grid-column:span 2;min-height:260px}}'
+          '.ablauf-web .web-seiten{grid-column:4/span 6;grid-row:1}'
+          '.ablauf-web .z-klein{grid-column:span 2;grid-row:2;min-height:260px}'
+          '.ablauf-web .web-zwei{display:grid;grid-template-columns:1fr 1fr;gap:12px}.ablauf-web .web-zwei .tickets{margin:8px 0 22px}'
+          '.ablauf-web .web-zwei .ticket b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ablauf-web .web-zwei .ticket>span:nth-child(2){min-width:0}}'
+          '@media (max-width:900px){.ablauf-web .web-zwei .tickets+.tickets{margin-top:-14px}.ablauf-web .web-zwei .ticket:nth-child(3){display:none}}'
           '.ablauf-web .handys-k img{width:clamp(150px,13vw,196px);aspect-ratio:9/16;border-radius:16px;object-fit:cover;border:2px solid rgba(250,247,241,.28);'
           'transform:rotate(3deg);box-shadow:0 20px 40px -20px rgba(0,0,0,.7);transition:transform .5s var(--ease)}'
           '.ablauf-web .handys-k img:nth-child(2){transform:rotate(-3deg) translateY(14px)}'
@@ -1230,7 +1236,7 @@ WU_SEK = ('<section class="sek band auf-dunkel bento-sek ablauf-web"><div class=
           '@media (max-width:900px){.ablauf-web .zelle.web-fotos .handys-k{display:flex;position:relative;right:auto;top:auto;justify-content:center;margin:6px 0 22px}'
           '.ablauf-web .handys-k img{width:min(132px,34vw)}.ablauf-web .z-klein{min-height:0}}</style>')
 w.nach('<section class="hero-klein">', WU_SEK)
-assert w.h.count('<article class="zelle') == 6 and "ablauf-web" in w.h
+assert w.h.count('<article class="zelle') == 5 and "ablauf-web" in w.h
 w.vor('<section class="sek faq">', STIMMEN)
 fertig(w, "websites")
 
