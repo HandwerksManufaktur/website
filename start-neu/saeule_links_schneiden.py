@@ -22,13 +22,13 @@ KOLLER_A, KOLLER_C = VID / "sr-koller-a.mp4", VID / "sr-koller-c.mp4"
 
 # (Betrieb, Quelle, Start s, Länge s, Mitte x 0–1 des 3:4-Ausschnitts, alt=schon 3:4, was man sieht)
 SZENEN = [
-    ("Kreitner",   ALT,      3.28, 1.40, None, "Drohne Werkstattflug, Mitarbeiter im Bild"),
+    # Kreitner-Drohne raus (Noah, 21.11.2026: „das drohnenvideo bei kreitner raus … da sieht man nur die decke“)
+    ("Wohner",     ALT,      1.68, 1.40, None, "Drohne über das PV-Dach"),
     ("Entenmann",  ENT,      9.55, 1.40, 0.40, "Trennschleifer mit Funken am Rohr"),
     ("Koller",     KOLLER_A, 0.10, 1.30, 0.28, "Zimmerer mit Akkuschrauber am Balken"),
-    ("Wohner",     ALT,      1.68, 1.40, None, "Drohne über das PV-Dach"),
     ("Entenmann",  ENT,      4.34, 1.40, 0.60, "Wärmepumpe wird durch den Garten gebracht"),
-    ("Koller",     KOLLER_C, 1.30, 1.25, 0.52, "Kappsäge, Zimmerer mit Gehörschutz schneidet den Balken"),
     ("CS Metall",  ALT,      8.10, 1.24, None, "Drohne Werkstatthalle, Schweißen im Bild"),
+    ("Koller",     KOLLER_C, 1.30, 1.25, 0.52, "Kappsäge, Zimmerer mit Gehörschutz schneidet den Balken"),
     ("Entenmann",  ENT,      25.12, 1.40, 0.40, "Akkuschrauber am Rohr"),
 ]
 assert all(SZENEN[i][0] != SZENEN[i - 1][0] for i in range(len(SZENEN))), "zwei Szenen vom selben Betrieb hintereinander"
