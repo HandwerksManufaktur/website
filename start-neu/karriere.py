@@ -139,12 +139,12 @@ def main_html():
         '<article class="kb kb-a reveal"><img src="/static/assets/img/karriere/a-calls-1400.webp" alt="Call mit Laptop am Strand" loading="lazy" decoding="async">'
         '<span class="kr-verlauf" aria-hidden="true"></span><div class="kb-text"><span class="kb-kicker">100 % remote</span><h3>Arbeite von überall.</h3>'
         '<p>Du brauchst einen Laptop, gutes Internet und den Anspruch, Ergebnisse zu liefern. Von wo aus, ist uns egal.</p></div></article>'
-        '<article class="kb kb-zahl reveal"><b class="kb-gross">150+</b><h3>Betriebe betreut</h3><p>Du arbeitest mit einem validierten, ehrlichen Produkt, das für die Betriebe funktioniert.</p></article>'
+        '<article class="kb kb-zahl reveal"><b class="kb-gross">150+</b><h3>Betriebe betreut</h3><p>Ein ehrliches Produkt, das für die Betriebe funktioniert.</p></article>'
         '<article class="kb kb-zahl reveal"><b class="kb-gross">5,0<span>★</span></b><h3>Sterne bei Google</h3><p>Bei über 50 Bewertungen von unseren Kunden.</p></article>'
         '<article class="kb kb-team reveal"><span class="kb-kicker">Das Team</span><h3>Ein Kern-Team, das sich gegenseitig pusht.</h3>'
         '<p>Klein, schnell und jeder gibt Gas. Wenn einer rausfindet, was funktioniert, kriegen es alle mit. So wächst jeder über sich hinaus.</p></article>'
-        f'<article class="kb reveal">{ic(IC_WACHSEN)}<h3>Du wächst mit</h3><p>Wer Gas gibt, übernimmt bei uns schnell mehr Verantwortung.</p><span class="kb-leiter"><span>Opener</span><i>→</i><span>Setter</span><i>→</i><span>Closer</span></span></article>'
-        f'<article class="kb reveal">{ic(IC_INHABER)}<h3>1-zu-1 mit Noah</h3><p>Du wirst step by step an die Hand genommen und bekommst das Wissen aus Coachings, in die wir fünfstellig investiert haben.</p></article>'
+        f'<article class="kb reveal">{ic(IC_WACHSEN)}<h3>Du wächst mit</h3><p>Wer Gas gibt, übernimmt schnell mehr Verantwortung.</p><span class="kb-leiter"><span>Opener</span><i>→</i><span>Setter</span><i>→</i><span>Closer</span></span></article>'
+        f'<article class="kb reveal">{ic(IC_INHABER)}<h3>1-zu-1 mit Noah</h3><p>Step by step an die Hand genommen, mit Wissen aus fünfstelligen Coachings.</p></article>'
         f'<article class="kb kb-breit reveal">{ic(IC_KI)}<h3>Viel läuft automatisch</h3><p>Unsere KI-Agents übernehmen einen großen Teil vom Kleinkram. Du kümmerst dich um das, was wirklich zählt.</p>'
         '<span class="kb-chips"><span>CRM</span><span>Automationen</span><span>KI-Agents</span></span></article>')
     ablauf = "".join(f'<li class="kr-schritt reveal"><span class="kr-snr">{i + 1}</span><h3>{t}</h3><p>{x}</p></li>'
@@ -154,10 +154,10 @@ def main_html():
           f'<a class="team-karte team-du kr-du reveal" href="#bewerben"><div class="tk-bild"><img src="/static/assets/img/team/team-du.webp" alt="" width="800" height="1000" loading="lazy" decoding="async">'
           f'<div class="tk-name"><b>Du?</b><span>Dein Platz im Team</span></div></div><p class="tk-knopf">Jetzt bewerben {PFEIL}</p></a>')
     KENNEN = [
-        ("mission", "Unsere Mission", "Wir sorgen dafür, dass Handwerksbetriebe online gefunden werden und darüber neue Kunden & Mitarbeiter bekommen. Mit Websites, Google und Anzeigen.", "Noah mit einem Kunden auf dem Betriebshof", "50% 30%"),
-        ("geschichte", "Unsere Geschichte", "Noah kommt selbst aus einer Handwerkerfamilie und hat die HandwerksManufaktur 2019 gegründet. Mittlerweile haben wir über 150 Betriebe betreut.", "Noah am Laptop", "60% 35%"),
-        ("setup", "Unser Setup", "Wir arbeiten komplett remote. Wo du sitzt, ist im Endeffekt egal, Hauptsache die Ergebnisse passen.", "Arbeitsplatz mit Laptop am Strand", "50% 50%"),
-        ("kultur", "Unsere Kultur", "Wir bauen ein Team aus A-Playern, die Vollgas geben und sich gegenseitig pushen. Feedback gibt’s bei uns direkt und ehrlich.", "Noah und ein Kollege lachen beim gemeinsamen Arbeiten", "50% 40%"),
+        ("mission", "Unsere Mission", "Wir sorgen dafür, dass Handwerksbetriebe online neue Kunden & Mitarbeiter finden.", "Noah mit einem Kunden auf dem Betriebshof", "50% 30%"),
+        ("geschichte", "Unsere Geschichte", "Noah kommt aus einer Handwerkerfamilie. Seit 2019 über 150 betreute Betriebe.", "Noah am Laptop", "60% 35%"),
+        ("setup", "Unser Setup", "Komplett remote. Wo du sitzt, ist im Endeffekt egal, Hauptsache die Ergebnisse passen.", "Arbeitsplatz mit Laptop am Strand", "50% 50%"),
+        ("kultur", "Unsere Kultur", "A-Player, die Vollgas geben und sich gegenseitig pushen. Feedback gibt’s direkt.", "Noah und ein Kollege lachen beim gemeinsamen Arbeiten", "50% 40%"),
     ]
     kennen = ('<section class="sek kr-kennen-sek" id="kennenlernen"><div class="wrap"><div class="kopfzeile mitte reveal"><span class="kicker">Lerne uns kennen</span>'
               '<h2>Wir sind die HandwerksManufaktur.</h2></div><div class="kr-kennen">' + "".join(
@@ -174,7 +174,7 @@ def main_html():
                  '</div></div></section>')
     wen = ('<section class="sek kr-wen-sek"><div class="wrap"><div class="duo"><div class="text reveal"><span class="kicker">Wen wir suchen</span>'
            '<h2>Leute, die richtig gut sein wollen.</h2>'
-           '<p class="lead">Wir schauen nicht auf deinen Lebenslauf, sondern darauf, ob du Vollgas gibst. Erfahrung ist schön, aber kein Muss.</p>'
+           '<p class="lead">Erfahrung ist schön, aber kein Muss. Wichtiger ist, dass du Bock hast und dranbleibst.</p>'
            + liste(["Du gibst Vollgas, auch wenn’s mal zäh wird.", "Du übernimmst Verantwortung für deine Ergebnisse.",
                     "Du hast Bock auf ein Team, das sich gegenseitig pusht."]) +
            f'<div class="knopfzeile"><a class="btn btn-bronze" href="#stellen">Offene Stellen ansehen {PFEIL}</a></div></div>'
@@ -188,10 +188,10 @@ def main_html():
 <section class="sek band auf-dunkel kr-vorteile-sek"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Was wir bieten</span><h2>Deine Vorteile bei uns.</h2></div><div class="kr-bieten">{bieten}</div></div></section>
 {vergleich}
 {wen}
-<section class="sek kr-stellen-sek" id="stellen"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Offene Stellen</span><h2>Hier steigst du ein.</h2><p class="lead">Kein Anschreiben, kein Lebenslauf nötig.</p></div><div class="kr-stellen">{stellen}</div><p class="kr-initiativ reveal">Nichts Passendes dabei, aber du hast richtig Bock? Dann bewirb dich einfach initiativ. <a href="#bewerben" data-stelle="initiativ">Initiativ bewerben {PFEIL}</a></p></div></section>
+<section class="sek kr-stellen-sek" id="stellen"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Offene Stellen</span><h2>Hier steigst du ein.</h2><p class="lead">Lebenslauf ist uns egal. Wichtig ist, dass du Gas gibst.</p></div><div class="kr-stellen">{stellen}</div><p class="kr-initiativ reveal">Nichts Passendes dabei, aber du hast richtig Bock? Dann bewirb dich einfach initiativ. <a href="#bewerben" data-stelle="initiativ">Initiativ bewerben {PFEIL}</a></p></div></section>
 <section class="sek grund kr-ablauf-sek" id="ablauf"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">So läuft die Bewerbung</span><h2>So kommst du zu uns.</h2></div><ol class="kr-ablauf">{ablauf}</ol></div></section>
 <section class="sek team-sek kr-team-sek" id="team"><div class="wrap"><div class="kopfzeile mitte reveal"><span class="kicker">Das Team</span><h2>Hier ist noch Platz.</h2></div><div class="kr-team"><article class="team-karte reveal"><div class="tk-bild"><img data-k='[[0.2928,0.0166,0.4037,0.4099]]' src="/static/assets/img/team/team-noah-gross.webp" alt="Noah" width="800" height="1000" loading="lazy" decoding="async"><div class="tk-name"><b>Noah</b><span>Inhaber</span></div></div><p>Arbeitet dich persönlich ein.</p></article><article class="team-karte reveal"><div class="tk-bild"><img data-k='[[0.2363,0.0431,0.2914,0.2959]]' src="/static/assets/img/team/team-robert-gross.webp" alt="Robert" width="800" height="1000" loading="lazy" decoding="async"><div class="tk-name"><b>Robert</b><span>Shooting &amp; Schnitt</span></div></div><p>Dreht bei den Betrieben vor Ort.</p></article>{du}</div></div></section>
-<section class="sek kr-bewerben-sek auf-dunkel" id="bewerben"><img class="kr-bhg" src="/static/assets/img/karriere/sonnenuntergang-1600.webp" alt="" loading="lazy" decoding="async"><div class="wrap"><div class="kr-bewerben"><div class="kr-btext reveal"><span class="kicker">Schnellbewerbung</span><h2>Bewirb dich in zwei Minuten.</h2><p class="lead">Ein paar kurze Fragen, kein Anschreiben, kein Lebenslauf. Deine Bewerbung landet direkt bei Noah.</p><p class="kr-direkt"><a href="tel:+4981947174990">{TEL} +49 8194 7174990</a><a href="mailto:info@handwerksmanufaktur.digital">{MAIL} info@handwerksmanufaktur.digital</a></p></div>
+<section class="sek kr-bewerben-sek auf-dunkel" id="bewerben"><img class="kr-bhg" src="/static/assets/img/karriere/sonnenuntergang-1600.webp" alt="" loading="lazy" decoding="async"><div class="wrap"><div class="kr-bewerben"><div class="kr-btext reveal"><span class="kicker">Schnellbewerbung</span><h2>Bewirb dich in zwei Minuten.</h2><p class="lead">Ein paar kurze Fragen, dauert eine Minute. Deine Bewerbung landet direkt bei Noah.</p><p class="kr-direkt"><a href="tel:+4981947174990">{TEL} +49 8194 7174990</a><a href="mailto:info@handwerksmanufaktur.digital">{MAIL} info@handwerksmanufaktur.digital</a></p></div>
 <form class="kr-form kr-quiz reveal" action="#" method="post" novalidate><input type="hidden" name="access_key" value="9a4e6ba4-58e9-4782-8953-e53eed867640"><input type="hidden" name="subject" value="Neue Bewerbung über handwerksmanufaktur.digital"><input type="hidden" name="from_name" value="HWM-Seite · Bewerbung"><input type="checkbox" name="botcheck" class="rd-honig" tabindex="-1" autocomplete="off" aria-hidden="true">
 <button type="button" class="kq-zurueck" hidden>{ZURUECK} Zurück</button>
 <fieldset class="kq-schritt an" data-k="stelle"><legend>Für welche Stelle willst du dich bewerben?</legend><div class="kq-wahl">{wahl}</div></fieldset>
@@ -303,9 +303,10 @@ STIL = """<style>
 .kq-fertig{display:grid;gap:6px;padding:24px;border-radius:16px;background:var(--bronze-hauch)}.kq-fertig b{font-size:22px}
 @media (max-width:640px){.kq-wahl,.kq-wahl.kq-drei{grid-template-columns:1fr}.kq-zeile{grid-template-columns:1fr}.kr-quiz{min-height:0}}
 @media (max-width:480px){.hk-karriere .hero-fakten{font-size:13.5px;gap:6px 12px}.hk-karriere .hero-fakten .stern{display:none}}
+@media (min-width:901px){.kr-stellen-sek .kopfzeile>.lead{text-align:right;justify-self:end}}
 .kr-team{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;max-width:1080px;margin:0 auto}
 .kr-team .team-karte{padding:0 0 20px}
-.kr-team .team-karte p{text-align:center;margin:16px 18px 0;font-size:15px;line-height:1.45;color:var(--tinte-3)}
+.kr-team .team-karte p{text-align:center;line-height:1.45;margin:16px 18px 0;padding:0!important;white-space:normal!important;font-size:15px;line-height:1.45;color:var(--tinte-3)}
 .kr-team .tk-knopf{justify-content:center}
 .kr-team .team-karte .tk-name b{font-size:clamp(22px,2vw,30px)}
 .kr-bewerben{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(32px,5vw,80px);align-items:start}
