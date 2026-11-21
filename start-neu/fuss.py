@@ -17,6 +17,11 @@ def fuss_neu(h):
     assert n == 1, "kontakt-f fehlt"
     h = re.sub(r'<div class="fuss-gewerke">.*?</ul></div>', '', h, flags=re.S)
     assert 'fuss-gewerke' not in h.split('<footer', 1)[-1] and 'Einsatzgebiet' not in h.split('<footer', 1)[-1]
+    # Karriereseite (Noah, 21.11.2026): Link im Fuß unter „Unternehmen“, und die „Wir suchen dich“-Karte im Team zeigt auf
+    # /karriere/ statt auf den alten Opener-Funnel
+    if '<a href="/karriere/">Karriere</a>' not in h:
+        h = h.replace('<li><a href="/ueber-uns/">Über uns</a></li>', '<li><a href="/ueber-uns/">Über uns</a></li><li><a href="/karriere/">Karriere</a></li>', 1)
+    h = h.replace('href="https://jobs.die-handwerksmanufaktur.de/" rel="noopener"', 'href="/karriere/"')
     return h
 
 
