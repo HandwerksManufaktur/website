@@ -29,23 +29,23 @@ ARBEIT = Path("/tmp/hwm-raster")
 # k → (Live-URL, Form). Form: "" normale Kachel, "breit" über alle Spalten, "zwei" zwei Spalten breit
 SEITEN = {
     "entenmann": ("https://entenmann-preview.pages.dev/", "breit"),   # Domain zeigt noch nicht auf die neue Seite (21.11.2026)
-    "irlbacher": ("https://www.hs-irlbacher.de/", ""), "sdhirsch": ("https://sdhirsch.de/", ""),
-    "schillinger": ("https://meisterschillinger.de/", ""), "koller": ("https://zimmerei-koller.com/", ""),
+    "irlbacher": ("https://www.hs-irlbacher.de/", "breit"), "sdhirsch": ("https://sdhirsch.de/", ""),
+    "schillinger": ("https://meisterschillinger.de/", ""), "koller": ("https://zimmerei-koller.com/", "breit"),
     "dinkel": ("https://dinkel-metallbau.de/", ""), "ww": ("https://w-w-bau.com/", ""),
     "knappich": ("https://zimmerei-knappich.de/", ""), "hirschvogel": ("https://kuechenhaus-hirschvogel.de/", ""),
-    "kirchner": ("https://kirchner-thaining.de/", ""), "wohner": ("https://elektrotechnik-wohner.de/", ""),
+    "kirchner": ("https://kirchner-thaining.de/", ""), "wohner": ("https://elektrotechnik-wohner.de/", "zwei"),
     "baureize": ("https://baureize.de/", ""), "resch": ("https://resch-kinsau.de/", ""),
     "hindelang": ("https://planung-hindelang.de/", ""), "kraus": ("https://dachbau-kraus.de/", ""),
     "schwaighofer": ("http://schwaighofer-betontechnik.de/", ""), "vogel": ("https://vogel-holzbau.de/", ""),
     "maser": ("https://tankschutz-landsberg.de/", ""), "kreitner": ("https://schreinerei-kreitner.de/", "zwei"),
     "erisried": ("https://www.schustererisried.de/", ""), "wagenknecht": ("https://juwelier-wagenknecht.de/", ""),
     "weber": ("https://weber-metalltechnik.com/", ""), "mueller": ("https://mueller-maler-meister.de/", ""),
-    "ess": ("https://erwin-schmidt-sohn.de/", ""),
+    "ess": ("https://erwin-schmidt-sohn.de/", "zwei"),
 }
 FORM = {"": (1280, 800, 1440), "breit": (1920, 960, 1920), "zwei": (1640, 560, 1440), "gross": (1200, 1140, 1440)}
 # Große Kacheln (2 × 2) sind am Desktop fast quadratisch (819 × 781 px gemessen): eigener Film h<k>-q.webm in 1200 × 1140,
 # damit nichts abgeschnitten wird; der 16:10-Film h<k>.webm bleibt für Handy/Tablet (data-src-mobil).
-GROSS = {"irlbacher", "koller", "wohner", "ess"}
+GROSS = set()  # seit 21.11.2026 keine quadratischen Kacheln mehr (Noah: „eher waagrecht, irlbacher ist schon fast senkrecht und die seite ist abgeschnitten“)
 
 
 def vorher_quellen():

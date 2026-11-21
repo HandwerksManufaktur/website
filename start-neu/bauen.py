@@ -744,10 +744,10 @@ KATEGORIE = {
     "Entenmann Haustechnik": "SHK · Heizung, Bad &amp; Wärmepumpe", "Irlbacher Gebäudetechnik": "SHK · Heizung, Sanitär &amp; Lüftung",
     "SD Hirsch": "Rohrformteile · Auto &amp; Energie", "Björn Schillinger": "Schreinerei · Möbel nach Maß",
     "Zimmerei Koller": "Zimmerei · Holzhausbau", "Dinkel Metallbau": "Metallbau · Treppen &amp; Geländer",
-    "W&amp;W Bau": "Bau · Altbausanierung &amp; Hochbau", "Zimmerei Knappich": "Zimmerei · Massivholz &amp; Dach",
+    "W&amp;W Bau": "Bau · Altbau &amp; Hochbau", "Zimmerei Knappich": "Zimmerei · Massivholz &amp; Dach",
     "Küchenhaus Hirschvogel": "Küchenstudio", "Baustoffe Kirchner": "Tiefbau · Baustoffe &amp; Container",
     "Wohner Elektrotechnik": "Elektro · PV, Speicher &amp; Wallbox", "Baureize": "Maurer · Mauerwerk &amp; Estrich",
-    "Resch Bau": "Baugeschäft · Massivbau", "Planung Hindelang": "Holzbauplanung · Energieberatung",
+    "Resch Bau": "Baugeschäft · Massivbau", "Planung Hindelang": "Planung · Holzbau &amp; Energie",
     "Dachbau Kraus": "Dach · Flachdach &amp; Fassade", "Schwaighofer": "Betonbau · Landwirtschaft",
     "Erwin Schmidt &amp; Sohn": "SHK · Heizung &amp; Bad", "Vogel Holzbau": "Zimmerei · Holzbau &amp; Hallen",
     "Maser Tankschutz": "Tankschutz · Heizöltanks", "Schreinerei Kreitner": "Schreinerei · Barrierefreies Wohnen",
@@ -1171,33 +1171,34 @@ assert len(_arts) == len(_klassen) == 24, (len(_arts), len(_klassen))
 # Kreitner liegt deshalb als „zwei“ (2 Spalten × 1 Reihe) neben Schuster Erisried; im Zweierraster sind zwei/groß/breit volle Reihen.
 _V = "/static/assets/vid/raster"
 _LG = "/static/assets/img/logos/"
-RASTER = [  # (Name, k, Form, Logo, Satz „was wir gemacht haben“ — nur was auf der neuen Seite zu sehen ist)
+RASTER = [  # (Name, k, Form, Logo, Satz) — nur Querformate (Noah, 21.11.2026: „die seiten bei website unterseite eher waagrecht, irlbacher
+            # ist schon fast senkrecht und die seite ist abgeschnitten“): breit = ganze Reihe 2:1, zwei = 2 Spalten neben einer normalen Kachel
     ("Entenmann Haustechnik", "entenmann", "breit", "logo-entenmann-haustechnik.png", "Eine Seite je Leistung, dazu Wartung und Notdienst auf einer eigenen Seite."),
-    ("Irlbacher Gebäudetechnik", "irlbacher", "gross", "logo-irlbacher.png", "Eigene Seite je Leistung, Fotos vom Shooting und eine Jobseite für Anlagenmechaniker."),
     ("SD Hirsch", "sdhirsch", "", "logo-sd-hirsch-weiss.png", "Eine Seite je Produktgruppe und Anwendung, dazu Downloads und englische Fassung."),
     ("Björn Schillinger", "schillinger", "", "logo-bjoern-schillinger.png", "Eigene Seiten für Schränke, Küchen und Garderoben, dazu Referenzen und Projektanfrage."),
-    ("Zimmerei Koller", "koller", "gross rechts", "logo-zimmerei-koller.png", "Eigene Seiten für Holzhausbau, Aufstockung, Dachgauben und den Außenbereich."),
     ("Dinkel Metallbau", "dinkel", "", "logo-dinkel-metallbau-weiss.png", "Eigene Seite je Gewerk von Treppen bis Zäune, ausgerichtet auf Tübingen und Rottenburg."),
+    ("Irlbacher Gebäudetechnik", "irlbacher", "breit", "logo-irlbacher.png", "Eigene Seite je Leistung, Fotos vom Shooting und eine Jobseite für Anlagenmechaniker."),
     ("W&amp;W Bau", "ww", "", "logo-ww-bau.png", "Sieben Leistungsseiten von Altbausanierung bis Bauleitung, dazu Referenzen und Jobs."),
     ("Zimmerei Knappich", "knappich", "", "logo-zimmerei-knappich.png", "Projektgalerie nach Gewerk sortiert, vom Massivholzhaus bis zum Carport, dazu Teamseite."),
     ("Küchenhaus Hirschvogel", "hirschvogel", "", "logo-kuechenhaus-hirschvogel.png", "Eine Seite je Küchenlinie, dazu ein Beispielkauf und Kundenstimmen."),
+    ("Zimmerei Koller", "koller", "breit", "logo-zimmerei-koller.png", "Eigene Seiten für Holzhausbau, Aufstockung, Dachgauben und den Außenbereich."),
     ("Baustoffe Kirchner", "kirchner", "", "logo-baustoffe-thaining-kirchner.png", "Eine Seite je Leistung von Tiefbau bis Containerdienst, dazu Teamseite und Jobs."),
-    ("Wohner Elektrotechnik", "wohner", "gross", "wohner_elektrotechnik_weiss_cropped.png", "Eine Seite für PV, Speicher und Wallbox mit Projekten, Kundenstimmen und Anfrage."),
+    ("Wohner Elektrotechnik", "wohner", "zwei", "wohner_elektrotechnik_weiss_cropped.png", "Eine Seite für PV, Speicher und Wallbox mit Projekten, Kundenstimmen und Anfrage."),
     ("Baureize", "baureize", "", "logo-baureize.png", "Schlanke Seite für Maurer- und Estricharbeiten mit Galerie und Teamseite."),
     ("Resch Bau", "resch", "", "logo-resch-bau.png", "Seiten für Leistungen, Massivhausbau und Team, dazu der AwSV-Fachbetrieb."),
     ("Planung Hindelang", "hindelang", "", "logo-planung-hindelang.png", "Je Leistung eine Seite, von Laserscanning über Drohne bis Heizlast und Energieausweis."),
+    ("Erwin Schmidt &amp; Sohn", "ess", "zwei", "logo-erwin-schmidt-sohn-weiss.png", "Seiten für Sanitär, Heizung und Erneuerbare, dazu Ratgeber und Jobseite."),
     ("Dachbau Kraus", "kraus", "", "logo-dachbau-kraus-gmbh.png", "Eine Seite je Dacharbeit und Fassade für Gewerbe, dazu Galerie und Karriereseite."),
     ("Schwaighofer", "schwaighofer", "", "logo-schwaighofer-betontechnik-logo.png", "Eine Seite je Bauart, von Hallenbau bis Melkroboterumbau, für die Landwirtschaft."),
-    ("Erwin Schmidt &amp; Sohn", "ess", "gross rechts", "logo-erwin-schmidt-sohn-weiss.png", "Seiten für Sanitär, Heizung und Erneuerbare, dazu Ratgeber und Jobseite."),
     ("Vogel Holzbau", "vogel", "", "logo-thomas-vogel-holzbau.png", "Eigene Seiten für Holzrahmenbau, Massivholz, Hallen und Sanierung, dazu ein Leitfaden."),
     ("Maser Tankschutz", "maser", "", "logo-maser-tankschutz-logo.png", "Eine Seite je Tankarbeit von Demontage bis Neuaufstellung, die Zertifizierung gut sichtbar."),
-    ("Schreinerei Kreitner", "kreitner", "zwei", "logo-schreinerei-kreitner.png", "Seiten für Bad, Küche, Türen, Treppen und Fenster, Schwerpunkt barrierefreies Wohnen."),
     ("Schuster Erisried", "erisried", "", "logo-schuster-landmaschinen-agrartechnik.png", "Seiten für Werkstatt, Landwirtschaft, Güterverkehr und Unimog-Teile, dazu Karriereseite."),
+    ("Schreinerei Kreitner", "kreitner", "zwei", "logo-schreinerei-kreitner.png", "Seiten für Bad, Küche, Türen, Treppen und Fenster, Schwerpunkt barrierefreies Wohnen."),
     ("Juwelier Wagenknecht", "wagenknecht", "", "logo-juwelier-wagenknecht-farbe.png", "Werkstatt und Ankauf im Fokus, die Hausgeschichte seit 1908 als Bildfolge."),
     ("Weber Metallbau", "weber", "", "w/logo-weber-metallbau.webp", "Vom Blechstapel zum fertigen Teil als Bildstrecke, dazu Anlagendaten und Anfrage."),
     ("Malermeister Müller", "mueller", "", "logo-malermeister-mueller.png", "Eigene Seite je Arbeit von Fassade bis Beschriftung, Projektanfrage direkt oben."),
 ]
-_FILM = {"": (1280, 800), "gross": (1200, 1140), "gross rechts": (1200, 1140), "breit": (1920, 960), "zwei": (1640, 560)}
+_FILM = {"": (1280, 800), "breit": (1920, 960), "zwei": (1640, 560)}
 
 
 def _logo_mass(datei):
@@ -1206,9 +1207,9 @@ def _logo_mass(datei):
     im = Image.open(WURZEL / ("static/assets/img/logos/" + datei)).convert("RGBA")
     bb = im.getchannel("A").getbbox() or (0, 0, *im.size)
     r = (bb[2] - bb[0]) / max(1, bb[3] - bb[1])
-    h = max(32, min(68, (7600 / r) ** .5)); b = h * r
-    if b > 190:
-        b = 190; h = b / r
+    h = max(22, min(34, (2200 / r) ** .5)); b = h * r
+    if b > 88:
+        b = 88; h = b / r
     return round(b), round(h)
 
 
@@ -1230,8 +1231,9 @@ def _raster_karte(name, k, form, logo, satz):
             f'<img class="ra-seite" data-src="{_V}/s{k}.webp" alt="" aria-hidden="true" decoding="async">'
             + (f'<img class="ra-alt" data-src="{_V}/v{k}.webp" alt="Die alte Website von {name}" decoding="async">'
                f'<button class="ra-vorher" type="button" aria-pressed="false" aria-label="Alte Website von {name} zeigen">Vorher</button>' if vorher else "")
-            + f'</div><div class="unten"><small>{KATEGORIE[name]}</small><b>{name}</b><p class="ra-satz">{satz}</p>'
-            f'<div class="zeile"><span class="ra-logo"><img loading="lazy" src="{_LG}{logo}" alt="Logo {name}" width="{lb}" height="{lh}" style="width:{lb}px;height:{lh}px"></span></div></div></article>')
+            + f'</div><div class="unten"><small>{KATEGORIE[name]}</small><div class="ra-kopf"><b>{name}</b>'
+            f'<span class="ra-logo"><img loading="lazy" src="{_LG}{logo}" alt="Logo {name}" width="{lb}" height="{lh}" style="width:{lb}px;height:{lh}px"></span></div>'
+            f'<p class="ra-satz">{satz}</p></div></article>')
 
 
 _namen_quelle = {re.search(r"<b>(.*?)</b>", x).group(1) for x in _arts}
@@ -1239,7 +1241,7 @@ assert "Senftleben Haustechnik" in _namen_quelle  # steht noch in der Vorlage, f
 _neu = [_raster_karte(*r) for r in RASTER]
 assert len(_neu) == 24 and len({r[0] for r in RASTER}) == 24 and not any("Senftleben" in x for x in _neu)
 # Plätze im Dreierraster: breit 3, groß 4, zwei 2, normal 1 → muss aufgehen (sonst Lücke in der letzten Reihe)
-assert sum({"breit": 3, "gross": 4, "gross rechts": 4, "zwei": 2, "": 1}[r[2]] for r in RASTER) % 3 == 0
+assert sum({"breit": 3, "zwei": 2, "": 1}[r[2]] for r in RASTER) % 3 == 0 and not any(r[2].startswith("gross") for r in RASTER)
 # Zweierraster: breit/groß/zwei je eine volle Reihe, die normalen paarweise
 assert sum(1 for r in RASTER if not r[2]) % 2 == 0
 RASTER_STIL = (
@@ -1260,15 +1262,17 @@ RASTER_STIL = (
     '#arbeiten .projekt{grid-template-columns:minmax(0,1fr)}#arbeiten .projekt .schirm{width:100%;min-width:0}'
     '#arbeiten .projekt .unten{display:flex;flex-direction:column;gap:6px;min-width:0}'
     '#arbeiten .ra-satz{margin:2px 0 0;font-size:16px;line-height:1.45;color:var(--tinte-2);max-width:44ch}'
-    '#arbeiten .projekt .unten .zeile{margin-top:auto;padding-top:10px}'
-    '#arbeiten .ra-logo{display:inline-flex;align-items:center;justify-content:center;height:86px;min-width:100px;padding:0 18px;border-radius:10px;background:var(--tinte)}'
+    '#arbeiten .ra-kopf{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;min-width:0}''#arbeiten .ra-kopf b{min-width:0;line-height:1.3}#arbeiten .projekt:not(.breit) .ra-kopf b{min-height:2.6em}''@media (max-width:1000px){#arbeiten .projekt.breit .ra-kopf b{min-height:2.6em}}''#arbeiten .projekte{container-type:inline-size}''#arbeiten .projekt .unten small{white-space:nowrap}@media (max-width:1000px){#arbeiten .projekt .unten small{white-space:normal;line-height:1.3;min-height:2.6em}}''#arbeiten .projekte{grid-auto-flow:row dense}'
+    '#arbeiten .ra-logo{flex:none;display:inline-flex;align-items:center;justify-content:center;height:56px;min-width:72px;padding:0 12px;border-radius:10px;background:var(--tinte)}'
     '#arbeiten .projekt .unten .zeile .ra-logo img{display:block;max-width:100%;max-height:100%;object-fit:contain;background:none;padding:0;border-radius:0}'
     '#arbeiten .projekt.zwei{grid-column:span 2;display:flex;flex-direction:column}'
     '#arbeiten .projekt.zwei .schirm.film{flex:1;aspect-ratio:auto;min-height:220px}'
     '#arbeiten .schirm.film video.hero-lauf{object-fit:cover;object-position:left top}'
     '@media (max-width:1000px){#arbeiten .projekt.zwei{grid-column:1 / -1}#arbeiten .projekt.zwei .schirm.film{flex:none;aspect-ratio:2/1;min-height:0}}'
     '@media (max-width:700px){#arbeiten .projekt.zwei .schirm.film,#arbeiten .projekt.breit .schirm.film{aspect-ratio:16/10}'
-    '#arbeiten .ra-logo{height:64px}#arbeiten .ra-satz{font-size:15px}}'
+    '#arbeiten .ra-logo{height:48px}#arbeiten .ra-satz{font-size:15px}}'
+    # doppelt breite Kachel: Film genau so hoch wie der Film der Nachbarkachel (16:10 einer Spalte), sonst steht ihr Name tiefer (Design-Tor A)
+    '@media (min-width:1001px){#arbeiten .projekte .projekt.zwei .schirm.film{flex:none;aspect-ratio:auto;min-height:0;height:calc((100cqw - 2 * var(--gap)) / 3 * 10 / 16)}}'
     '</style>')
 RASTER_JS = (
     '<script>(()=>{const sek=document.getElementById("arbeiten");if(!sek)return;'
@@ -1354,7 +1358,7 @@ WU_SEK = ('<section class="sek band auf-dunkel bento-sek ablauf-web"><div class=
           f'<div class="bento">{"".join(_web_zellen)}</div></div></section>'
           '<style>@media (min-width:901px){.ablauf-web .bento{grid-template-columns:repeat(9,minmax(0,1fr))}'
           '.ablauf-web .web-fotos{grid-column:1/span 3;grid-row:1/span 2;min-height:0}'
-          '.ablauf-web .web-fotos .handys-k{left:0;right:0;top:clamp(40px,4vw,64px);justify-content:center;gap:0}''.ablauf-web .web-fotos .handys-k img{width:clamp(170px,15.5vw,228px)}.ablauf-web .web-fotos .handys-k img+img{margin-left:-96px}.ablauf-web .web-fotos .handys-k img:first-child{position:relative;z-index:2}'  # Monteur vorn, sein Kopf bleibt frei
+          '.ablauf-web .web-fotos .handys-k{left:0;right:0;top:clamp(40px,4vw,64px);justify-content:center;gap:0}''.ablauf-web .web-fotos .handys-k img{width:clamp(170px,calc(10.5vw + 72px),228px)}.ablauf-web .web-fotos .handys-k img+img{margin-left:-96px;transform:rotate(-3deg) translateY(90px)}.ablauf-web .web-fotos .handys-k img:first-child{position:relative;z-index:2}'  # Monteur vorn, sein Kopf bleibt frei
           '.ablauf-web .web-seiten{grid-column:4/span 6;grid-row:1}'
           '.ablauf-web .z-klein{grid-column:span 2;grid-row:2;min-height:260px}'
           '.ablauf-web .web-zwei{display:grid;grid-template-columns:1fr 1fr;gap:12px}.ablauf-web .web-zwei .tickets{margin:8px 0 22px}'
@@ -1363,7 +1367,7 @@ WU_SEK = ('<section class="sek band auf-dunkel bento-sek ablauf-web"><div class=
           '.ablauf-web .handys-k img{width:clamp(150px,13vw,196px);aspect-ratio:9/16;border-radius:16px;object-fit:cover;border:2px solid rgba(250,247,241,.28);'
           'transform:rotate(3deg);box-shadow:0 20px 40px -20px rgba(0,0,0,.7);transition:transform .5s var(--ease)}'
           '.ablauf-web .handys-k img:nth-child(2){transform:rotate(-3deg) translateY(14px)}'
-          '.ablauf-web .web-fotos:hover .handys-k img{transform:rotate(5deg) translateY(-6px)}.ablauf-web .web-fotos:hover .handys-k img:nth-child(2){transform:rotate(-5deg) translateY(8px)}'
+          '.ablauf-web .web-fotos:hover .handys-k img{transform:rotate(5deg) translateY(-6px)}.ablauf-web .web-fotos:hover .handys-k img:nth-child(2){transform:rotate(-5deg) translateY(84px)}'
           '.ablauf-web .web-ic{width:56px;height:56px;border-radius:16px;background:rgba(250,247,241,.08);box-shadow:inset 0 0 0 1px rgba(250,247,241,.12);display:grid;place-items:center;'
           'margin:18px 0 auto;transition:transform var(--schnell),background var(--schnell)}'
           '.ablauf-web .web-ic svg{width:26px;height:26px;fill:none;stroke:var(--bronze-hell);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}'
