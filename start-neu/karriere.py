@@ -20,6 +20,7 @@ WURZEL = HIER.parent
 sys.path.insert(0, str(HIER))
 from fuss import fuss_neu
 
+ZURUECK = '<svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>'
 PFEIL = '<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
 HAKEN = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 7"/></svg>'
 PLUS = '<span class="plus"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>'
@@ -124,7 +125,7 @@ FRAGEN = [
     ("Brauche ich Erfahrung?", "Für die Opener-Stelle nicht, du wirst eingearbeitet. Im Account Management hilft Erfahrung mit Meta-Ads, im Backoffice Erfahrung im Büro."),
     ("Wo arbeite ich?", "Von wo du willst. Wir arbeiten komplett remote, Noah selbst ist viel unterwegs."),
     ("Wie wird bezahlt?", "Als Opener bekommst du ein Fixum, dazu Provision pro erschienenem Termin und pro Abschluss. Die beiden anderen Stellen haben eine feste Vergütung. Die Zahlen nennen wir dir im ersten Gespräch."),
-    ("Muss ich einen Lebenslauf schicken?", "Nein. Wenn du einen hast oder ein LinkedIn-Profil, kannst du im Formular einen Link angeben."),
+    ("Muss ich einen Lebenslauf schicken?", "Nein. Ein paar kurze Fragen im Formular reichen, den Rest klären wir am Telefon."),
     ("Was passiert nach dem Absenden?", "Deine Bewerbung landet direkt bei Noah. Er meldet sich bei dir am Telefon oder per Mail."),
 ]
 
@@ -136,73 +137,74 @@ def main_html():
     ic = lambda d: f'<span class="kr-ic"><svg viewBox="0 0 24 24" aria-hidden="true">{d}</svg></span>'
     bieten = (
         '<article class="kb kb-a reveal"><img src="/static/assets/img/karriere/a-calls-1400.webp" alt="Call mit Laptop am Strand" loading="lazy" decoding="async">'
-        '<span class="kr-verlauf" aria-hidden="true"></span><div class="kb-text"><span class="kb-kicker">Freiheit</span><h3>Arbeite von überall.</h3>'
-        '<p>Du brauchst Laptop, gutes Internet und den Anspruch zu liefern. Wir messen Ergebnisse, keine Stunden.</p></div></article>'
-        '<article class="kb kb-zahl reveal"><b class="kb-gross">150+</b><h3>Betriebe betreut</h3><p>Du verkaufst und betreust etwas, das nachweislich funktioniert.</p></article>'
-        '<article class="kb kb-zahl reveal"><b class="kb-gross">5,0<span>★</span></b><h3>Sterne bei Google</h3><p>Unsere Kunden empfehlen uns weiter.</p></article>'
-        '<article class="kb kb-team reveal"><img src="/static/assets/img/karriere/a-team-1400.webp" alt="" loading="lazy" decoding="async"><span class="kb-kicker">Das Team</span><h3>Ein Team, das sich gegenseitig pusht.</h3>'
-        '<p>Hier zieht keiner allein. Wir teilen, was funktioniert, geben uns ehrliches Feedback und werden zusammen jeden Monat besser.</p></article>'
-        f'<article class="kb reveal">{ic(IC_WACHSEN)}<h3>Du wächst mit</h3><p>Wer liefert, übernimmt schnell mehr Verantwortung.</p><span class="kb-leiter"><span>Opener</span><i>→</i><span>Setter</span><i>→</i><span>Closer</span></span></article>'
-        f'<article class="kb reveal">{ic(IC_INHABER)}<h3>1-zu-1 mit Noah</h3><p>Du wirst persönlich eingearbeitet und bekommst unser ganzes Wissen.</p></article>'
-        f'<article class="kb kb-breit reveal">{ic(IC_KI)}<h3>Werkzeuge, die mitarbeiten</h3><p>Den Kleinkram erledigen unsere Systeme, du kümmerst dich um das, was zählt.</p>'
-        '<span class="kb-chips"><span>CRM</span><span>Automationen</span><span>eigene KI-Agenten</span></span></article>')
+        '<span class="kr-verlauf" aria-hidden="true"></span><div class="kb-text"><span class="kb-kicker">100 % remote</span><h3>Arbeite von überall.</h3>'
+        '<p>Du brauchst einen Laptop, gutes Internet und den Anspruch, Ergebnisse zu liefern. Von wo aus, ist uns egal.</p></div></article>'
+        '<article class="kb kb-zahl reveal"><b class="kb-gross">150+</b><h3>Betriebe betreut</h3><p>Du arbeitest mit einem validierten, ehrlichen Produkt, das für die Betriebe funktioniert.</p></article>'
+        '<article class="kb kb-zahl reveal"><b class="kb-gross">5,0<span>★</span></b><h3>Sterne bei Google</h3><p>Bei über 50 Bewertungen von unseren Kunden.</p></article>'
+        '<article class="kb kb-team reveal"><span class="kb-kicker">Das Team</span><h3>Ein Kern-Team, das sich gegenseitig pusht.</h3>'
+        '<p>Klein, schnell und jeder gibt Gas. Wenn einer rausfindet, was funktioniert, kriegen es alle mit. So wächst jeder über sich hinaus.</p></article>'
+        f'<article class="kb reveal">{ic(IC_WACHSEN)}<h3>Du wächst mit</h3><p>Wer Gas gibt, übernimmt bei uns schnell mehr Verantwortung.</p><span class="kb-leiter"><span>Opener</span><i>→</i><span>Setter</span><i>→</i><span>Closer</span></span></article>'
+        f'<article class="kb reveal">{ic(IC_INHABER)}<h3>1-zu-1 mit Noah</h3><p>Du wirst step by step an die Hand genommen und bekommst das Wissen aus Coachings, in die wir fünfstellig investiert haben.</p></article>'
+        f'<article class="kb kb-breit reveal">{ic(IC_KI)}<h3>Viel läuft automatisch</h3><p>Unsere KI-Agents übernehmen einen großen Teil vom Kleinkram. Du kümmerst dich um das, was wirklich zählt.</p>'
+        '<span class="kb-chips"><span>CRM</span><span>Automationen</span><span>KI-Agents</span></span></article>')
     ablauf = "".join(f'<li class="kr-schritt reveal"><span class="kr-snr">{i + 1}</span><h3>{t}</h3><p>{x}</p></li>'
                      for i, (t, x) in enumerate(ABLAUF))
-    du = "".join(f'<a class="team-karte team-du kr-du reveal" href="#bewerben" data-stelle="{s["id"]}"><div class="tk-bild">'
-                 f'<img src="/static/assets/img/team/team-du.webp" alt="" width="800" height="1000" loading="lazy" decoding="async">'
-                 f'<div class="tk-name"><b>Du?</b><span>{s["kurz"]}</span></div></div><p class="tk-knopf">Jetzt bewerben {PFEIL}</p></a>'
-                 for s in STELLEN)
+    du = ('<article class="team-karte reveal"><div class="tk-bild"><img src="/static/assets/img/team/team-rudolf.webp" alt="Rudolf" width="800" height="1000" loading="lazy" decoding="async">'
+          '<div class="tk-name"><b>Rudolf</b><span>Websites &amp; Anzeigen</span></div></div><p>Baut die Seiten und Anzeigen.</p></article>'
+          f'<a class="team-karte team-du kr-du reveal" href="#bewerben"><div class="tk-bild"><img src="/static/assets/img/team/team-du.webp" alt="" width="800" height="1000" loading="lazy" decoding="async">'
+          f'<div class="tk-name"><b>Du?</b><span>Dein Platz im Team</span></div></div><p class="tk-knopf">Jetzt bewerben {PFEIL}</p></a>')
     KENNEN = [
-        ("mission", "Unsere Mission", "Wir bringen Handwerksbetriebe online nach vorn: mit Websites, die Aufträge bringen, und Anzeigen, die Kunden und Mitarbeiter finden.", "Noah mit einem Kunden auf dem Betriebshof", "50% 30%"),
-        ("geschichte", "Unsere Geschichte", "Noah kommt aus einer Handwerkerfamilie und hat 2019 angefangen. Heute betreuen wir über 150 Betriebe in Deutschland, Österreich und der Schweiz.", "Noah am Laptop", "60% 35%"),
-        ("setup", "Unser Setup", "Komplett remote. Wo du arbeitest, ist deine Sache, solange die Ergebnisse stimmen. Freiheit und Verantwortung gehören bei uns zusammen.", "Arbeitsplatz mit Laptop am Strand", "50% 50%"),
-        ("kultur", "Unsere Kultur", "Jeder trägt sein Ergebnis. Feedback ist Werkzeug, keine Strafe. Und wir pushen uns gegenseitig, statt Ellenbogen auszufahren.", "Noah und ein Kollege lachen beim gemeinsamen Arbeiten", "50% 40%"),
+        ("mission", "Unsere Mission", "Wir sorgen dafür, dass Handwerksbetriebe online gefunden werden und darüber neue Kunden & Mitarbeiter bekommen. Mit Websites, Google und Anzeigen.", "Noah mit einem Kunden auf dem Betriebshof", "50% 30%"),
+        ("geschichte", "Unsere Geschichte", "Noah kommt selbst aus einer Handwerkerfamilie und hat die HandwerksManufaktur 2019 gegründet. Mittlerweile haben wir über 150 Betriebe betreut.", "Noah am Laptop", "60% 35%"),
+        ("setup", "Unser Setup", "Wir arbeiten komplett remote. Wo du sitzt, ist im Endeffekt egal, Hauptsache die Ergebnisse passen.", "Arbeitsplatz mit Laptop am Strand", "50% 50%"),
+        ("kultur", "Unsere Kultur", "Wir bauen ein Team aus A-Playern, die Vollgas geben und sich gegenseitig pushen. Feedback gibt’s bei uns direkt und ehrlich.", "Noah und ein Kollege lachen beim gemeinsamen Arbeiten", "50% 40%"),
     ]
     kennen = ('<section class="sek kr-kennen-sek" id="kennenlernen"><div class="wrap"><div class="kopfzeile mitte reveal"><span class="kicker">Lerne uns kennen</span>'
               '<h2>Wir sind die HandwerksManufaktur.</h2></div><div class="kr-kennen">' + "".join(
                   f'<article class="kr-kk reveal"><figure><img src="/static/assets/img/karriere/a-{k}-800.webp" alt="{alt}" loading="lazy" decoding="async" style="object-position:{pos}"></figure>'
                   f'<h3>{titel}</h3><p>{text}</p></article>' for k, titel, text, alt, pos in KENNEN) + '</div></div></section>')
-    JA = ["Ein Angebot, das funktioniert: über 150 Betriebe, 5,0 bei Google.", "Klare Ziele und Zahlen, an denen du dich messen kannst.",
-          "Ehrliches Feedback, jede Woche.", "Freie Wahl, von wo du arbeitest.", "Aufstieg nach Leistung, nicht nach Dienstjahren."]
-    NEIN = ["Stechuhr und Anwesenheitspflicht.", "Politik und Ellenbogen.", "Meetings, die zu nichts führen.",
-            "Jemanden, der dir über die Schulter schaut.", "Ein Team, das sich mit Mittelmaß zufriedengibt."]
+    JA = ["Ein Produkt, das für die Betriebe ein No-Brainer ist.", "Klare Ziele und Zahlen, damit du immer weißt, wo du stehst.",
+          "Direktes Feedback, auch wenn’s mal unangenehm ist.", "Remote arbeiten, von wo du willst.", "Aufstieg nach Leistung, nicht nach Dauer."]
+    NEIN = ["Pendeln ins Büro.", "Ellenbogen-Mentalität.", "Meetings ohne Ergebnis.", "Mikromanagement.", "Leute, die nur Dienst nach Vorschrift machen."]
     x_ic = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>'
-    vergleich = ('<section class="sek kr-vgl-sek"><div class="wrap"><div class="kopfzeile mitte reveal"><span class="kicker">Ehrlich gesagt</span>'
-                 '<h2>Was du bei uns findest. Und was nicht.</h2></div><div class="kr-vgl">'
-                 '<div class="kr-vgl-ja reveal"><h3>Das findest du bei uns</h3>' + liste(JA) + '</div>'
-                 '<div class="kr-vgl-nein reveal"><h3>Das findest du nicht</h3><ul>' + "".join(f"<li>{x_ic}<span>{x}</span></li>" for x in NEIN) + '</ul></div>'
+    vergleich = ('<section class="sek kr-vgl-sek"><div class="wrap"><div class="kopfzeile mitte reveal"><span class="kicker">Gut zu wissen</span>'
+                 '<h2>Was dich bei uns erwartet.</h2></div><div class="kr-vgl">'
+                 '<div class="kr-vgl-ja reveal"><h3>Das bekommst du</h3>' + liste(JA) + '</div>'
+                 '<div class="kr-vgl-nein reveal"><h3>Das gibt’s bei uns nicht</h3><ul>' + "".join(f"<li>{x_ic}<span>{x}</span></li>" for x in NEIN) + '</ul></div>'
                  '</div></div></section>')
     wen = ('<section class="sek kr-wen-sek"><div class="wrap"><div class="duo"><div class="text reveal"><span class="kicker">Wen wir suchen</span>'
            '<h2>Leute, die richtig gut sein wollen.</h2>'
-           '<p class="lead">Wir suchen keine Lebensläufe, sondern Leute, die liefern. Ob du schon Erfahrung hast, ist zweitrangig. Wichtig ist, dass du richtig gut werden willst.</p>'
-           + liste(["Du gibst dich nicht mit Durchschnitt zufrieden.", "Du übernimmst Verantwortung für deine Ergebnisse.",
-                    "Du hast Lust auf ein Team, das sich gegenseitig pusht."]) +
+           '<p class="lead">Wir schauen nicht auf deinen Lebenslauf, sondern darauf, ob du Vollgas gibst. Erfahrung ist schön, aber kein Muss.</p>'
+           + liste(["Du gibst Vollgas, auch wenn’s mal zäh wird.", "Du übernimmst Verantwortung für deine Ergebnisse.",
+                    "Du hast Bock auf ein Team, das sich gegenseitig pusht."]) +
            f'<div class="knopfzeile"><a class="btn btn-bronze" href="#stellen">Offene Stellen ansehen {PFEIL}</a></div></div>'
            '<div class="bild reveal auf"><img src="/static/assets/img/karriere/a-pool-1400.webp" alt="Laptop am Pool mit Blick ins Grüne" loading="lazy" style="object-position:50% 60%"></div></div></div></section>')
     fragen = "".join(f'<details{" open" if i == 0 else ""}><summary>{q}{PLUS}</summary><p>{a}</p></details>' for i, (q, a) in enumerate(FRAGEN))
-    wahl = "".join(f'<label class="sf-chip"><input type="radio" name="stelle" value="{s["titel"]}" data-id="{s["id"]}" required><span>{s["kurz"]}</span></label>'
-                   for s in STELLEN)
+    wahl = "".join(f'<label class="kq-opt"><input type="radio" name="stelle" value="{s["titel"]}" data-id="{s["id"]}"><span>{s["kurz"]}</span></label>'
+                   for s in STELLEN) + '<label class="kq-opt"><input type="radio" name="stelle" value="Initiativbewerbung" data-id="initiativ"><span>Initiativ</span></label>'
     return f'''<main id="inhalt"><section class="hero-klein hk-neu hk-karriere"><div class="hk-film" aria-hidden="true"><div class="hk-lage an hk-einzel"><video class="hk-desk" muted loop playsinline preload="none" data-hand data-src="/static/assets/vid/karriere/hero-d.mp4" poster="/static/assets/vid/karriere/hero-d.jpg"></video><video class="hk-mobil" muted loop playsinline preload="none" data-hand data-src="/static/assets/vid/karriere/hero-m.mp4" poster="/static/assets/vid/karriere/hero-m.jpg"></video></div></div><button class="pause" aria-label="Video anhalten"><svg class="zu" viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg><svg class="an" viewBox="0 0 24 24"><path d="M7 5v14l11-7z"/></svg></button>
-<div class="wrap"><nav class="brot" aria-label="Pfad"><a href="/">Start</a><span>›</span><span>Karriere</span></nav><span class="kicker">Karriere</span><h1>Arbeite von überall. Fürs Handwerk.</h1><p class="lead">Für Leute, die in ihrem Job richtig gut werden wollen<br class="dsk-br"> und dafür Freiheit statt Stechuhr bekommen.</p><div class="knopfzeile"><a class="btn btn-bronze" href="#stellen">Offene Stellen ansehen {PFEIL}</a><a class="btn btn-umriss" href="#kennenlernen">Lerne uns kennen</a></div><div class="hero-fakten"><span><span class="stern">★★★★★</span> <b>5,0</b> auf Google</span><span><b>seit 2019</b> nur Handwerk</span><span><b>150+</b> Betriebe</span><span><b>100 %</b> remote</span></div></div></section>
+<div class="wrap"><nav class="brot" aria-label="Pfad"><a href="/">Start</a><span>›</span><span>Karriere</span></nav><span class="kicker">Karriere</span><h1>Arbeite von überall. Fürs Handwerk.</h1><p class="lead">Gutes Geld verdienen und richtig schnell dazulernen.<br class="dsk-br"> Dafür bauen wir gerade ein kleines Kern-Team auf, das Vollgas gibt.</p><div class="knopfzeile"><a class="btn btn-bronze" href="#stellen">Offene Stellen ansehen {PFEIL}</a><a class="btn btn-umriss" href="#kennenlernen">Lerne uns kennen</a></div><div class="hero-fakten"><span><span class="stern">★★★★★</span> <b>5,0</b> auf Google</span><span><b>150+</b> Betriebe</span><span><b>100 %</b> remote</span></div></div></section>
 {kennen}
 <section class="sek band auf-dunkel kr-vorteile-sek"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Was wir bieten</span><h2>Deine Vorteile bei uns.</h2></div><div class="kr-bieten">{bieten}</div></div></section>
 {vergleich}
 {wen}
-<section class="sek kr-stellen-sek" id="stellen"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Offene Stellen</span><h2>Hier steigst du ein.</h2><p class="lead">Kein Anschreiben, kein Lebenslauf nötig.</p></div><div class="kr-stellen">{stellen}</div></div></section>
+<section class="sek kr-stellen-sek" id="stellen"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Offene Stellen</span><h2>Hier steigst du ein.</h2><p class="lead">Kein Anschreiben, kein Lebenslauf nötig.</p></div><div class="kr-stellen">{stellen}</div><p class="kr-initiativ reveal">Nichts Passendes dabei, aber du hast richtig Bock? Dann bewirb dich einfach initiativ. <a href="#bewerben" data-stelle="initiativ">Initiativ bewerben {PFEIL}</a></p></div></section>
 <section class="sek grund kr-ablauf-sek" id="ablauf"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">So läuft die Bewerbung</span><h2>So kommst du zu uns.</h2></div><ol class="kr-ablauf">{ablauf}</ol></div></section>
 <section class="sek team-sek kr-team-sek" id="team"><div class="wrap"><div class="kopfzeile mitte reveal"><span class="kicker">Das Team</span><h2>Hier ist noch Platz.</h2></div><div class="kr-team"><article class="team-karte reveal"><div class="tk-bild"><img data-k='[[0.2928,0.0166,0.4037,0.4099]]' src="/static/assets/img/team/team-noah-gross.webp" alt="Noah" width="800" height="1000" loading="lazy" decoding="async"><div class="tk-name"><b>Noah</b><span>Inhaber</span></div></div><p>Arbeitet dich persönlich ein.</p></article><article class="team-karte reveal"><div class="tk-bild"><img data-k='[[0.2363,0.0431,0.2914,0.2959]]' src="/static/assets/img/team/team-robert-gross.webp" alt="Robert" width="800" height="1000" loading="lazy" decoding="async"><div class="tk-name"><b>Robert</b><span>Shooting &amp; Schnitt</span></div></div><p>Dreht bei den Betrieben vor Ort.</p></article>{du}</div></div></section>
-<section class="sek kr-bewerben-sek auf-dunkel" id="bewerben"><img class="kr-bhg" src="/static/assets/img/karriere/sonnenuntergang-1600.webp" alt="" loading="lazy" decoding="async"><div class="wrap"><div class="kr-bewerben"><div class="kr-btext reveal"><span class="kicker">Schnellbewerbung</span><h2>Bewirb dich in zwei Minuten.</h2><p class="lead">Kein Anschreiben, kein Lebenslauf. Deine Bewerbung landet direkt bei Noah.</p><p class="kr-direkt"><a href="tel:+4981947174990">{TEL} +49 8194 7174990</a><a href="mailto:info@handwerksmanufaktur.digital">{MAIL} info@handwerksmanufaktur.digital</a></p></div>
-<form class="kr-form reveal" action="#" method="post" novalidate><input type="hidden" name="access_key" value="9a4e6ba4-58e9-4782-8953-e53eed867640"><input type="hidden" name="subject" value="Neue Bewerbung über handwerksmanufaktur.digital"><input type="hidden" name="from_name" value="HWM-Seite · Bewerbung"><input type="checkbox" name="botcheck" class="rd-honig" tabindex="-1" autocomplete="off" aria-hidden="true">
-<fieldset class="kr-feld kr-wahlfeld"><legend>Für welche Stelle?</legend><div class="sf-wahl">{wahl}</div></fieldset>
-<div class="kr-zwei"><label class="kr-feld"><span>Vor- und Nachname</span><input type="text" name="name" autocomplete="name" required></label><label class="kr-feld"><span>Telefonnummer</span><input type="tel" name="telefon" autocomplete="tel" inputmode="tel" placeholder="z. B. 0170 1234567" required></label></div>
-<div class="kr-zwei"><label class="kr-feld"><span>E-Mail-Adresse</span><input type="email" name="email" autocomplete="email" inputmode="email" required></label><label class="kr-feld"><span>Ab wann kannst du starten?</span><input type="text" name="start" placeholder="z. B. sofort oder 1. Januar" required></label></div>
-<label class="kr-feld"><span>Was machst du gerade beruflich?</span><input type="text" name="aktuell" placeholder="z. B. Vertrieb, Studium, Agentur" required></label>
-<fieldset class="kr-feld kr-zeiten" hidden><legend>Kannst du Mo–Do zwischen 7 und 17 Uhr und Fr zwischen 7 und 13 Uhr täglich mindestens 5 Stunden telefonieren?</legend><div class="sf-wahl"><label class="sf-chip"><input type="radio" name="telefonzeit" value="Ja"><span>Ja</span></label><label class="sf-chip"><input type="radio" name="telefonzeit" value="Nein"><span>Nein</span></label></div><p class="kr-hinweis" hidden>Die Telefonzeit ist bei dieser Stelle Voraussetzung, weil wir die Betriebe nur dann erreichen.</p></fieldset>
-<label class="kr-feld"><span>LinkedIn oder Lebenslauf <small>(freiwillig)</small></span><input type="url" name="link" inputmode="url" placeholder="Link einfügen"></label>
-<p class="kr-fehler" hidden>Bitte fülle alle Felder aus und wähle eine Stelle.</p>
-<button type="submit" class="btn btn-bronze kr-senden">Bewerbung abschicken {PFEIL}</button>
-<p class="kr-ds">Mit dem Absenden nutzen wir deine Angaben nur für deine Bewerbung. Mehr in der <a href="/datenschutz/">Datenschutzerklärung</a>.</p>
-<div class="kr-fertig" hidden><b>Danke für deine Bewerbung.</b><span>Noah meldet sich persönlich bei dir.</span></div></form></div></div></section>
+<section class="sek kr-bewerben-sek auf-dunkel" id="bewerben"><img class="kr-bhg" src="/static/assets/img/karriere/sonnenuntergang-1600.webp" alt="" loading="lazy" decoding="async"><div class="wrap"><div class="kr-bewerben"><div class="kr-btext reveal"><span class="kicker">Schnellbewerbung</span><h2>Bewirb dich in zwei Minuten.</h2><p class="lead">Ein paar kurze Fragen, kein Anschreiben, kein Lebenslauf. Deine Bewerbung landet direkt bei Noah.</p><p class="kr-direkt"><a href="tel:+4981947174990">{TEL} +49 8194 7174990</a><a href="mailto:info@handwerksmanufaktur.digital">{MAIL} info@handwerksmanufaktur.digital</a></p></div>
+<form class="kr-form kr-quiz reveal" action="#" method="post" novalidate><input type="hidden" name="access_key" value="9a4e6ba4-58e9-4782-8953-e53eed867640"><input type="hidden" name="subject" value="Neue Bewerbung über handwerksmanufaktur.digital"><input type="hidden" name="from_name" value="HWM-Seite · Bewerbung"><input type="checkbox" name="botcheck" class="rd-honig" tabindex="-1" autocomplete="off" aria-hidden="true">
+<button type="button" class="kq-zurueck" hidden>{ZURUECK} Zurück</button>
+<fieldset class="kq-schritt an" data-k="stelle"><legend>Für welche Stelle willst du dich bewerben?</legend><div class="kq-wahl">{wahl}</div></fieldset>
+<fieldset class="kq-schritt" data-k="telefonzeit" hidden><legend>Kannst du Mo–Do zwischen 7 und 17 Uhr und Fr zwischen 7 und 13 Uhr täglich mindestens 5 Stunden telefonieren?</legend><div class="kq-wahl kq-zwei"><label class="kq-opt"><input type="radio" name="telefonzeit" value="Ja"><span>Ja, passt</span></label><label class="kq-opt"><input type="radio" name="telefonzeit" value="Nein"><span>Nein</span></label></div><p class="kq-hinweis" hidden>Die Telefonzeit ist bei dieser Stelle Voraussetzung, weil wir die Betriebe nur dann erreichen. Schau dir gern die anderen Stellen an.</p></fieldset>
+<fieldset class="kq-schritt" data-k="name" hidden><legend>Wie heißt du?</legend><div class="kq-zeile"><input type="text" name="name" autocomplete="name" placeholder="Vor- und Nachname"><button type="button" class="btn btn-bronze kq-weiter">Weiter {PFEIL}</button></div></fieldset>
+<fieldset class="kq-schritt" data-k="telefon" hidden><legend>Unter welcher Nummer erreichen wir dich?</legend><div class="kq-zeile"><input type="tel" name="telefon" autocomplete="tel" inputmode="tel" placeholder="z. B. 0170 1234567"><button type="button" class="btn btn-bronze kq-weiter">Weiter {PFEIL}</button></div></fieldset>
+<fieldset class="kq-schritt" data-k="email" hidden><legend>Und deine E-Mail-Adresse?</legend><div class="kq-zeile"><input type="email" name="email" autocomplete="email" inputmode="email" placeholder="name@beispiel.de"><button type="button" class="btn btn-bronze kq-weiter">Weiter {PFEIL}</button></div></fieldset>
+<fieldset class="kq-schritt" data-k="start" hidden><legend>Ab wann könntest du starten?</legend><div class="kq-wahl kq-drei"><label class="kq-opt"><input type="radio" name="start" value="Sofort"><span>Sofort</span></label><label class="kq-opt"><input type="radio" name="start" value="In 2–4 Wochen"><span>In 2–4 Wochen</span></label><label class="kq-opt"><input type="radio" name="start" value="In 1–3 Monaten"><span>In 1–3 Monaten</span></label></div></fieldset>
+<fieldset class="kq-schritt" data-k="aktuell" hidden><legend>Was machst du gerade beruflich?</legend><div class="kq-wahl"><label class="kq-opt"><input type="radio" name="aktuell" value="Angestellt"><span>Angestellt</span></label><label class="kq-opt"><input type="radio" name="aktuell" value="Selbstständig"><span>Selbstständig</span></label><label class="kq-opt"><input type="radio" name="aktuell" value="Studium oder Ausbildung"><span>Studium oder Ausbildung</span></label><label class="kq-opt"><input type="radio" name="aktuell" value="Gerade auf der Suche"><span>Gerade auf der Suche</span></label></div></fieldset>
+<div class="kq-fertig" hidden><b>Geschafft, danke!</b><span>Noah meldet sich persönlich bei dir.</span></div>
+<p class="kq-fehler" hidden></p>
+<div class="kq-fuss"><div class="kq-balken" aria-hidden="true"><i></i></div><span class="kq-stand">Fast geschafft</span></div>
+<p class="kr-ds">Mit dem Absenden nutzen wir deine Angaben nur für deine Bewerbung. Mehr in der <a href="/datenschutz/">Datenschutzerklärung</a>.</p></form></div></div></section>
 <section class="sek faq"><div class="wrap"><div class="zwei"><div class="links reveal"><span class="kicker">Häufige Fragen</span><h2>Was Bewerber oft fragen.</h2>
 <div class="anker"><p>Noch etwas offen? Ruf an, am Telefon bist du direkt bei Noah.</p><a class="btn btn-tinte" href="tel:+4981947174990">{TEL} +49 8194 7174990</a></div></div><div class="reveal">{fragen}</div></div></div></section></main>'''
 
@@ -282,9 +284,26 @@ STIL = """<style>
 .kr-vgl h3{margin:0;font-size:clamp(22px,2vw,28px);letter-spacing:-.025em}
 .kr-vgl ul{list-style:none;margin:0;padding:0;display:grid;gap:14px}.kr-vgl li{display:grid;grid-template-columns:22px 1fr;gap:12px;font-size:16.5px;line-height:1.5;color:var(--tinte-2)}
 .kr-vgl li svg{width:22px;height:22px;margin-top:1px;fill:none;stroke-width:2.6}.kr-vgl-ja li svg{stroke:var(--bronze)}.kr-vgl-nein li svg{stroke:var(--tinte-4)}.kr-vgl-nein li span{color:var(--tinte-3)}
-.kb-leiter{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:4px}.kb-leiter span{padding:6px 12px;border-radius:999px;background:rgba(200,135,58,.16);color:var(--bronze-hell);font-size:13.5px;font-weight:700}.kb-leiter i{font-style:normal;color:var(--tinte-4)}
+.kb-leiter{display:flex;flex-wrap:nowrap;align-items:center;gap:2px;margin-top:4px;white-space:nowrap}.kb-leiter span{padding:5px 7px;font-size:13px!important;border-radius:999px;background:rgba(200,135,58,.16);color:var(--bronze-hell);font-size:13.5px;font-weight:700}.kb-leiter i{font-style:normal;color:var(--tinte-4)}
 @media (max-width:760px){.kr-vgl{grid-template-columns:1fr}}
-.kr-team{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px}
+.kr-initiativ{margin:22px 0 0;font-size:16.5px;color:var(--tinte-3)}.kr-initiativ a{display:inline-flex;align-items:center;gap:6px;margin-left:6px;font-weight:700;color:var(--tinte);text-decoration:underline;text-underline-offset:4px}.kr-initiativ a svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2}
+.kr-quiz{gap:20px;min-height:420px;align-content:start}
+.kq-schritt{border:0;margin:0;padding:0;min-width:0;display:grid;gap:18px;animation:kqrein .35s var(--ease)}@keyframes kqrein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.kq-schritt legend{padding:0;margin:0 0 18px;font-size:clamp(22px,2.2vw,30px);font-weight:800;letter-spacing:-.025em;line-height:1.2;color:var(--tinte)}
+.kq-wahl{display:grid;grid-template-columns:1fr 1fr;gap:12px}.kq-wahl.kq-drei{grid-template-columns:repeat(3,1fr)}
+.kq-opt{position:relative;cursor:pointer}.kq-opt input{position:absolute;width:1px;height:1px;opacity:0;clip-path:inset(50%)}
+.kq-opt span{display:flex;align-items:center;min-height:64px;padding:14px 18px;border-radius:16px;border:1.5px solid var(--linie);background:var(--papier);font-weight:700;font-size:16.5px;line-height:1.25;transition:border-color var(--schnell),background var(--schnell),transform var(--schnell)}
+.kq-opt:hover span{border-color:var(--bronze);transform:translateY(-2px)}.kq-opt input:checked+span{background:var(--tinte);border-color:var(--tinte);color:var(--papier)}.kq-opt input:focus-visible+span{outline:2px solid var(--bronze);outline-offset:2px}
+.kq-zeile{display:grid;grid-template-columns:1fr auto;gap:12px}.kq-zeile input{min-height:60px;border-radius:16px;border:1.5px solid var(--linie);background:var(--papier);padding:0 18px;font:inherit;font-size:17px;color:var(--tinte)}
+.kq-zeile input:focus{outline:0;border-color:var(--bronze);background:#fff}.kq-zeile input.fehlt{border-color:#C0392B}.kq-zeile .btn{min-height:60px}
+.kq-zurueck{justify-self:start;display:inline-flex;align-items:center;gap:6px;border:0;background:none;padding:6px 0;font:inherit;font-size:14.5px;font-weight:600;color:var(--tinte-3);cursor:pointer;min-height:44px}.kq-zurueck svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2}
+.kq-hinweis,.kq-fehler{margin:0;font-size:15px;font-weight:600;color:#A0322A}
+.kq-fuss{display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;margin-top:6px}.kq-balken{height:8px;border-radius:999px;background:var(--papier-2);overflow:hidden}
+.kq-balken i{display:block;height:100%;background:linear-gradient(90deg,var(--bronze),var(--bronze-hell));transform-origin:left;transform:scaleX(.38);transition:transform .5s var(--ease)}.kq-stand{font-size:13.5px;font-weight:700;color:var(--bronze-tief);white-space:nowrap}
+.kq-fertig{display:grid;gap:6px;padding:24px;border-radius:16px;background:var(--bronze-hauch)}.kq-fertig b{font-size:22px}
+@media (max-width:640px){.kq-wahl,.kq-wahl.kq-drei{grid-template-columns:1fr}.kq-zeile{grid-template-columns:1fr}.kr-quiz{min-height:0}}
+@media (max-width:480px){.hk-karriere .hero-fakten{font-size:13.5px;gap:6px 12px}.hk-karriere .hero-fakten .stern{display:none}}
+.kr-team{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;max-width:1080px;margin:0 auto}
 .kr-team .team-karte{padding:0 0 20px}
 .kr-team .team-karte p{text-align:center;margin:16px 18px 0;font-size:15px;line-height:1.45;color:var(--tinte-3)}
 .kr-team .tk-knopf{justify-content:center}
@@ -318,29 +337,39 @@ STIL = """<style>
 .kr-fertig{display:grid;gap:6px;padding:20px;border-radius:16px;background:var(--bronze-hauch)}
 .kr-fertig b{font-size:18px}
 .kr-form.gesendet>*:not(.kr-fertig){display:none}
-@media (max-width:1100px){.kr-werte{grid-template-columns:repeat(2,minmax(0,1fr))}.kr-ablauf{grid-template-columns:repeat(2,minmax(0,1fr))}.kr-team{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:1100px){.kr-werte{grid-template-columns:repeat(2,minmax(0,1fr))}.kr-ablauf{grid-template-columns:repeat(2,minmax(0,1fr))}.kr-team{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:1100px){.kr-vorteile{grid-template-columns:repeat(2,minmax(0,1fr))}.kr-vgross{min-height:440px}}@media (max-width:900px){.kr-spalten,.kr-vorteile{grid-template-columns:1fr}.kr-vgross{grid-column:auto;grid-row:auto;min-height:420px}.kr-bewerben{grid-template-columns:1fr}.kr-btext{position:static}.dsk-br{display:none}}
-@media (max-width:760px){.kr-stelle summary{grid-template-columns:1fr auto;align-items:start}.kr-nr{display:none}.kr-werte,.kr-ablauf{grid-template-columns:1fr}.kr-team{grid-template-columns:repeat(2,minmax(0,1fr))}.kr-team>:first-child{grid-column:span 2}.kr-team>:first-child .tk-bild{aspect-ratio:16/11}.kr-zwei{grid-template-columns:1fr}.kr-senden{justify-self:stretch;justify-content:center}}
+@media (max-width:760px){.kr-stelle summary{grid-template-columns:1fr auto;align-items:start}.kr-nr{display:none}.kr-werte,.kr-ablauf{grid-template-columns:1fr}.kr-team{grid-template-columns:repeat(2,minmax(0,1fr))}.kr-zwei{grid-template-columns:1fr}.kr-senden{justify-self:stretch;justify-content:center}}
 </style>"""
 
-SKRIPT = """<script>
-(()=>{const f=document.querySelector('.kr-form');if(!f)return;const $=(s,r=f)=>r.querySelector(s),$$=(s,r=f)=>[...r.querySelectorAll(s)];
-const zeiten=$('.kr-zeiten'),hinweis=$('.kr-hinweis',zeiten),fehler=$('.kr-fehler');
+SKRIPT = r"""<script>
+(()=>{const f=document.querySelector('.kr-quiz');if(!f)return;const $=(s,r=f)=>r.querySelector(s),$$=(s,r=f)=>[...r.querySelectorAll(s)];
+const schritte=$$('.kq-schritt'),zur=$('.kq-zurueck'),bal=$('.kq-balken i'),stand=$('.kq-stand'),fehler=$('.kq-fehler');let weg=[0];
+const idx=k=>schritte.findIndex(s=>s.dataset.k===k);
 const opener=()=>{const c=$('input[name=stelle]:checked');return c&&c.dataset.id==='opener'};
-const pruefen=()=>{zeiten.hidden=!opener();if(!opener())$$('input[name=telefonzeit]').forEach(i=>i.checked=false);$$('input[name=telefonzeit]').forEach(i=>i.required=opener());hinweis.hidden=!(opener()&&$('input[name=telefonzeit][value=Nein]').checked)};
-f.addEventListener('change',pruefen);
-const waehle=id=>{const i=$(`input[name=stelle][data-id="${id}"]`);if(i){i.checked=true;pruefen()}};
+const reihe=()=>['stelle',...(opener()?['telefonzeit']:[]),'name','telefon','email','start','aktuell'];
+// Balken startet schon bei gut einem Drittel und wirkt weiter, als er ist
+const zeig=i=>{schritte.forEach((s,j)=>{s.hidden=j!==i;s.classList.toggle('an',j===i)});const r=reihe(),pos=r.indexOf(schritte[i].dataset.k);
+ const anteil=0.38+0.6*(pos/(r.length-1));bal.style.transform=`scaleX(${anteil})`;stand.textContent=pos>=r.length-2?'Fast geschafft':pos===0?'Dauert nur eine Minute':'Gleich geschafft';
+ zur.hidden=weg.length<2;fehler.hidden=true;const e=$('input:not([type=radio])',schritte[i]);if(e&&matchMedia('(pointer:fine)').matches)e.focus({preventScroll:true})};
+const weiter=()=>{const r=reihe(),k=schritte[weg[weg.length-1]].dataset.k,n=r[r.indexOf(k)+1];if(n){weg.push(idx(n));zeig(weg[weg.length-1])}else senden()};
+zur.addEventListener('click',()=>{if(weg.length>1){weg.pop();zeig(weg[weg.length-1])}});
+const telOk=v=>v.replace(/\D/g,'').length>=6&&/^[+()\d\s\/.-]+$/.test(v.trim()),mailOk=v=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
+const pruef=s=>{const e=$('input:not([type=radio])',s);if(!e)return true;const v=e.value.trim();const ok=e.name==='telefon'?telOk(v):e.name==='email'?mailOk(v):v.length>2;
+ e.classList.toggle('fehlt',!ok);if(!ok){fehler.textContent=e.name==='telefon'?'Bitte eine Telefonnummer eintragen.':e.name==='email'?'Bitte eine gültige E-Mail-Adresse eintragen.':'Bitte deinen Namen eintragen.';fehler.hidden=false;e.focus()}return ok};
+$$('.kq-weiter').forEach(b=>b.addEventListener('click',()=>{if(pruef(b.closest('.kq-schritt')))weiter()}));
+$$('.kq-schritt input:not([type=radio])').forEach(e=>e.addEventListener('keydown',ev=>{if(ev.key==='Enter'){ev.preventDefault();if(pruef(e.closest('.kq-schritt')))weiter()}}));
+$$('.kq-opt input').forEach(r=>r.addEventListener('click',()=>{const s=r.closest('.kq-schritt');if(s.hidden)return;
+ if(s.dataset.k==='telefonzeit'){const nein=r.value==='Nein';$('.kq-hinweis',s).hidden=!nein;if(nein)return}
+ if(s.dataset.k!=='telefonzeit')$$('input[name=telefonzeit]').forEach(x=>{if(!opener())x.checked=false});
+ setTimeout(weiter,220)}));
+const waehle=id=>{const i=$(`input[name=stelle][data-id="${id}"]`);if(!i)return;i.checked=true;weg=[0];weiter()};
 document.querySelectorAll('[data-stelle]').forEach(a=>a.addEventListener('click',()=>waehle(a.dataset.stelle)));
-const telOk=v=>v.replace(/\\D/g,'').length>=6&&/^[+()\\d\\s\\/.-]+$/.test(v.trim()),mailOk=v=>/^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$/.test(v.trim());
-f.addEventListener('submit',async e=>{e.preventDefault();let ok=true;
- const st=$('input[name=stelle]:checked');$('.kr-wahlfeld').classList.toggle('fehlt',!st);if(!st)ok=false;
- $$('input[required]:not([type=radio])').forEach(i=>{const v=i.value.trim();const g=v.length>1&&(i.name!=='telefon'||telOk(v))&&(i.name!=='email'||mailOk(v));i.classList.toggle('fehlt',!g);if(!g)ok=false});
- if(opener()){const t=$('input[name=telefonzeit]:checked');zeiten.classList.toggle('fehlt',!t);if(!t)ok=false;if(t&&t.value==='Nein'){hinweis.hidden=false;ok=false}}
- fehler.hidden=ok;if(!ok){const x=$('.fehlt');if(x)x.scrollIntoView({block:'center',behavior:'smooth'});return}
- const k=$('.kr-senden');k.disabled=true;const fd=new FormData(f);fd.set('subject','Neue Bewerbung: '+st.value);fd.append('Seite',location.pathname);
- try{const r=await fetch('https://api.web3forms.com/submit',{method:'POST',body:fd});if(!r.ok)throw 0}catch(x){k.disabled=false;fehler.textContent='Das hat nicht geklappt. Ruf gern direkt an: +49 8194 7174990';fehler.hidden=false;return}
- f.classList.add('gesendet');$('.kr-fertig').hidden=false;document.dispatchEvent(new CustomEvent('hwm:bewerbung',{detail:{stelle:st.dataset.id}}));});
-const h=location.hash.match(/^#bewerben-(\\w+)/);if(h)waehle(h[1]);})();
+async function senden(){const st=$('input[name=stelle]:checked');stand.textContent='Wird gesendet …';const fd=new FormData(f);fd.set('subject','Neue Bewerbung: '+(st?st.value:''));fd.append('Seite',location.pathname);
+ try{const r=await fetch('https://api.web3forms.com/submit',{method:'POST',body:fd});if(!r.ok)throw 0}catch(x){fehler.textContent='Das hat nicht geklappt. Ruf gern direkt an: +49 8194 7174990';fehler.hidden=false;stand.textContent='Fast geschafft';return}
+ schritte.forEach(s=>s.hidden=true);zur.hidden=true;$('.kq-fertig').hidden=false;bal.style.transform='scaleX(1)';stand.textContent='Geschafft';
+ document.dispatchEvent(new CustomEvent('hwm:bewerbung',{detail:{stelle:st&&st.dataset.id}}))}
+zeig(0);const h=location.hash.match(/^#bewerben-(\w+)/);if(h)waehle(h[1]);})();
 </script>"""
 
 

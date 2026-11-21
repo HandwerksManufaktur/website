@@ -60,6 +60,56 @@ def bilder():
         print("✓ Bild", kurz)
 
 
+def globus_ruhig(datei, zoom=1.07):
+    """Globus-Clip ruhigstellen (Noah, 21.11.2026: „ein bisschen stabilisieren … soll sich drehen, aber geil positioniert“).
+    Erkennt den Globus je Bild als Kreis, glättet die Mittelpunkte und hält ihn per Ausschnitt an einer festen Stelle."""
+    import cv2, numpy as np
+    cap = cv2.VideoCapture(str(datei)); bilder = []
+    while True:
+        ok, f = cap.read()
+        if not ok: break
+        bilder.append(f)
+    H, W = bilder[0].shape[:2]
+    mitte = []
+    for f in bilder:
+        g = cv2.medianBlur(cv2.cvtColor(cv2.resize(f, (W // 4, H // 4)), cv2.COLOR_BGR2GRAY), 5)
+        c = cv2.HoughCircles(g, cv2.HOUGH_GRADIENT, dp=1.2, minDist=200, param1=80, param2=30, minRadius=H // 16, maxRadius=H // 8)
+        mitte.append(c[0][0][:2] * 4 if c is not None else None)
+    bekannt = np.array([m for m in mitte if m is not None])
+    c0 = np.median(bekannt, 0)
+    # Die Kreiserkennung trifft eher den Ständer-Ring; die Bildmitte des Globus selbst ist der Schwerpunkt der hellen Fläche
+    hell = []
+    for f in bilder[::4]:
+        g = cv2.cvtColor(cv2.resize(f, (W // 4, H // 4)), cv2.COLOR_BGR2GRAY)
+        _, m = cv2.threshold(g, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        mo = cv2.moments(m); hell.append([mo["m10"] / mo["m00"] * 4, mo["m01"] / mo["m00"] * 4])
+    globus = np.median(np.array(hell), 0)
+    # Kreiserkennung schwankt selbst um ±20 px; das echte Wackeln misst der feste Ring um den Globus (Kanten, Phasenkorrelation)
+    yy, xx = np.mgrid[:H, :W]; d = np.hypot(xx - c0[0], yy - c0[1]); r = H / 2
+    maske = ((d > r * 0.92) & (d < r * 1.25)).astype(np.float32)
+    kante = lambda f: cv2.GaussianBlur(cv2.Canny(f, 60, 150).astype(np.float32) * maske, (0, 0), 3)
+    ref = kante(bilder[0]); vers = [np.zeros(2)]
+    for f in bilder[1:]:
+        (dx, dy), _ = cv2.phaseCorrelate(ref, kante(f)); vers.append(np.array([dx, dy]))
+    vers = np.array(vers); mitte = c0 + vers
+    k = 3; glatt = np.array([mitte[max(0, i - k // 2):i + k // 2 + 1].mean(0) for i in range(len(mitte))])
+    schnitt = glatt.mean(0)
+    hw, hh = W / zoom / 2, H / zoom / 2
+    ziel = schnitt  # Bildaufbau der Aufnahme bleibt (Globus sitzt dort schon mittig), nur das Wackeln geht raus
+    zx = min(max(ziel[0], hw + 30), W - hw - 30); zy = min(max(ziel[1], hh + 20), H - hh - 20)
+    roh = Path(str(datei) + ".roh.mp4")
+    pr = subprocess.Popen(["ffmpeg", "-nostdin", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "bgr24", "-s", f"{W}x{H}", "-r", "25", "-i", "-",
+                           "-c:v", "libx264", "-crf", "18", "-preset", "medium", "-pix_fmt", "yuv420p", str(roh)], stdin=subprocess.PIPE)
+    for f, m in zip(bilder, glatt):
+        cx = min(max(zx + (m[0] - schnitt[0]), hw), W - hw); cy = min(max(zy + (m[1] - schnitt[1]), hh), H - hh)
+        x0, y0 = int(round(cx - hw)), int(round(cy - hh))
+        aus = f[y0:y0 + int(2 * hh), x0:x0 + int(2 * hw)]
+        pr.stdin.write(cv2.resize(aus, (W, H), interpolation=cv2.INTER_LANCZOS4).tobytes())
+    pr.stdin.close(); pr.wait()
+    roh.replace(datei)
+    print("  Globus ruhiggestellt, Wackeln vorher ±%.0f px" % np.abs(vers - vers.mean(0)).max())
+
+
 def film():
     VID.mkdir(parents=True, exist_ok=True)
     teile = []
@@ -82,6 +132,9 @@ def film():
         shutil.copy(VID / f"_teil{i}d.mp4", CACHE / f"{schl}d.mp4"); shutil.copy(VID / f"_teil{i}m.mp4", CACHE / f"{schl}m.mp4")
         print("  Szene", i, flush=True)
         teile.append(i)
+    for i, (pfad, *_r) in enumerate(FILM):
+        if "C1536" in pfad:
+            globus_ruhig(VID / f"_teil{i}d.mp4")
     for art, crf in (("d", "27"), ("m", "28")):
         liste = VID / f"_liste{art}.txt"
         liste.write_text("".join(f"file '_teil{i}{art}.mp4'\n" for i in teile))
