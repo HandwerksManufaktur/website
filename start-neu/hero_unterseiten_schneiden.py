@@ -32,6 +32,8 @@ QUELLEN = Path(os.environ.get("QUELLEN", "."))
 ENT = Path("/Users/noahs/CEO-GPT/kunden/entenmann/material/shooting-final/Entenmann Headervideo Website 4K.mp4")
 CSFILM = Path("/Volumes/Extreme Pro/2025/Kunden/Shooting CS Metalldesign/CS Metalldesign.mp4")
 BAUREIZEFILM = Path("/Volumes/Extreme Pro/2025/Kunden/Shooting Baureize/Baureize original.mp4")
+KOLLERFILM = Path("/Volumes/Extreme Pro/2026/Deutschland/Shooting Koller/Final Zimmerei Koller.mp4")
+RESCHFILM = Path("/Volumes/Extreme Pro/2025/Kunden/Shooting A. Resch Bau/Resch Bau.mp4")
 KAPSTADT = Path("/Volumes/Extreme Pro/2025/Kapstadt, Südafrika/Kamera Videos")
 KOLLER = Path("/Volumes/Extreme Pro/2026/Deutschland/Shooting Koller")
 KREITNER = Path("/Volumes/Extreme Pro/2025/Kunden/Shooting Schreinerei Kreitner/Schreinerei Kreitner Video.mp4")
@@ -69,12 +71,13 @@ SEITEN = {
     # Neukundengewinnung (Noah, 21.11.2026: Fischer-Film „trash“, nur 960×540 hochskaliert, Drohne „nicht clean in einer Linie“
     # → komplett ersetzt): Koller-Shooting 4K (S-Log3 → LUT, Drohne Rec709 → GRADE) + zwei Entenmann-Einstellungen, die auf
     # /websites/ nicht laufen (Transporter vor dem Kundenhaus, Monteure an der Haustür)
-    "neukundengewinnung": [(kol("DJI_20260428175407_0005_D.MP4"), 19.5, 2.2, .52, "grade"),  # Drohne senkrecht, steht still, Transporter fahren aus dem Hof
-                           (kol("C2415.MP4"), 0.0, 1.2, .85, "lut"),     # Zimmerer steigt lachend in den Transporter
-                           (kol("C2416.MP4"), 1.6, 1.8, .32, "lut"),     # Transporter-Front mit Logo, Kamera gleitet (vor 1,5 s Bewegungsunschärfe)
-                           (kol("C2374.MP4"), 21.0, 2.0, .40, "lut"),    # Transporter fährt los, auf die Kamera zu
-                           (ENT, B[15] + .05, B[16] - B[15] - .10, .40, ""),   # Entenmann-Transporter vor dem Kundenhaus
-                           (ENT, B[20] + .05, B[21] - B[20] - .10, .50, "")],  # Monteure an der Haustür
+    # Noah, 21.11.2026: „nicht diesen Switch von Koller auf einmal zu Entenmann … einfach Close-ups verwenden: Schweißen,
+    # Säge von Koller, Drahtdrehen von Resch, Akkuschrauber, der sich dreht“
+    "neukundengewinnung": [(CSFILM, 2.04, 1.6, .55, ""),                 # CS: Schweißen, rote Handschuhe (Close-up)
+                           (KOLLERFILM, 3.68, 1.4, .50, ""),             # Koller: Säge, Späne fliegen (Close-up)
+                           (RESCHFILM, 8.45, 0.85, .55, ""),               # Resch: Draht an der Bewehrung drehen (Close-up)
+                           (ENT, 25.12, 0.95, .50, "")],                 # Entenmann: Rohrschneider dreht sich am Rohr (Close-up, vor dem nächsten Schnitt)
+ # Monteure an der Haustür
     # Mitarbeitergewinnung (Noah, 21.11.2026: „nicht einfach das von Resch, sondern da kannst du das von Koller nehmen“):
     # Koller-Team im 4K-Original, S-Log3 über NS 06
     # Noah, 21.11.2026: „kürzere zusammengeschnittene clips nimm einfach die was wir bei koller so auch drin hatten nur bisschen anders
@@ -85,7 +88,9 @@ SEITEN = {
                              # (Noah, 21.11.2026: „nicht zwei clips wo sie hinlaufen bei koller, unnötig“ → zweite Team-Szene raus)
                              (kol("C2412.MP4"), 2.6, 0.9, .58, "lut"),   # Säge, zweiter Moment
                              (kol("C2391.MP4"), 4.6, 0.9, .42, "lut"),   # Akkuschrauber, zweiter Moment
-                             (kol("C2409.MP4"), 3.4, 1.2, .55, "lut")],  # Stapler, Fahrer winkt
+                             (KOLLERFILM, 7.28, 1.3, .50, ""),          # Martin fährt Stapler (statt Winken)
+                             (KOLLERFILM, 14.48, 1.3, .50, "")],        # Close-up: Sägeblatt im Balken (vorletzte Foto-&-Video-Lage)
+    # (Noah, 21.11.2026: „das Video, wo Martin winkt, kommt raus … wie er im Stapler fährt … lieber noch die Close-ups … vom vorletzten Video von Foto und Video“)
     # (Noah, 21.11.2026: „da wo der eine mitarbeiter komplett still in die kamera starrt weg und manche andere, was da sonst nicht
     # drin waren, auch raus“ → nur die bisherigen Koller-Clips, junger Zimmerer C2371 und die Neuzugänge raus)
     # Noah, 21.11.2026: „da kannst meinetwegen das gruppen-ding von kreitner nehmen … aber rest was anderes, nicht kreitner drohne“
@@ -94,12 +99,14 @@ SEITEN = {
     # nur die freigegebene Kreitner-Gruppe bleibt
     # Noah, 21.11.2026: „nicht nur kreitner … wo sind die guten clips cs metalldesign … bei baureize mit dem laser … und paar andere gut“
     # → die im Showreel freigegebenen Stellen aus den 4K-Originalfilmen (CS Metalldesign.mp4, Baureize original.mp4), schon gegradet
-    "suchmaschinenoptimierung": [(CSFILM, 2.04, 1.6, .55, ""),        # CS: Schweißen, rote Handschuhe
-                                 (BAUREIZEFILM, 20.67, 1.6, .55, ""),  # Baureize: grüner Linienlaser
-                                 (KREITNER, 12.1, 2.4, .50, ""),       # Kreitner: Team mit Kundin, lachend
-                                 (CSFILM, 9.96, 1.9, .50, ""),         # CS: Schleifer lacht
+    "suchmaschinenoptimierung": [(BAUREIZEFILM, 20.67, 1.6, .55, ""),  # Baureize: grüner Linienlaser
+                                 (CSFILM, 5.97, 1.5, .45, ""),         # CS: Schweißen mit Maske
                                  (BAUREIZEFILM, 12.67, 1.9, .50, ""),  # Baureize: Wolfgang an der Formatkreissäge
-                                 (CSFILM, 5.97, 1.5, .45, "")],        # CS: Schweißen mit Maske
+                                 (KREITNER, 12.1, 2.4, .50, ""),       # Kreitner: Team mit Kundin (zwischen hellen Werkstatt-Szenen)
+                                 (CSFILM, 9.96, 1.9, .50, "")],        # CS: Schleifer lacht
+    # (Noah, 21.11.2026: „den komischen Übergang weg … vom Lasermesser zu Kreitner“ → Kreitner nicht mehr nach dem Laser;
+    #  CS-Schweißen mit roten Handschuhen „kommt beim anderen raus“ → Neukundengewinnung)
+       # CS: Schweißen mit Maske
     # Über uns: Noah am Laptop, nur die Hände auf der Tastatur (Kapstadt C1697).
     # Noah, 21.11.2026: „mach bei über uns das video von mir in singapur raus“ → Café-Szene C2246 raus, auch bei Kontakt
     "ueber-uns": [(KAPSTADT / "C1697.MP4", 2.0, 5.5, .50, "lut"), (KAPSTADT / "C1697.MP4", 10.5, 3.5, .50, "lut")],
