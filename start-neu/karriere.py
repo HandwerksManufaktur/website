@@ -154,10 +154,10 @@ def main_html():
           f'<a class="team-karte team-du kr-du reveal" href="#bewerben"><div class="tk-bild"><img src="/static/assets/img/team/team-du.webp" alt="" width="800" height="1000" loading="lazy" decoding="async">'
           f'<div class="tk-name"><b>Du?</b><span>Dein Platz im Team</span></div></div><p class="tk-knopf">Jetzt bewerben {PFEIL}</p></a>')
     KENNEN = [
-        ("mission", "Unsere Mission", "Wir sorgen dafür, dass Handwerksbetriebe online neue Kunden & Mitarbeiter finden.", "Noah mit einem Kunden auf dem Betriebshof", "50% 30%"),
-        ("geschichte", "Unsere Geschichte", "Noah kommt aus einer Handwerkerfamilie. Seit 2019 über 150 betreute Betriebe.", "Noah am Laptop", "60% 35%"),
-        ("setup", "Unser Setup", "Komplett remote. Wo du sitzt, ist im Endeffekt egal, Hauptsache die Ergebnisse passen.", "Arbeitsplatz mit Laptop am Strand", "50% 50%"),
-        ("kultur", "Unsere Kultur", "A-Player, die Vollgas geben und sich gegenseitig pushen. Feedback gibt’s direkt.", "Noah und ein Kollege lachen beim gemeinsamen Arbeiten", "50% 40%"),
+        ("mission", "Unsere Mission", "Wir sorgen dafür, dass Handwerksbetriebe online gefunden werden und neue Kunden & Mitarbeiter bekommen.", "Noah mit einem Kunden auf dem Betriebshof", "50% 30%"),
+        ("geschichte", "Unsere Geschichte", "Noah kommt selbst aus einer Handwerkerfamilie und hat die HandwerksManufaktur 2019 gegründet. Mittlerweile haben wir über 150 Betriebe betreut.", "Noah am Laptop", "60% 35%"),
+        ("setup", "Unser Setup", "Wir arbeiten komplett remote. Wo du sitzt, ist im Endeffekt egal, Hauptsache die Ergebnisse passen.", "Arbeitsplatz mit Laptop am Strand", "50% 50%"),
+        ("kultur", "Unsere Kultur", "Wir bauen ein Team aus A-Playern, die Vollgas geben und sich gegenseitig pushen. Feedback gibt’s bei uns direkt und ehrlich.", "Noah und ein Kollege lachen beim gemeinsamen Arbeiten", "50% 40%"),
     ]
     kennen = ('<section class="sek kr-kennen-sek" id="kennenlernen"><div class="wrap"><div class="kopfzeile mitte reveal"><span class="kicker">Lerne uns kennen</span>'
               '<h2>Wir sind die HandwerksManufaktur.</h2></div><div class="kr-kennen">' + "".join(
@@ -277,7 +277,7 @@ STIL = """<style>
 .kr-kk figure{margin:0 0 8px;border-radius:calc(var(--radius) - 8px);overflow:hidden;aspect-ratio:4/3}.kr-kk img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s var(--ease)}.kr-kk:hover img{transform:scale(1.05)}
 .kr-kk h3{margin:0 12px;font-size:clamp(21px,1.9vw,26px);letter-spacing:-.025em;line-height:1.15}.kr-kk p{margin:0 12px;color:var(--tinte-3);font-size:15.5px;line-height:1.55}
 .kb-team img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%;opacity:.22;mix-blend-mode:luminosity;transition:opacity .5s var(--ease)}.kb-team:hover img{opacity:.32}.kb-team>*:not(img){position:relative;z-index:1}
-@media (max-width:1100px){.kr-kennen{grid-template-columns:repeat(2,minmax(0,1fr))}}@media (max-width:640px){.kr-kennen{grid-template-columns:1fr}}
+@media (max-width:1280px){.kr-kennen{grid-template-columns:repeat(2,minmax(0,1fr))}}@media (max-width:640px){.kr-kennen{grid-template-columns:1fr}}
 .kr-vgl{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);max-width:1040px;margin:0 auto}
 .kr-vgl>div{border-radius:var(--radius);padding:clamp(26px,3vw,44px);display:grid;align-content:start;gap:18px}
 .kr-vgl-ja{background:#fff;box-shadow:0 0 0 2px var(--bronze)}.kr-vgl-nein{background:var(--papier-2)}
