@@ -1296,12 +1296,12 @@ RASTER_STIL = (
     '#arbeiten .projekt .unten .ra-logo{background:none!important;padding:0!important;height:auto!important;min-width:0!important;border-radius:0!important;box-shadow:none!important}'
     # Raster der Fußzeile: Branche und Name links (immer volle Breite), Logo rechts daneben bis zu seiner Größe, Satz darunter
     # (schmale Kachel: Satz über die volle Breite). Das Logo schrumpft, nie der Name.
-    '#arbeiten .projekt .unten{display:grid!important;grid-template-columns:minmax(max-content,1fr) minmax(0,min(var(--lb),40cqi))!important;grid-template-areas:"k l" "n l" "s l";column-gap:clamp(12px,3cqi,22px);row-gap:6px;align-items:start}'
+    '#arbeiten .projekt .unten{display:grid!important;grid-template-columns:minmax(max-content,1fr) fit-content(min(var(--lb),40cqi))!important;grid-template-areas:"k l" "n l" "s l";column-gap:clamp(12px,3cqi,22px);row-gap:6px;align-items:start}'
     '#arbeiten .projekt .unten .ra-text{display:contents}'
     '#arbeiten .projekt .unten .ra-text small{grid-area:k}#arbeiten .projekt .unten .ra-text b{grid-area:n}#arbeiten .projekt .unten .ra-satz{grid-area:s;width:0;min-width:100%}'
     '#arbeiten .projekt .unten .ra-logo{grid-area:l;align-self:center;justify-self:stretch;display:flex;justify-content:flex-end;min-width:0!important}'
     '#arbeiten .projekt .unten .ra-logo img{width:100%!important;max-width:var(--lb)!important;height:auto!important;max-height:var(--lh)!important;object-fit:contain;object-position:right center}'
-    '@container (max-width:460px){#arbeiten .projekt .unten{grid-template-areas:"k l" "n l" "s s"}#arbeiten .projekt .unten .ra-logo img{max-height:min(var(--lh),42px)!important}}'
+    '@container (max-width:460px){#arbeiten .projekt .unten{grid-template-areas:"k l" "n l" "s s"}#arbeiten .projekt .unten .ra-logo img{max-height:min(var(--lh),58px)!important}}'
     '</style>')
 RASTER_JS = (
     '<script>(()=>{const sek=document.getElementById("arbeiten");if(!sek)return;'
