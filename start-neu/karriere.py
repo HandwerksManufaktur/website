@@ -37,16 +37,16 @@ STELLEN = [
         "id": "opener", "bereich": "Vertrieb", "titel": "Opener (m/w/d)", "kurz": "Opener",
         "fakten": ["Remote", "Vollzeit", "ab sofort"],
         "satz": "Du rufst Handwerksbetriebe an und legst Termine für unser Sales-Team.",
-        "aufgaben": ["Du rufst Inhaber von Handwerksbetrieben an, 150 bis 200 Anwahlen am Tag.",
+        "aufgaben": ["Du telefonierst mit Inhabern von Handwerksbetrieben.",
                      "Du weckst Interesse und legst qualifizierte Termine in den Kalender unseres Sales-Teams.",
                      "Du hältst jeden Anruf sauber im CRM fest.",
                      "Läuft es gut, wirst du schnell Setter und später auch Closer."],
-        "mitbringen": ["Lust auf Kaltakquise und ein dickes Fell.",
+        "mitbringen": ["Lust aufs Telefonieren und ein dickes Fell.",
                        "Ruhiger Arbeitsplatz, Headset und stabiles Internet.",
                        "Erfahrung im Vertrieb ist schön, aber kein Muss."],
         "bekommen": ["Fixum, dazu Provision pro erschienenem Termin und pro Abschluss.",
                      "Skripte, einen klaren Ablauf und Einarbeitung direkt durch Noah.",
-                     "Ein Angebot, bei dem Termine leicht kommen: In einer Woche im September hat eine Person über 30 Termine gelegt."],
+                     "Ein Angebot, bei dem Termine leicht kommen."],
         "jp_typ": "FULL_TIME",
     },
     {
@@ -164,10 +164,15 @@ def main_html():
                   f'<h3>{titel}</h3><p>{text}</p></article>' for k, titel, text, alt, pos in KENNEN) + '</div></div></section>')
     # Noah, 21.11.2026: „rechts noch krassere Sachen … die Sektion ist bisschen zu simpel“ → je Zeile: was im normalen Job nervt, daneben wie es bei uns ist
     PAARE = [("Jeden Tag eine Stunde Stau auf dem Weg ins Büro.", "Laptop auf und los, egal von wo du arbeitest."),
+             ("Stempeln um 8, Feierabend erst, wenn der Chef geht.", "Feste Kernzeiten, den Rest teilst du dir selbst ein."),
              ("Ein Gehalt, das gleich bleibt, egal was du leistest.", "Mehr Leistung heißt bei uns auch mehr Geld."),
-             ("Leadlisten, die schon zehnmal abtelefoniert wurden.", "Ein Skript, das funktioniert, und ein klarer Ablauf."),
+             ("Kollegen, die um 16:59 schon die Jacke anhaben.", "Ein Kern-Team, das Bock hat und Vollgas gibt."),
+             ("Jeder macht sein Ding, keiner zieht die anderen mit.", "Wir pushen uns gegenseitig und feiern Erfolge."),
+             ("Seit Jahren dieselben Aufgaben, nichts Neues lernen.", "Wissen aus fünfstelligen Coachings, von Noah."),
              ("Feedback einmal im Jahr, im Mitarbeitergespräch.", "Direktes Feedback, auch wenn’s unangenehm ist."),
              ("Jahrelang warten, bis der Kollege vor dir aufsteigt.", "Opener, Setter, Closer: Aufstieg nach Leistung."),
+             ("Leadlisten, die schon zehnmal abtelefoniert wurden.", "Ein Skript, das funktioniert, und ein klarer Ablauf."),
+             ("Stunden mit Excel und Copy-Paste verbringen.", "Vieles läuft automatisch, du machst das Wichtige."),
              ("Ein Produkt, für das du dich am Telefon schämst.", "Ein Produkt, das für die Betriebe ein No-Brainer ist.")]
     x_ic = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>'
     vergleich = ('<section class="sek kr-vgl-sek"><div class="wrap"><div class="kopfzeile mitte reveal"><span class="kicker">Gut zu wissen</span>'
