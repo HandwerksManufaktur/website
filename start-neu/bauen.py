@@ -642,18 +642,21 @@ s.h = s.h.replace('</head>', '<style>.saeule:nth-child(3) video{object-position:
 # … eine von Kreitner, eine kurze Stelle, wo man Leute sieht“ / Mitte „die vor Ort gedrehten Sachen … Detailaufnahmen von
 # Resch, Koller, Kirchner, Baureize“. Beide aus Kundenmaterial geschnitten (Drive-Rohmaterial, 600×800 Desktop, Handy 360×480
 # bzw. 360×640, stumm), Quelle/Sekunde je Clip:
-#   drohnen-*  (harte Schnitte, je 1,55 s; Stand 18.11. abends: Koller-Pickup und Kirchner raus, Wohner ruhiger):
-#              Koller Dachstuhl-Überflug (Drive Leistungen/DJI_0510, 4,5 s) · Wohner Fahrt schräg aufs PV-Dach (Drohnenvideo 10, 0,3 s) ·
-#              Kreitner Werkstattflug mit Mitarbeitern (Kreitner Video 0,8 s) · Baureize Halle (DJI_…0013, 4,2 s) ·
-#              Koller Ortsansicht (Final 18,15 s) · CS Metalldesign Hallenflug (Drohne 1,0 s)
+#   drohnen-*  (harte Schnitte, 8 Szenen je ~1,3 s = 10,8 s; Stand 21.11.2026, Skript start-neu/saeule_links_schneiden.py;
+#              Noah: „bei der linken säule … szenen … neuer Entenmann Shooting … Zimmerei Koller … mäßig action, wo mans sieht“;
+#              nie zwei Szenen vom selben Betrieb nacheinander, auch nicht über die Schleife):
+#              Kreitner Werkstattflug (Drohne 0,8 s) · Entenmann Trennschleifer mit Funken (Headervideo 4K 9,55 s) ·
+#              Koller Zimmerer mit Akkuschrauber (Final 1,96 s) · Wohner Drohne über das PV-Dach (Drohnenvideo 10, 0,3 s) ·
+#              Entenmann Wärmepumpe durch den Garten (4,34 s) · Koller Kappsäge mit Gehörschutz (Final 13,9 s) ·
+#              CS Metalldesign Hallenflug (Drohne 1,0 s) · Entenmann Akkuschrauber am Rohr (25,12 s)
 #   details-*  (0,4 s Überblendung; Stand 19.11.: Kirchner und Brandstempel raus, Noah: „das Video mit Reize … wo er die Treppe
 #              hochgeht“ = die Einstellung aus dem fertigen Baureize-Film): Koller Bohrer in Spänen (Final 9,1 s) ·
 #              Resch Bewehrung binden (Resch Bau 8,0 s) · Wolfgang Reize geht die Treppe hoch (Drive „Baureize original.mp4“
 #              4,60–6,44 s, echte Geschwindigkeit, Ausschnitt folgt dem Logo) · CS Schweißen (CS Metalldesign 2,05 s) ·
 #              Koller Werkzeugbank (Final 21,7 s)
-s.h = s.h.replace('/static/assets/vid/saeule/kreitner.jpg', '/static/assets/vid/saeule/drohnen.jpg?v=2')
+s.h = s.h.replace('/static/assets/vid/saeule/kreitner.jpg', '/static/assets/vid/saeule/drohnen.jpg?v=3')
 s.ersetze('data-src="/static/assets/vid/saeule/kreitner-d.mp4" data-src-mobil="/static/assets/vid/saeule/kreitner-m.mp4"',
-          'data-src="/static/assets/vid/saeule/drohnen-d.mp4?v=2" data-src-mobil="/static/assets/vid/saeule/drohnen-m.mp4?v=2"')
+          'data-src="/static/assets/vid/saeule/drohnen-d.mp4?v=3" data-src-mobil="/static/assets/vid/saeule/drohnen-m.mp4?v=3"')
 s.h = s.h.replace('/static/assets/vid/saeule/hero-loop.jpg', '/static/assets/vid/saeule/details.jpg?v=3')
 s.ersetze('data-src="/static/assets/vid/saeule/hero-loop-d.mp4" data-src-mobil="/static/assets/vid/saeule/hero-loop-m.mp4"',
           'data-src="/static/assets/vid/saeule/details-d.mp4?v=3" data-src-mobil="/static/assets/vid/saeule/details-m.mp4?v=3"')
@@ -926,13 +929,25 @@ def ablauf_animiert(slug, h2, texte):
         alt_v = 'data-src="/static/assets/vid/josef.mp4" data-poster="/static/assets/vid/poster/josef.jpg"'
         assert html.count(alt_v) == 1, html.count(alt_v)
         html = html.replace(alt_v, 'data-src="/static/assets/vid/bettina-fliese.mp4?v=2" data-poster="/static/assets/vid/poster/bettina-fliese.jpg?v=2"')  # v2: Start bei der Armbewegung (33,03 s)
+        # Mirjanas Handy-Film (Sussmann-Anzeige) gehört zur Auftragsgewinnung (Noah, 21.11.2026: „das video von mirjana kann eher noch bei
+        # der auftragsgewinnung mit rein also dieses handyvideo da“) → dritter Film in der Handy-Kachel
+        _ende = html.index('</div>', html.index('<div class="handys-k"'))
+        html = html[:_ende] + '<video class="" muted loop playsinline preload="none" data-lazy data-src="/static/assets/vid/mirjana-hook.mp4" data-poster="/static/assets/vid/poster/mirjana-hook.jpg" ></video>' + html[_ende:]
+    if slug == "mitarbeitergewinnung":
+        # „bei mitarbeitergewinnung dann das video von irlbacher mit rein“ (Noah, 21.11.2026): Irlbachers Stellenanzeige statt Mirjana
+        alt_m = 'data-src="/static/assets/vid/mirjana-hook.mp4" data-poster="/static/assets/vid/poster/mirjana-hook.jpg"'
+        assert html.count(alt_m) == 1, html.count(alt_m)
+        html = html.replace(alt_m, 'data-src="/static/assets/fv/v/ir-geselle.mp4" data-poster="/static/assets/fv/v/ir-geselle.jpg"')
     for alt, neu_t in GEWERKE_MISCHEN.get(slug, []):
         assert html.count(alt) == 1, (slug, alt)
         html = html.replace(alt, neu_t)
     neu = [html]
     return ('<section class="sek band auf-dunkel bento-sek ablauf-ani"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Was wir übernehmen</span>'
             f'<h2>{h2}</h2></div><div class="bento">{"".join(neu)}</div></div></section>'
-            '<style>@media (min-width:1001px){.ablauf-ani .bento{grid-template-columns:repeat(6,minmax(0,1fr))}'
+            '<style>.handys-k:has(video:nth-child(3)) video{width:104px}.handys-k:has(video:nth-child(3)){gap:0}'
+            '.handys-k video:nth-child(3){transform:rotate(4deg) translateY(4px)}.handys-k:has(video:nth-child(3)) video+video{margin-left:-14px}'
+            '@media (max-width:900px){.handys-k:has(video:nth-child(3)) video{width:min(84px,21vw)}}'
+            '@media (min-width:1001px){.ablauf-ani .bento{grid-template-columns:repeat(6,minmax(0,1fr))}'
             '.ablauf-ani .zelle.mit-handys{grid-column:1/span 2;grid-row:1/span 2;min-height:0}'
             '.ablauf-ani .zelle.mit-handys .handys-k{left:0;right:0;top:clamp(40px,4vw,64px);justify-content:center;gap:16px}'
             '.ablauf-ani .zelle.mit-handys .handys-k video{width:clamp(140px,11.5vw,172px)}'
@@ -959,15 +974,14 @@ def seo_ablauf():
     # Pille „Seite 1“ statt Platz: Knappich stand am 23.09. auf Platz 2, Abbruch Ammersee ist von uns nicht nachgemessen.  # echte Messung 19.10.2026 aus der Rangliste (Noah, 19.11.2026: „sachen nehmen wo auch kunden von uns kommen“)
         + '<span class="nummer">01</span><h3>Eine Seite je Leistung</h3><p>Jede Leistung bekommt eine eigene Seite, mit deinem Ort drin.</p></article>',
         f'<article class="zelle z-2">{radar}<span class="nummer">02</span><h3>Dein Google-Profil</h3><p>Mit Leistungen und Fotos, damit dich die Karte zeigt.</p></article>',
-        '<article class="zelle z-6 mit-tickets">' + _tickets([("Christoph Hirschvogel", "Küchenhaus Hirschvogel", "★★★★★"),
-                                                              ("Lena", "Lagerhaus Graf", "★★★★★"),
-                                                              ("Alfred Maser", "Maser Tankschutz", "★★★★★")], stern)
-        + '<span class="nummer">03</span><h3>Die Bewertungen kommen von selbst</h3><p>Ein Link nach jedem Auftrag, der Rest läuft.</p></article>']
+    ]
+    # Bewertungs-Kachel raus (Noah, 21.11.2026: „die sektion macht kein sinn bei seo“): bleiben Seiten je Leistung + Google-Profil
+
     return ('<section class="sek band auf-dunkel bento-sek ablauf-ani ablauf-seo"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Was wir übernehmen</span>'
             f'<h2>Den Weg nach vorn übernehmen wir.</h2></div><div class="bento">{"".join(zellen)}</div></div></section>'
             '<style>@media (min-width:1001px){.ablauf-seo .zelle.z-4{grid-column:1/span 4;grid-row:1}.ablauf-seo .zelle.z-2{grid-column:5/span 2;grid-row:1}'
-            '.ablauf-seo .zelle.z-6{grid-column:1/span 6;grid-row:2}.ablauf-seo .zelle.z-6 .tickets{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}}'
-            '.ablauf-seo .ticket .ok{white-space:nowrap}.ablauf-seo .zelle.z-6{min-height:0}.ablauf-seo .zelle.z-6 h3{margin-top:clamp(22px,2.4vw,32px)}</style>')
+            '}'
+            '.ablauf-seo .ticket .ok{white-space:nowrap}</style>')
 
 
 def erg_karten(art, ohne=()):
@@ -1321,9 +1335,18 @@ SENFT_SEK = ('<section class="sek senft-sek"><div class="wrap senft-raster"><fig
              'alt="Das Team von Senftleben Haustechnik vor den Firmenwagen in Ehingen" loading="lazy" decoding="async"></figure>'
              '<div class="senft-text reveal"><span class="kicker">Senftleben Haustechnik in Ehingen</span>'
              '<p class="senft-zahl"><b>18</b><span>Tage</span></p><h2>Bis die Stelle in der Lohnbuchhaltung besetzt war.</h2>'
-             '<p class="lead">21 Bewerbungen aus dem Umkreis, eine davon sitzt jetzt im Büro.</p>'
+             '<p class="lead">21 qualifizierte Bewerbungen sind gekommen.</p>'
+             '</div></div>'
+             # Erwin Schmidt darunter (Noah, 21.11.2026: „dann darunter noch erwin schmidt - da hats ja auch nicht soo lange gedauert“);
+             # Zahlen wie auf der SHK-Seite (25 Bewerbungen, Stelle in 4 Wochen besetzt), Foto ohne Meike (Noah, 20.11.2026)
+             '<div class="wrap senft-raster gespiegelt"><figure class="senft-bild reveal"><img src="/static/assets/img/_h1280/fall/ess-zwei-monteure.webp" '
+             'alt="Zwei Monteure von Erwin Schmidt &amp; Sohn in der Ausstellung in Sindelfingen" loading="lazy" decoding="async" style="object-position:50% 25%"></figure>'
+             '<div class="senft-text reveal"><span class="kicker">Erwin Schmidt &amp; Sohn in Sindelfingen</span>'
+             '<p class="senft-zahl"><b>4</b><span>Wochen</span></p><h2>Bis der Anlagenmechaniker eingestellt war.</h2>'
+             '<p class="lead">25 Bewerbungen sind gekommen.</p>'
              '</div></div></section>'
-             '<style>.senft-raster{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(28px,4vw,72px);align-items:center}'
+             '<style>.senft-raster.gespiegelt{margin-top:clamp(56px,7vw,110px)}@media (min-width:901px){.senft-raster.gespiegelt{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr)}.senft-raster.gespiegelt .senft-bild{order:2}}'
+             '.senft-raster{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(28px,4vw,72px);align-items:center}'
              '.senft-bild{margin:0;border-radius:var(--radius);overflow:hidden;aspect-ratio:4/3}.senft-bild img{width:100%;height:100%;object-fit:cover;object-position:50% 45%;display:block}'
              '.senft-zahl{display:flex;align-items:baseline;gap:.25em;margin:14px 0 6px;line-height:.9}.senft-zahl b{font-size:clamp(96px,13vw,200px);font-weight:800;letter-spacing:-.05em;color:var(--bronze-tief,#8F5B1D)}'
              '.senft-zahl span{font-size:clamp(28px,3vw,44px);font-weight:700;letter-spacing:-.02em}.senft-text h2{margin:0 0 12px;max-width:20ch;font-size:clamp(28px,2.8vw,42px);line-height:1.12}.senft-text h2::before{display:none}'

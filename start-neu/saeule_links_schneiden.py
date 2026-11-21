@@ -1,0 +1,66 @@
+"""Linke Hero-Säule der HWM-Startseite (static/assets/vid/saeule/drohnen-d.mp4, -m.mp4, drohnen.jpg) neu schneiden.
+
+Noah, 21.11.2026: „bei der linken säule … brauchen wir iwie szenen auch, die nice sind … neuen Entenmann Shooting …
+Zimmerei Koller … mäßig action drin, wo mans sieht“. Harte Schnitte, stumm, 25 fps, Desktop 600×800, Handy 360×480,
+nie zwei Szenen vom selben Betrieb direkt hintereinander (auch nicht über die Schleife).
+
+Quellen:
+  alt       = die bisherige drohnen-d.mp4 (Git-Stand; Drohnenflüge Wohner/Kreitner/CS Metalldesign, schon 3:4)  → ALT=<Pfad>
+  entenmann = kunden/entenmann/material/shooting-final/Entenmann Headervideo Website 4K.mp4 (3840×2160)
+  koller_a/koller_c = static/assets/vid/sr-koller-a.mp4 / sr-koller-c.mp4 (Showreel-Lagen aus „Final Zimmerei Koller“, 1280×720)
+Aufruf:  ALT=/pfad/drohnen-alt-d.mp4 /Users/noahs/CEO-GPT/.venv/bin/python firma/website/start-neu/saeule_links_schneiden.py
+"""
+import os, subprocess, sys
+from pathlib import Path
+
+WEB = Path(__file__).resolve().parent.parent
+VID = WEB / "static/assets/vid"
+ZIEL = VID / "saeule"
+ENT = WEB.parent.parent / "kunden/entenmann/material/shooting-final/Entenmann Headervideo Website 4K.mp4"
+ALT = Path(os.environ.get("ALT", ZIEL / "drohnen-d.mp4"))
+KOLLER_A, KOLLER_C = VID / "sr-koller-a.mp4", VID / "sr-koller-c.mp4"
+
+# (Betrieb, Quelle, Start s, Länge s, Mitte x 0–1 des 3:4-Ausschnitts, alt=schon 3:4, was man sieht)
+SZENEN = [
+    ("Kreitner",   ALT,      3.28, 1.40, None, "Drohne Werkstattflug, Mitarbeiter im Bild"),
+    ("Entenmann",  ENT,      9.55, 1.40, 0.40, "Trennschleifer mit Funken am Rohr"),
+    ("Koller",     KOLLER_A, 0.10, 1.30, 0.28, "Zimmerer mit Akkuschrauber am Balken"),
+    ("Wohner",     ALT,      1.68, 1.40, None, "Drohne über das PV-Dach"),
+    ("Entenmann",  ENT,      4.34, 1.40, 0.60, "Wärmepumpe wird durch den Garten gebracht"),
+    ("Koller",     KOLLER_C, 1.30, 1.25, 0.52, "Kappsäge, Zimmerer mit Gehörschutz schneidet den Balken"),
+    ("CS Metall",  ALT,      8.10, 1.24, None, "Drohne Werkstatthalle, Schweißen im Bild"),
+    ("Entenmann",  ENT,      25.12, 1.40, 0.40, "Akkuschrauber am Rohr"),
+]
+assert all(SZENEN[i][0] != SZENEN[i - 1][0] for i in range(len(SZENEN))), "zwei Szenen vom selben Betrieb hintereinander"
+
+
+def filt(quelle, cx, i):
+    if cx is None:
+        return f"[{i}:v]fps=25,setpts=PTS-STARTPTS,scale=600:800:flags=lanczos,setsar=1[v{i}]"
+    ew = f"trunc(ih*3/4/2)*2"
+    return (f"[{i}:v]fps=25,setpts=PTS-STARTPTS,crop={ew}:ih:max(0\\,min(iw-{ew}\\,iw*{cx}-{ew}/2)):0,"
+            f"scale=600:800:flags=lanczos,setsar=1[v{i}]")
+
+
+def bauen():
+    ein, f = [], []
+    for i, (_, q, ab, dauer, cx, _) in enumerate(SZENEN):
+        assert Path(q).exists(), q
+        ein += ["-ss", str(ab), "-t", str(dauer), "-i", str(q)]
+        f.append(filt(q, cx, i))
+    n = len(SZENEN)
+    f.append("".join(f"[v{i}]" for i in range(n)) + f"concat=n={n}:v=1,format=yuv420p[v]")
+    tmp = ZIEL / "_drohnen-neu-d.mp4"
+    subprocess.run(["ffmpeg", "-v", "error", "-y", *ein, "-filter_complex", ";".join(f), "-map", "[v]", "-an", "-r", "25",
+                    "-c:v", "libx264", "-crf", os.environ.get("CRF", "25"), "-preset", "slow", "-movflags", "+faststart", str(tmp)], check=True)
+    m = ZIEL / "_drohnen-neu-m.mp4"
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(tmp), "-vf", "scale=360:480:flags=lanczos", "-an", "-r", "25",
+                    "-c:v", "libx264", "-crf", os.environ.get("CRF_M", "27"), "-preset", "slow", "-movflags", "+faststart", str(m)], check=True)
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(tmp), "-frames:v", "1", "-q:v", "4", str(ZIEL / "drohnen.jpg")], check=True)
+    os.replace(tmp, ZIEL / "drohnen-d.mp4")
+    os.replace(m, ZIEL / "drohnen-m.mp4")
+    print(f"{n} Szenen, {sum(s[3] for s in SZENEN):.2f} s")
+
+
+if __name__ == "__main__":
+    bauen()
