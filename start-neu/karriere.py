@@ -166,13 +166,9 @@ def main_html():
     PAARE = [("Jeden Tag eine Stunde Stau auf dem Weg ins Büro.", "Laptop auf und los, egal von wo du arbeitest."),
              ("Stempeln um 8, Feierabend erst, wenn der Chef geht.", "Feste Kernzeiten, den Rest teilst du dir selbst ein."),
              ("Ein Gehalt, das gleich bleibt, egal was du leistest.", "Mehr Leistung heißt bei uns auch mehr Geld."),
-             ("Kollegen, die um 16:59 schon die Jacke anhaben.", "Ein Kern-Team, das Bock hat und Vollgas gibt."),
-             ("Jeder macht sein Ding, keiner zieht die anderen mit.", "Wir pushen uns gegenseitig und feiern Erfolge."),
-             ("Seit Jahren dieselben Aufgaben, nichts Neues lernen.", "Wissen aus fünfstelligen Coachings, von Noah."),
-             ("Feedback einmal im Jahr, im Mitarbeitergespräch.", "Direktes Feedback, auch wenn’s unangenehm ist."),
-             ("Jahrelang warten, bis der Kollege vor dir aufsteigt.", "Opener, Setter, Closer: Aufstieg nach Leistung."),
+             ("Kollegen, die um 16:59 schon die Jacke anhaben.", "Ein Team, das Bock hat und sich gegenseitig pusht."),
+             ("Seit Jahren dieselben Aufgaben, nichts Neues lernen.", "Exklusives Wissen aus fünfstelligen Coachings."),
              ("Leadlisten, die schon zehnmal abtelefoniert wurden.", "Ein Skript, das funktioniert, und ein klarer Ablauf."),
-             ("Stunden mit Excel und Copy-Paste verbringen.", "Vieles läuft automatisch, du machst das Wichtige."),
              ("Ein Produkt, für das du dich am Telefon schämst.", "Ein Produkt, das für die Betriebe ein No-Brainer ist.")]
     x_ic = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>'
     vergleich = ('<section class="sek kr-vgl-sek"><div class="wrap"><div class="kopfzeile mitte reveal"><span class="kicker">Gut zu wissen</span>'
