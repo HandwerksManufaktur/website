@@ -191,6 +191,32 @@ def stimme_text(autor, text):
     return _h.escape(aus, quote=False)
 
 
+def farblogo_marke(k):
+    """Farblogo ohne dunklen Kasten, optisch gleich groß: gleiche Fläche im festen Rahmen 104 × 44 (Noah, 21.11.2026)."""
+    from PIL import Image as _Im
+    _w, _h = _Im.open(WURZEL / f"static/assets/img/logos/farbe/{k}.png").size
+    _r = _w / _h
+    _RB, _RH, _FL = 104, 44, 3900
+    lb = min((_FL * _r) ** .5, _RB); lh = lb / _r
+    if lh > _RH:
+        lh = _RH; lb = lh * _r
+    return (f'<span class="st-logo"><img loading="lazy" src="/static/assets/img/logos/farbe/{k}.png" alt="" '
+            f'width="{round(lb)}" height="{round(lh)}" decoding="async"></span>')
+
+
+ST_LOGO_CSS = ('.sek.stimmen .st-logo{display:flex;align-items:center;justify-content:center;flex:none;width:104px;height:44px;background:none;padding:0;border-radius:0}'
+               '.sek.stimmen .st-logo img{display:block;max-width:104px;max-height:44px;width:auto;height:auto}')
+
+
+def stimmen_farblogos(h):
+    """Unterseiten: weiße Logos im dunklen Kasten → Farblogos ohne Kasten (Auswahl der Stimmen bleibt)."""
+    def ein(m):
+        return farblogo_marke(STIMME_FARBE[m.group(1)])
+    h, n = re.subn(r'<span class="kreis logo dunkel"><img[^>]*src="/static/assets/img/logos/w/([^"]+)"[^>]*></span>', ein, h)
+    assert 'kreis logo dunkel' not in h, "Stimme ohne Logo"
+    return h + f'<style>{ST_LOGO_CSS}</style>'
+
+
 def stimmen_alle():
     import json, html as _h
     alle = [r for r in json.loads(REZENSIONEN.read_text(encoding="utf-8"))["rezensionen"] if (r["text"] or "").strip()]
@@ -204,11 +230,10 @@ def stimmen_alle():
     for r in alle:
         name, zeile, logo = STIMME_WER[r["autor"]]
         if logo:
-            assert (WURZEL / "static/assets/img/logos/w" / logo).exists(), logo
-            marke = f'<span class="kreis logo dunkel"><img loading="lazy" src="/static/assets/img/logos/w/{logo}" alt="" decoding="async"></span>'
+            marke = farblogo_marke(STIMME_FARBE[logo])
         else:
             ini = ''.join(w[0] for w in re.sub(r'[^A-Za-zÄÖÜäöü ]', '', name).split()[:2]).upper()
-            marke = f'<span class="kreis logo dunkel"><span class="st-ini">{ini}</span></span>'
+            marke = f'<span class="st-logo"><span class="st-ini">{ini}</span></span>'
         laenge = len(stimme_text(r["autor"], r["text"]))
         art = "st-kurz" if laenge <= 95 else ("st-mittel" if laenge <= 175 else "st-lang")
         karten.append(f'<div class="stimme {art}"><div class="wer">{marke}<span><b>{name}</b><small>{zeile}</small></span></div>'
@@ -219,7 +244,7 @@ def stimmen_alle():
     # Tempo wie vorher (10 Karten in 90 s / 100 s), jetzt 26 Karten je Reihe
     return (f'<div class="bahn" aria-hidden="false" style="animation-duration:234s">{"".join(oben) * 2}</div>'
             f'<div class="bahn zurueck" style="animation-duration:260s">{"".join(unten) * 2}</div>'
-            '<style>.stimme .st-ini{font-size:18px;font-weight:800;letter-spacing:.02em;color:var(--papier)}'
+            '<style>.stimme .st-ini{font-size:18px;font-weight:800;letter-spacing:.02em;color:var(--tinte)}'
             # Gleich hohe Karten; die Schrift wächst bei kurzen Stimmen, ein großes Anführungszeichen trägt die Karte
             '.sek.stimmen .stimme{position:relative;overflow:hidden;min-height:330px;grid-template-rows:auto auto 1fr;align-content:stretch;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s}'
             '.sek.stimmen .stimme:hover{transform:translateY(-4px);box-shadow:0 18px 40px -22px rgba(22,19,14,.35),0 0 0 1px rgba(22,19,14,.08)}'
@@ -227,10 +252,11 @@ def stimmen_alle():
             # Eine Schrift für alle Stimmen, oben bündig unter den Sternen (Noah, 20.11.2026: „die Abstände passen nicht … auf
             # einmal ist da Knappich … fett“ — kurze Stimmen standen größer, fett und tiefer)
             '.sek.stimmen .stimme p{align-self:start;color:var(--tinte);font-size:16px;line-height:1.55;font-weight:400;letter-spacing:0}'
-            '.sek.stimmen .kreis.logo{width:132px;height:58px}.sek.stimmen .kreis.logo img{max-width:108px;max-height:40px}'
+            '.sek.stimmen .st-logo{display:flex;align-items:center;justify-content:center;flex:none;width:104px;height:44px;background:none;padding:0;border-radius:0}.sek.stimmen .st-logo img{display:block;max-width:104px;max-height:44px;width:auto;height:auto}'
             '@media (prefers-reduced-motion:reduce){.sek.stimmen .stimme{transition:none}}</style>')
 
 
+STIMME_FARBE = {'logo-elektro-langmajer.webp': 'langmajer', 'logo-schwaighofer-betontechnik-logo.webp': 'schwaighofer', 'logo-oswald-bau-weil.webp': 'oswald-bau', 'logo-planung-hindelang.webp': 'hindelang', 'logo-zimmerei-koller.webp': 'koller', 'logo-malermeister-mueller-weiss.webp': 'mueller', 'logo-gattinger-gmbh.webp': 'gattinger', 'logo-wegele-bau-gmbh-utting.webp': 'wegele-bau', 'logo-zimmerei-pfoederl.webp': 'pfoederl', 'logo-yannick-stimpfle-logo.webp': 'stimpfle', 'logo-ruf-frischdienst.webp': 'ruf-frischdienst', 'wohner_elektrotechnik_weiss_cropped.webp': 'wohner', 'logo-bjoern-schillinger.webp': 'schillinger', 'logo-zimmerei-knappich.webp': 'knappich', 'logo-sd-hirsch-weiss.webp': 'sdhirsch', 'logo-allplast-laser.webp': 'allplast-laser', 'logo-schreinerei-rupp.webp': 'schreinerei-rupp', 'logo-lagerhaus-graf.webp': 'lagerhaus-graf', 'logo-maser-tankschutz-logo.webp': 'maser', 'logo-kuechenhaus-hirschvogel.webp': 'hirschvogel', 'logo-eckru-cnc.webp': 'eckru-cnc', 'logo-zimmerei-rauschmair.webp': 'zimmerei-rauschmair', 'logo-metallbau-weiss.webp': 'metallbau-weiss', 'logo-hannes-schmidt-gmbh-weiss.webp': 'hannes-schmidt', 'logo-franz-musch.webp': 'franz-musch', 'logo-schreinerei-damnig.webp': 'schreinerei-damnig', 'logo-hohenester-zimmerei.webp': 'hohenester-zimmerei', 'logo-leonhard-rieger.webp': 'leonhard-rieger', 'logo-gutachter-hilbenz.webp': 'gutachter-hilbenz', 'logo-zimmerei-schuster.webp': 'zimmerei-schuster', 'logo-inna-illenseer.webp': 'inna-illenseer', 'logo-jirka-ausbau.webp': 'jirka-ausbau', 'logo-thomas-vogel-holzbau.webp': 'vogel', 'logo-suessmeier-heizungstechnik.webp': 'suessmeier', 'logo-franz-gallenberger.webp': 'gallenberger', 'logo-baustoffe-thaining-kirchner.webp': 'kirchner', 'logo-flyin-bbq-streetfood.webp': 'flyin-bbq', 'logo-schreinerei-kreitner.webp': 'kreitner', 'logo-autohaus-ressle.webp': 'autohaus-ressle', 'logo-juwelier-wagenknecht-weiss.webp': 'wagenknecht', 'logo-eggert-kfz-sachverstaendigenbuero.webp': 'eggert-kfz', 'logo-lanzinger-gmbh-weiss.webp': 'lanzinger', 'logo-doerfler-bau.webp': 'doerfler-bau', 'logo-senftleben-haustechnik.webp': 'senftleben', 'logo-schreinerei-die-fuehrmaenner.webp': 'fuehrmaenner', 'logo-zimmerei-schneider.webp': 'zimmerei-schneider', 'logo-happach-maschinenbau.webp': 'happach'}
 STIMME_ALIAS = {"Hannes Schmidt GmbH": "Hannes Schmidt", "Fa. Senftleben": "Be Se", "Franz Gallenberger": "F. G.", "Jirka": "Jirka Ihr Hotelsanierer"}
 
 
@@ -351,7 +377,7 @@ class Seite:
 start = Seite(LIVE_START)
 PROBLEME = start.heraus('<section class="sek grund lagen-sek probleme pb-sek">')
 STIMMEN = start.bereich('<section class="sek stimmen">')
-STIMMEN = start.h[STIMMEN[0]:STIMMEN[1]]
+STIMMEN = stimmen_farblogos(start.h[STIMMEN[0]:STIMMEN[1]])
 
 
 def szene(nr, kicker, titel, grund=True):
