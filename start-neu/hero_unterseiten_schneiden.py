@@ -73,7 +73,8 @@ SEITEN = {
     # /websites/ nicht laufen (Transporter vor dem Kundenhaus, Monteure an der Haustür)
     # Noah, 21.11.2026: „nicht diesen Switch von Koller auf einmal zu Entenmann … einfach Close-ups verwenden: Schweißen,
     # Säge von Koller, Drahtdrehen von Resch, Akkuschrauber, der sich dreht“
-    "neukundengewinnung": [(CSFILM, 2.04, 1.6, .55, ""),                 # CS: Schweißen, rote Handschuhe (Close-up)
+    # Noah, 21.11.2026: „beim schweißen … den clip … wo man den laser so in der mitte des bildes sieht“
+    "neukundengewinnung": [(CSFILM, 5.97, 1.5, .50, ""),                 # CS: Schweißlicht mitten im Bild (Close-up)
                            (KOLLERFILM, 3.68, 1.4, .50, ""),             # Koller: Säge, Späne fliegen (Close-up)
                            (RESCHFILM, 8.45, 0.85, .55, ""),               # Resch: Draht an der Bewehrung drehen (Close-up)
                            (ENT, 25.12, 0.95, .50, "")],                 # Entenmann: Rohrschneider dreht sich am Rohr (Close-up, vor dem nächsten Schnitt)
@@ -82,14 +83,16 @@ SEITEN = {
     # Koller-Team im 4K-Original, S-Log3 über NS 06
     # Noah, 21.11.2026: „kürzere zusammengeschnittene clips nimm einfach die was wir bei koller so auch drin hatten nur bisschen anders
     # gecutted“ → 11 Szenen à ~1 s aus demselben Koller-Shooting, wechselnd nah/weit
+    # Noah, 21.11.2026 spät: „einen koller clip doppelt drin“ (Akkuschrauber 2×) → einmal; „den koller clip noch oben mit rein vom desktop“
+    # (Bohrer in den Spänen, linke Säule Startseite) und „foto & video … drittens von links … koller … der dritte clip“ (Hof von oben)
     "mitarbeitergewinnung": [(kol("C2362.MP4"), 2.4, 1.0, .50, "lut"),   # Team läuft auf die Kamera zu
-                             # (Noah, 21.11.2026 abends: „zweiter und dritter clip muss da raus“ → Säge 1,4 s + lachender Zimmerer raus)
+                             (KOLLERFILM, 5.48, 1.3, .50, ""),           # Hof von oben (Koller-Galeriefilm, 3. Clip)
                              (kol("C2391.MP4"), 1.2, 1.0, .42, "lut"),   # Akkuschrauber am Balken
-                             # (Noah, 21.11.2026: „nicht zwei clips wo sie hinlaufen bei koller, unnötig“ → zweite Team-Szene raus)
-                             (kol("C2412.MP4"), 2.6, 0.9, .58, "lut"),   # Säge, zweiter Moment
-                             (kol("C2391.MP4"), 4.6, 0.9, .42, "lut"),   # Akkuschrauber, zweiter Moment
-                             (KOLLERFILM, 7.28, 1.3, .50, ""),          # Martin fährt Stapler (statt Winken)
-                             (KOLLERFILM, 14.48, 1.3, .50, "")],        # Close-up: Sägeblatt im Balken (vorletzte Foto-&-Video-Lage)
+                             (KOLLERFILM, 9.1, 1.2, .50, ""),            # Close-up: Bohrer in den Spänen (Startseite)
+                             (kol("C2412.MP4"), 2.6, 0.9, .58, "lut"),   # Säge mit Gehörschutz
+                             (KOLLERFILM, 14.48, 1.3, .50, ""),          # Close-up: Sägeblatt im Balken
+                             (KOLLERFILM, 7.28, 1.3, .50, "")],          # Martin fährt Stapler
+       # Close-up: Sägeblatt im Balken (vorletzte Foto-&-Video-Lage)
     # (Noah, 21.11.2026: „das Video, wo Martin winkt, kommt raus … wie er im Stapler fährt … lieber noch die Close-ups … vom vorletzten Video von Foto und Video“)
     # (Noah, 21.11.2026: „da wo der eine mitarbeiter komplett still in die kamera starrt weg und manche andere, was da sonst nicht
     # drin waren, auch raus“ → nur die bisherigen Koller-Clips, junger Zimmerer C2371 und die Neuzugänge raus)
@@ -100,9 +103,8 @@ SEITEN = {
     # Noah, 21.11.2026: „nicht nur kreitner … wo sind die guten clips cs metalldesign … bei baureize mit dem laser … und paar andere gut“
     # → die im Showreel freigegebenen Stellen aus den 4K-Originalfilmen (CS Metalldesign.mp4, Baureize original.mp4), schon gegradet
     "suchmaschinenoptimierung": [(BAUREIZEFILM, 20.67, 1.6, .55, ""),  # Baureize: grüner Linienlaser
-                                 (CSFILM, 5.97, 1.5, .45, ""),         # CS: Schweißen mit Maske
                                  (BAUREIZEFILM, 12.67, 1.9, .50, ""),  # Baureize: Wolfgang an der Formatkreissäge
-                                 (KREITNER, 12.1, 2.4, .50, ""),       # Kreitner: Team mit Kundin (zwischen hellen Werkstatt-Szenen)
+                                 # (Noah, 21.11.2026: „den kreitner clip bei seo raus, ist shit“)
                                  (CSFILM, 9.96, 1.9, .50, "")],        # CS: Schleifer lacht
     # (Noah, 21.11.2026: „den komischen Übergang weg … vom Lasermesser zu Kreitner“ → Kreitner nicht mehr nach dem Laser;
     #  CS-Schweißen mit roten Handschuhen „kommt beim anderen raus“ → Neukundengewinnung)
