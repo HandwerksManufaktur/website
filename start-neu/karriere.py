@@ -135,15 +135,15 @@ def main_html():
                     for i, (t, x) in enumerate(WERTE))
     ic = lambda d: f'<span class="kr-ic"><svg viewBox="0 0 24 24" aria-hidden="true">{d}</svg></span>'
     bieten = (
-        '<article class="kb kb-a reveal"><img src="/static/assets/img/karriere/singapur-1600.webp" alt="Noah an der Marina Bay" loading="lazy" decoding="async">'
+        '<article class="kb kb-a reveal"><img src="/static/assets/img/karriere/a-calls-1400.webp" alt="Call mit Laptop am Strand" loading="lazy" decoding="async">'
         '<span class="kr-verlauf" aria-hidden="true"></span><div class="kb-text"><span class="kb-kicker">Freiheit</span><h3>Arbeite von überall.</h3>'
-        '<p>Wer liefert, bekommt bei uns Freiraum statt Kontrolle. Laptop auf, und los geht’s.</p></div></article>'
-        '<article class="kb kb-zahl reveal"><b class="kb-gross">150+</b><h3>Betriebe betreut</h3><p>Du stehst hinter dem, was du verkaufst und betreust.</p></article>'
-        '<article class="kb kb-zahl reveal"><b class="kb-gross">5,0<span>★</span></b><h3>Sterne bei Google</h3><p>Seit 2019 arbeiten wir nur fürs Handwerk.</p></article>'
-        '<article class="kb kb-team reveal"><span class="kb-kicker">Das Team</span><h3>Ein Team, das sich gegenseitig pusht.</h3>'
+        '<p>Du brauchst Laptop, gutes Internet und den Anspruch zu liefern. Wir messen Ergebnisse, keine Stunden.</p></div></article>'
+        '<article class="kb kb-zahl reveal"><b class="kb-gross">150+</b><h3>Betriebe betreut</h3><p>Du verkaufst und betreust etwas, das nachweislich funktioniert.</p></article>'
+        '<article class="kb kb-zahl reveal"><b class="kb-gross">5,0<span>★</span></b><h3>Sterne bei Google</h3><p>Unsere Kunden empfehlen uns weiter.</p></article>'
+        '<article class="kb kb-team reveal"><img src="/static/assets/img/karriere/a-team-1400.webp" alt="" loading="lazy" decoding="async"><span class="kb-kicker">Das Team</span><h3>Ein Team, das sich gegenseitig pusht.</h3>'
         '<p>Hier zieht keiner allein. Wir teilen, was funktioniert, geben uns ehrliches Feedback und werden zusammen jeden Monat besser.</p></article>'
-        f'<article class="kb reveal">{ic(IC_WACHSEN)}<h3>Du wächst mit</h3><p>Wer liefert, wird vom Opener zum Setter und Closer.</p></article>'
-        f'<article class="kb reveal">{ic(IC_INHABER)}<h3>Direkt beim Inhaber</h3><p>Noah arbeitet dich selbst ein, mit ehrlichem Feedback.</p></article>'
+        f'<article class="kb reveal">{ic(IC_WACHSEN)}<h3>Du wächst mit</h3><p>Wer liefert, übernimmt schnell mehr Verantwortung.</p><span class="kb-leiter"><span>Opener</span><i>→</i><span>Setter</span><i>→</i><span>Closer</span></span></article>'
+        f'<article class="kb reveal">{ic(IC_INHABER)}<h3>1-zu-1 mit Noah</h3><p>Du wirst persönlich eingearbeitet und bekommst unser ganzes Wissen.</p></article>'
         f'<article class="kb kb-breit reveal">{ic(IC_KI)}<h3>Werkzeuge, die mitarbeiten</h3><p>Den Kleinkram erledigen unsere Systeme, du kümmerst dich um das, was zählt.</p>'
         '<span class="kb-chips"><span>CRM</span><span>Automationen</span><span>eigene KI-Agenten</span></span></article>')
     ablauf = "".join(f'<li class="kr-schritt reveal"><span class="kr-snr">{i + 1}</span><h3>{t}</h3><p>{x}</p></li>'
@@ -152,26 +152,43 @@ def main_html():
                  f'<img src="/static/assets/img/team/team-du.webp" alt="" width="800" height="1000" loading="lazy" decoding="async">'
                  f'<div class="tk-name"><b>Du?</b><span>{s["kurz"]}</span></div></div><p class="tk-knopf">Jetzt bewerben {PFEIL}</p></a>'
                  for s in STELLEN)
+    KENNEN = [
+        ("mission", "Unsere Mission", "Wir bringen Handwerksbetriebe online nach vorn: mit Websites, die Aufträge bringen, und Anzeigen, die Kunden und Mitarbeiter finden.", "Noah mit einem Kunden auf dem Betriebshof", "50% 30%"),
+        ("geschichte", "Unsere Geschichte", "Noah kommt aus einer Handwerkerfamilie und hat 2019 angefangen. Heute betreuen wir über 150 Betriebe in Deutschland, Österreich und der Schweiz.", "Noah am Laptop", "60% 35%"),
+        ("setup", "Unser Setup", "Komplett remote. Wo du arbeitest, ist deine Sache, solange die Ergebnisse stimmen. Freiheit und Verantwortung gehören bei uns zusammen.", "Arbeitsplatz mit Laptop am Strand", "50% 50%"),
+        ("kultur", "Unsere Kultur", "Jeder trägt sein Ergebnis. Feedback ist Werkzeug, keine Strafe. Und wir pushen uns gegenseitig, statt Ellenbogen auszufahren.", "Noah und ein Kollege lachen beim gemeinsamen Arbeiten", "50% 40%"),
+    ]
+    kennen = ('<section class="sek kr-kennen-sek" id="kennenlernen"><div class="wrap"><div class="kopfzeile mitte reveal"><span class="kicker">Lerne uns kennen</span>'
+              '<h2>Wir sind die HandwerksManufaktur.</h2></div><div class="kr-kennen">' + "".join(
+                  f'<article class="kr-kk reveal"><figure><img src="/static/assets/img/karriere/a-{k}-800.webp" alt="{alt}" loading="lazy" decoding="async" style="object-position:{pos}"></figure>'
+                  f'<h3>{titel}</h3><p>{text}</p></article>' for k, titel, text, alt, pos in KENNEN) + '</div></div></section>')
+    JA = ["Ein Angebot, das funktioniert: über 150 Betriebe, 5,0 bei Google.", "Klare Ziele und Zahlen, an denen du dich messen kannst.",
+          "Ehrliches Feedback, jede Woche.", "Freie Wahl, von wo du arbeitest.", "Aufstieg nach Leistung, nicht nach Dienstjahren."]
+    NEIN = ["Stechuhr und Anwesenheitspflicht.", "Politik und Ellenbogen.", "Meetings, die zu nichts führen.",
+            "Jemanden, der dir über die Schulter schaut.", "Ein Team, das sich mit Mittelmaß zufriedengibt."]
+    x_ic = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>'
+    vergleich = ('<section class="sek kr-vgl-sek"><div class="wrap"><div class="kopfzeile mitte reveal"><span class="kicker">Ehrlich gesagt</span>'
+                 '<h2>Was du bei uns findest. Und was nicht.</h2></div><div class="kr-vgl">'
+                 '<div class="kr-vgl-ja reveal"><h3>Das findest du bei uns</h3>' + liste(JA) + '</div>'
+                 '<div class="kr-vgl-nein reveal"><h3>Das findest du nicht</h3><ul>' + "".join(f"<li>{x_ic}<span>{x}</span></li>" for x in NEIN) + '</ul></div>'
+                 '</div></div></section>')
     wen = ('<section class="sek kr-wen-sek"><div class="wrap"><div class="duo"><div class="text reveal"><span class="kicker">Wen wir suchen</span>'
            '<h2>Leute, die richtig gut sein wollen.</h2>'
-           '<p class="lead">Wir bauen seit 2019 Websites und Anzeigen für Handwerksbetriebe, inzwischen für über 150 Firmen. Damit das weiter wächst, '
-           'suchen wir Leute, die in ihrem Bereich richtig gut sind oder es werden wollen.</p>'
-           '<p class="lead">Dafür bekommst du die Möglichkeit, frei zu arbeiten: ortsunabhängig, mit klaren Zielen und ohne jemanden, der dir über die Schulter schaut.</p>'
-           + liste(["Du willst richtig gut werden, nicht nur durchkommen.", "Du übernimmst Verantwortung für deine Ergebnisse.",
+           '<p class="lead">Wir suchen keine Lebensläufe, sondern Leute, die liefern. Ob du schon Erfahrung hast, ist zweitrangig. Wichtig ist, dass du richtig gut werden willst.</p>'
+           + liste(["Du gibst dich nicht mit Durchschnitt zufrieden.", "Du übernimmst Verantwortung für deine Ergebnisse.",
                     "Du hast Lust auf ein Team, das sich gegenseitig pusht."]) +
            f'<div class="knopfzeile"><a class="btn btn-bronze" href="#stellen">Offene Stellen ansehen {PFEIL}</a></div></div>'
-           '<div class="bild reveal auf"><img src="/static/assets/img/karriere/vietnam-1600.webp" alt="Noah unterwegs mit dem Motorrad" loading="lazy" style="object-position:66% 40%"></div></div></div></section>')
+           '<div class="bild reveal auf"><img src="/static/assets/img/karriere/a-pool-1400.webp" alt="Laptop am Pool mit Blick ins Grüne" loading="lazy" style="object-position:50% 60%"></div></div></div></section>')
     fragen = "".join(f'<details{" open" if i == 0 else ""}><summary>{q}{PLUS}</summary><p>{a}</p></details>' for i, (q, a) in enumerate(FRAGEN))
     wahl = "".join(f'<label class="sf-chip"><input type="radio" name="stelle" value="{s["titel"]}" data-id="{s["id"]}" required><span>{s["kurz"]}</span></label>'
                    for s in STELLEN)
     return f'''<main id="inhalt"><section class="hero-klein hk-neu hk-karriere"><div class="hk-film" aria-hidden="true"><div class="hk-lage an hk-einzel"><video class="hk-desk" muted loop playsinline preload="none" data-hand data-src="/static/assets/vid/karriere/hero-d.mp4" poster="/static/assets/vid/karriere/hero-d.jpg"></video><video class="hk-mobil" muted loop playsinline preload="none" data-hand data-src="/static/assets/vid/karriere/hero-m.mp4" poster="/static/assets/vid/karriere/hero-m.jpg"></video></div></div><button class="pause" aria-label="Video anhalten"><svg class="zu" viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg><svg class="an" viewBox="0 0 24 24"><path d="M7 5v14l11-7z"/></svg></button>
-<div class="wrap"><nav class="brot" aria-label="Pfad"><a href="/">Start</a><span>›</span><span>Karriere</span></nav><span class="kicker">Karriere</span><h1>Arbeite von überall. Fürs Handwerk.</h1><p class="lead">Wir suchen einen Opener, einen Account Manager<br class="dsk-br"> und Verstärkung fürs Backoffice.</p><div class="knopfzeile"><a class="btn btn-bronze" href="#stellen">Offene Stellen ansehen {PFEIL}</a><a class="btn btn-umriss" href="#bewerben">Direkt bewerben</a></div><div class="hero-fakten"><span><span class="stern">★★★★★</span> <b>5,0</b> auf Google</span><span><b>seit 2019</b> nur Handwerk</span><span><b>100 %</b> remote</span></div></div></section>
+<div class="wrap"><nav class="brot" aria-label="Pfad"><a href="/">Start</a><span>›</span><span>Karriere</span></nav><span class="kicker">Karriere</span><h1>Arbeite von überall. Fürs Handwerk.</h1><p class="lead">Für Leute, die in ihrem Job richtig gut werden wollen<br class="dsk-br"> und dafür Freiheit statt Stechuhr bekommen.</p><div class="knopfzeile"><a class="btn btn-bronze" href="#stellen">Offene Stellen ansehen {PFEIL}</a><a class="btn btn-umriss" href="#kennenlernen">Lerne uns kennen</a></div><div class="hero-fakten"><span><span class="stern">★★★★★</span> <b>5,0</b> auf Google</span><span><b>seit 2019</b> nur Handwerk</span><span><b>150+</b> Betriebe</span><span><b>100 %</b> remote</span></div></div></section>
+{kennen}
+<section class="sek band auf-dunkel kr-vorteile-sek"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Was wir bieten</span><h2>Deine Vorteile bei uns.</h2></div><div class="kr-bieten">{bieten}</div></div></section>
+{vergleich}
 {wen}
 <section class="sek kr-stellen-sek" id="stellen"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Offene Stellen</span><h2>Hier steigst du ein.</h2><p class="lead">Kein Anschreiben, kein Lebenslauf nötig.</p></div><div class="kr-stellen">{stellen}</div></div></section>
-<section class="sek band auf-dunkel kr-vorteile-sek"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Was wir bieten</span><h2>Mehr als ein Job.</h2></div><div class="kr-bieten">{bieten}</div></div></section>
-<section class="sek grund kr-werte-sek"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">So arbeiten wir</span><h2>Worauf es bei uns ankommt.</h2></div><div class="kr-werte">{werte}</div></div></section>
-<section class="sek kr-noah-sek"><div class="wrap"><div class="duo"><div class="bild reveal auf"><img src="/static/assets/img/karriere/lions-head-1600.webp" alt="Noah auf dem Lion’s Head in Kapstadt" loading="lazy" style="object-position:45% 50%"><span class="herkunft">Noah Seelau, Inhaber</span></div>
-<div class="text reveal"><span class="kicker">Ein Wort von Noah</span><h2>Warum ich gerade jetzt Leute suche.</h2><p class="lead">Servus, ich bin Noah. Wir wachsen gerade stark, und ich will ein Team aufbauen, in dem sich alle gegenseitig pushen und zusammen besser werden.</p><p class="lead" style="margin-top:20px">Von mir bekommst du eine ordentliche Einarbeitung, ehrliches Feedback und die Freiheit, von überall zu arbeiten.</p><div class="knopfzeile"><a class="btn btn-bronze" href="#bewerben">Jetzt bewerben {PFEIL}</a></div></div></div></div></section>
 <section class="sek grund kr-ablauf-sek" id="ablauf"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">So läuft die Bewerbung</span><h2>So kommst du zu uns.</h2></div><ol class="kr-ablauf">{ablauf}</ol></div></section>
 <section class="sek team-sek kr-team-sek" id="team"><div class="wrap"><div class="kopfzeile mitte reveal"><span class="kicker">Das Team</span><h2>Hier ist noch Platz.</h2></div><div class="kr-team"><article class="team-karte reveal"><div class="tk-bild"><img data-k='[[0.2928,0.0166,0.4037,0.4099]]' src="/static/assets/img/team/team-noah-gross.webp" alt="Noah" width="800" height="1000" loading="lazy" decoding="async"><div class="tk-name"><b>Noah</b><span>Inhaber</span></div></div><p>Arbeitet dich persönlich ein.</p></article><article class="team-karte reveal"><div class="tk-bild"><img data-k='[[0.2363,0.0431,0.2914,0.2959]]' src="/static/assets/img/team/team-robert-gross.webp" alt="Robert" width="800" height="1000" loading="lazy" decoding="async"><div class="tk-name"><b>Robert</b><span>Shooting &amp; Schnitt</span></div></div><p>Dreht bei den Betrieben vor Ort.</p></article>{du}</div></div></section>
 <section class="sek kr-bewerben-sek auf-dunkel" id="bewerben"><img class="kr-bhg" src="/static/assets/img/karriere/sonnenuntergang-1600.webp" alt="" loading="lazy" decoding="async"><div class="wrap"><div class="kr-bewerben"><div class="kr-btext reveal"><span class="kicker">Schnellbewerbung</span><h2>Bewirb dich in zwei Minuten.</h2><p class="lead">Kein Anschreiben, kein Lebenslauf. Deine Bewerbung landet direkt bei Noah.</p><p class="kr-direkt"><a href="tel:+4981947174990">{TEL} +49 8194 7174990</a><a href="mailto:info@handwerksmanufaktur.digital">{MAIL} info@handwerksmanufaktur.digital</a></p></div>
@@ -252,6 +269,21 @@ STIL = """<style>
 .kb-breit{grid-column:span 2}.kb-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}.kb-chips span{padding:7px 13px;border-radius:999px;background:rgba(250,247,241,.08);color:var(--papier);font-size:13.5px;font-weight:600}
 @media (max-width:1100px){.kr-bieten{grid-template-columns:repeat(2,minmax(0,1fr))}.kb-a{grid-column:1/3;grid-row:auto;min-height:460px}}
 @media (max-width:640px){.kr-bieten{grid-template-columns:1fr;grid-auto-rows:auto}.kb-a,.kb-team,.kb-breit{grid-column:auto}.kb{min-height:0}.kb.kb-a{min-height:440px}.kb .kr-ic,.kb-gross{margin-bottom:10px}}
+.kr-kennen{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
+.kr-kk{background:#fff;border-radius:var(--radius);padding:12px 12px 26px;box-shadow:0 0 0 1px rgba(22,19,14,.08);display:flex;flex-direction:column;gap:10px;transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
+.kr-kk:hover{transform:translateY(-6px);box-shadow:0 0 0 1px rgba(200,135,58,.5),0 22px 44px -28px rgba(22,19,14,.45)}
+.kr-kk figure{margin:0 0 8px;border-radius:calc(var(--radius) - 8px);overflow:hidden;aspect-ratio:4/3}.kr-kk img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s var(--ease)}.kr-kk:hover img{transform:scale(1.05)}
+.kr-kk h3{margin:0 12px;font-size:clamp(21px,1.9vw,26px);letter-spacing:-.025em;line-height:1.15}.kr-kk p{margin:0 12px;color:var(--tinte-3);font-size:15.5px;line-height:1.55}
+.kb-team img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%;opacity:.22;mix-blend-mode:luminosity;transition:opacity .5s var(--ease)}.kb-team:hover img{opacity:.32}.kb-team>*:not(img){position:relative;z-index:1}
+@media (max-width:1100px){.kr-kennen{grid-template-columns:repeat(2,minmax(0,1fr))}}@media (max-width:640px){.kr-kennen{grid-template-columns:1fr}}
+.kr-vgl{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);max-width:1040px;margin:0 auto}
+.kr-vgl>div{border-radius:var(--radius);padding:clamp(26px,3vw,44px);display:grid;align-content:start;gap:18px}
+.kr-vgl-ja{background:#fff;box-shadow:0 0 0 2px var(--bronze)}.kr-vgl-nein{background:var(--papier-2)}
+.kr-vgl h3{margin:0;font-size:clamp(22px,2vw,28px);letter-spacing:-.025em}
+.kr-vgl ul{list-style:none;margin:0;padding:0;display:grid;gap:14px}.kr-vgl li{display:grid;grid-template-columns:22px 1fr;gap:12px;font-size:16.5px;line-height:1.5;color:var(--tinte-2)}
+.kr-vgl li svg{width:22px;height:22px;margin-top:1px;fill:none;stroke-width:2.6}.kr-vgl-ja li svg{stroke:var(--bronze)}.kr-vgl-nein li svg{stroke:var(--tinte-4)}.kr-vgl-nein li span{color:var(--tinte-3)}
+.kb-leiter{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:4px}.kb-leiter span{padding:6px 12px;border-radius:999px;background:rgba(200,135,58,.16);color:var(--bronze-hell);font-size:13.5px;font-weight:700}.kb-leiter i{font-style:normal;color:var(--tinte-4)}
+@media (max-width:760px){.kr-vgl{grid-template-columns:1fr}}
 .kr-team{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px}
 .kr-team .team-karte{padding:0 0 20px}
 .kr-team .team-karte p{text-align:center;margin:16px 18px 0;font-size:15px;line-height:1.45;color:var(--tinte-3)}

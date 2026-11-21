@@ -1236,10 +1236,14 @@ def _raster_karte(name, k, form, logo, satz):
     from PIL import Image as _Im
     _w, _h = _Im.open(WURZEL / ("static/assets/img/logos/" + logo)).size
     _r = _w / _h
-    lh = max(44, min(80, (10500 / _r) ** .5)); lb = lh * _r  # größer (Noah, 21.11.2026: „logo da noch bisschen größer“)
-    if lb > 200:
-        lb = 200; lh = lb / _r
+    # Optisch gleich groß (Apple-Logoreihe): gleiche Fläche je Logo in einem festen Rahmen 112 × 48, unabhängig vom Namen
+    # (Noah, 21.11.2026: „in welcher vergleichbaren größe du das logo da reinmachen musst? IMMER APPLE DESIGN REGELN“)
+    _RB, _RH, _FL = 112, 48, 4600
+    lb = min((_FL * _r) ** .5, _RB); lh = lb / _r
+    if lh > _RH:
+        lh = _RH; lb = lh * _r
     lb, lh = round(lb), round(lh)
+    lc = round(lb / _RB * 24, 2)  # schrumpft mit der Kachel im selben Verhältnis (24cqi = voller Rahmen)
     return (f'<article class="projekt{" " + form if form else ""} reveal" data-k="{k}"><div class="schirm ra{film}">'
             f'<video class="hero-lauf" muted loop playsinline preload="none" data-src="{_V}/h{k}{q}.webm{_vq(f'h{k}{q}.webm')}" data-poster="{_V}/h{k}{q}.jpg{_vq(f'h{k}{q}.jpg')}" '
             + (f'data-src-mobil="{_V}/h{k}.webm{_vq(f"h{k}.webm")}" ' if q else "")
@@ -1248,7 +1252,7 @@ def _raster_karte(name, k, form, logo, satz):
             + (f'<img class="ra-alt" data-src="{_V}/v{k}.webp{_vq(f'v{k}.webp')}" alt="Die alte Website von {name}" decoding="async">'
                f'<button class="ra-vorher" type="button" aria-pressed="false" aria-label="Alte Website von {name} zeigen">Vorher</button>' if vorher else "")
             # Logo rechts neben dem ganzen Text (Noah, 21.11.2026: „das logo kann doch einfach da rechts neben den text da jeweils“)
-            + f'</div><div class="unten" style="--lb:{lb}px;--lh:{lh}px"><div class="ra-text"><small>{KATEGORIE[name]}</small><b>{name}</b><p class="ra-satz">{satz}</p></div>'
+            + f'</div><div class="unten" style="--lb:{lb}px;--lc:{lc}cqi"><div class="ra-text"><small>{KATEGORIE[name]}</small><b>{name}</b><p class="ra-satz">{satz}</p></div>'
             f'<span class="ra-logo"><img loading="lazy" src="{_LG}{logo}" alt="Logo {name}" width="{lb}" height="{lh}"></span></div></article>')
 
 
@@ -1294,14 +1298,15 @@ RASTER_STIL = (
     '@media (min-width:1001px){#arbeiten .projekte .projekt.zwei .schirm.film{flex:none;aspect-ratio:auto;min-height:0;height:calc((100cqw - 2 * var(--gap)) / 3 * 10 / 16)}}'
     # Farblogo frei auf der Karte, kein schwarzer Kasten; Breite schrumpft mit schmaler Kachel (30cqi), Design-Tor G hält Name und Branche einzeilig
     '#arbeiten .projekt .unten .ra-logo{background:none!important;padding:0!important;height:auto!important;min-width:0!important;border-radius:0!important;box-shadow:none!important}'
-    # Raster der Fußzeile: Branche und Name links (immer volle Breite), Logo rechts daneben bis zu seiner Größe, Satz darunter
-    # (schmale Kachel: Satz über die volle Breite). Das Logo schrumpft, nie der Name.
-    '#arbeiten .projekt .unten{display:grid!important;grid-template-columns:minmax(max-content,1fr) fit-content(min(var(--lb),40cqi))!important;grid-template-areas:"k l" "n l" "s l";column-gap:clamp(12px,3cqi,22px);row-gap:6px;align-items:start}'
+    # Fußzeile: Branche und Name links, Logo rechts in festem Rahmen (alle Logos optisch gleich groß), Satz darunter
+    '#arbeiten .projekt .unten{display:grid!important;grid-template-columns:minmax(0,1fr) min(112px,24cqi)!important;grid-template-areas:"k l" "n l" "s l";column-gap:clamp(12px,3cqi,22px);row-gap:6px;align-items:start}'
     '#arbeiten .projekt .unten .ra-text{display:contents}'
-    '#arbeiten .projekt .unten .ra-text small{grid-area:k}#arbeiten .projekt .unten .ra-text b{grid-area:n}#arbeiten .projekt .unten .ra-satz{grid-area:s;width:0;min-width:100%}'
-    '#arbeiten .projekt .unten .ra-logo{grid-area:l;align-self:center;justify-self:stretch;display:flex;justify-content:flex-end;min-width:0!important}'
-    '#arbeiten .projekt .unten .ra-logo img{width:100%!important;max-width:var(--lb)!important;height:auto!important;max-height:var(--lh)!important;object-fit:contain;object-position:right center}'
-    '@container (max-width:460px){#arbeiten .projekt .unten{grid-template-areas:"k l" "n l" "s s"}#arbeiten .projekt .unten .ra-logo img{max-height:min(var(--lh),58px)!important}}'
+    '#arbeiten .projekt .unten .ra-text small{grid-area:k}#arbeiten .projekt .unten .ra-text b{grid-area:n;font-size:clamp(14px,4.4cqi,20px)!important}#arbeiten .projekt .unten .ra-satz{grid-area:s}'
+    '#arbeiten .projekt .unten .ra-logo{grid-area:l;align-self:center;justify-self:end;display:flex;justify-content:flex-end;min-width:0!important}'
+    '#arbeiten .projekt .unten .ra-logo img{width:min(var(--lb),var(--lc))!important;max-width:none!important;height:auto!important;max-height:none!important}'
+    '@container (max-width:460px){#arbeiten .projekt .unten{grid-template-areas:"k l" "n l" "s s"}}'
+    '@container (max-width:310px){#arbeiten .projekt .unten{grid-template-columns:minmax(0,1fr) 20cqi!important}#arbeiten .projekt .unten .ra-logo img{width:min(var(--lb),calc(var(--lc) * .833))!important}#arbeiten .projekt .unten .ra-text b{font-size:13.5px!important}}'
+    '@container (max-width:270px){#arbeiten .projekt .unten{grid-template-columns:minmax(0,1fr) 16cqi!important}#arbeiten .projekt .unten .ra-logo img{width:min(var(--lb),calc(var(--lc) * .667))!important}}'
     '</style>')
 RASTER_JS = (
     '<script>(()=>{const sek=document.getElementById("arbeiten");if(!sek)return;'
