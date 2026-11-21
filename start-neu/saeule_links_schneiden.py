@@ -28,14 +28,14 @@ SZENEN = [
     # die clips vom koller shooting sind gut, müssen nicht viele sein“) → zwei Koller-Szenen bleiben
     # Wohner-Drohne raus, dafür Entenmann-Nahaufnahme (Noah, 21.11.2026: „mach das wohner drohnenvideo in der mitte raus … close ups,
     # z.b. von entenmann shooting“); Reihenfolge so, dass nie zwei Szenen vom selben Betrieb aufeinander folgen (auch nicht über die Schleife)
+    # CS-Drohne raus (Noah, 21.11.2026: „auch der drohnenclip von cs metalldesign in der mitte raus“) → keine Drohne mehr in der Mitte.
+    # Mit nur noch einer CS-Szene trägt die Folge höchstens drei Entenmann-Szenen ohne zwei gleiche hintereinander → Rohrschneider raus.
     ("CS Metall",  CS_B,     2.10, 1.60, 0.45, "Schleifer mit Brille lacht an der Werkbank"),
     ("Entenmann",  ENT,      9.55, 1.40, 0.40, "Trennschleifer mit Funken am Rohr"),
     ("Koller",     KOLLER_A, 0.10, 1.30, 0.28, "Zimmerer mit Akkuschrauber am Balken"),
     ("Entenmann",  ENT,      8.46, 0.95, 0.70, "Nahaufnahme: Zange an der Armatur"),
-    ("CS Metall",  ALT,      8.10, 1.24, None, "Drohne Werkstatthalle, Schweißen im Bild"),
-    ("Entenmann",  ENT,      4.34, 1.40, 0.60, "Wärmepumpe wird durch den Garten gebracht"),
     ("Koller",     KOLLER_C, 1.30, 1.25, 0.52, "Kappsäge, Zimmerer mit Gehörschutz schneidet den Balken"),
-    ("Entenmann",  ENT,      25.12, 1.40, 0.40, "Rohrschneider am Rohr"),
+    ("Entenmann",  ENT,      4.34, 1.40, 0.60, "Wärmepumpe wird durch den Garten gebracht"),
 ]
 assert all(SZENEN[i][0] != SZENEN[i - 1][0] for i in range(len(SZENEN))), "zwei Szenen vom selben Betrieb hintereinander"
 
