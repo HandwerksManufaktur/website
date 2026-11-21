@@ -78,8 +78,7 @@ SEITEN = {
     # Noah, 21.11.2026: „kürzere zusammengeschnittene clips nimm einfach die was wir bei koller so auch drin hatten nur bisschen anders
     # gecutted“ → 11 Szenen à ~1 s aus demselben Koller-Shooting, wechselnd nah/weit
     "mitarbeitergewinnung": [(kol("C2362.MP4"), 2.4, 1.0, .50, "lut"),   # Team läuft auf die Kamera zu
-                             (kol("C2412.MP4"), 1.4, 1.0, .58, "lut"),   # Säge mit Gehörschutz
-                             (kol("C2367.MP4"), 0.1, 0.9, .45, "lut"),   # lachender Zimmerer
+                             # (Noah, 21.11.2026 abends: „zweiter und dritter clip muss da raus“ → Säge 1,4 s + lachender Zimmerer raus)
                              (kol("C2391.MP4"), 1.2, 1.0, .42, "lut"),   # Akkuschrauber am Balken
                              (kol("C2362.MP4"), 4.3, 1.0, .50, "lut"),   # Team, näher
                              (kol("C2412.MP4"), 2.6, 0.9, .58, "lut"),   # Säge, zweiter Moment
