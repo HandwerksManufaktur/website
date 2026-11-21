@@ -1172,31 +1172,31 @@ assert len(_arts) == len(_klassen) == 24, (len(_arts), len(_klassen))
 _V = "/static/assets/vid/raster"
 _LG = "/static/assets/img/logos/"
 RASTER = [  # (Name, k, Form, Logo, Satz) — nur Querformate (Noah, 21.11.2026: „die seiten bei website unterseite eher waagrecht, irlbacher
-            # ist schon fast senkrecht und die seite ist abgeschnitten“): breit = ganze Reihe 2:1, zwei = 2 Spalten neben einer normalen Kachel
-    ("Entenmann Haustechnik", "entenmann", "breit", "logo-entenmann-haustechnik.png", "Eine Seite je Leistung, dazu Wartung und Notdienst auf einer eigenen Seite."),
-    ("SD Hirsch", "sdhirsch", "", "logo-sd-hirsch-weiss.png", "Eine Seite je Produktgruppe und Anwendung, dazu Downloads und englische Fassung."),
-    ("Björn Schillinger", "schillinger", "", "logo-bjoern-schillinger.png", "Eigene Seiten für Schränke, Küchen und Garderoben, dazu Referenzen und Projektanfrage."),
-    ("Dinkel Metallbau", "dinkel", "", "logo-dinkel-metallbau-weiss.png", "Eigene Seite je Gewerk von Treppen bis Zäune, ausgerichtet auf Tübingen und Rottenburg."),
-    ("Irlbacher Gebäudetechnik", "irlbacher", "breit", "logo-irlbacher.png", "Eigene Seite je Leistung, Fotos vom Shooting und eine Jobseite für Anlagenmechaniker."),
-    ("W&amp;W Bau", "ww", "", "logo-ww-bau.png", "Sieben Leistungsseiten von Altbausanierung bis Bauleitung, dazu Referenzen und Jobs."),
-    ("Zimmerei Knappich", "knappich", "", "logo-zimmerei-knappich.png", "Projektgalerie nach Gewerk sortiert, vom Massivholzhaus bis zum Carport, dazu Teamseite."),
-    ("Küchenhaus Hirschvogel", "hirschvogel", "", "logo-kuechenhaus-hirschvogel.png", "Eine Seite je Küchenlinie, dazu ein Beispielkauf und Kundenstimmen."),
-    ("Zimmerei Koller", "koller", "breit", "logo-zimmerei-koller.png", "Eigene Seiten für Holzhausbau, Aufstockung, Dachgauben und den Außenbereich."),
-    ("Baustoffe Kirchner", "kirchner", "", "logo-baustoffe-thaining-kirchner.png", "Eine Seite je Leistung von Tiefbau bis Containerdienst, dazu Teamseite und Jobs."),
-    ("Wohner Elektrotechnik", "wohner", "zwei", "wohner_elektrotechnik_weiss_cropped.png", "Eine Seite für PV, Speicher und Wallbox mit Projekten, Kundenstimmen und Anfrage."),
-    ("Baureize", "baureize", "", "logo-baureize.png", "Schlanke Seite für Maurer- und Estricharbeiten mit Galerie und Teamseite."),
-    ("Resch Bau", "resch", "", "logo-resch-bau.png", "Seiten für Leistungen, Massivhausbau und Team, dazu der AwSV-Fachbetrieb."),
-    ("Planung Hindelang", "hindelang", "", "logo-planung-hindelang.png", "Je Leistung eine Seite, von Laserscanning über Drohne bis Heizlast und Energieausweis."),
-    ("Erwin Schmidt &amp; Sohn", "ess", "zwei", "logo-erwin-schmidt-sohn-weiss.png", "Seiten für Sanitär, Heizung und Erneuerbare, dazu Ratgeber und Jobseite."),
-    ("Dachbau Kraus", "kraus", "", "logo-dachbau-kraus-gmbh.png", "Eine Seite je Dacharbeit und Fassade für Gewerbe, dazu Galerie und Karriereseite."),
-    ("Schwaighofer", "schwaighofer", "", "logo-schwaighofer-betontechnik-logo.png", "Eine Seite je Bauart, von Hallenbau bis Melkroboterumbau, für die Landwirtschaft."),
-    ("Vogel Holzbau", "vogel", "", "logo-thomas-vogel-holzbau.png", "Eigene Seiten für Holzrahmenbau, Massivholz, Hallen und Sanierung, dazu ein Leitfaden."),
-    ("Maser Tankschutz", "maser", "", "logo-maser-tankschutz-logo.png", "Eine Seite je Tankarbeit von Demontage bis Neuaufstellung, die Zertifizierung gut sichtbar."),
-    ("Schuster Erisried", "erisried", "", "logo-schuster-landmaschinen-agrartechnik.png", "Seiten für Werkstatt, Landwirtschaft, Güterverkehr und Unimog-Teile, dazu Karriereseite."),
-    ("Schreinerei Kreitner", "kreitner", "zwei", "logo-schreinerei-kreitner.png", "Seiten für Bad, Küche, Türen, Treppen und Fenster, Schwerpunkt barrierefreies Wohnen."),
-    ("Juwelier Wagenknecht", "wagenknecht", "", "logo-juwelier-wagenknecht-farbe.png", "Werkstatt und Ankauf im Fokus, die Hausgeschichte seit 1908 als Bildfolge."),
-    ("Weber Metallbau", "weber", "", "w/logo-weber-metallbau.webp", "Vom Blechstapel zum fertigen Teil als Bildstrecke, dazu Anlagendaten und Anfrage."),
-    ("Malermeister Müller", "mueller", "", "logo-malermeister-mueller.png", "Eigene Seite je Arbeit von Fassade bis Beschriftung, Projektanfrage direkt oben."),
+            # ist schon fast senkrecht und die seite ist abgeschnitten“): breit = ganze Reihe 2:1, Wohner/ESS/Kreitner seit 21.11. auch ganze Reihe (Noah: „die queren projekte wie wohner … sind alle erstaunlich klein“)
+    ("Entenmann Haustechnik", "entenmann", "breit", "logo-entenmann-haustechnik.png", "Eine Seite je Leistung, dazu Notdienst."),
+    ("SD Hirsch", "sdhirsch", "", "logo-sd-hirsch-weiss.png", "Eine Seite je Produkt, auch auf Englisch."),
+    ("Björn Schillinger", "schillinger", "", "logo-bjoern-schillinger.png", "Eigene Seiten für Schränke und Küchen."),
+    ("Dinkel Metallbau", "dinkel", "", "logo-dinkel-metallbau-weiss.png", "Von Treppen bis Zäune, für Tübingen."),
+    ("Irlbacher Gebäudetechnik", "irlbacher", "breit", "logo-irlbacher.png", "Fotos vom Shooting und eine eigene Jobseite."),
+    ("W&amp;W Bau", "ww", "", "logo-ww-bau.png", "Sieben Leistungsseiten, dazu Jobs."),
+    ("Zimmerei Knappich", "knappich", "", "logo-zimmerei-knappich.png", "Projekte vom Holzhaus bis zum Carport."),
+    ("Küchenhaus Hirschvogel", "hirschvogel", "", "logo-kuechenhaus-hirschvogel.png", "Eine Seite je Küchenlinie."),
+    ("Zimmerei Koller", "koller", "breit", "logo-zimmerei-koller.png", "Eigene Seiten für Holzhaus und Aufstockung."),
+    ("Baustoffe Kirchner", "kirchner", "", "logo-baustoffe-thaining-kirchner.png", "Vom Tiefbau bis zum Containerdienst."),
+    ("Baureize", "baureize", "", "logo-baureize.png", "Maurer- und Estricharbeiten mit Galerie."),
+    ("Resch Bau", "resch", "", "logo-resch-bau.png", "Massivhausbau, dazu der AwSV-Fachbetrieb."),
+    ("Wohner Elektrotechnik", "wohner", "breit", "wohner_elektrotechnik_weiss_cropped.png", "PV, Speicher und Wallbox mit Projekten."),
+    ("Planung Hindelang", "hindelang", "", "logo-planung-hindelang.png", "Vom Laserscan bis zum Energieausweis."),
+    ("Dachbau Kraus", "kraus", "", "logo-dachbau-kraus-gmbh.png", "Dach und Fassade für Gewerbe."),
+    ("Schwaighofer", "schwaighofer", "", "logo-schwaighofer-betontechnik-logo.png", "Hallenbau für die Landwirtschaft."),
+    ("Erwin Schmidt &amp; Sohn", "ess", "breit", "logo-erwin-schmidt-sohn-weiss.png", "Sanitär, Heizung und Erneuerbare."),
+    ("Vogel Holzbau", "vogel", "", "logo-thomas-vogel-holzbau.png", "Holzrahmenbau, Hallen und Sanierung."),
+    ("Maser Tankschutz", "maser", "", "logo-maser-tankschutz-logo.png", "Jede Tankarbeit mit eigener Seite."),
+    ("Schuster Erisried", "erisried", "", "logo-schuster-landmaschinen-agrartechnik.png", "Werkstatt, Landtechnik und Unimog-Teile."),
+    ("Schreinerei Kreitner", "kreitner", "breit", "logo-schreinerei-kreitner.png", "Schwerpunkt barrierefreies Wohnen."),
+    ("Juwelier Wagenknecht", "wagenknecht", "", "logo-juwelier-wagenknecht-farbe.png", "Werkstatt, Ankauf und Geschichte seit 1908."),
+    ("Weber Metallbau", "weber", "", "w/logo-weber-metallbau.webp", "Vom Blech zum fertigen Teil."),
+    ("Malermeister Müller", "mueller", "", "logo-malermeister-mueller.png", "Von Fassade bis Beschriftung."),
 ]
 _FILM = {"": (1280, 800), "breit": (1920, 960), "zwei": (1640, 560)}
 
@@ -1214,7 +1214,7 @@ def _logo_mass(datei):
 
 
 def _raster_karte(name, k, form, logo, satz):
-    assert len(satz) <= 92 and "·" not in satz, (name, len(satz))
+    assert len(satz) <= 45 and "·" not in satz, (name, len(satz))  # kurz, sonst drückt der Satz die Kachel hoch (Noah, 21.11.2026)
     fw, fh = _FILM[form]
     film = " film" if form in ("gross", "gross rechts", "breit", "zwei") else ""
     vorher = (WURZEL / f"static/assets/vid/raster/v{k}.webp").exists()
@@ -1325,10 +1325,10 @@ _IC = {
 }
 _WU = [("foto", "Fotos aus deinem Betrieb", "Wir kommen vorbei und fotografieren dein Team, deine Fahrzeuge und deine Arbeit."),
        ("seiten", "Eine Seite je Leistung", "Bad, Dach, Treppe: Jede Leistung bekommt ihre eigene Seite, damit Google sie findet."),
-       ("text", "Alle Texte", "Wir schreiben alles. Du liest einmal drüber und sagst, was anders soll."),
-       ("google", "Bei Google", "Schnell, sauber am Handy, alte Adressen weitergeleitet. Du verlierst nichts."),  # einzeilig wie die Nachbarkarten (Noah, 21.11.2026)
+       ("text", "Alle Texte", "Wir schreiben alles. Du liest nur drüber."),
+       ("google", "Bei Google", "Schnell am Handy, alte Adressen leiten weiter."),  # einzeilig wie die Nachbarkarten (Noah, 21.11.2026)
        ("anfrage", "Anfragen direkt zu dir", "Anruf-Knopf und Formular. Jede Anfrage landet sofort bei dir."),
-       ("danach", "Nach dem Start", "Updates, Sicherheit, kleine Änderungen. Ein Satz an uns genügt.")]
+       ("danach", "Nach dem Start", "Updates und kleine Änderungen. Ein Satz genügt.")]
 # Gleicher Baustein wie „Was wir übernehmen“ auf Neukunden/Mitarbeiter/SEO (Noah, 19.11.2026: „ähnlich wie die Sektion bei
 # Neukundengewinnung, Mitarbeitergewinnung … dass sich das Design halt mehr durch die Seite generell noch durchzieht“):
 # dunkles Band, Kacheln mit Nummer, bewegtem Bild, Titel, einem Satz.
