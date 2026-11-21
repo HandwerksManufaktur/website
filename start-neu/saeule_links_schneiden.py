@@ -19,16 +19,20 @@ ZIEL = VID / "saeule"
 ENT = WEB.parent.parent / "kunden/entenmann/material/shooting-final/Entenmann Headervideo Website 4K.mp4"
 ALT = Path(os.environ.get("ALT", ZIEL / "drohnen-d.mp4"))
 KOLLER_A, KOLLER_C = VID / "sr-koller-a.mp4", VID / "sr-koller-c.mp4"
+CS_B = VID / "sr-cs-b.mp4"   # Showreel-Lage CS: ab 2,0 s der lachende Schleifer (Noah 18./19.11.: „richtig geil“)
 
 # (Betrieb, Quelle, Start s, Länge s, Mitte x 0–1 des 3:4-Ausschnitts, alt=schon 3:4, was man sieht)
 SZENEN = [
     # Kreitner-Drohne raus (Noah, 21.11.2026: „das drohnenvideo bei kreitner raus … da sieht man nur die decke“)
-    ("Wohner",     ALT,      1.68, 1.40, None, "Drohne über das PV-Dach"),
+    # CS-Schleifer vorn (Noah, 21.11.2026: „da in die geile säule links kommt auch der cs metalldesign clip was ich so nice fand …
+    # die clips vom koller shooting sind gut, müssen nicht viele sein“) → zwei Koller-Szenen bleiben
+    ("CS Metall",  CS_B,     2.10, 1.60, 0.45, "Schleifer mit Brille lacht an der Werkbank"),
     ("Entenmann",  ENT,      9.55, 1.40, 0.40, "Trennschleifer mit Funken am Rohr"),
     ("Koller",     KOLLER_A, 0.10, 1.30, 0.28, "Zimmerer mit Akkuschrauber am Balken"),
+    ("Wohner",     ALT,      1.68, 1.40, None, "Drohne über das PV-Dach"),
     ("Entenmann",  ENT,      4.34, 1.40, 0.60, "Wärmepumpe wird durch den Garten gebracht"),
-    ("CS Metall",  ALT,      8.10, 1.24, None, "Drohne Werkstatthalle, Schweißen im Bild"),
     ("Koller",     KOLLER_C, 1.30, 1.25, 0.52, "Kappsäge, Zimmerer mit Gehörschutz schneidet den Balken"),
+    ("CS Metall",  ALT,      8.10, 1.24, None, "Drohne Werkstatthalle, Schweißen im Bild"),
     ("Entenmann",  ENT,      25.12, 1.40, 0.40, "Akkuschrauber am Rohr"),
 ]
 assert all(SZENEN[i][0] != SZENEN[i - 1][0] for i in range(len(SZENEN))), "zwei Szenen vom selben Betrieb hintereinander"

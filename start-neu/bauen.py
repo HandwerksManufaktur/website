@@ -654,12 +654,14 @@ s.h = s.h.replace('</head>', '<style>.saeule:nth-child(3) video{object-position:
 #              Resch Bewehrung binden (Resch Bau 8,0 s) · Wolfgang Reize geht die Treppe hoch (Drive „Baureize original.mp4“
 #              4,60–6,44 s, echte Geschwindigkeit, Ausschnitt folgt dem Logo) · CS Schweißen (CS Metalldesign 2,05 s) ·
 #              Koller Werkzeugbank (Final 21,7 s)
-s.h = s.h.replace('/static/assets/vid/saeule/kreitner.jpg', '/static/assets/vid/saeule/drohnen.jpg?v=4')
+# Links und Mitte getauscht (Noah, 21.11.2026: „linke und mittlere säule bei start hero tauschen, also der content der linken säule
+# in die mitte, und andersrum“): links jetzt die Detailaufnahmen (details-*), in der Mitte die Szenen mit CS/Entenmann/Koller (drohnen-*)
+s.h = s.h.replace('/static/assets/vid/saeule/kreitner.jpg', '/static/assets/vid/saeule/details.jpg?v=3')
 s.ersetze('data-src="/static/assets/vid/saeule/kreitner-d.mp4" data-src-mobil="/static/assets/vid/saeule/kreitner-m.mp4"',
-          'data-src="/static/assets/vid/saeule/drohnen-d.mp4?v=4" data-src-mobil="/static/assets/vid/saeule/drohnen-m.mp4?v=4"')
-s.h = s.h.replace('/static/assets/vid/saeule/hero-loop.jpg', '/static/assets/vid/saeule/details.jpg?v=3')
-s.ersetze('data-src="/static/assets/vid/saeule/hero-loop-d.mp4" data-src-mobil="/static/assets/vid/saeule/hero-loop-m.mp4"',
           'data-src="/static/assets/vid/saeule/details-d.mp4?v=3" data-src-mobil="/static/assets/vid/saeule/details-m.mp4?v=3"')
+s.h = s.h.replace('/static/assets/vid/saeule/hero-loop.jpg', '/static/assets/vid/saeule/drohnen.jpg?v=5')
+s.ersetze('data-src="/static/assets/vid/saeule/hero-loop-d.mp4" data-src-mobil="/static/assets/vid/saeule/hero-loop-m.mp4"',
+          'data-src="/static/assets/vid/saeule/drohnen-d.mp4?v=5" data-src-mobil="/static/assets/vid/saeule/drohnen-m.mp4?v=5"')
 s.heraus('<section class="sek system-sek" id="system"')
 s.heraus('<section class="sek grund lagen-sek probleme pb-sek">')
 s.heraus('<section class="sek google grund">')
