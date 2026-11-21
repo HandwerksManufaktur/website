@@ -162,15 +162,20 @@ def main_html():
               '<h2>Wir sind die HandwerksManufaktur.</h2></div><div class="kr-kennen">' + "".join(
                   f'<article class="kr-kk reveal"><figure><img src="/static/assets/img/karriere/a-{k}-800.webp" alt="{alt}" loading="lazy" decoding="async" style="object-position:{pos}"></figure>'
                   f'<h3>{titel}</h3><p>{text}</p></article>' for k, titel, text, alt, pos in KENNEN) + '</div></div></section>')
-    JA = ["Ein Produkt, das für die Betriebe ein No-Brainer ist.", "Klare Ziele und Zahlen, damit du immer weißt, wo du stehst.",
-          "Direktes Feedback, auch wenn’s mal unangenehm ist.", "Remote arbeiten, von wo du willst.", "Aufstieg nach Leistung, nicht nach Dauer."]
-    NEIN = ["Jeden Tag ins Büro pendeln.", "Ein Gehalt, das gleich bleibt, egal wie viel du leistest.", "Telefonieren ins Blaue, ohne Skript und ohne Plan.",
-            "Jahre warten, bis du aufsteigen darfst.", "Ein Produkt, hinter dem du selbst nicht stehst."]
+    # Noah, 21.11.2026: „rechts noch krassere Sachen … die Sektion ist bisschen zu simpel“ → je Zeile: was im normalen Job nervt, daneben wie es bei uns ist
+    PAARE = [("Jeden Tag eine Stunde Stau auf dem Weg ins Büro.", "Laptop auf und los, egal von wo du arbeitest."),
+             ("Ein Gehalt, das gleich bleibt, egal was du leistest.", "Mehr Leistung heißt bei uns auch mehr Geld."),
+             ("Leadlisten, die schon zehnmal abtelefoniert wurden.", "Ein Skript, das funktioniert, und ein klarer Ablauf."),
+             ("Feedback einmal im Jahr, im Mitarbeitergespräch.", "Direktes Feedback, auch wenn’s unangenehm ist."),
+             ("Jahrelang warten, bis der Kollege vor dir aufsteigt.", "Opener, Setter, Closer: Aufstieg nach Leistung."),
+             ("Ein Produkt, für das du dich am Telefon schämst.", "Ein Produkt, das für die Betriebe ein No-Brainer ist.")]
     x_ic = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>'
     vergleich = ('<section class="sek kr-vgl-sek"><div class="wrap"><div class="kopfzeile mitte reveal"><span class="kicker">Gut zu wissen</span>'
                  '<h2>Was dich bei uns erwartet.</h2></div><div class="kr-vgl">'
-                 '<div class="kr-vgl-ja"><h3>Das bekommst du</h3><ul>' + "".join(f'<li style="--i:{i}">{HAKEN}<span>{x}</span></li>' for i, x in enumerate(JA)) + '</ul></div>'
-                 '<div class="kr-vgl-nein"><h3>Das gibt’s bei uns nicht</h3><ul>' + "".join(f'<li style="--i:{i}">{x_ic}<span><b>{x}</b></span></li>' for i, x in enumerate(NEIN)) + '</ul></div>'
+                 '<div class="kr-vgl-kopf" aria-hidden="true"><span>Im normalen Job</span><i></i><span>Bei uns</span></div>'
+                 + "".join(f'<div class="kr-paar"><p class="alt">{x_ic}<span><b>{alt}</b></span></p>'
+                           f'<i class="pfeil" aria-hidden="true">{PFEIL}</i><p class="neu">{HAKEN}<span>{neu}</span></p></div>'
+                           for alt, neu in PAARE) +
                  '</div></div></section>')
     wen = ('<section class="sek kr-wen-sek"><div class="wrap"><div class="duo"><div class="text reveal"><span class="kicker">Wen wir suchen</span>'
            '<h2>Leute, die richtig gut sein wollen.</h2>'
@@ -281,24 +286,31 @@ STIL = """<style>
 .kr-kk figure{margin:0 0 8px;border-radius:calc(var(--radius) - 8px);overflow:hidden;aspect-ratio:4/3}.kr-kk img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s var(--ease)}.kr-kk:hover img{transform:scale(1.05)}
 .kr-kk h3{margin:0 12px;font-size:clamp(21px,1.9vw,26px);letter-spacing:-.025em;line-height:1.15}.kr-kk p{margin:0 12px;color:var(--tinte-3);font-size:15.5px;line-height:1.55}
 @media (max-width:1280px){.kr-kennen{grid-template-columns:repeat(2,minmax(0,1fr))}}@media (max-width:640px){.kr-kennen{grid-template-columns:1fr}}
-.kr-vgl{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);max-width:1040px;margin:0 auto}
-.kr-vgl>div{border-radius:var(--radius);padding:clamp(26px,3vw,44px);display:grid;align-content:start;gap:18px}
-.kr-vgl-ja{background:#fff;box-shadow:0 0 0 2px var(--bronze)}.kr-vgl-nein{background:var(--papier-2)}
-.kr-vgl h3{margin:0;font-size:clamp(22px,2vw,28px);letter-spacing:-.025em}
-.kr-vgl ul{list-style:none;margin:0;padding:0;display:grid;gap:14px}.kr-vgl li{display:grid;grid-template-columns:22px 1fr;gap:12px;font-size:16.5px;line-height:1.5;color:var(--tinte-2)}
-.kr-vgl li svg{width:22px;height:22px;margin-top:1px;fill:none;stroke-width:2.6}.kr-vgl-ja li svg{stroke:var(--bronze)}.kr-vgl-nein li svg{stroke:var(--tinte-4)}.kr-vgl-nein li span{color:var(--tinte-3)}
 .kb-leiter{display:flex;flex-wrap:nowrap;align-items:center;gap:2px;margin-top:4px;white-space:nowrap}.kb-leiter span{padding:5px 7px;font-size:13px!important;border-radius:999px;background:rgba(200,135,58,.16);color:var(--bronze-hell);font-size:13.5px;font-weight:700}.kb-leiter i{font-style:normal;color:var(--tinte-4)}
-@media (max-width:760px){.kr-vgl{grid-template-columns:1fr}}
+.kr-vgl{max-width:1080px;margin:0 auto;display:grid;gap:12px}
+.kr-vgl-kopf,.kr-paar{display:grid;grid-template-columns:minmax(0,1fr) 52px minmax(0,1fr);align-items:stretch;gap:12px}
+.kr-vgl-kopf span{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--tinte-4);padding:0 26px}
+.kr-vgl-kopf span:last-child{color:var(--bronze-tief)}
+.kr-paar p{margin:0;display:grid;grid-template-columns:22px 1fr;gap:14px;align-items:center;border-radius:var(--radius);padding:20px 26px;font-size:17px;line-height:1.45}
+.kr-paar svg{width:22px;height:22px;fill:none;stroke-width:2.6}
+.kr-paar .alt{background:var(--papier-2);color:var(--tinte-3)}.kr-paar .alt svg{stroke:var(--tinte-4)}
+.kr-paar .alt b{font-weight:inherit;background:linear-gradient(var(--tinte-4),var(--tinte-4)) 0 58%/0 2px no-repeat}
+.kr-paar .neu{background:#fff;color:var(--tinte);font-weight:600;box-shadow:0 0 0 2px var(--bronze),0 22px 44px -30px rgba(200,135,58,.6)}.kr-paar .neu svg{stroke:var(--bronze)}
+.kr-paar .pfeil{display:grid;place-items:center;align-self:center;width:44px;height:44px;margin:auto;border-radius:50%;background:var(--bronze);color:#fff}
+.kr-paar .pfeil svg{width:20px;height:20px;stroke:#fff;stroke-width:2.4}
+@media (max-width:760px){.kr-vgl-kopf{display:none}.kr-vgl{gap:22px}.kr-paar{grid-template-columns:1fr;gap:8px}.kr-paar .pfeil{width:36px;height:36px;transform:rotate(90deg)}
+ .kr-paar p{padding:16px 18px;font-size:16px}}
 .kr-vgl-sek{overflow-x:clip}
-/* Animation „Was dich bei uns erwartet“ (Noah, 21.11.2026: „das will ich mit geiler animation“) */
-.kr-vgl.anim>div{opacity:0;transition:opacity .7s var(--ease),transform .9s cubic-bezier(.16,1,.3,1)}.kr-vgl.anim .kr-vgl-ja{transform:translateX(-60px) rotate(-1.5deg)}.kr-vgl.anim .kr-vgl-nein{transform:translateX(60px) rotate(1.5deg)}
-.kr-vgl.anim li{opacity:0;transform:translateY(14px);transition:opacity .5s var(--ease),transform .6s cubic-bezier(.16,1,.3,1);transition-delay:calc(.45s + var(--i)*.16s)}
-.kr-vgl.anim li svg path{stroke-dasharray:30;stroke-dashoffset:30;transition:stroke-dashoffset .5s ease-out;transition-delay:calc(.65s + var(--i)*.16s)}
-.kr-vgl-nein li span b{font-weight:inherit;background:linear-gradient(var(--tinte-4),var(--tinte-4)) 0 58%/0 2px no-repeat;transition:color .4s ease,background-size .7s cubic-bezier(.65,0,.35,1);transition-delay:0s,calc(1.05s + var(--i)*.16s)}
-@media (max-width:760px){.kr-vgl.anim .kr-vgl-ja,.kr-vgl.anim .kr-vgl-nein{transform:translateY(40px) rotate(0)}}
-.kr-vgl.an .kr-vgl-ja,.kr-vgl.an .kr-vgl-nein{opacity:1;transform:none}.kr-vgl.an li{opacity:1;transform:none}.kr-vgl.an li svg path{stroke-dashoffset:0}.kr-vgl.an .kr-vgl-nein li span{color:var(--tinte-4)}.kr-vgl.an .kr-vgl-nein li span b{background-size:100% 2px}
-.kr-vgl.an .kr-vgl-ja{box-shadow:0 0 0 2px var(--bronze),0 30px 60px -36px rgba(200,135,58,.55)}
-@media (prefers-reduced-motion:reduce){.kr-vgl.anim>div,.kr-vgl.anim li,.kr-vgl.anim li svg path,.kr-vgl-nein li span b{transition:none!important}}
+/* Animation je Zeile (Noah, 21.11.2026: „das will ich mit geiler animation“): alt kommt, wird durchgestrichen, Pfeil, dann springt „Bei uns“ rein */
+.kr-paar.anim .alt{opacity:0;transform:translateY(16px)}.kr-paar.anim .pfeil{opacity:0;transform:translateX(-14px) scale(.6)}.kr-paar.anim .neu{opacity:0;transform:translateX(-36px) scale(.94)}
+.kr-paar.anim .neu svg path{stroke-dasharray:30;stroke-dashoffset:30}
+.kr-paar .alt,.kr-paar .pfeil,.kr-paar .neu{transition:opacity .5s var(--ease),transform .7s cubic-bezier(.16,1,.3,1),color .4s ease}
+.kr-paar .alt b{transition:background-size .55s cubic-bezier(.65,0,.35,1) .35s}.kr-paar .pfeil{transition-delay:.75s}.kr-paar .neu{transition-delay:.95s}
+.kr-paar .neu svg path{transition:stroke-dashoffset .45s ease-out 1.35s}
+@media (max-width:760px){.kr-paar.anim .pfeil{transform:translateY(-10px) rotate(90deg) scale(.6)}.kr-paar.anim .neu{transform:translateY(-16px) scale(.96)}}
+.kr-paar.an .alt{opacity:1;transform:none;color:var(--tinte-4)}.kr-paar.an .alt b{background-size:100% 2px}.kr-paar.an .pfeil{opacity:1;transform:none}.kr-paar.an .neu{opacity:1;transform:none}.kr-paar.an .neu svg path{stroke-dashoffset:0}
+@media (max-width:760px){.kr-paar.an .pfeil{transform:rotate(90deg)}}
+@media (prefers-reduced-motion:reduce){.kr-paar .alt,.kr-paar .pfeil,.kr-paar .neu,.kr-paar .alt b,.kr-paar .neu svg path{transition:none!important}}
 .kr-initiativ{margin:22px 0 0;font-size:16.5px;color:var(--tinte-3)}.kr-initiativ a{display:inline-flex;align-items:center;gap:6px;margin-left:6px;font-weight:700;color:var(--tinte);text-decoration:underline;text-underline-offset:4px}.kr-initiativ a svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2}
 .kr-quiz{gap:20px;min-height:420px;align-content:start}
 .kq-schritt{border:0;margin:0;padding:0;min-width:0;display:grid;gap:18px;animation:kqrein .35s var(--ease)}@keyframes kqrein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
@@ -357,8 +369,8 @@ STIL = """<style>
 </style>"""
 
 SKRIPT = r"""<script>
-(()=>{const v=document.querySelector('.kr-vgl');if(!v||!('IntersectionObserver' in window))return;v.classList.add('anim');
- const o=new IntersectionObserver(e=>{if(e[0].isIntersecting){v.classList.add('an');o.disconnect()}},{threshold:.35});o.observe(v)})();
+(()=>{const r=[...document.querySelectorAll('.kr-paar')];if(!r.length||!('IntersectionObserver' in window))return;r.forEach(x=>x.classList.add('anim'));
+ const o=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('an');o.unobserve(x.target)}}),{threshold:.6,rootMargin:'0px 0px -8% 0px'});r.forEach(x=>o.observe(x))})();
 (()=>{const f=document.querySelector('.kr-quiz');if(!f)return;const $=(s,r=f)=>r.querySelector(s),$$=(s,r=f)=>[...r.querySelectorAll(s)];
 const schritte=$$('.kq-schritt'),zur=$('.kq-zurueck'),bal=$('.kq-balken i'),stand=$('.kq-stand'),fehler=$('.kq-fehler');let weg=[0];
 const idx=k=>schritte.findIndex(s=>s.dataset.k===k);
