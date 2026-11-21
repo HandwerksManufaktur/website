@@ -197,15 +197,17 @@ def farblogo_marke(k):
     _w, _h = _Im.open(WURZEL / f"static/assets/img/logos/farbe/{k}.png").size
     _r = _w / _h
     _RB, _RH, _FL = 104, 44, 3900
-    lb = min((_FL * _r) ** .5, _RB); lh = lb / _r
-    if lh > _RH:
-        lh = _RH; lb = lh * _r
+    _rb = 130 if _r > 3.5 else _RB   # sehr flache Schriftzüge (Süßmeier) breiter, sonst winzig
+    _rh = 60 if _r < 1.1 else _RH    # hohe/quadratische Marken (Rieger) höher, sonst winzig
+    lb = min((_FL * _r) ** .5, _rb); lh = lb / _r
+    if lh > _rh:
+        lh = _rh; lb = lh * _r
     return (f'<span class="st-logo"><img loading="lazy" src="/static/assets/img/logos/farbe/{k}.png" alt="" '
             f'width="{round(lb)}" height="{round(lh)}" decoding="async"></span>')
 
 
-ST_LOGO_CSS = ('.sek.stimmen .st-logo{display:flex;align-items:center;justify-content:center;flex:none;width:104px;height:44px;background:none;padding:0;border-radius:0}'
-               '.sek.stimmen .st-logo img{display:block;max-width:104px;max-height:44px;width:auto;height:auto}')
+ST_LOGO_CSS = ('.sek.stimmen .st-logo{display:flex;align-items:center;justify-content:center;flex:none;width:130px;height:60px;background:none;padding:0;border-radius:0}'
+               '.sek.stimmen .st-logo img{display:block;max-width:130px;max-height:60px}')  # Breite/Höhe aus den Attributen (gleiche Fläche), nicht die natürliche Bildgröße
 
 
 def stimmen_farblogos(h):
@@ -252,7 +254,7 @@ def stimmen_alle():
             # Eine Schrift für alle Stimmen, oben bündig unter den Sternen (Noah, 20.11.2026: „die Abstände passen nicht … auf
             # einmal ist da Knappich … fett“ — kurze Stimmen standen größer, fett und tiefer)
             '.sek.stimmen .stimme p{align-self:start;color:var(--tinte);font-size:16px;line-height:1.55;font-weight:400;letter-spacing:0}'
-            '.sek.stimmen .st-logo{display:flex;align-items:center;justify-content:center;flex:none;width:104px;height:44px;background:none;padding:0;border-radius:0}.sek.stimmen .st-logo img{display:block;max-width:104px;max-height:44px;width:auto;height:auto}'
+            '.sek.stimmen .st-logo{display:flex;align-items:center;justify-content:center;flex:none;width:130px;height:60px;background:none;padding:0;border-radius:0}.sek.stimmen .st-logo img{display:block;max-width:130px;max-height:60px}'
             '@media (prefers-reduced-motion:reduce){.sek.stimmen .stimme{transition:none}}</style>')
 
 
@@ -557,7 +559,7 @@ def hero_unter(seite):
             '</div></div>', None)
 
 
-# Galerie Foto & Video: 56 Fotos (medien_bauen.py, alle von Hand angesehen) + 11 Filme, als Mauerwerk ohne Filter
+# Galerie Foto & Video: 69 Fotos (medien_bauen.py, alle von Hand angesehen) + 11 Filme, als Mauerwerk ohne Filter
 # (Noah, 18.11.2026: „Da muss man es sich nicht unbedingt noch extra eingeordnet lassen“). Nie zwei Karten vom selben
 # Betrieb nebeneinander (assert in galerie_sek).
 GALERIE = _json.loads((WURZEL / "static/assets/fv/galerie.json").read_text())
@@ -567,21 +569,17 @@ NICHT_GEDREHT = {"dach", "pv", "galabau", "maler"}
 GALERIE["fotos"] = [d for d in GALERIE["fotos"] if d["k"] not in NICHT_GEDREHT]
 assert not any(d["k"] in NICHT_GEDREHT for d in GALERIE["fotos"])
 # (Stelle in der Fotoliste, Gewerk-Schlüssel, Gewerk, Betrieb, Seitenverhältnis, Film, Poster)
-GALERIE_FILME = [(2, "holz", "Schreinerei", "Schreinerei Kreitner", 16 / 9, f"{VID}/kreitner.mp4", f"{VID}/poster/kreitner.jpg"),
-                 (6, "shk", "Anzeige", "Erich Sussmann", 9 / 16, f"{FV}/v/su-dusche.mp4", f"{FV}/v/su-dusche.jpg"),
+GALERIE_FILME = [(3, "holz", "Schreinerei", "Schreinerei Kreitner", 16 / 9, f"{VID}/kreitner.mp4", f"{VID}/poster/kreitner.jpg"),
                  # Bettina selbst nicht auf Foto & Video (Noah, 19.11.2026: „Ich will Bettina nicht in der Foto- und Videoseite haben … Fischer schon“)
-                 (11, "bau", "Bau &amp; Transporte", "Kirchner Thaining, 50 Jahre", 9 / 16, f"{VID}/kirchner.mp4", f"{VID}/poster/kirchner.jpg"),
-                 (15, "holz", "Zimmerei", "Zimmerei Koller", 16 / 9, f"{VID}/koller.mp4", f"{VID}/poster/koller.jpg"),
-                 (19, "shk", "Stellenanzeige", "Irlbacher Gebäudetechnik", 9 / 16, f"{FV}/v/ir-montage.mp4", f"{FV}/v/ir-montage.jpg"),
+                 (10, "bau", "Bau &amp; Transporte", "Kirchner Thaining, 50 Jahre", 9 / 16, f"{VID}/kirchner.mp4", f"{VID}/poster/kirchner.jpg"),
+                 (17, "holz", "Zimmerei", "Zimmerei Koller", 16 / 9, f"{VID}/koller-galerie.mp4", f"{VID}/poster/koller.jpg"),
                  (24, "", "Drohnenflug", "Baureize", 16 / 9, f"{VID}/baureize.mp4", f"{VID}/poster/baureize.jpg"),
-                 (29, "metall", "Metallbau", "CS Metalldesign", 16 / 9, f"{VID}/cs-metall.mp4", f"{VID}/poster/cs-metall.jpg"),
+                 (31, "metall", "Metallbau", "CS Metalldesign", 16 / 9, f"{VID}/cs-metall.mp4", f"{VID}/poster/cs-metall.jpg"),
                  # Fischer-Team am Transporter, aus dem neu gedrehten Imagefilm 2026 (Crafter-Intro) — Noah, 19.11.2026: „Video-Sequenz … was wir bei Fischer gemacht haben“
-                 (32, "shk", "Imagefilm", "Fischer Bad Heizung Solar", 16 / 9, f"{FV}/v/fi-team.mp4", f"{FV}/v/fi-team.jpg"),
-                 (35, "shk", "Anzeige", "Erich Sussmann", 9 / 16, f"{FV}/v/su-mirjana.mp4", f"{FV}/v/su-mirjana.jpg"),
-                 (38, "bau", "Bau", "A. Resch Bau", 16 / 9, f"{FV}/v/g-resch.mp4", f"{FV}/v/g-resch.jpg"),
-                 (44, "shk", "Stellenanzeige", "Irlbacher Gebäudetechnik", 9 / 16, f"{FV}/v/ir-geselle.mp4", f"{FV}/v/ir-geselle.jpg"),
-                 (47, "shk", "Drohnenflug", "Fischer Bad Heizung Solar", 16 / 9, f"{FV}/v/fi-drohne.mp4", f"{FV}/v/fi-drohne.jpg"),
-                 (50, "bau", "Drohnenflug", "Wohner Elektrotechnik", 16 / 9, f"{FV}/v/g-wohner.mp4", f"{FV}/v/g-wohner.jpg")]
+                 (38, "shk", "Imagefilm", "Fischer Bad Heizung Solar", 16 / 9, f"{FV}/v/fi-team.mp4", f"{FV}/v/fi-team.jpg"),
+                 (45, "bau", "Bau", "A. Resch Bau", 16 / 9, f"{FV}/v/g-resch.mp4", f"{FV}/v/g-resch.jpg"),
+                 (52, "shk", "Drohnenflug", "Fischer Bad Heizung Solar", 16 / 9, f"{FV}/v/fi-drohne-g.mp4", f"{FV}/v/fi-drohne.jpg"),
+                 (59, "bau", "Drohnenflug", "Wohner Elektrotechnik", 16 / 9, f"{FV}/v/g-wohner.mp4", f"{FV}/v/g-wohner.jpg")]
 
 
 def galerie_sek():
@@ -1265,9 +1263,10 @@ def _raster_karte(name, k, form, logo, satz):
     # Optisch gleich groß (Apple-Logoreihe): gleiche Fläche je Logo in einem festen Rahmen 112 × 48, unabhängig vom Namen
     # (Noah, 21.11.2026: „in welcher vergleichbaren größe du das logo da reinmachen musst? IMMER APPLE DESIGN REGELN“)
     _RB, _RH, _FL = 112, 48, 4600
+    _rh = 62 if _r < 1.3 else _RH  # fast quadratische Marken (W&W, Baureize) dürfen höher, sonst wirken sie winzig (Probe H)
     lb = min((_FL * _r) ** .5, _RB); lh = lb / _r
-    if lh > _RH:
-        lh = _RH; lb = lh * _r
+    if lh > _rh:
+        lh = _rh; lb = lh * _r
     lb, lh = round(lb), round(lh)
     lc = round(lb / _RB * 24, 2)  # schrumpft mit der Kachel im selben Verhältnis (24cqi = voller Rahmen)
     return (f'<article class="projekt{" " + form if form else ""} reveal" data-k="{k}"><div class="schirm ra{film}">'
@@ -1325,14 +1324,23 @@ RASTER_STIL = (
     # Farblogo frei auf der Karte, kein schwarzer Kasten; Breite schrumpft mit schmaler Kachel (30cqi), Design-Tor G hält Name und Branche einzeilig
     '#arbeiten .projekt .unten .ra-logo{background:none!important;padding:0!important;height:auto!important;min-width:0!important;border-radius:0!important;box-shadow:none!important}'
     # Fußzeile: Branche und Name links, Logo rechts in festem Rahmen (alle Logos optisch gleich groß), Satz darunter
-    '#arbeiten .projekt .unten{display:grid!important;grid-template-columns:minmax(0,1fr) min(112px,24cqi)!important;grid-template-areas:"k l" "n l" "s l";column-gap:clamp(12px,3cqi,22px);row-gap:6px;align-items:start}'
+    '#arbeiten .projekt .unten{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;grid-template-areas:"k l" "n l" "s l";column-gap:clamp(12px,3cqi,22px);row-gap:6px;align-items:start}'
     '#arbeiten .projekt .unten .ra-text{display:contents}'
     '#arbeiten .projekt .unten .ra-text small{grid-area:k}#arbeiten .projekt .unten .ra-text b{grid-area:n;font-size:clamp(14px,4.4cqi,20px)!important}#arbeiten .projekt .unten .ra-satz{grid-area:s}'
     '#arbeiten .projekt .unten .ra-logo{grid-area:l;align-self:center;justify-self:end;display:flex;justify-content:flex-end;min-width:0!important}'
-    '#arbeiten .projekt .unten .ra-logo img{width:min(var(--lb),var(--lc))!important;max-width:none!important;height:auto!important;max-height:none!important}'
+    '#arbeiten .projekt .unten .ra-logo img{width:calc(var(--lb) * var(--ls,.85))!important;max-width:none!important;height:auto!important;max-height:none!important}'
+    # Logo nimmt keine Zeilenhöhe ein (Höhe 0, mittig über Branche/Name), sonst schiebt ein hohes Logo den Namen tiefer als in der Nachbarkachel (Probe A)
+    '#arbeiten .projekt .unten .ra-logo{height:0!important;overflow:visible;position:relative}'
+    '#arbeiten .projekt .unten .ra-logo img{transform:translateY(-50%)}'
+    # Logo-Maßstab je Bildschirmbreite statt Container-Einheiten (cqi wurde im Testbrowser je nach Ladezeitpunkt anders aufgelöst, 21.11.2026)
+    '@media (min-width:1201px){#arbeiten .projekt.breit .unten{--ls:1}}'
+    '@media (max-width:1200px){#arbeiten .projekt .unten{--ls:.7}}'
+    '@media (max-width:1000px){#arbeiten .projekt .unten{--ls:.66}}'
+    '@media (max-width:760px){#arbeiten .projekt .unten{--ls:.6}}'
+    '@media (max-width:400px){#arbeiten .projekt .unten{--ls:.48}}''@media (max-width:360px){#arbeiten .projekt .unten{--ls:.42}}'
     '@container (max-width:460px){#arbeiten .projekt .unten{grid-template-areas:"k l" "n l" "s s"}}'
-    '@container (max-width:310px){#arbeiten .projekt .unten{grid-template-columns:minmax(0,1fr) 20cqi!important}#arbeiten .projekt .unten .ra-logo img{width:min(var(--lb),calc(var(--lc) * .833))!important}#arbeiten .projekt .unten .ra-text b{font-size:13.5px!important}}'
-    '@container (max-width:270px){#arbeiten .projekt .unten{grid-template-columns:minmax(0,1fr) 16cqi!important}#arbeiten .projekt .unten .ra-logo img{width:min(var(--lb),calc(var(--lc) * .667))!important}}'
+    '@container (max-width:310px){#arbeiten .projekt .unten .ra-text b{font-size:13.5px!important}}'
+    
     '</style>')
 RASTER_JS = (
     '<script>(()=>{const sek=document.getElementById("arbeiten");if(!sek)return;'
@@ -1518,8 +1526,36 @@ m.nach('<section class="hero-klein">',
            ("Deine Mannschaft in der Anzeige", "Sie läuft abends auf Instagram und Facebook, wo die Fachkräfte ohnehin sind."),
            ("Nur 30 Kilometer um deinen Betrieb", "Wer 90 Kilometer weg wohnt, sieht sie nicht."),
            ("Bewerbung in zwei Minuten", "Vier Filterfragen statt Anschreiben und Lebenslauf, du rufst nur noch an.")]))
+
+# Die Reihe geht im selben Muster weiter (Noah, 21.11.2026: „die oben sollst du genauso lassen … dass wir das einfach so weiterspielen,
+# Kirchner, Planung Hindelang, Autohaus Ressle, HAWE Engineering“): Klaß als dritter Block, dann abwechselnd gespiegelt.
+# Zahlen nur mit Beleg (Chat-Doku hwm-website-ueberarbeitung.md „Zahlen mit Quelle“): Klaß 35/16, Kirchner 25/16, Ressle 14 selbst
+# nachgezählt, HAWE „über 100 in 4 Wochen“ (Recherche Drive); Hindelang ohne Zahl (Drive/Gmail/Close haben keine Bewerberzahl).
+def _folge(nr, kicker, h2, bild, alt, zahl=None, einheit="", lead="", pos="50% 45%", logo=None, dunkel=False):
+    gespiegelt = " gespiegelt" if nr % 2 == 0 else ""
+    if logo:
+        fig = (f'<figure class="senft-bild senft-logo{" dunkel" if dunkel else ""} reveal"><img src="{logo}" alt="{alt}" loading="lazy" decoding="async"></figure>')
+    else:
+        fig = (f'<figure class="senft-bild reveal"><img src="{bild}" alt="{alt}" loading="lazy" decoding="async" style="object-position:{pos}"></figure>')
+    z = f'<p class="senft-zahl"><b>{zahl}</b><span>{einheit}</span></p>' if zahl else ''
+    return (f'<div class="wrap senft-raster folge{gespiegelt}">{fig}<div class="senft-text reveal"><span class="kicker">{kicker}</span>'
+            f'{z}<h2>{h2}</h2>' + (f'<p class="lead">{lead}</p>' if lead else '') + '</div></div>')
+
+
+FOLGE_BLOECKE = "".join([
+    _folge(3, "Heizung-Sanitär Klaß in Türkenfeld", "Für den Obermonteur.", "/static/assets/img/_h1280/fall/klass-team.webp",
+           "Zwei Monteure von Heizung-Sanitär Klaß vor dem Firmenwagen", "35", "Bewerbungen", "16 davon mit Erfahrung im Fach.", pos="70% 40%"),
+    _folge(4, "Kirchner in Thaining am Ammersee", "Für die offene Stelle.", "/static/assets/fv/g/ki-team-1800.webp",
+           "Das Team von Kirchner Thaining vor einem Container", "25", "Bewerbungen", "16 davon mit passendem Führerschein.", pos="50% 40%"),
+    _folge(5, "Planung Hindelang", "Ein Planer wird gesucht.", "", "Logo von Planung Hindelang",
+           lead="Die Anzeige lief auf Facebook und Instagram, mit eigener Bewerbungsseite.", logo="/static/assets/img/logos/w/logo-planung-hindelang.webp", dunkel=True),
+    _folge(6, "Autohaus Ressle", "Für die offene Stelle.", "", "Logo von Autohaus Ressle",
+           zahl="14", einheit="Bewerbungen", logo="/static/assets/img/logos/w/logo-autohaus-ressle.webp", dunkel=True),
+    _folge(7, "HAWE Engineering", "Für die offene Stelle.", "", "Logo von HAWE Engineering",
+           zahl="100+", einheit="Bewerbungen", lead="In nur vier Wochen.", logo="/static/assets/img/logos/w/logo-hawe-engineering.webp", dunkel=True),
+])
 # Senftleben groß (Noah, 18.11.2026: „in 18 [Tagen] Stelle besetzt … die kannst du auch groß machen … mit der Buchhaltung“), Zahlen wie SHK-Seite
-SENFT_SEK = ('<section class="sek senft-sek"><div class="wrap senft-raster"><figure class="senft-bild reveal"><img src="/static/assets/img/_h1280/fall/senftleben-team.webp" '
+SENFT_SEK = ('<section class="sek senft-sek" id="ergebnisse"><div class="wrap senft-raster"><figure class="senft-bild reveal"><img src="/static/assets/img/_h1280/fall/senftleben-team.webp" '
              'alt="Das Team von Senftleben Haustechnik vor den Firmenwagen in Ehingen" loading="lazy" decoding="async"></figure>'
              '<div class="senft-text reveal"><span class="kicker">Senftleben Haustechnik in Ehingen</span>'
              '<p class="senft-zahl"><b>18</b><span>Tage</span></p><h2>Bis die Stelle besetzt war.</h2>'
@@ -1532,15 +1568,16 @@ SENFT_SEK = ('<section class="sek senft-sek"><div class="wrap senft-raster"><fig
              '<div class="senft-text reveal"><span class="kicker">Erwin Schmidt &amp; Sohn in Sindelfingen</span>'
              '<p class="senft-zahl"><b>4</b><span>Wochen</span></p><h2>Bis die Stelle besetzt war.</h2>'
              '<p class="lead">25 Bewerbungen sind gekommen.</p>'
-             '</div></div></section>'
-             '<style>.senft-raster.gespiegelt{margin-top:clamp(56px,7vw,110px)}@media (min-width:901px){.senft-raster.gespiegelt{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr)}.senft-raster.gespiegelt .senft-bild{order:2}}'
+             '</div></div>'
+             + FOLGE_BLOECKE + '</section>'
+             '<style>.senft-raster.gespiegelt,.senft-raster.folge{margin-top:clamp(56px,7vw,110px)}.senft-logo{display:flex;align-items:center;justify-content:center;background:var(--papier);border:1px solid rgba(22,19,14,.1);padding:clamp(28px,5vw,72px)}.senft-bild.senft-logo img[src*=hindelang]{width:min(38%,190px)}.senft-logo.dunkel{background:var(--tinte);border-color:transparent}.senft-bild.senft-logo img{width:min(70%,360px);height:auto;object-fit:contain}@media (min-width:901px){.senft-raster.gespiegelt{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr)}.senft-raster.gespiegelt .senft-bild{order:2}}'
              '.senft-raster{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(28px,4vw,72px);align-items:center}'
              '.senft-bild{margin:0;border-radius:var(--radius);overflow:hidden;aspect-ratio:4/3}.senft-bild img{width:100%;height:100%;object-fit:cover;object-position:50% 45%;display:block}'
-             '.senft-zahl{display:flex;align-items:baseline;gap:.25em;margin:14px 0 6px;line-height:.9}.senft-zahl b{font-size:clamp(96px,13vw,200px);font-weight:800;letter-spacing:-.05em;color:var(--bronze-tief,#8F5B1D)}'
+             '.senft-text{min-width:0}.senft-zahl{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 .25em;margin:14px 0 6px;line-height:.9}.senft-zahl b{font-size:clamp(96px,13vw,200px);font-weight:800;letter-spacing:-.05em;color:var(--bronze-tief,#8F5B1D)}'
              '.senft-zahl span{font-size:clamp(28px,3vw,44px);font-weight:700;letter-spacing:-.02em}.senft-text h2{margin:0 0 12px;max-width:24ch;font-size:clamp(28px,2.8vw,42px);line-height:1.12}.senft-text h2::before{display:none}'
                           '@media (max-width:900px){.senft-raster{grid-template-columns:1fr}}</style>')
 # Noah, 20.11.2026: „da wollen wir nicht unbedingt Meike drin haben … Klaß und Senftleben“ → Erwin Schmidt raus
-m.nach('<section class="sek band auf-dunkel bento-sek ablauf-ani">', SENFT_SEK + erg_karten("Bewerbungen", ohne=("senftleben-team-2026", "Erwin Schmidt")))
+m.nach('<section class="sek band auf-dunkel bento-sek ablauf-ani">', SENFT_SEK)
 m.vor('<section class="sek faq">', STIMMEN)
 # „Fragen, die fast jeder Betrieb vorher stellt … kannst du erst mal ausmachen“ (Noah, 20.11.2026)
 m.heraus('<section class="sek faq">')

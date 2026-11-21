@@ -101,6 +101,29 @@ GALERIE_NEU = [
 ]
 for _stelle, _eintrag in GALERIE_NEU:
     GALERIE.insert(_stelle, _eintrag)
+
+# Noah, 21.11.2026 („Fotos und Videos können wir gerne noch ein bisschen länger machen … teilweise Fotos von Pröpstl … ein Mix von allen
+# Sachen aus unseren Kunden-Shootings, nicht voll spammen“): +13 Fotos, je von Hand angesehen, kein Bild mit Noah, Pröpstl mit Namen.
+RB = "/Volumes/Extreme Pro/2025/Kunden/Shooting A. Resch Bau/Fotos Sony A7IV/DSC{}.JPG"
+BR = "/Volumes/Extreme Pro/2025/Kunden/Shooting Baureize/Fotos/DSC{}.JPG"
+PR = str(CEO) + "/kunden/proebstl-holzwerke/recherche/drive/Baab_Produktionsfotos__{}.jpg"
+GALERIE_NEU2 = [
+    (3, ("pr-presse", P(PR, 39), "holz", "Holzwerk", "Pröpstl Holzwerke")),
+    (8, ("rb-stehen", P(RB, "09332"), "bau", "Bau", "A. Resch Bau")),
+    (13, ("hw-tablet", K / "hawe/10.jpg", "bau", "Ingenieurbüro", "HAWE Engineering")),
+    (18, ("br-team", P(BR, "00889"), "bau", "Maurer", "Baureize")),
+    (23, ("pr-halle", P(PR, 65), "holz", "Holzwerk", "Pröpstl Holzwerke")),
+    (28, ("al-kiste", K / "allplast/17.jpg", "metall", "Lasertechnik", "Allplast Laser")),
+    (33, ("rb-bewehrung", P(RB, "09390"), "bau", "Bau", "A. Resch Bau")),
+    (38, ("br-inhaber", P(BR, "00907"), "bau", "Maurer", "Baureize")),
+    (43, ("pr-stapler", P(PR, 80), "holz", "Holzwerk", "Pröpstl Holzwerke")),
+    (48, ("hw-buero", K / "hawe/05.jpg", "bau", "Ingenieurbüro", "HAWE Engineering")),
+    (53, ("rb-messen", P(RB, "09360"), "bau", "Bau", "A. Resch Bau")),
+    (58, ("pr-regal", P(PR, 63), "holz", "Holzwerk", "Pröpstl Holzwerke")),
+    (63, ("br-portrait", P(BR, "00859"), "bau", "Maurer", "Baureize")),
+]
+for _stelle, _eintrag in GALERIE_NEU2:
+    GALERIE.insert(_stelle, _eintrag)
 assert len({k for k, *_ in GALERIE}) == len(GALERIE), "doppeltes Kürzel"
 # Kontaktabzug: je Motiv eine Aufnahme (Folgen fast gleicher Bilder sähen wie Dubletten aus), in Aufnahme-Reihenfolge
 KONTAKT_AUSWAHL = (1, 5, 6, 11, 13, 15, 22, 25, 28, 30, 32, 37, 39, 40, 44, 46, 49, 55, 57, 59)

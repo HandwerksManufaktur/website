@@ -25,6 +25,14 @@
    "h": 1593
   },
   {
+   "k": "pr-presse",
+   "g": "holz",
+   "gewerk": "Holzwerk",
+   "betrieb": "Pröpstl Holzwerke",
+   "w": 5889,
+   "h": 3918
+  },
+  {
    "k": "ko-kluft",
    "g": "holz",
    "gewerk": "Zimmerei",
@@ -57,6 +65,14 @@
    "h": 3068
   },
   {
+   "k": "rb-stehen",
+   "g": "bau",
+   "gewerk": "Bau",
+   "betrieb": "A. Resch Bau",
+   "w": 7008,
+   "h": 4672
+  },
+  {
    "k": "kl-flex",
    "g": "shk",
    "gewerk": "Sanitär & Heizung",
@@ -85,6 +101,14 @@
    "g": "metall",
    "gewerk": "Metallbau",
    "betrieb": "CS Metalldesign",
+   "w": 2000,
+   "h": 1333
+  },
+  {
+   "k": "hw-tablet",
+   "g": "bau",
+   "gewerk": "Ingenieurbüro",
+   "betrieb": "HAWE Engineering",
    "w": 2000,
    "h": 1333
   },
@@ -121,6 +145,14 @@
    "h": 1331
   },
   {
+   "k": "br-team",
+   "g": "bau",
+   "gewerk": "Maurer",
+   "betrieb": "Baureize",
+   "w": 7008,
+   "h": 4672
+  },
+  {
    "k": "dach",
    "g": "bau",
    "gewerk": "Dach",
@@ -151,6 +183,14 @@
    "betrieb": "CS Metalldesign",
    "w": 2000,
    "h": 1333
+  },
+  {
+   "k": "pr-halle",
+   "g": "holz",
+   "gewerk": "Holzwerk",
+   "betrieb": "Pröpstl Holzwerke",
+   "w": 5743,
+   "h": 3828
   },
   {
    "k": "sn-zapfen",
@@ -185,6 +225,14 @@
    "h": 2000
   },
   {
+   "k": "al-kiste",
+   "g": "metall",
+   "gewerk": "Lasertechnik",
+   "betrieb": "Allplast Laser",
+   "w": 1920,
+   "h": 1280
+  },
+  {
    "k": "ko-balken",
    "g": "holz",
    "gewerk": "Zimmerei",
@@ -215,6 +263,14 @@
    "betrieb": "CS Metalldesign",
    "w": 1333,
    "h": 2000
+  },
+  {
+   "k": "rb-bewehrung",
+   "g": "bau",
+   "gewerk": "Bau",
+   "betrieb": "A. Resch Bau",
+   "w": 7008,
+   "h": 4672
   },
   {
    "k": "se-wagen",
@@ -249,6 +305,14 @@
    "h": 1333
   },
   {
+   "k": "br-inhaber",
+   "g": "bau",
+   "gewerk": "Maurer",
+   "betrieb": "Baureize",
+   "w": 7008,
+   "h": 4672
+  },
+  {
    "k": "ki-lkw-fahrer",
    "g": "bau",
    "gewerk": "Bau & Transporte",
@@ -279,6 +343,14 @@
    "betrieb": "Schreinerei Kreitner",
    "w": 2000,
    "h": 1333
+  },
+  {
+   "k": "pr-stapler",
+   "g": "holz",
+   "gewerk": "Holzwerk",
+   "betrieb": "Pröpstl Holzwerke",
+   "w": 5135,
+   "h": 3423
   },
   {
    "k": "sd-rohre",
@@ -313,6 +385,14 @@
    "h": 1277
   },
   {
+   "k": "hw-buero",
+   "g": "bau",
+   "gewerk": "Ingenieurbüro",
+   "betrieb": "HAWE Engineering",
+   "w": 2000,
+   "h": 1333
+  },
+  {
    "k": "kl-wand",
    "g": "shk",
    "gewerk": "Sanitär & Heizung",
@@ -343,6 +423,14 @@
    "betrieb": "Senftleben Haustechnik",
    "w": 4321,
    "h": 2880
+  },
+  {
+   "k": "rb-messen",
+   "g": "bau",
+   "gewerk": "Bau",
+   "betrieb": "A. Resch Bau",
+   "w": 7008,
+   "h": 4672
   },
   {
    "k": "sn-haus",
@@ -377,6 +465,14 @@
    "h": 1333
   },
   {
+   "k": "pr-regal",
+   "g": "holz",
+   "gewerk": "Holzwerk",
+   "betrieb": "Pröpstl Holzwerke",
+   "w": 5533,
+   "h": 3681
+  },
+  {
    "k": "ir-lager",
    "g": "shk",
    "gewerk": "Sanitär & Heizung",
@@ -407,6 +503,14 @@
    "betrieb": "Küchenhaus Hirschvogel",
    "w": 2000,
    "h": 1333
+  },
+  {
+   "k": "br-portrait",
+   "g": "bau",
+   "gewerk": "Maurer",
+   "betrieb": "Baureize",
+   "w": 7008,
+   "h": 4672
   },
   {
    "k": "ki-kabine",
