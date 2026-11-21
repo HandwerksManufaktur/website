@@ -748,6 +748,17 @@ for _i, (_st, _en) in zip((1, 2), _spannen):
     _zug = "".join(_alle[n] for n in LB_FOLGE[_i - 1])
     _teile[_i] = _teile[_i][:_st] + _zug + _zug + _teile[_i][_en:]
 s.h = s.h[:_a] + '<div class="lb-zug">'.join(_teile) + s.h[_e:]
+# Laufband „Bezugsfertig.“ läuft erst, wenn es ins Bild kommt, und die obere Bahn steht so, dass Entenmann und Irlbacher
+# gerade rechts reinfahren (Noah, 21.11.2026: „so sind sie direkt weg“ — die CSS-Animation lief ab Seitenaufruf, beim
+# Hinscrollen waren die ersten Karten schon links raus). Ohne JS läuft das Band wie bisher.
+_e = s.h.index('</section>', s.h.index('<section class="sek laufband" id="gefunden">'))
+s.h = s.h[:_e] + ('<script>(()=>{const sek=document.getElementById("gefunden");if(!sek||matchMedia("(prefers-reduced-motion: reduce)").matches)return;'
+    'const zuege=[...sek.querySelectorAll(".lb-zug")];zuege.forEach(z=>z.style.animationPlayState="paused");'
+    'const stellen=()=>{const z=sek.querySelector(".lb-bahn:not(.rueck) .lb-zug");if(!z)return;const halb=z.scrollWidth/2,breit=z.parentElement.clientWidth,'
+    'dauer=parseFloat(getComputedStyle(z).animationDuration)||64,weg=Math.max(0,halb-breit+60);z.style.animationDelay=(-dauer*weg/halb)+"s"};stellen();'
+    'let an=false;addEventListener("resize",()=>{if(!an)stellen()});'
+    'new IntersectionObserver((es,o)=>{if(es.some(e=>e.isIntersecting)){an=true;zuege.forEach(z=>z.style.animationPlayState="running");o.disconnect()}},'
+    '{rootMargin:"0px 0px -25% 0px"}).observe(sek.querySelector(".lb")||sek)})()</script>') + s.h[_e:]
 # „Wie wir Seiten bauen“ fällt weg (Noah, 19.11.2026 abends: „brauchen nicht erklären – es geht drum was der Kunde hat“);
 # der Knopf „Alle Arbeiten ansehen“ führt zu den fertigen Seiten.
 s.ersetze('<a class="btn btn-rand" href="/websites/">Wie wir Seiten bauen</a>', '')
@@ -807,7 +818,8 @@ assert _n == 1 and _sek2.count('class="stimme ') == 92, _sek2.count('class="stim
 s.h = s.h[:_a] + _sek2 + s.h[_e:]
 assert s.h.count('<h2>So sehen unsere Seiten aus.</h2>') == 1
 s.h = s.h.replace('<h2>So sehen unsere Seiten aus.</h2>', '<h2>Bezugsfertig.</h2>')  # wie auf der Websites-Seite
-s.ersetze('Von der Zimmerei bis zum Autohaus.', 'Von der Zimmerei über den Heizungsbauer bis zum Autohaus.')
+# Satz unter „Über 150 Betriebe vertrauen uns.“ fällt weg (Noah, 21.11.2026: „Von der Zimmerei über den Heizungsbauer bis zum Autohaus.“ das weg)
+s.ersetze(' Von der Zimmerei bis zum Autohaus.', '')
 # Unter „Wer hinter der Handwerksmanufaktur steht“: Foto & Video. Noah, 20.11.2026: „einfach eine Art Bildergalerie … sehr
 # strukturiert, mit Bildern, die … langsam durchläuft … ausschließlich Content, den wir gemacht haben … und auch nicht so quer …
 # kann ein bisschen dezenter sein“ (ersetzt die schräge, laute Wand vom 19.11.): zwei gerade Reihen, alle Kacheln gleich groß
