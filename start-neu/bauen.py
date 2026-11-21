@@ -740,19 +740,20 @@ LB_FOLGE = [["Entenmann Haustechnik", "Irlbacher Gebäudetechnik", "SD Hirsch", 
 # Senftleben raus (Noah, 21.11.2026: „bei websites brauchen wir die seite von senftleben eigentlich nicht mit reinnehmen“)
 # Kategorie je Betrieb gegen die eigene Live-Seite geprüft (Noah, 21.11.2026: „sind nicht passend einkategorisiert“) —
 # gilt für das Laufband hier und das Websites-Raster (RASTER weiter unten), damit beide gleich bleiben.
+# Kurz, damit die Branche in JEDER Kachelbreite in eine Zeile passt (Noah, 21.11.2026: „branche kleine schrift, eine zeile“)
 KATEGORIE = {
-    "Entenmann Haustechnik": "SHK · Heizung, Bad &amp; Wärmepumpe", "Irlbacher Gebäudetechnik": "SHK · Heizung, Sanitär &amp; Lüftung",
-    "SD Hirsch": "Rohrformteile · Auto &amp; Energie", "Björn Schillinger": "Schreinerei · Möbel nach Maß",
-    "Zimmerei Koller": "Zimmerei · Holzhausbau", "Dinkel Metallbau": "Metallbau · Treppen &amp; Geländer",
-    "W&amp;W Bau": "Bau · Altbau &amp; Hochbau", "Zimmerei Knappich": "Zimmerei · Massivholz &amp; Dach",
-    "Küchenhaus Hirschvogel": "Küchenstudio", "Baustoffe Kirchner": "Tiefbau · Baustoffe &amp; Container",
-    "Wohner Elektrotechnik": "Elektro · PV, Speicher &amp; Wallbox", "Baureize": "Maurer · Mauerwerk &amp; Estrich",
-    "Resch Bau": "Baugeschäft · Massivbau", "Planung Hindelang": "Planung · Holzbau &amp; Energie",
-    "Dachbau Kraus": "Dach · Flachdach &amp; Fassade", "Schwaighofer": "Betonbau · Landwirtschaft",
-    "Erwin Schmidt &amp; Sohn": "SHK · Heizung &amp; Bad", "Vogel Holzbau": "Zimmerei · Holzbau &amp; Hallen",
-    "Maser Tankschutz": "Tankschutz · Heizöltanks", "Schreinerei Kreitner": "Schreinerei · Barrierefreies Wohnen",
-    "Schuster Erisried": "Landtechnik · Service &amp; Handel", "Juwelier Wagenknecht": "Uhrmacher · Schmuck &amp; Ankauf",
-    "Weber Metallbau": "Laserschneiden &amp; Abkanten", "Malermeister Müller": "Maler · Fassade &amp; Innenraum",
+    "Entenmann Haustechnik": "SHK · Wärmepumpe", "Irlbacher Gebäudetechnik": "SHK · Lüftung",
+    "SD Hirsch": "Rohrformteile", "Björn Schillinger": "Schreinerei · Möbel",
+    "Zimmerei Koller": "Zimmerei · Holzhaus", "Dinkel Metallbau": "Metallbau · Treppen",
+    "W&amp;W Bau": "Bau · Altbau", "Zimmerei Knappich": "Zimmerei · Dach",
+    "Küchenhaus Hirschvogel": "Küchenstudio", "Baustoffe Kirchner": "Tiefbau · Baustoffe",
+    "Wohner Elektrotechnik": "Elektro · Solar", "Baureize": "Maurer · Estrich",
+    "Resch Bau": "Baugeschäft", "Planung Hindelang": "Planung · Holzbau",
+    "Dachbau Kraus": "Dach · Fassade", "Schwaighofer": "Betonbau",
+    "Erwin Schmidt &amp; Sohn": "SHK · Heizung &amp; Bad", "Vogel Holzbau": "Zimmerei · Hallen",
+    "Maser Tankschutz": "Tankschutz", "Schreinerei Kreitner": "Schreinerei",
+    "Schuster Erisried": "Landtechnik", "Juwelier Wagenknecht": "Uhren &amp; Schmuck",
+    "Weber Metallbau": "Laserschneiden", "Malermeister Müller": "Maler · Fassade",
 }
 
 
@@ -1267,7 +1268,10 @@ RASTER_STIL = (
     '#arbeiten .projekt{grid-template-columns:minmax(0,1fr)}#arbeiten .projekt .schirm{width:100%;min-width:0}'
     '#arbeiten .projekt .unten{display:flex;flex-direction:column;gap:6px;min-width:0}'
     '#arbeiten .ra-satz{margin:2px 0 0;font-size:16px;line-height:1.45;color:var(--tinte-2);max-width:44ch}'
-    '#arbeiten .projekt .unten{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:clamp(12px,1.4vw,20px);align-items:start}''#arbeiten .ra-text{display:flex;flex-direction:column;gap:6px;min-width:0}''#arbeiten .ra-logo{align-self:center}''#arbeiten .ra-text b,#arbeiten .ra-text small{line-height:1.3}''#arbeiten .projekt:not(.breit) .ra-text small{min-height:2.6em}@media (max-width:1200px){#arbeiten .projekt:not(.breit) .ra-text b{min-height:2.6em}}''#arbeiten .projekt .unten .ra-text small{white-space:normal}''#arbeiten .projekt .unten .ra-logo{height:clamp(44px,4vw,56px);min-width:0;padding:0 clamp(8px,0.9vw,12px)}''#arbeiten .projekt .unten .ra-logo img{width:auto!important;height:auto!important;max-width:clamp(56px,6vw,88px);max-height:clamp(22px,2.4vw,34px)}''@media (max-width:1000px){#arbeiten .projekt.breit .ra-text small,#arbeiten .projekt.breit .ra-text b{min-height:2.6em}}''#arbeiten .projekte{container-type:inline-size}''#arbeiten .projekte{grid-auto-flow:row dense}'
+    '#arbeiten .projekt .unten{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:clamp(12px,1.4vw,20px);align-items:start}''#arbeiten .ra-text{display:flex;flex-direction:column;gap:6px;min-width:0}''#arbeiten .ra-logo{align-self:center}''#arbeiten .ra-text b,#arbeiten .ra-text small{line-height:1.3}''#arbeiten .projekt .unten .ra-logo{height:clamp(44px,4vw,56px);min-width:0;padding:0 clamp(8px,0.9vw,12px)}''#arbeiten .projekt .unten .ra-logo img{width:auto!important;height:auto!important;max-width:clamp(56px,6vw,88px);max-height:clamp(22px,2.4vw,34px)}''#arbeiten .projekte{container-type:inline-size}''#arbeiten .projekte{grid-auto-flow:row dense}'
+    # Noah, 21.11.2026: „branche kleine schrift, eine zeile dann name max 1 zeile und drunter 2 - und dann das logo rechts daneben“
+    # Schrift wächst mit der Kachel (cqi), damit Branche und Name in JEDER Breite in eine Zeile passen; Design-Tor G misst 340–1920 px
+    '#arbeiten .projekt{container-type:inline-size}''#arbeiten .projekt .unten .ra-text small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px;letter-spacing:.07em;line-height:1.35;min-height:0}''#arbeiten .projekt .unten .ra-text b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:clamp(15px,5.4cqi,21px);line-height:1.3;min-height:0}''#arbeiten .projekt .unten .ra-satz{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;min-height:2.9em;max-width:none;font-size:clamp(14px,4.4cqi,17px)}''#arbeiten .projekt .unten .ra-logo{align-self:center;height:clamp(40px,11cqi,56px);padding:0 clamp(6px,2.2cqi,12px)}''@container (max-width:400px){#arbeiten .projekt .unten .ra-text small{letter-spacing:.03em}#arbeiten .projekt .unten{column-gap:10px}}''@container (max-width:340px){#arbeiten .projekt .unten .ra-text b{font-size:15px}#arbeiten .projekt .unten .ra-logo img{max-width:38px!important}}''@container (max-width:290px){#arbeiten .projekt .unten .ra-text b{font-size:14px}#arbeiten .projekt .unten .ra-logo{padding:0 5px}#arbeiten .projekt .unten{padding-left:16px;padding-right:16px;column-gap:8px}#arbeiten .projekt .unten .ra-logo img{max-width:32px!important}}''#arbeiten .projekt .unten .ra-logo img{max-width:clamp(40px,15cqi,88px)!important;max-height:clamp(20px,6cqi,34px)!important}'
     '#arbeiten .ra-logo{flex:none;display:inline-flex;align-items:center;justify-content:center;height:56px;min-width:72px;padding:0 12px;border-radius:10px;background:var(--tinte)}'
     '#arbeiten .projekt .unten .zeile .ra-logo img{display:block;max-width:100%;max-height:100%;object-fit:contain;background:none;padding:0;border-radius:0}'
     '#arbeiten .projekt.zwei{grid-column:span 2;display:flex;flex-direction:column}'
