@@ -162,7 +162,7 @@ def main_html():
     kennen = ('<section class="sek kr-kennen-sek" id="kennenlernen"><div class="wrap"><div class="kopfzeile mitte reveal"><span class="kicker">Lerne uns kennen</span>'
               '<h2>Wir sind die HandwerksManufaktur.</h2></div><div class="kr-kennen">' + "".join(
                   f'<article class="kr-kk reveal"><figure><img src="/static/assets/img/karriere/a-{k}-800.webp" alt="{alt}" loading="lazy" decoding="async" style="object-position:{pos}"></figure>'
-                  f'<h3>{titel}</h3><p>{text}</p></article>' for k, titel, text, alt, pos in KENNEN) + '</div></div></section>')
+                  f'<div class="kk-text"><h3>{titel}</h3><p>{text}</p></div></article>' for k, titel, text, alt, pos in KENNEN) + '</div></div></section>')
     JA = ["Ein Produkt, das für die Betriebe ein No-Brainer ist.", "Klare Ziele und Zahlen, damit du immer weißt, wo du stehst.",
           "Direktes Feedback, auch wenn’s mal unangenehm ist.", "Remote arbeiten, von wo du willst.", "Aufstieg nach Leistung, nicht nach Dauer."]
     NEIN = ["Pendeln ins Büro.", "Ellenbogen-Mentalität.", "Meetings ohne Ergebnis.", "Mikromanagement.", "Leute, die nur Dienst nach Vorschrift machen."]
@@ -271,13 +271,18 @@ STIL = """<style>
 .kb-breit{grid-column:span 2}.kb-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}.kb-chips span{padding:7px 13px;border-radius:999px;background:rgba(250,247,241,.08);color:var(--papier);font-size:13.5px;font-weight:600}
 @media (max-width:1100px){.kr-bieten{grid-template-columns:repeat(2,minmax(0,1fr))}.kb-a{grid-column:1/3;grid-row:auto;min-height:460px}}
 @media (max-width:640px){.kr-bieten{grid-template-columns:1fr;grid-auto-rows:auto}.kb-a,.kb-team,.kb-breit{grid-column:auto}.kb{min-height:0}.kb.kb-a{min-height:440px}.kb .kr-ic,.kb-gross{margin-bottom:10px}}
-.kr-kennen{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
-.kr-kk{background:#fff;border-radius:var(--radius);padding:12px 12px 26px;box-shadow:0 0 0 1px rgba(22,19,14,.08);display:flex;flex-direction:column;gap:10px;transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
+
+
 .kr-kk:hover{transform:translateY(-6px);box-shadow:0 0 0 1px rgba(200,135,58,.5),0 22px 44px -28px rgba(22,19,14,.45)}
-.kr-kk figure{margin:0 0 8px;border-radius:calc(var(--radius) - 8px);overflow:hidden;aspect-ratio:4/3}.kr-kk img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s var(--ease)}.kr-kk:hover img{transform:scale(1.05)}
-.kr-kk h3{margin:0 12px;font-size:clamp(21px,1.9vw,26px);letter-spacing:-.025em;line-height:1.15}.kr-kk p{margin:0 12px;color:var(--tinte-3);font-size:15.5px;line-height:1.55}
+
+
 .kb-team img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%;opacity:.22;mix-blend-mode:luminosity;transition:opacity .5s var(--ease)}.kb-team:hover img{opacity:.32}.kb-team>*:not(img){position:relative;z-index:1}
-@media (max-width:1280px){.kr-kennen{grid-template-columns:repeat(2,minmax(0,1fr))}}@media (max-width:640px){.kr-kennen{grid-template-columns:1fr}}
+.kr-kennen{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap)}
+.kr-kk{background:#fff;border-radius:var(--radius);padding:12px;box-shadow:0 0 0 1px rgba(22,19,14,.08);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(18px,2.2vw,32px);align-items:start;transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
+.kr-kk figure{margin:0;border-radius:calc(var(--radius) - 8px);overflow:hidden;aspect-ratio:4/3}.kr-kk img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s var(--ease)}.kr-kk:hover img{transform:scale(1.05)}
+.kk-text{display:grid;gap:10px;padding:clamp(14px,1.6vw,22px) clamp(8px,1.4vw,20px) 12px 0}
+.kr-kk h3{margin:0;font-size:clamp(21px,1.9vw,26px);letter-spacing:-.025em;line-height:1.15}.kr-kk p{margin:0;color:var(--tinte-3);font-size:15.5px;line-height:1.55}
+@media (max-width:1100px){.kr-kennen{grid-template-columns:1fr}}@media (max-width:560px){.kr-kk{grid-template-columns:1fr;gap:10px;padding:12px 12px 24px}.kk-text{padding:4px 12px 0}}
 .kr-vgl{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);max-width:1040px;margin:0 auto}
 .kr-vgl>div{border-radius:var(--radius);padding:clamp(26px,3vw,44px);display:grid;align-content:start;gap:18px}
 .kr-vgl-ja{background:#fff;box-shadow:0 0 0 2px var(--bronze)}.kr-vgl-nein{background:var(--papier-2)}
