@@ -1231,9 +1231,9 @@ def _raster_karte(name, k, form, logo, satz):
             f'<img class="ra-seite" data-src="{_V}/s{k}.webp" alt="" aria-hidden="true" decoding="async">'
             + (f'<img class="ra-alt" data-src="{_V}/v{k}.webp" alt="Die alte Website von {name}" decoding="async">'
                f'<button class="ra-vorher" type="button" aria-pressed="false" aria-label="Alte Website von {name} zeigen">Vorher</button>' if vorher else "")
-            + f'</div><div class="unten"><small>{KATEGORIE[name]}</small><div class="ra-kopf"><b>{name}</b>'
-            f'<span class="ra-logo"><img loading="lazy" src="{_LG}{logo}" alt="Logo {name}" width="{lb}" height="{lh}" style="width:{lb}px;height:{lh}px"></span></div>'
-            f'<p class="ra-satz">{satz}</p></div></article>')
+            # Logo rechts neben dem ganzen Text (Noah, 21.11.2026: „das logo kann doch einfach da rechts neben den text da jeweils“)
+            + f'</div><div class="unten"><div class="ra-text"><small>{KATEGORIE[name]}</small><b>{name}</b><p class="ra-satz">{satz}</p></div>'
+            f'<span class="ra-logo"><img loading="lazy" src="{_LG}{logo}" alt="Logo {name}" width="{lb}" height="{lh}" style="width:{lb}px;height:{lh}px"></span></div></article>')
 
 
 _namen_quelle = {re.search(r"<b>(.*?)</b>", x).group(1) for x in _arts}
@@ -1262,7 +1262,7 @@ RASTER_STIL = (
     '#arbeiten .projekt{grid-template-columns:minmax(0,1fr)}#arbeiten .projekt .schirm{width:100%;min-width:0}'
     '#arbeiten .projekt .unten{display:flex;flex-direction:column;gap:6px;min-width:0}'
     '#arbeiten .ra-satz{margin:2px 0 0;font-size:16px;line-height:1.45;color:var(--tinte-2);max-width:44ch}'
-    '#arbeiten .ra-kopf{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;min-width:0}''#arbeiten .ra-kopf b{min-width:0;line-height:1.3}#arbeiten .projekt:not(.breit) .ra-kopf b{min-height:2.6em}''@media (max-width:1000px){#arbeiten .projekt.breit .ra-kopf b{min-height:2.6em}}''#arbeiten .projekte{container-type:inline-size}''#arbeiten .projekt .unten small{white-space:nowrap}@media (max-width:1000px){#arbeiten .projekt .unten small{white-space:normal;line-height:1.3;min-height:2.6em}}''#arbeiten .projekte{grid-auto-flow:row dense}'
+    '#arbeiten .projekt .unten{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:clamp(12px,1.4vw,20px);align-items:start}''#arbeiten .ra-text{display:flex;flex-direction:column;gap:6px;min-width:0}''#arbeiten .ra-logo{align-self:center}''#arbeiten .ra-text b,#arbeiten .ra-text small{line-height:1.3}''#arbeiten .projekt:not(.breit) .ra-text small{min-height:2.6em}@media (max-width:1200px){#arbeiten .projekt:not(.breit) .ra-text b{min-height:2.6em}}''#arbeiten .projekt .unten .ra-text small{white-space:normal}''#arbeiten .projekt .unten .ra-logo{height:clamp(44px,4vw,56px);min-width:0;padding:0 clamp(8px,0.9vw,12px)}''#arbeiten .projekt .unten .ra-logo img{width:auto!important;height:auto!important;max-width:clamp(56px,6vw,88px);max-height:clamp(22px,2.4vw,34px)}''@media (max-width:1000px){#arbeiten .projekt.breit .ra-text small,#arbeiten .projekt.breit .ra-text b{min-height:2.6em}}''#arbeiten .projekte{container-type:inline-size}''#arbeiten .projekte{grid-auto-flow:row dense}'
     '#arbeiten .ra-logo{flex:none;display:inline-flex;align-items:center;justify-content:center;height:56px;min-width:72px;padding:0 12px;border-radius:10px;background:var(--tinte)}'
     '#arbeiten .projekt .unten .zeile .ra-logo img{display:block;max-width:100%;max-height:100%;object-fit:contain;background:none;padding:0;border-radius:0}'
     '#arbeiten .projekt.zwei{grid-column:span 2;display:flex;flex-direction:column}'
