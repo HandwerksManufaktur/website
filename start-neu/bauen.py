@@ -1197,16 +1197,16 @@ RASTER = [  # (Name, k, Form, Logo, Satz „was wir gemacht haben“ — nur was
     ("Weber Metallbau", "weber", "", "w/logo-weber-metallbau.webp", "Vom Blechstapel zum fertigen Teil als Bildstrecke, dazu Anlagendaten und Anfrage."),
     ("Malermeister Müller", "mueller", "", "logo-malermeister-mueller.png", "Eigene Seite je Arbeit von Fassade bis Beschriftung, Projektanfrage direkt oben."),
 ]
-_FILM = {"": (1280, 800), "gross": (1280, 800), "gross rechts": (1280, 800), "breit": (1920, 960), "zwei": (1600, 640)}
+_FILM = {"": (1280, 800), "gross": (1200, 1140), "gross rechts": (1200, 1140), "breit": (1920, 960), "zwei": (1640, 560)}
 
 
 def _logo_mass(datei):
-    # Gleiche optische Größe: gleiche Fläche je Logo, Höhe 30–62 px, Breite höchstens 190 px (aus dem echten Bildinhalt gerechnet)
+    # Gleiche optische Größe: gleiche Fläche je Logo, Höhe 32–68 px, Breite höchstens 190 px (aus dem echten Bildinhalt gerechnet)
     from PIL import Image
     im = Image.open(WURZEL / ("static/assets/img/logos/" + datei)).convert("RGBA")
     bb = im.getchannel("A").getbbox() or (0, 0, *im.size)
     r = (bb[2] - bb[0]) / max(1, bb[3] - bb[1])
-    h = max(30, min(62, (7200 / r) ** .5)); b = h * r
+    h = max(32, min(68, (7600 / r) ** .5)); b = h * r
     if b > 190:
         b = 190; h = b / r
     return round(b), round(h)
@@ -1217,13 +1217,16 @@ def _raster_karte(name, k, form, logo, satz):
     fw, fh = _FILM[form]
     film = " film" if form in ("gross", "gross rechts", "breit", "zwei") else ""
     vorher = (WURZEL / f"static/assets/vid/raster/v{k}.webp").exists()
+    # große Kachel: fast quadratischer Film am Desktop, der 16:10-Film fürs Handy (main.js nimmt data-src-mobil unter 760 px)
+    q = "-q" if form.startswith("gross") else ""
     for x in ("webm", "jpg"):
-        assert (WURZEL / f"static/assets/vid/raster/h{k}.{x}").exists(), (k, x)
+        assert (WURZEL / f"static/assets/vid/raster/h{k}{q}.{x}").exists() and (WURZEL / f"static/assets/vid/raster/h{k}.{x}").exists(), (k, x)
     assert (WURZEL / f"static/assets/vid/raster/s{k}.webp").exists(), k
     lb, lh = _logo_mass(logo)
     return (f'<article class="projekt{" " + form if form else ""} reveal" data-k="{k}"><div class="schirm ra{film}">'
-            f'<video class="hero-lauf" muted loop playsinline preload="none" data-src="{_V}/h{k}.webm" data-poster="{_V}/h{k}.jpg" '
-            f'width="{fw}" height="{fh}" aria-label="{name} — Startseite, wie sie live läuft"></video>'
+            f'<video class="hero-lauf" muted loop playsinline preload="none" data-src="{_V}/h{k}{q}.webm" data-poster="{_V}/h{k}{q}.jpg" '
+            + (f'data-src-mobil="{_V}/h{k}.webm" ' if q else "")
+            + f'width="{fw}" height="{fh}" aria-label="{name} — Startseite, wie sie live läuft"></video>'
             f'<img class="ra-seite" data-src="{_V}/s{k}.webp" alt="" aria-hidden="true" decoding="async">'
             + (f'<img class="ra-alt" data-src="{_V}/v{k}.webp" alt="Die alte Website von {name}" decoding="async">'
                f'<button class="ra-vorher" type="button" aria-pressed="false" aria-label="Alte Website von {name} zeigen">Vorher</button>' if vorher else "")
@@ -1258,7 +1261,7 @@ RASTER_STIL = (
     '#arbeiten .projekt .unten{display:flex;flex-direction:column;gap:6px;min-width:0}'
     '#arbeiten .ra-satz{margin:2px 0 0;font-size:16px;line-height:1.45;color:var(--tinte-2);max-width:44ch}'
     '#arbeiten .projekt .unten .zeile{margin-top:auto;padding-top:10px}'
-    '#arbeiten .ra-logo{display:inline-flex;align-items:center;justify-content:center;height:78px;min-width:96px;padding:0 16px;border-radius:10px;background:var(--tinte)}'
+    '#arbeiten .ra-logo{display:inline-flex;align-items:center;justify-content:center;height:86px;min-width:100px;padding:0 18px;border-radius:10px;background:var(--tinte)}'
     '#arbeiten .projekt .unten .zeile .ra-logo img{display:block;max-width:100%;max-height:100%;object-fit:contain;background:none;padding:0;border-radius:0}'
     '#arbeiten .projekt.zwei{grid-column:span 2;display:flex;flex-direction:column}'
     '#arbeiten .projekt.zwei .schirm.film{flex:1;aspect-ratio:auto;min-height:220px}'
