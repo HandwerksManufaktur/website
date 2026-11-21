@@ -1014,7 +1014,7 @@ def seo_ablauf():
             f'<h2>Den Weg nach vorn übernehmen wir.</h2></div><div class="bento">{"".join(zellen)}</div></div></section>'
             '<style>@media (min-width:1001px){.ablauf-seo .zelle.z-4{grid-column:1/span 4;grid-row:1}.ablauf-seo .zelle.z-2{grid-column:5/span 2;grid-row:1}'
             '}'
-            '.ablauf-seo .ticket .ok{white-space:nowrap}</style>')
+            '.ablauf-seo .ticket .ok{white-space:nowrap}@media (min-width:1001px){.ablauf-seo .zelle p{min-height:3em}}</style>')  # Titel beider Karten auf einer Linie (Design-Tor A)
 
 
 def erg_karten(art, ohne=()):
@@ -1322,7 +1322,7 @@ _IC = {
 _WU = [("foto", "Fotos aus deinem Betrieb", "Wir kommen vorbei und fotografieren dein Team, deine Fahrzeuge und deine Arbeit."),
        ("seiten", "Eine Seite je Leistung", "Bad, Dach, Treppe: Jede Leistung bekommt ihre eigene Seite, damit Google sie findet."),
        ("text", "Alle Texte", "Wir schreiben alles. Du liest einmal drüber und sagst, was anders soll."),
-       ("google", "Gefunden bei Google", "Schnell, sauber am Handy, alte Adressen weitergeleitet. Du verlierst nichts."),
+       ("google", "Bei Google", "Schnell, sauber am Handy, alte Adressen weitergeleitet. Du verlierst nichts."),  # einzeilig wie die Nachbarkarten (Noah, 21.11.2026)
        ("anfrage", "Anfragen direkt zu dir", "Anruf-Knopf und Formular. Jede Anfrage landet sofort bei dir."),
        ("danach", "Nach dem Start", "Updates, Sicherheit, kleine Änderungen. Ein Satz an uns genügt.")]
 # Gleicher Baustein wie „Was wir übernehmen“ auf Neukunden/Mitarbeiter/SEO (Noah, 19.11.2026: „ähnlich wie die Sektion bei
@@ -1333,7 +1333,7 @@ _seite = "M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6"
 _post = "M4 6h16v12H4zM4 7l8 6 8-6"
 _web_zellen = [
     '<article class="zelle z-3 hoch mit-handys web-fotos"><div class="handys-k" aria-hidden="true">'
-    f'<img src="{FV}/g/kl-flex-480.webp" alt="" loading="lazy" decoding="async"><img src="{FV}/g/cs-schweissen-480.webp" alt="" loading="lazy" decoding="async"></div>'
+    f'<img src="{FV}/g/kl-flex-900.webp" alt="" loading="lazy" decoding="async"><img src="{FV}/g/cs-schweissen-900.webp" alt="" loading="lazy" decoding="async"></div>'
     f'<span class="nummer">01</span><h3>{_WU[0][1]}</h3><p>{_WU[0][2]}</p></article>',
     # 02 + 03 in einer Kachel (Noah, 21.11.2026: „sektion 02 und 03 lassen sich verknüpfen … sodass die sektion kleiner ist und
     # dann darunter einfach die … anderen sachen kommen“): Seiten links, Anfragen rechts, eine Überschrift; die drei kleinen
@@ -1354,7 +1354,7 @@ WU_SEK = ('<section class="sek band auf-dunkel bento-sek ablauf-web"><div class=
           f'<div class="bento">{"".join(_web_zellen)}</div></div></section>'
           '<style>@media (min-width:901px){.ablauf-web .bento{grid-template-columns:repeat(9,minmax(0,1fr))}'
           '.ablauf-web .web-fotos{grid-column:1/span 3;grid-row:1/span 2;min-height:0}'
-          '.ablauf-web .web-fotos .handys-k{left:0;right:0;top:clamp(40px,4vw,64px);justify-content:center;gap:16px}'
+          '.ablauf-web .web-fotos .handys-k{left:0;right:0;top:clamp(40px,4vw,64px);justify-content:center;gap:0}''.ablauf-web .web-fotos .handys-k img{width:clamp(180px,16.5vw,240px)}.ablauf-web .web-fotos .handys-k img+img{margin-left:-64px}'
           '.ablauf-web .web-seiten{grid-column:4/span 6;grid-row:1}'
           '.ablauf-web .z-klein{grid-column:span 2;grid-row:2;min-height:260px}'
           '.ablauf-web .web-zwei{display:grid;grid-template-columns:1fr 1fr;gap:12px}.ablauf-web .web-zwei .tickets{margin:8px 0 22px}'
@@ -1368,7 +1368,8 @@ WU_SEK = ('<section class="sek band auf-dunkel bento-sek ablauf-web"><div class=
           'margin:18px 0 auto;transition:transform var(--schnell),background var(--schnell)}'
           '.ablauf-web .web-ic svg{width:26px;height:26px;fill:none;stroke:var(--bronze-hell);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}'
           '.ablauf-web .z-klein:hover .web-ic{transform:rotate(-6deg) scale(1.08);background:rgba(250,247,241,.14)}'
-          '.ablauf-web .z-klein h3{margin-top:28px}'
+          '.ablauf-web .z-klein{justify-content:flex-start}.ablauf-web .z-klein .web-ic{margin:18px 0 0}.ablauf-web .z-klein h3{margin-top:28px}'  # Kacheln oben bündig: Icon, Titel, Text stehen in allen drei auf derselben Linie (Noah, 21.11.2026: „wieso muss ich es jedes mal wieder dazusagen mit den design regeln“)
+          ''
           '.ablauf-web .ticket .ok{white-space:nowrap}'
           '@media (max-width:900px){.ablauf-web .zelle.web-fotos .handys-k{display:flex;position:relative;right:auto;top:auto;justify-content:center;margin:6px 0 22px}'
           '.ablauf-web .handys-k img{width:min(132px,34vw)}.ablauf-web .z-klein{min-height:0}}</style>')
@@ -1457,7 +1458,7 @@ m.nach('<section class="hero-klein">',
 SENFT_SEK = ('<section class="sek senft-sek"><div class="wrap senft-raster"><figure class="senft-bild reveal"><img src="/static/assets/img/_h1280/fall/senftleben-team.webp" '
              'alt="Das Team von Senftleben Haustechnik vor den Firmenwagen in Ehingen" loading="lazy" decoding="async"></figure>'
              '<div class="senft-text reveal"><span class="kicker">Senftleben Haustechnik in Ehingen</span>'
-             '<p class="senft-zahl"><b>18</b><span>Tage</span></p><h2>Bis die Stelle in der Lohnbuchhaltung besetzt war.</h2>'
+             '<p class="senft-zahl"><b>18</b><span>Tage</span></p><h2>Bis die Stelle besetzt war.</h2>'
              '<p class="lead">21 qualifizierte Bewerbungen sind gekommen.</p>'
              '</div></div>'
              # Erwin Schmidt darunter (Noah, 21.11.2026: „dann darunter noch erwin schmidt - da hats ja auch nicht soo lange gedauert“);
@@ -1465,14 +1466,14 @@ SENFT_SEK = ('<section class="sek senft-sek"><div class="wrap senft-raster"><fig
              '<div class="wrap senft-raster gespiegelt"><figure class="senft-bild reveal"><img src="/static/assets/img/_h1280/fall/ess-zwei-monteure.webp" '
              'alt="Zwei Monteure von Erwin Schmidt &amp; Sohn in der Ausstellung in Sindelfingen" loading="lazy" decoding="async" style="object-position:50% 25%"></figure>'
              '<div class="senft-text reveal"><span class="kicker">Erwin Schmidt &amp; Sohn in Sindelfingen</span>'
-             '<p class="senft-zahl"><b>4</b><span>Wochen</span></p><h2>Bis der Anlagenmechaniker eingestellt war.</h2>'
+             '<p class="senft-zahl"><b>4</b><span>Wochen</span></p><h2>Bis die Stelle besetzt war.</h2>'
              '<p class="lead">25 Bewerbungen sind gekommen.</p>'
              '</div></div></section>'
              '<style>.senft-raster.gespiegelt{margin-top:clamp(56px,7vw,110px)}@media (min-width:901px){.senft-raster.gespiegelt{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr)}.senft-raster.gespiegelt .senft-bild{order:2}}'
              '.senft-raster{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(28px,4vw,72px);align-items:center}'
              '.senft-bild{margin:0;border-radius:var(--radius);overflow:hidden;aspect-ratio:4/3}.senft-bild img{width:100%;height:100%;object-fit:cover;object-position:50% 45%;display:block}'
              '.senft-zahl{display:flex;align-items:baseline;gap:.25em;margin:14px 0 6px;line-height:.9}.senft-zahl b{font-size:clamp(96px,13vw,200px);font-weight:800;letter-spacing:-.05em;color:var(--bronze-tief,#8F5B1D)}'
-             '.senft-zahl span{font-size:clamp(28px,3vw,44px);font-weight:700;letter-spacing:-.02em}.senft-text h2{margin:0 0 12px;max-width:20ch;font-size:clamp(28px,2.8vw,42px);line-height:1.12}.senft-text h2::before{display:none}'
+             '.senft-zahl span{font-size:clamp(28px,3vw,44px);font-weight:700;letter-spacing:-.02em}.senft-text h2{margin:0 0 12px;max-width:24ch;font-size:clamp(28px,2.8vw,42px);line-height:1.12}.senft-text h2::before{display:none}'
                           '@media (max-width:900px){.senft-raster{grid-template-columns:1fr}}</style>')
 # Noah, 20.11.2026: „da wollen wir nicht unbedingt Meike drin haben … Klaß und Senftleben“ → Erwin Schmidt raus
 m.nach('<section class="sek band auf-dunkel bento-sek ablauf-ani">', SENFT_SEK + erg_karten("Bewerbungen", ohne=("senftleben-team-2026", "Erwin Schmidt")))
@@ -1480,3 +1481,12 @@ m.vor('<section class="sek faq">', STIMMEN)
 # „Fragen, die fast jeder Betrieb vorher stellt … kannst du erst mal ausmachen“ (Noah, 20.11.2026)
 m.heraus('<section class="sek faq">')
 fertig(m, "mitarbeitergewinnung", hero_unter("mitarbeitergewinnung"))
+
+# Design-Tor am Ende jedes Live-Baus (Noah, 21.11.2026: „schau dir wirklich an, was im code falsch ist, dass er es nicht checkt“):
+# misst die gerenderten Seiten (Kartenreihen bündig, kein Leerraum in Karten, Handy ohne Überlauf, h2 ≤ 2 Zeilen). Rot = Exit 1.
+# Der pre-commit-Hook in firma/website sperrt zusätzlich jeden Commit mit rotem Tor.
+if LIVE and "--ohne-tor" not in sys.argv:
+    import subprocess as _sp
+    _r = _sp.run(["node", "hwm_live_tor.mjs"], cwd="/Users/noahs/CEO-GPT/system/apps/audit")
+    if _r.returncode != 0:
+        sys.exit("❌ Design-Tor rot — Seiten gebaut, aber so nicht committen (Befunde oben).")
