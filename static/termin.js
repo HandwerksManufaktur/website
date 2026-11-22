@@ -36,9 +36,10 @@
     ['kunden', 'Aufträge', 'Bad, Heizung, Wärmepumpe', 'bad'],
     ['website', 'Website', 'Neu oder überarbeitet']
   ] : [
-    ['website', 'Website', 'Neu oder überarbeitet'],
-    ['kunden', 'Neue Kunden', 'Mehr Anfragen über Werbung'],
-    ['mitarbeiter', 'Neue Mitarbeiter', 'Bewerbungen über Social Media']
+    // Unterzeile je Zeile verteilt (Noah, 22.11.2026: „Mehr Anfragen“ / „über Werbung“, „Bewerbungen“ / „über Social Media“)
+    ['website', 'Website', 'Neu oder\nüberarbeitet'],
+    ['kunden', 'Neue Kunden', 'Mehr Anfragen\nüber Werbung'],
+    ['mitarbeiter', 'Neue Mitarbeiter', 'Bewerbungen\nüber Social Media']
   ];
   function svg(n, k) { return '<svg class="' + (k || 'td-ic') + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' + IC[n] + '</svg>'; }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
@@ -92,7 +93,7 @@
     dlg = document.createElement('dialog');
     dlg.className = 'rd td td-weit'; dlg.id = 'termin-dialog'; dlg.setAttribute('aria-labelledby', 'td-titel');
     var wahl = THEMEN.map(function (t) {
-      return '<button type="button" data-thema="' + t[0] + '" aria-pressed="false">' + svg(t[3] || t[0]) + '<span>' + esc(t[1]) + '<small>' + esc(t[2]) + '</small></span></button>';
+      return '<button type="button" data-thema="' + t[0] + '" aria-pressed="false">' + svg(t[3] || t[0]) + '<span>' + esc(t[1]) + '<small>' + esc(t[2]).replace(/\n/g, '<br>') + '</small></span></button>';
     }).join('');
     dlg.innerHTML = '<form class="rd-form" novalidate>' +
       '<input type="text" name="bot" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">' +
@@ -106,7 +107,7 @@
       '<button type="button" class="' + KNOPF + ' td-knopf" data-weiter="2">Weiter ' + svg('pfeil') + '</button></section>' +
       '<section class="rd-schritt" data-schritt="3" hidden><h3>Wohin schicken wir die Terminbestätigung?</h3>' +
       '<label class="rd-feld"><span>E-Mail</span><input name="email" type="email" autocomplete="email" inputmode="email" placeholder="name@betrieb.de" required></label>' +
-      '<p class="td-mail">' + svg('schloss') + '<span>Die Mail brauchen wir nur für die Terminbestätigung und den Link zum Gespräch. Kein Newsletter, keine Werbung.</span></p>' +
+      '<p class="td-mail">' + svg('schloss') + '<span>Die Mail brauchen wir nur für die Terminbestätigung und den Link zum Gespräch.<br>Keine Sorge, du meldest dich gerade nicht für einen Newsletter an.</span></p>' +
       '<p class="td-fehler" data-fehler="3" hidden></p>' +
       '<button type="submit" class="' + KNOPF + ' td-knopf" data-weiter="3">Weiter zum Kalender ' + svg('pfeil') + '</button>' +
       '<p class="td-hinweis">Der Kalender kommt von Calendly. Mehr in der <a href="/datenschutz/">Datenschutzerklärung</a>.</p></section>' +
