@@ -13,8 +13,10 @@
   var SEITE = ds.seite === 'shk' ? 'shk' : 'hwm';
   var KNOPF = ds.knopf || 'btn btn-tinte';
   var API = 'https://handwerksmanufaktur-onboarding.handwerksmanufaktur.workers.dev/termin-anfrage';
-  var CAL = 'https://calendly.com/noahseelau/potenzial-erstgespraech';
-  var SLUG_THEMA = { 'website-potenzial': 'website', 'leadgen-potenzial': 'kunden', 'recruiting-potenzial': 'mitarbeiter', 'recruiting-potenzial-hwm': 'mitarbeiter', 'potenzial-erstgespraech': '' };
+  // Eigene Terminart „Beratung“ nur für das Termin-Fenster: halbstündige Startzeiten, Noahs eigene Terminarten bleiben im 15-Minuten-Raster
+  // (Noah, 22.11.2026). Die Leistung steht über a1 („Worum es geht: …“) im Kalendereintrag.
+  var CAL = 'https://calendly.com/noahseelau/beratung';
+  var SLUG_THEMA = { 'website-potenzial': 'website', 'leadgen-potenzial': 'kunden', 'recruiting-potenzial': 'mitarbeiter', 'recruiting-potenzial-hwm': 'mitarbeiter', 'potenzial-erstgespraech': '', 'beratung': '' };
   var IC = {
     website: '<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/>',
     kunden: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
