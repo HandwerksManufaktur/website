@@ -362,6 +362,8 @@ class Seite:
         # Schillinger mit dem neu gesetzten Porträt)
         for _k, _v in SEITENBILD_V.items():
             self.h = self.h.replace(f'/static/assets/vid/hero/s{_k}.webp"', f'/static/assets/vid/hero/s{_k}.webp?v={_v}"')
+            for _e in ('webm', 'jpg'):  # Laufband-Film + Vorschaubild ebenfalls (Erwin Schmidt, 22.11.2026)
+                self.h = self.h.replace(f'/static/assets/vid/hero/h{_k}.{_e}"', f'/static/assets/vid/hero/h{_k}.{_e}?v={_v}"')
         # Kurze Zeile („Alle live.“) steht unter der Überschrift, nicht allein rechts in der Mitte (Noah, 19.11.2026: „random“)
         def _kurz(m):
             lead = re.sub(r"<[^>]+>", "", m.group(2)).strip()
@@ -413,7 +415,9 @@ import html as _html
 import json as _json
 
 NEU_V = "8"
-SEITENBILD_V = {"schillinger": 3}  # Porträt „Der Meister“ neu gesetzt (20.11.2026)
+SEITENBILD_V = {"schillinger": 3,  # Porträt „Der Meister“ neu gesetzt (20.11.2026)
+                "15": 2,  # Schuster Erisried: Über-uns-Bild + Überschrift neu aufgenommen (22.11.2026)
+                "ess": 2}  # Erwin Schmidt: neues Hero-Video der Live-Seite (Noah, 22.11.2026: „läuft noch die alte fassung“)
 NEU_KOPF = f'<link rel="stylesheet" href="/static/seiten-neu.css?v={NEU_V}">'
 NEU_FUSS = f'<script src="/static/seiten-neu.js?v={NEU_V}" defer></script>'
 SIGNET = ('M0,39.667 L22,25 L22,91 L0,91 Z', 'M34,14.667 L56,0 L56,91 L34,91 L34,64.67 L27,68 L27,53.667 L34,49 Z',
