@@ -1505,7 +1505,9 @@ n.ersetze('<section class="sek grund"><div class="wrap"><div class="kopfzeile re
           '<section class="sek grund" id="ergebnisse"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Die Ergebnisse</span>')
 n.ersetze('<span class="nr" data-zahl="14">14</span><span class="fz-einheit">Bad-Anfragen</span></div><p>Daraus sieben Termine vor Ort und nach 18 Tagen der erste Auftrag.</p>',
           '<span class="nr" data-zahl="37">37</span><span class="fz-einheit">Bad-Anfragen</span></div><p>Daraus zwölf Termine vor Ort, der erste Auftrag über 10.000 € war nach 18 Tagen unterschrieben.</p>')  # Stand wie Startseite (37 / 12)
-n.ersetze('Pflicht ist es nicht — es geht auch mit deinem Vorarbeiter.', 'Pflicht ist es nicht, es geht auch mit deinem Vorarbeiter.', 2)
+# Noah, 22.11.2026: „nicht Vorarbeiter, sonst einfach andere Möglichkeiten“ + „dass sich mehr Leute eintragen, wenn es persönlich ist“
+n.ersetze('Es hilft, weil ein Kunde vor einem großen Auftrag wissen will, wen er sich ins Haus holt. Pflicht ist es nicht — es geht auch mit deinem Vorarbeiter.',
+          'Es hilft, weil sich mehr Leute eintragen, wenn es persönlich ist. Pflicht ist es nicht: Es geht auch mit deinem Team oder nur mit Bildern und Filmen von eurer Arbeit.', 2)
 n.ersetze('Sein Argument: Werbung macht man nicht erst, wenn es schlechter läuft, sondern damit man dann schon bekannt ist.',
           'Sein Argument: Wer erst wirbt, wenn es schlechter läuft, ist dann noch nicht bekannt.', 2)
 # Schlicht wie die Startseite (Noah, 19.11.2026): Hero → Was wir übernehmen → Ergebnis-Karten → Stimmen → Fragen → Kontakt
