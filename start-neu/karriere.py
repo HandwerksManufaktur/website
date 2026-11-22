@@ -211,7 +211,7 @@ def main_html():
 <div class="kq-fuss"><div class="kq-balken" aria-hidden="true"><i></i></div><span class="kq-stand">Fast geschafft</span></div>
 <p class="kr-ds">Mit dem Absenden nutzen wir deine Angaben nur für deine Bewerbung. Mehr in der <a href="/datenschutz/">Datenschutzerklärung</a>.</p></form></div></div></section>
 <section class="sek faq"><div class="wrap"><div class="zwei"><div class="links reveal"><span class="kicker">Häufige Fragen</span><h2>Was Bewerber oft fragen.</h2>
-<div class="anker"><p>Noch etwas offen? Ruf an, am Telefon bist du direkt bei Noah.</p><a class="btn btn-tinte" href="tel:+4981947174990">{TEL} +49 8194 7174990</a></div></div><div class="reveal">{fragen}</div></div></div></section></main>'''
+<div class="anker"><p>Noch etwas offen? Ruf einfach an.</p><a class="btn btn-tinte" href="tel:+4981947174990">{TEL} +49 8194 7174990</a></div></div><div class="reveal">{fragen}</div></div></div></section></main>'''
 
 
 STIL = """<style>
