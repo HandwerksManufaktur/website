@@ -115,6 +115,8 @@
 .fv-raster.js .fv-k{position:absolute;left:0;top:0;margin:0;opacity:0;transition:transform .7s cubic-bezier(.2,.7,.2,1),opacity .5s var(--ease),filter .4s var(--ease),width .7s cubic-bezier(.2,.7,.2,1),height .7s cubic-bezier(.2,.7,.2,1)}
 .fv-raster.js .fv-k.da{opacity:1}
 .fv-raster.js .fv-k.weg{opacity:0;pointer-events:none}
+.fv-raster .fv-k.zu{display:none}
+.fv-mehr{display:flex;justify-content:center;margin-top:22px}.fv-mehr[hidden]{display:none}
 .fv-k button.fv-auf{display:block;width:100%;height:100%;padding:0;border:0;background:none;cursor:zoom-in;position:relative}
 .fv-k img,.fv-k video{display:block;width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1)}
 .fv-raster:not(.js) .fv-k img,.fv-raster:not(.js) .fv-k video{height:auto;aspect-ratio:var(--r)}
@@ -229,3 +231,7 @@
 .projekt.breit .schirm.film{aspect-ratio:2/1}
 .projekt.breit .schirm.film video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:0 50%}
 @media (max-width:1000px){.projekt.breit .schirm.film{aspect-ratio:16/11}}
+
+/* Kundenstimmen am Handy: die Laufbahn zeigt rechts und links halbe Karten — breitere weiche Kante, damit kein harter
+   Schnitt durch den Text entsteht (Noah, 22.11.2026: „mobil auch richtig gut aussieht“) */
+@media (max-width:699px){.sek.stimmen{-webkit-mask-image:linear-gradient(#000,#000),linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(#000,#000),linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);-webkit-mask-size:100% 160px,100% 100%;mask-size:100% 160px,100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:0 0,0 0;mask-position:0 0,0 0}}  /* oberste 160 px (Überschrift) ohne Kante, gemessen: Bahn beginnt bei 162–188 px */

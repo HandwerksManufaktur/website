@@ -115,9 +115,18 @@
     const karten = $$('.fv-k', raster);
     raster.classList.add('js');
     const spalten = () => innerWidth >= 1100 ? 4 : innerWidth >= 700 ? 3 : 2;
+    // Handy: erst 24 Karten, der Rest auf Knopfdruck (Noah, 22.11.2026: „mobil optimiert, dass alles mobil auch richtig gut
+    // aussieht“ — die ganze Wand war bei 390 px rund 5.000 px lang)
+    const HANDY_ERST = 24; let alleAuf = false;
+    const mehr = document.createElement('div'); mehr.className = 'fv-mehr';
+    mehr.innerHTML = `<button type="button" class="btn btn-umriss">Alle ${karten.length} Fotos und Filme</button>`;
+    raster.after(mehr);
+    mehr.querySelector('button').addEventListener('click', () => { alleAuf = true; legen(); karten.forEach(k => k.classList.add('da')); mehr.hidden = true; });
     const legen = () => {
       const n = spalten(), gap = innerWidth >= 700 ? 14 : 10, w = raster.clientWidth, sw = (w - gap * (n - 1)) / n, hoehe = Array(n).fill(0);
-      karten.forEach(k => {
+      const kurz = n === 2 && !alleAuf; mehr.hidden = !kurz;
+      karten.forEach((k, i) => { k.classList.toggle('zu', kurz && i >= HANDY_ERST); });
+      karten.filter(k => !k.classList.contains('zu')).forEach(k => {
         const r = +k.style.getPropertyValue('--r') || 1.5, h = Math.round(sw / r);
         let s = 0; for (let j = 1; j < n; j++) if (hoehe[j] < hoehe[s] - 1) s = j;
         k.style.width = sw + 'px'; k.style.height = h + 'px';

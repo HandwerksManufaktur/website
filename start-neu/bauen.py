@@ -414,7 +414,7 @@ def szene(nr, kicker, titel, grund=True):
 import html as _html
 import json as _json
 
-NEU_V = "8"
+NEU_V = "9"
 SEITENBILD_V = {"schillinger": 3,  # Porträt „Der Meister“ neu gesetzt (20.11.2026)
                 "15": 2,  # Schuster Erisried: Über-uns-Bild + Überschrift neu aufgenommen (22.11.2026)
                 "ess": 2}  # Erwin Schmidt: neues Hero-Video der Live-Seite (Noah, 22.11.2026: „läuft noch die alte fassung“)
