@@ -105,7 +105,12 @@ SEITEN = {
     "suchmaschinenoptimierung": [(BAUREIZEFILM, 20.67, 1.6, .55, ""),  # Baureize: grüner Linienlaser
                                  (BAUREIZEFILM, 12.67, 1.9, .50, ""),  # Baureize: Wolfgang an der Formatkreissäge
                                  # (Noah, 21.11.2026: „den kreitner clip bei seo raus, ist shit“)
-                                 (CSFILM, 9.96, 1.9, .50, "")],        # CS: Schleifer lacht
+                                 (CSFILM, 9.96, 1.9, .50, ""),         # CS: Schleifer lacht
+                                 # Noah, 22.11.2026: „den clip vom hilti bohrer … von entenmann … als letzter – und nochmal
+                                 #  irgendeinen von cs metalldesign danach“ + „close up von den teilen bei entenmann“
+                                 (ENT, 26.1, 1.0, .50, ""),            # Entenmann: Hilti-Bohrer auf dem Tisch, Gegenlicht
+                                 (ENT, 12.7, 0.75, .50, ""),           # Entenmann: Nahaufnahme Fittings im Regal
+                                 (CSFILM, 4.6, 1.3, .55, "")],         # CS: Schweißerin mit Maske
     # (Noah, 21.11.2026: „den komischen Übergang weg … vom Lasermesser zu Kreitner“ → Kreitner nicht mehr nach dem Laser;
     #  CS-Schweißen mit roten Handschuhen „kommt beim anderen raus“ → Neukundengewinnung)
        # CS: Schweißen mit Maske
