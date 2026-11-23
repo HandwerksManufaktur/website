@@ -248,6 +248,16 @@ new Set($$('video[data-poster], img[data-spaet]').map(el => el.closest('section'
    noch im Hero stand, und 16 Referenz-Aufnahmen liefen daneben mit. autoplay bleibt als Rückfall
    ohne JS; im Browser entscheidet allein, ob das Video im Bild ist. */
 $$('video').forEach(v => { if (v.dataset.hand !== undefined) return; if (!v.closest('.hero')) { try { v.pause(); } catch (e) {} } ioV.observe(v); });
+/* 🔴 24.11.2026 (Noah am iPhone: „das Video läuft jetzt nicht, wenn ich draufgehe“): Im Stromsparmodus verweigert iOS das
+   Selbststarten stummer Filme. Dann startet die erste Berührung oder der erste Scroll alle Filme, die gerade im Bild sind. */
+(() => {
+  const anstossen = () => $$('video').forEach(v => { if (v.dataset.hand !== undefined || v.controls || !v.paused) return;
+    const r = v.getBoundingClientRect(); if (!r.width || r.bottom < 0 || r.top > innerHeight) return;
+    if (!v.getAttribute('src') && v.dataset.src) { if (!v._sicht && !v.closest('.hero')) return; v.src = (innerWidth < 760 && v.dataset.srcMobil) || v.dataset.src; }
+    v.play().catch(() => {}); });
+  if (!matchMedia('(hover: none)').matches) return;
+  ['touchstart', 'touchend'].forEach(ev => addEventListener(ev, () => { clearTimeout(anstossen._t); anstossen._t = setTimeout(anstossen, 120); }, { passive: true, capture: true }));
+})();
 $$('.ton').forEach(k => k.addEventListener('click', () => {
   const v = $('video', k.parentElement); if (!v) return;
   v.muted = !v.muted; k.classList.toggle('an', !v.muted);
