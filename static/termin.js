@@ -109,7 +109,7 @@
       '<button type="button" class="' + KNOPF + ' td-knopf" data-weiter="2">Weiter ' + svg('pfeil') + '</button></section>' +
       '<section class="rd-schritt" data-schritt="3" hidden><h3>Wohin schicken wir die Terminbestätigung?</h3>' +
       '<label class="rd-feld"><span>E-Mail</span><input name="email" type="email" autocomplete="email" inputmode="email" placeholder="name@betrieb.de" required></label>' +
-      '<p class="td-mail">' + svg('schloss') + '<span>Die Mail brauchen wir nur für die Terminbestätigung und den Link zum Gespräch.<br>Keine Sorge, du meldest dich gerade nicht für einen Newsletter an.</span></p>' +
+      '<p class="td-mail">' + svg('schloss') + '<span>Die Mail brauchen wir für die Terminbestätigung und den Link zum Gespräch. Buchst du keinen Termin, melden wir uns einmal per Mail.<br>Keine Sorge, du meldest dich gerade nicht für einen Newsletter an.</span></p>' +
       '<p class="td-fehler" data-fehler="3" hidden></p>' +
       '<button type="submit" class="' + KNOPF + ' td-knopf" data-weiter="3">Weiter zum Kalender ' + svg('pfeil') + '</button>' +
       '<p class="td-hinweis">Der Kalender kommt von Calendly. Mehr in der <a href="/datenschutz/">Datenschutzerklärung</a>.</p></section>' +
