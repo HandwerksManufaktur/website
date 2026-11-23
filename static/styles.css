@@ -3529,3 +3529,14 @@ p.ki-hinweis .ki-i,.ki-hinweis span.ki-i{font-size:13px}
 .wa-marke.klein a{gap:0;padding:0}
 .wa-marke.klein a>span:not(.wa-ic){max-width:0;opacity:0}
 .wa-marke.klein .wa-zu{display:none}
+/* Startseite Handy dezent (24.11.2026, Noah: „alles aus einer hand. drei säulen ein team ist shit … mobile weglassen“ ·
+   „buttons auch bisschen dezenter auf der startseite, lieber das video dass man das mehr sieht, buttons können kleiner“) */
+@media (max-width:760px){
+  .hero-text .eine-hand{display:none}
+  .hero-text .knopfzeile{flex-direction:row;flex-wrap:wrap;gap:8px}
+  .hero-text .knopfzeile .btn{width:auto;min-height:44px;padding:9px 12px;font-size:13.5px;gap:5px;letter-spacing:-.01em}
+  .hero-text .knopfzeile .btn svg{display:none}
+  .hero .saeule::after{background:linear-gradient(180deg,rgba(22,19,14,.42) 0%,rgba(22,19,14,.22) 38%,rgba(22,19,14,.6) 70%,var(--tinte) 100%)}
+  .hero-text .knopfzeile .btn svg{width:16px;height:16px}
+  .hero-text .knopfzeile .btn-umriss{background:rgba(250,247,241,.08);box-shadow:inset 0 0 0 1.5px rgba(250,247,241,.7)}
+}

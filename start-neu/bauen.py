@@ -1060,7 +1060,7 @@ def erg_karten(art, ohne=()):
               '.erg-sek .ergebnisse[data-einzel] .erg-zeile em{font-size:clamp(30px,2.6vw,40px)}}</style>') if len(karten) == 1 else ''
     return ('<section class="sek erg-sek" id="ergebnisse"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Die Ergebnisse</span>'
             f'<h2>Ergebnisse unserer Kunden.</h2></div><div class="ergebnisse"{raster}>{"".join(karten)}</div>'
-            + (f'<p class="erg-wisch" aria-hidden="true">Wischen für {("beide", "alle drei")[len(karten) - 2]} Betriebe</p>' if len(karten) > 1 else '')
+            + (f'<p class="erg-wisch" aria-hidden="true">Wischen, um mehr zu sehen</p>' if len(karten) > 1 else '')
             + '</div></section>' + einzel)
 
 
@@ -1379,7 +1379,7 @@ assert _sek2.count('<article class="projekt') == 24 and _sek2.count('class="ra-v
     (WURZEL / f"static/assets/vid/raster/v{r[1]}.webp").exists() for r in RASTER)
 _sek2 = _sek2[:-len("</section>")] + RASTER_STIL + RASTER_JS + "</section>"
 w.h = w.h[:_a] + _sek2 + w.h[_e:]
-assert 'Wischen für alle 24 Seiten' in w.h
+assert 'Wischen, um mehr zu sehen' in w.h
 w.ersetze('<p class="lead">Jede mit Fotos aus dem eigenen Betrieb, jede auf ihr Gewerk und ihren Umkreis gebaut. Fahr über eine Seite, dann scrollt sie durch.</p>',
           '<p class="lead">Alle live. Tipp eine an.</p>')
 # Durchgezogen (Noah, 19.11.2026: „jo und des ziehst du jetzt durch“): keine Problem-Kästen, keine Kundenfoto-Karten im Ablauf,
