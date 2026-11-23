@@ -1538,7 +1538,7 @@ m.nach('<section class="hero-klein">',
 # Die Reihe geht im selben Muster weiter (Noah, 21.11.2026: „die oben sollst du genauso lassen … dass wir das einfach so weiterspielen,
 # Kirchner, Planung Hindelang, Autohaus Ressle, HAWE Engineering“): Klaß als dritter Block, dann abwechselnd gespiegelt.
 # Zahlen nur mit Beleg (Chat-Doku hwm-website-ueberarbeitung.md „Zahlen mit Quelle“): Klaß 35/16, Kirchner 25/16, Ressle 14 selbst
-# nachgezählt, HAWE „über 100 in 4 Wochen“ (Recherche Drive); Hindelang ohne Zahl (Drive/Gmail/Close haben keine Bewerberzahl).
+# nachgezählt, HAWE „über 100 in 4 Wochen“ (Recherche Drive); Hindelang 12 (Pool-D1 hwm-pool, funnel 69e117fde66be169b9109746, 27.04.–07.06.2026; Noah, 23.11.2026: „wieso sind bei hindelang nicht die bewerbung mit großer zahl aufgelistet“).
 # Logo zu jedem Ergebnis (Noah, 21.11.2026 abends: „überall die logos dazu“, dann „logos kleiner … und unter den normalen namen“):
 # Farblogo ohne Kasten UNTER dem Betriebsnamen, optisch gleich groß (gleiche Fläche im Rahmen 112 × 44, flache 140 breit).
 # Klaß und HAWE gibt es nur weiß → in Tinte eingefärbt (logos/farbe/klass.png, hawe.png).
@@ -1575,7 +1575,7 @@ FOLGE_BLOECKE = "".join([
     # „autohaus ressle hatten wir ja auch die bilder und hawe auch“) – Originale aus dem Drive des Kunden
     # Noah, 21.11.2026 abends: „bei hindelang das bild von der baustelle“, „bei ressle nehmen wir das bild vom servicetechniker“
     _folge(5, "Planung Hindelang", "Für die Stelle als Planer.", "/static/assets/img/_h1280/fall/hindelang-baustelle.webp",
-           "Alexander Hindelang mit dem 3D-Laserscanner im Dachstuhl einer Baustelle", lead="Die Anzeige lief auf Facebook und Instagram, mit eigener Bewerbungsseite.", pos="55% 40%", marke="hindelang"),
+           "Alexander Hindelang mit dem 3D-Laserscanner im Dachstuhl einer Baustelle", zahl="12", einheit="Bewerbungen", lead="Die Anzeige lief auf Facebook und Instagram, mit eigener Bewerbungsseite.", pos="55% 40%", marke="hindelang"),
     _folge(6, "Autohaus Ressle", "Für die offene Stelle.", "/static/assets/img/_h1280/fall/ressle-servicetechniker.webp",
            "Servicetechniker von Autohaus Ressle unter einem Fahrzeug auf der Hebebühne", zahl="14", einheit="Bewerbungen", pos="40% 45%", marke="autohaus-ressle"),
     _folge(7, "HAWE Engineering", "Für die offene Stelle.", "/static/assets/img/_h1280/fall/hawe-inhaber.webp",
