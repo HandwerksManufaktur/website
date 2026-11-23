@@ -70,6 +70,7 @@
     '.td .rd-kopf{margin-bottom:18px}' +
     '.td .td-unter{font-size:14px;opacity:.75;margin:14px 0 0;text-align:center}' +
     '@media (max-width:520px){.td.td-weit .rd-form{padding:22px 16px 22px}.td .rd-wahl.td-drei{gap:8px}.td .rd-wahl.td-drei button{min-height:104px;padding:18px 6px 14px;gap:8px;border-radius:16px}.td .rd-wahl.td-drei button>span{font-size:15px;line-height:1.2}.td .rd-wahl.td-drei button small{display:none}.td .td-kick-rest{display:none}.td .rd-wahl.td-drei .td-ic{width:26px;height:26px}}' +
+    '@media (max-width:520px){.rd.td{width:100%;max-width:100%;inset:auto 0 0 0;margin:0;border-radius:22px 22px 0 0;max-height:92dvh}.td .td-kick-lang{display:none}.td .rd-kick{letter-spacing:.06em}.td .rd-wahl.td-drei{grid-template-columns:1fr;gap:8px}.td .rd-wahl.td-drei button{flex-direction:row;justify-content:flex-start;align-items:center;text-align:left;min-height:68px;padding:12px 16px;gap:14px;border-radius:14px}.td .rd-wahl.td-drei button>span{font-size:17px}.td .rd-wahl.td-drei button small{display:block;font-size:13px}.td .rd-wahl.td-drei button small br{display:none}.td .td-unter{text-align:left;margin-top:12px}.td .td-fs{max-width:none}.td .rd-kopf{margin-bottom:12px}}' +
     '.td.td-breit{width:min(860px,calc(100vw - 32px))}' +
     '.td .td-cal{height:min(700px,calc(100dvh - 230px));min-height:480px;margin:0 -8px;position:relative}' +
     '.td .td-cal .td-laedt{position:absolute;inset:0;display:grid;place-items:center;font-weight:600;opacity:.6}' +
@@ -95,11 +96,11 @@
     dlg = document.createElement('dialog');
     dlg.className = 'rd td td-weit'; dlg.id = 'termin-dialog'; dlg.setAttribute('aria-labelledby', 'td-titel');
     var wahl = THEMEN.map(function (t) {
-      return '<button type="button" data-thema="' + t[0] + '" aria-pressed="false">' + svg(t[3] || t[0]) + '<span>' + esc(t[1]) + '<small>' + esc(t[2]).replace(/\n/g, '<br>') + '</small></span></button>';
+      return '<button type="button" data-thema="' + t[0] + '" aria-pressed="false">' + svg(t[3] || t[0]) + '<span>' + esc(t[1]) + '<small>' + esc(t[2]).replace(/\n/g, ' <br>') + '</small></span></button>';
     }).join('');
     dlg.innerHTML = '<form class="rd-form" novalidate>' +
       '<input type="text" name="bot" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">' +
-      '<div class="rd-kopf"><p class="rd-kick" id="td-titel">' + svg('kalender') + '<span>Kostenloses Beratungsgespräch<span class="td-kick-rest"> · 30 Min.</span></span></p><button type="button" class="rd-zu" data-zu aria-label="Schließen">' + svg('zu') + '</button></div>' +
+      '<div class="rd-kopf"><p class="rd-kick" id="td-titel">' + svg('kalender') + '<span>Kostenloses <span class="td-kick-lang">Beratungs</span>gespräch<span class="td-kick-rest"> · 30 Min.</span></span></p><button type="button" class="rd-zu" data-zu aria-label="Schließen">' + svg('zu') + '</button></div>' +
       '<section class="rd-schritt an" data-schritt="1"><h3>Worum soll es gehen?</h3><div class="rd-wahl td-drei">' + wahl + '</div>' +
       '<p class="td-unter">Es geht um SEO, Google-Anzeigen oder ein Foto- und Videoshooting? Das läuft alles unter Website.</p></section>' +
       '<section class="rd-schritt" data-schritt="2" hidden><h3>Wer bist du?</h3><p class="td-satz" data-passt></p>' +
@@ -178,6 +179,8 @@
     [].forEach.call(dlg.querySelectorAll('[data-thema]'), function (b) { var an = !!thema && b.dataset.thema === thema; b.classList.toggle('an', an); b.setAttribute('aria-pressed', an ? 'true' : 'false'); });
     if (thema) { stand.themen = [thema]; zeigen(2); }          // Thema schon über die Kachel auf der Seite gewählt → gleich Name/Betrieb
     else zeigen(stand.schritt === 4 && stand.cal ? 4 : 1);
+    // offenes Handy-Menü zu, sonst steht es hinter dem Fenster (23.11.2026)
+    document.body.classList.remove('menu-offen'); var mm = document.getElementById('mobilmenu'); if (mm) mm.classList.remove('offen');
     document.documentElement.classList.add('rd-offen');
     if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
     melden('termin_dialog_auf');

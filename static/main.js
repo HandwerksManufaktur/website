@@ -1033,3 +1033,31 @@ document.querySelectorAll('.rd').forEach(rechnerStarten);
   const setze = v => { v.defaultPlaybackRate = TEMPO; if (v.playbackRate !== TEMPO) v.playbackRate = TEMPO; };
   document.querySelectorAll('video[muted][loop], video[loop][muted]').forEach(v => { setze(v); ['loadeddata', 'play'].forEach(e => v.addEventListener(e, () => setze(v))); });
 })();
+
+/* ---- Handy-Hero (23.11.2026, Noah: „man sieht ja nur das Mittelvideo … die rechte Spalte, wo die dann sprechen“):
+   Drohnen-Film (Mitte) und Kunden-Film (rechts) laufen abwechselnd bildfüllend; gewechselt wird, wenn der sichtbare Film
+   einmal durch ist. Der Pause-Knopf hält beide an. ---- */
+(() => {
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const saeulen = $('.hero .saeulen');
+  if (!saeulen || !matchMedia('(max-width: 760px)').matches) return;
+  const vids = $$('.saeule', saeulen).map(s => $('video', s));
+  const a = vids[1], b = vids[2]; if (!a || !b) return;
+  const pauseK = $('.hero .pause');
+  let zeigt = a, letzt = 0;
+  b.addEventListener('play', () => { if (zeigt !== b) b.pause(); });
+  a.addEventListener('play', () => { if (zeigt !== a) a.pause(); });
+  const wechsel = () => {
+    const alt = zeigt, neu = zeigt === a ? b : a;
+    zeigt = neu; letzt = 0;
+    saeulen.classList.toggle('zeigt-kunden', neu === b);
+    if (!neu.getAttribute('src') && neu.dataset.src) neu.src = neu.dataset.srcMobil || neu.dataset.src;
+    try { neu.currentTime = 0; } catch (e) {}
+    if (!(pauseK && pauseK.classList.contains('aus'))) neu.play().catch(() => {});
+    alt.pause();
+  };
+  [a, b].forEach(v => v.addEventListener('timeupdate', () => {
+    if (v !== zeigt) return;
+    if (v.currentTime + 0.5 < letzt) wechsel(); else letzt = v.currentTime;
+  }));
+})();
