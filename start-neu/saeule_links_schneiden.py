@@ -30,12 +30,14 @@ SZENEN = [
     # z.b. von entenmann shooting“); Reihenfolge so, dass nie zwei Szenen vom selben Betrieb aufeinander folgen (auch nicht über die Schleife)
     # CS-Drohne raus (Noah, 21.11.2026: „auch der drohnenclip von cs metalldesign in der mitte raus“) → keine Drohne mehr in der Mitte.
     # Mit nur noch einer CS-Szene trägt die Folge höchstens drei Entenmann-Szenen ohne zwei gleiche hintereinander → Rohrschneider raus.
-    ("CS Metall",  CS_B,     2.10, 1.60, 0.45, "Schleifer mit Brille lacht an der Werkbank"),
-    ("Entenmann",  ENT,      9.55, 1.40, 0.40, "Trennschleifer mit Funken am Rohr"),
-    ("Koller",     KOLLER_A, 0.10, 1.30, 0.28, "Zimmerer mit Akkuschrauber am Balken"),
-    ("Entenmann",  ENT,      8.46, 0.95, 0.70, "Nahaufnahme: Zange an der Armatur"),
-    ("Koller",     KOLLER_C, 1.30, 1.25, 0.52, "Kappsäge, Zimmerer mit Gehörschutz schneidet den Balken"),
-    ("Entenmann",  ENT,      4.34, 1.40, 0.60, "Wärmepumpe wird durch den Garten gebracht"),
+    # Noah 24.11.2026: Nahaufnahme raus, unscharf (Entenmann Zange an der Armatur ENT 8.46). Alle Szenen am Quellschnitt gemessen
+    # (ffmpeg scene>0.25): keine Szene enthält einen Quellschnitt, Ende/Anfang mind. 0,08 s Abstand. Trennschleifer endete vorher
+    # im Schnitt bei 10,51 s (Transporter), Wärmepumpe im Schnitt bei 5,31 s, CS ab 2,12 s, Koller-A bei 2,8 s ... jeweils gekürzt.
+    ("CS Metall",  CS_B,     2.20, 1.50, 0.45, "Schleifer mit Brille lacht an der Werkbank"),
+    ("Entenmann",  ENT,      9.55, 0.85, 0.40, "Trennschleifer mit Funken am Rohr"),
+    ("Koller",     KOLLER_A, 0.10, 1.22, 0.28, "Zimmerer mit Akkuschrauber am Balken"),
+    ("Entenmann",  ENT,      4.30, 0.92, 0.60, "Wärmepumpe wird durch den Garten gebracht"),
+    ("Koller",     KOLLER_C, 1.30, 1.20, 0.52, "Kappsäge, Zimmerer mit Gehörschutz schneidet den Balken"),
 ]
 assert all(SZENEN[i][0] != SZENEN[i - 1][0] for i in range(len(SZENEN))), "zwei Szenen vom selben Betrieb hintereinander"
 

@@ -3556,3 +3556,26 @@ p.ki-hinweis .ki-i,.ki-hinweis span.ki-i{font-size:13px}
   .hero-text .knopfzeile .btn-umriss{min-height:48px;padding:11px 20px;font-size:15.5px;gap:8px}
   .hero-text .knopfzeile .btn-umriss svg{display:block;width:18px;height:18px}
 }
+/* Unterseiten Handy (24.11.2026, Noah: „Bei Websites brauchen wir dann nicht noch mal ‚Arbeiten ansehen‘ … bei den Unterseiten
+   will ich tendenziell eigentlich auch, dass man ein bisschen mehr vom Video im Hintergrund sieht. Da muss auch nicht zuerst
+   ‚Erstgespräch vereinbaren‘ hin … Bei ‚Über uns‘ das Gleiche“): Video heller, nur ein kleiner, dezenter Knopf. */
+@media (max-width:760px){
+  .hero-klein::before{background:linear-gradient(180deg,rgba(22,19,14,.5) 0%,rgba(22,19,14,.42) 40%,rgba(22,19,14,.78) 100%)}
+  .hero-klein .knopfzeile .btn-umriss{display:none}
+  .hero-klein .knopfzeile a.btn.btn-bronze{min-height:44px;padding:9px 16px;font-size:14px;gap:6px;color:var(--papier);background:rgba(250,247,241,.1);box-shadow:inset 0 0 0 1.5px rgba(250,247,241,.75)}
+  .hero-klein .knopfzeile a.btn.btn-bronze svg{stroke:currentColor}
+  .hero-klein .knopfzeile .btn-bronze svg{width:16px;height:16px}
+}
+/* Handy-Stil einheitlich (24.11.2026, Noah: „der Stil zieht sich noch nicht so ganz durch … manche Sachen sind größer geschrieben,
+   manche wieder voll klein … ganz unten steht ‚Cookie-Einstellungen‘ … komisch“). Drei Stufen: Fließtext 16 px, Kartentext 15 px,
+   Kleingedrucktes 13 px; alle Überschriften gleich groß; Fußzeile: Rechtliches in einer sauberen Reihe mit gleichen Abständen. */
+@media (max-width:760px){
+  .logoband .zeile p,.leistungen-sek p.leistungen-zusatz.leistungen-zusatz,.handy-text small,.uk-karte .uk-satz{font-size:16px}
+  .erg-in>p,.uk-wahl small{font-size:15px}
+  .erg-wer small{font-size:13px}
+  .team-sek .kopfzeile h2{font-size:clamp(26px,7.2vw,28.08px)!important}
+  .team-sek .kopfzeile h2 span{white-space:normal!important}
+  .fuss .unten.unten{gap:10px}
+  .fuss .unten.unten>span:last-child{display:flex;flex-wrap:wrap;align-items:center;gap:0 22px}
+  .fuss .unten.unten>span:last-child a,.fuss .unten.unten .cookie-link{margin:0;padding:0;min-width:0;min-height:44px;justify-content:flex-start;font-size:15px;line-height:1.3;color:#E2DBCD;background:none}
+}

@@ -669,7 +669,7 @@ s.ersetze('<p class="lead">Website, Fotos und Social-Media-Werbung für Handwerk
 # firma/website-shk/neu/video/szenen/*.mp4 (SHK-Seite selbst unverändert).
 s.h = s.h.replace('/static/assets/vid/saeule/baureize.jpg', '/static/assets/vid/saeule/kunden-shk.jpg?v=4')
 s.ersetze('data-src="/static/assets/vid/saeule/baureize-d.mp4" data-src-mobil="/static/assets/vid/saeule/baureize-m.mp4"',
-          'data-src="/static/assets/vid/saeule/kunden-shk-d.mp4?v=10" data-src-mobil="/static/assets/vid/saeule/kunden-shk-m.mp4?v=10"')  # v10 (22.11.2026): + Mitarbeiterin von Stimpfle (Hooks (3) ab 3,33 s, spricht in die Kamera; Noah: „da sollte sie halt schon grade sprechen“) als letzte Szene, Noah: „nicht yannick, sondern das mädl bei yannick“  # v4 (19.11.2026): Bettina stehend und lächelnd (Kampagnen-Aufnahme Bodys (2) ab 2,4 s) statt im Lager an der Kiste, an Stelle 4 zwischen Benjamin Senftleben und Yannick Stimpfle (Noah: „nicht direkt nach Erwin Schmidt“)
+          'data-src="/static/assets/vid/saeule/kunden-shk-d.mp4?v=11" data-src-mobil="/static/assets/vid/saeule/kunden-shk-m.mp4?v=11"')  # v10 (22.11.2026): + Mitarbeiterin von Stimpfle (Hooks (3) ab 3,33 s, spricht in die Kamera; Noah: „da sollte sie halt schon grade sprechen“) als letzte Szene, Noah: „nicht yannick, sondern das mädl bei yannick“  # v4 (19.11.2026): Bettina stehend und lächelnd (Kampagnen-Aufnahme Bodys (2) ab 2,4 s) statt im Lager an der Kiste, an Stelle 4 zwischen Benjamin Senftleben und Yannick Stimpfle (Noah: „nicht direkt nach Erwin Schmidt“)
 assert 'baureize' not in s.h.split('<div class="saeulen">', 1)[1].split('</div></div></div>', 1)[0]
 # Noah, 18.11.2026: „das Video soll schon das ganz ausfüllen, aber … nicht, dass der Kopf … abgeschnitten ist“ → in den
 # Originalen sitzt der Kopf ganz oben → weiter gefilmte Takes (start-neu/kunden_szenen_saeule.py), Beschriftung wieder oben.
@@ -698,9 +698,9 @@ s.h = s.h.replace('</head>', '<style>.saeule:nth-child(3) video{object-position:
 s.h = s.h.replace('/static/assets/vid/saeule/kreitner.jpg', '/static/assets/vid/saeule/details.jpg?v=3')
 s.ersetze('data-src="/static/assets/vid/saeule/kreitner-d.mp4" data-src-mobil="/static/assets/vid/saeule/kreitner-m.mp4"',
           'data-src="/static/assets/vid/saeule/details-d.mp4?v=3" data-src-mobil="/static/assets/vid/saeule/details-m.mp4?v=3"')
-s.h = s.h.replace('/static/assets/vid/saeule/hero-loop.jpg', '/static/assets/vid/saeule/drohnen.jpg?v=7')
+s.h = s.h.replace('/static/assets/vid/saeule/hero-loop.jpg', '/static/assets/vid/saeule/drohnen.jpg?v=8')
 s.ersetze('data-src="/static/assets/vid/saeule/hero-loop-d.mp4" data-src-mobil="/static/assets/vid/saeule/hero-loop-m.mp4"',
-          'data-src="/static/assets/vid/saeule/drohnen-d.mp4?v=7" data-src-mobil="/static/assets/vid/saeule/drohnen-m.mp4?v=7"')
+          'data-src="/static/assets/vid/saeule/drohnen-d.mp4?v=8" data-src-mobil="/static/assets/vid/saeule/drohnen-m.mp4?v=8"')
 s.heraus('<section class="sek system-sek" id="system"')
 s.heraus('<section class="sek grund lagen-sek probleme pb-sek">')
 s.heraus('<section class="sek google grund">')

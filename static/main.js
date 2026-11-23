@@ -248,15 +248,45 @@ new Set($$('video[data-poster], img[data-spaet]').map(el => el.closest('section'
    noch im Hero stand, und 16 Referenz-Aufnahmen liefen daneben mit. autoplay bleibt als Rückfall
    ohne JS; im Browser entscheidet allein, ob das Video im Bild ist. */
 $$('video').forEach(v => { if (v.dataset.hand !== undefined) return; if (!v.closest('.hero')) { try { v.pause(); } catch (e) {} } ioV.observe(v); });
-/* 🔴 24.11.2026 (Noah am iPhone: „das Video läuft jetzt nicht, wenn ich draufgehe“): Im Stromsparmodus verweigert iOS das
-   Selbststarten stummer Filme. Dann startet die erste Berührung oder der erste Scroll alle Filme, die gerade im Bild sind. */
+/* 🔴 24.11.2026 (Noah am iPhone: „videos laufen am handy immer noch nicht … schick es nicht noch mal rein, ohne dass du
+   sichergestellt hast, dass es mobil auch die Videos durchlaufen“): Im Stromsparmodus und in manchen App-Browsern verweigert
+   iOS jedes Selbststarten (play() → NotAllowedError). Dann legt sich das bewegte Bild foo.anim.webp (start-neu/video_bilder.py)
+   über das Video und läuft trotzdem. Eine echte Berührung versucht den Film noch einmal; startet er, geht das Bild weg. */
 (() => {
-  const anstossen = () => $$('video').forEach(v => { if (v.dataset.hand !== undefined || v.controls || !v.paused) return;
-    const r = v.getBoundingClientRect(); if (!r.width || r.bottom < 0 || r.top > innerHeight) return;
-    if (!v.getAttribute('src') && v.dataset.src) { if (!v._sicht && !v.closest('.hero')) return; v.src = (innerWidth < 760 && v.dataset.srcMobil) || v.dataset.src; }
+  const animPfad = v => { const s = v.getAttribute('src') || (innerWidth < 760 && v.dataset.srcMobil) || v.dataset.src || '';
+    return /\.(mp4|webm)(\?|$)/.test(s) ? s.replace(/\.(mp4|webm)(\?.*)?$/, '.anim.webp') : ''; };
+  const bild = v => {
+    if (v._anim || v.controls || v.dataset.hand !== undefined || !v.offsetWidth) return;
+    const p = animPfad(v); if (!p) return;
+    const cs = getComputedStyle(v), el = v.parentElement; if (getComputedStyle(el).position === 'static') el.style.position = 'relative';
+    const img = document.createElement('img'); img.className = 'vid-anim'; img.alt = ''; img.setAttribute('aria-hidden', 'true'); img.decoding = 'async';
+    img.style.cssText = `position:absolute;left:${v.offsetLeft}px;top:${v.offsetTop}px;width:${v.offsetWidth}px;height:${v.offsetHeight}px;` +
+      `object-fit:${cs.objectFit};object-position:${cs.objectPosition};border-radius:${cs.borderRadius};transform:${cs.transform === 'none' ? 'none' : cs.transform};pointer-events:none;z-index:${(parseInt(cs.zIndex) || 0) + 1}`;
+    img.src = p; v.after(img); v._anim = img;
+    new ResizeObserver(() => { if (!img.isConnected) return; Object.assign(img.style, { left: v.offsetLeft + 'px', top: v.offsetTop + 'px', width: v.offsetWidth + 'px', height: v.offsetHeight + 'px', display: v.offsetWidth ? '' : 'none' }); }).observe(v);
+  };
+  window.hmVideoGesperrt = false;
+  const play = HTMLMediaElement.prototype.play;
+  HTMLMediaElement.prototype.play = function () {
+    const pr = play.apply(this, arguments);
+    if (pr && pr.catch) pr.catch(err => { if (err && err.name === 'NotAllowedError' && this.tagName === 'VIDEO') { window.hmVideoGesperrt = true; document.documentElement.classList.add('video-gesperrt'); bild(this); } });
+    return pr;
+  };
+  addEventListener('playing', e => { const v = e.target; if (v._anim) { v._anim.remove(); v._anim = null; } }, true);
+  /* Nachkontrolle: Filme, die der Browser per autoplay-Attribut selbst starten sollte, melden eine Sperre nicht. Steht ein
+     sichtbarer Film nach dem Laden still, wird er gezielt gestartet; verweigert das Handy, kommt das bewegte Bild. */
+  const pruefe = () => $$('video').forEach(v => { if (v.controls || v.dataset.hand !== undefined || !v.paused || v._anim || !v.offsetWidth) return;
+    const r = v.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight || parseFloat(getComputedStyle(v.closest('.saeule') || v).opacity) === 0) return;
+    if (!v.getAttribute('src')) { const s = (innerWidth < 760 && v.dataset.srcMobil) || v.dataset.src; if (!s) return; v.src = s; }
     v.play().catch(() => {}); });
+  const nachher = () => { setTimeout(pruefe, 2200); let t = 0; addEventListener('scroll', () => { clearTimeout(t); t = setTimeout(pruefe, 900); }, { passive: true }); };
+  document.readyState === 'complete' ? nachher() : addEventListener('load', nachher, { once: true });
+  /* Berührung = Nutzergeste: synchron (nie über setTimeout, sonst zählt iOS sie nicht) die Filme im Bild starten */
   if (!matchMedia('(hover: none)').matches) return;
-  ['touchstart', 'touchend'].forEach(ev => addEventListener(ev, () => { clearTimeout(anstossen._t); anstossen._t = setTimeout(anstossen, 120); }, { passive: true, capture: true }));
+  addEventListener('touchend', () => { if (!window.hmVideoGesperrt) return;
+    $$('video').forEach(v => { if (v.controls || v.dataset.hand !== undefined || !v.paused || !v._anim) return;
+      const r = v.getBoundingClientRect(); if (!r.width || r.bottom < 0 || r.top > innerHeight) return; play.call(v).catch(() => {}); });
+  }, { passive: true, capture: true });
 })();
 $$('.ton').forEach(k => k.addEventListener('click', () => {
   const v = $('video', k.parentElement); if (!v) return;
@@ -1075,4 +1105,27 @@ document.querySelectorAll('.rd').forEach(rechnerStarten);
     if (e.isIntersecting) { if (!v.getAttribute('src')) v.src = v.dataset.src; v.play().catch(() => {}); }
     else v.pause();
   }), { rootMargin: '300px 0px' }).observe(sek);
+
+/* ---- Kundenstimmen ziehbar (24.11.2026, Noah: „dass man sich theoretisch bei den Bewertungen auch ziehen kann. Wenn man nicht
+   mehr zieht, dann läuft es automatisch weiter“). Die Bahn läuft per Skript statt CSS-Animation im selben Tempo; Finger oder
+   Maus verschieben sie, beim Loslassen läuft sie an der Stelle weiter. Senkrechtes Scrollen bleibt frei (touch-action: pan-y). ---- */
+(() => {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.querySelectorAll('.stimmen .bahn').forEach(bahn => {
+    const dauer = parseFloat(getComputedStyle(bahn).animationDuration) || 90;
+    let haelfte = bahn.scrollWidth / 2, tempo = haelfte / dauer, x = 0, zieht = false, start = 0, ab = 0, zuletzt = 0, sicht = true, id = null;
+    bahn.style.animation = 'none'; bahn.style.touchAction = 'pan-y'; bahn.style.cursor = 'grab'; bahn.style.userSelect = 'none';
+    const wickel = () => { if (haelfte > 0) { while (x <= -haelfte) x += haelfte; while (x > 0) x -= haelfte; } };
+    const setze = () => { bahn.style.transform = `translate3d(${x}px,0,0)`; };
+    const schritt = jetzt => { const dt = zuletzt ? Math.min(.1, (jetzt - zuletzt) / 1000) : 0; zuletzt = jetzt;
+      if (!zieht && sicht) { x -= tempo * dt; wickel(); setze(); } requestAnimationFrame(schritt); };
+    requestAnimationFrame(schritt);
+    new IntersectionObserver(es => { sicht = es[0].isIntersecting; }).observe(bahn);
+    addEventListener('resize', () => { haelfte = bahn.scrollWidth / 2; tempo = haelfte / dauer; wickel(); });
+    bahn.addEventListener('pointerdown', e => { if (e.button) return; zieht = true; id = e.pointerId; start = e.clientX; ab = x; bahn.style.cursor = 'grabbing'; });
+    addEventListener('pointermove', e => { if (!zieht || e.pointerId !== id) return; x = ab + (e.clientX - start); wickel(); setze(); }, { passive: true });
+    const los = e => { if (!zieht || (e && e.pointerId !== id)) return; zieht = false; bahn.style.cursor = 'grab'; };
+    addEventListener('pointerup', los); addEventListener('pointercancel', los);
+  });
+})();
 })();
