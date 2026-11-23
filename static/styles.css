@@ -3494,10 +3494,18 @@ p.ki-hinweis .ki-i,.ki-hinweis span.ki-i{font-size:13px}
 #mobilmenu .gruppe{display:flex;align-items:center;min-height:48px;padding:10px 14px;font-size:18px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--tinte)}
 /* Kundenstimme läuft: ganzes Bild zeigen statt auf 16:10 zuschneiden (ESS 16:9 verlor links und rechts je ~5 %) */
 .erg.laeuft .erg-film video{object-fit:contain;background:#000}
-/* Handy-Hero: Drohnen-Film und rechte Säule (Kunden sprechen) wechseln sich bildfüllend ab (Takt in main.js) */
+
+/* ── Handy-Sektion (23.11.2026, Noah: „mobil die Personen-Videos raus … so ne Sektion mit dem Handy … das Handy immer größer, Apple-like, danach die Leistungen“).
+   Nur bis 760 px. Das Handy wächst beim Scrollen (--p 0→1 aus main.js), danach kommen die Leistungen. ── */
+.handy-sek{display:none}
 @media (max-width:760px){
-  .hero .saeule:nth-child(2),.hero .saeule:nth-child(3){grid-area:1/1}
-  .hero .saeule:nth-child(3){display:block;height:100%;clip-path:none;border-radius:0;opacity:0;transition:opacity .7s ease}
-  .hero .saeulen.zeigt-kunden .saeule:nth-child(3){opacity:1}
-  .hero .saeule:nth-child(3) video{object-position:50% 18%}
+  .handy-sek{display:block;position:relative;height:190svh;background:var(--tinte);color:var(--papier)}
+  .handy-buehne{position:sticky;top:0;height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;overflow:hidden;padding:calc(var(--nav-h,72px) + 8px) 18px 24px}
+  .handy-text{text-align:center;opacity:calc(.25 + var(--p,0) * .75);transform:translateY(calc((1 - var(--p,0)) * 18px))}
+  .handy-text b{display:block;font-size:clamp(28px,8.4vw,36px);line-height:1.05;letter-spacing:-.03em;font-weight:800}
+  .handy-text small{display:block;margin-top:8px;font-size:15px;color:var(--tinte-4)}
+  .handy-geraet{position:relative;width:min(290px,70vw,calc((100svh - 230px) * .5));aspect-ratio:9/17.5;border-radius:42px;background:#000;border:7px solid #2A251D;box-shadow:0 40px 90px rgba(0,0,0,.55),inset 0 0 0 1px #000;overflow:hidden;transform:scale(calc(.62 + var(--p,0) * .38));transform-origin:50% 40%;will-change:transform}
+  .handy-geraet::after{content:"";position:absolute;top:10px;left:50%;width:32%;height:22px;transform:translateX(-50%);background:#000;border-radius:14px;z-index:2}
+  .handy-geraet video,.handy-geraet img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 }
+@media (max-width:760px) and (prefers-reduced-motion:reduce){.handy-sek{height:auto}.handy-buehne{position:static;height:auto;padding:64px 18px}.handy-text,.handy-geraet{--p:1}}
