@@ -6,6 +6,17 @@ const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const ruhig = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const istMobil = () => innerWidth < 1000;
+/* iPhone/iPad-Safari spielt die VP9-WebM-Filme nicht zuverlaessig (Noah, 24.11.2026: „wieso laufen mobil die videos nicht
+   bei den websites“). Wo der Browser VP9 nicht sicher kann, nimmt jedes Video die gleichnamige MP4 (H.264) daneben. */
+const iOS = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+if (iOS || document.createElement('video').canPlayType('video/webm; codecs="vp9"') !== 'probably') {
+  const mp4 = s => s && /\.webm(\?|$)/.test(s) ? s.replace('.webm', '.mp4') : s;
+  $$('video').forEach(v => {
+    ['src', 'srcMobil'].forEach(k => { if (v.dataset[k]) v.dataset[k] = mp4(v.dataset[k]); });
+    $$('source', v).forEach(s => { const a = s.getAttribute('src'); if (a && /\.webm/.test(a)) { s.src = mp4(a); s.type = 'video/mp4'; } });
+    const a = v.getAttribute('src'); if (a && /\.webm/.test(a)) v.src = mp4(a);
+  });
+}
 
 /* ---- Kopf ---- */
 const kopf = $('.kopf');
@@ -587,7 +598,7 @@ $$('form.sf-form').forEach(f => {
   const feld = chat.querySelector('input'), verlauf = chat.querySelector('.wa-verlauf');
   let zu = false; try { zu = sessionStorage.getItem('hm-wa') === '1'; } catch (e) {}
   const oeffne = () => { chat.hidden = false; void chat.offsetWidth; chat.classList.add('da'); wa.classList.remove('da'); setTimeout(() => feld.focus({ preventScroll: true }), 250); };
-  const schliesse = () => { chat.classList.remove('da'); setTimeout(() => { chat.hidden = true; }, 300); };
+  const schliesse = () => { chat.classList.remove('da'); setTimeout(() => { chat.hidden = true; }, 300); if (wa.isConnected) wa.classList.add('da', 'klein'); };
   wa.querySelector('.wa-auf').addEventListener('click', e => { e.preventDefault(); oeffne(); });
   chat.querySelector('.wa-schliessen').addEventListener('click', schliesse);
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && chat.classList.contains('da')) schliesse(); });
@@ -600,7 +611,7 @@ $$('form.sf-form').forEach(f => {
   });
   if (zu) { wa.remove(); return; }
   const cookieImWeg = () => { const c = document.querySelector('.cookie-hinweis.da'); return c && !c.hidden; };
-  const zeigen = () => { if (cookieImWeg() || chat.classList.contains('da')) { setTimeout(zeigen, 4000); return; } wa.classList.add('da'); };
+  const zeigen = () => { if (cookieImWeg() || chat.classList.contains('da')) { setTimeout(zeigen, 4000); return; } wa.classList.add('da'); setTimeout(() => wa.classList.add('klein'), 5000); };
   (window.hmNach || ((s, f) => setTimeout(f, s * 1000)))(55, zeigen);
   wa.querySelector('.wa-zu').addEventListener('click', () => { wa.classList.remove('da'); try { sessionStorage.setItem('hm-wa', '1'); } catch (e) {} setTimeout(() => wa.remove(), 400); });
 })();
