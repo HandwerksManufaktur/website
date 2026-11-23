@@ -3509,3 +3509,12 @@ p.ki-hinweis .ki-i,.ki-hinweis span.ki-i{font-size:13px}
   .handy-geraet video,.handy-geraet img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 }
 @media (max-width:760px) and (prefers-reduced-motion:reduce){.handy-sek{height:auto}.handy-buehne{position:static;height:auto;padding:64px 18px}.handy-text,.handy-geraet{--p:1}}
+/* Social-Media-Sektion mobil (23.11.2026 abends, Noah: Sektion „Social Media“ nach den Leistungen, mit meinem Logo, „Wir sprechen Social Media.“) */
+@media (max-width:760px){
+  .handy-kicker{display:block;margin-bottom:10px;font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--bronze-hell,#C9A46A)}
+  .handy-profil{position:absolute;left:0;right:0;top:0;z-index:3;display:flex;align-items:center;gap:10px;padding:40px 14px 12px;background:linear-gradient(#000 70%,rgba(0,0,0,0));color:#fff}
+  .handy-profil img{position:static;width:34px;height:34px;border-radius:50%;flex:none;box-shadow:0 0 0 2px #C9A46A}
+  .handy-profil b{display:block;font-size:13px;line-height:1.2}
+  .handy-profil small{display:block;font-size:13px;line-height:1.2;color:rgba(255,255,255,.7);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .handy-profil span{min-width:0}
+}
