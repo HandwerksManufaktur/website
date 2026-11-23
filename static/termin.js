@@ -238,14 +238,14 @@
 
   document.addEventListener('click', function (e) {
     if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    var el = e.target.closest('[data-termin], a[href*="calendly.com/noahseelau/"], a[href^="/kontakt/"]');
+    var el = e.target.closest('[data-termin], a[href*="calendly.com/noahseelau/"], a[href^="/kontakt/"], a[href^="/potenzialanalyse/"], a[href="#kontakt"]');
     if (!el || el.closest('.rd') || el.hasAttribute('data-termin-aus')) return;
     var thema = '';
     if (el.hasAttribute('data-termin')) thema = el.getAttribute('data-termin') || '';
-    else if (/^\/kontakt\//.test(el.getAttribute('href') || '')) {
+    else if (/^(\/kontakt\/|\/potenzialanalyse\/|#kontakt$)/.test(el.getAttribute('href') || '')) {
       /* Jeder Beratungsgespräch-Knopf öffnet das Fenster statt der Kontaktseite (Noah, 23.11.2026: „egal, wo man auf der
-         Seite ist … soll es einfach immer direkt dieses Pop-up öffnen“). Der schlichte Link „Kontakt“ führt weiter zur Seite. */
-      if (!/#anfrage/.test(el.getAttribute('href')) && !/beratung|erstgespr|termin/i.test(el.textContent || '')) return;
+         Seite ist … soll es einfach immer direkt dieses Pop-up öffnen“). Der schlichte Link „Kontakt“ führt weiter zur Seite. Auf der SHK-Seite gilt das ebenso für /potenzialanalyse/ und #kontakt. */
+      if (!/#anfrage/.test(el.getAttribute('href')) && !/beratung|erstgespr|termin|potenzial/i.test(el.textContent || '')) return;
     } else {
       var m = (el.getAttribute('href') || '').match(/calendly\.com\/noahseelau\/([a-z0-9-]+)/);
       if (!m || !(m[1] in SLUG_THEMA)) return;
