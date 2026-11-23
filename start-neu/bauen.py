@@ -1584,7 +1584,7 @@ fertig(n, "neukundengewinnung", hero_unter("neukundengewinnung"))
 
 # ── 6 · Mitarbeitergewinnung
 m = unterseite("mitarbeitergewinnung")
-einfach(m, 'Die Guten suchen nicht, also bringen wir deine Stelle dorthin, wo sie jeden Abend sind.', ('Fallstudie · Anlagenmechaniker SHK',),
+einfach(m, 'Die Guten suchen nicht, also bringen wir deine Stelle dorthin, wo sie dich jeden Abend sehen.', ('Fallstudie · Anlagenmechaniker SHK',),
         fragen_lead='Was es kostet, wie lange es dauert und was du selbst dafür tun musst.')
 hero_knopf(m, "/websites/#arbeiten", "#ergebnisse")
 m.ersetze('<section class="sek grund"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Fallstudie · Anlagenmechaniker SHK</span>',
