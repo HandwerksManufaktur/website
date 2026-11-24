@@ -36,12 +36,12 @@ SZENEN = [
     ("CS Metall",  CS_B,     2.20, 1.50, 0.45, "Schleifer mit Brille lacht an der Werkbank", 1.0),
     # Noah 24.11.2026 abends (2): „akkuschrauber muss so zentriert werden, dass mans gescheit sieht, monteur länger, wärmepumpe
     # bleibt auch drin und auch bisschen länger und funken muss rein“ → Koffer am Transporter raus. Im Headerfilm ist jede Aufnahme
-    # nur ~1,07 s lang (Schnitte bei 4,24 · 5,31 · 6,34 · 9,44 · 10,51), Rohmaterial liegt nicht vor → „länger“ = leicht verlangsamt
+    # nur ~1,07 s lang (Schnitte bei 4,24 · 5,31 · 6,34 · 9,44 · 10,51), Rohmaterial liegt nicht vor → „länger“ = ganze Aufnahme von Schnitt zu Schnitt, NIE Zeitlupe (Noah 24.11.: „wieso ist der clip jetzt zeitlupe??“)
     # (Tempo-Spalte), jede Szene endet vor dem nächsten Quellschnitt.
     ("Entenmann",  ENT,      9.47, 1.00, 0.40, "Trennschleifer mit Funken am Rohr", 1.0),
     ("Koller",     KOLLER_A, 0.10, 1.30, 0.21, "Zimmerer mit Akkuschrauber am Balken (Ausschnitt auf den Akkuschrauber)", 1.0),
-    ("Entenmann",  ENT,      4.27, 1.00, 0.60, "Wärmepumpe wird durch den Garten gebracht", 0.75),
-    ("Entenmann",  ENT,      5.34, 0.95, 0.46, "Monteur mit Koffer vor dem Transporter", 0.62),
+    ("Entenmann",  ENT,      4.255, 1.03, 0.60, "Wärmepumpe wird durch den Garten gebracht", 1.0),
+    ("Entenmann",  ENT,      5.32, 1.00, 0.46, "Monteur mit Koffer vor dem Transporter", 1.0),
     ("Koller",     KOLLER_C, 1.30, 1.25, 0.52, "Kappsäge, Zimmerer mit Gehörschutz schneidet den Balken", 1.0),
 ]
 # Wärmepumpe → Monteur: zwei Entenmann-Aufnahmen direkt hintereinander, so wie vorher im Film (Noah will beide länger).
