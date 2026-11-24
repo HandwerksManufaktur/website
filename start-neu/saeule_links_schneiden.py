@@ -33,31 +33,35 @@ SZENEN = [
     # Noah 24.11.2026: Nahaufnahme raus, unscharf (Entenmann Zange an der Armatur ENT 8.46). Alle Szenen am Quellschnitt gemessen
     # (ffmpeg scene>0.25): keine Szene enthält einen Quellschnitt, Ende/Anfang mind. 0,08 s Abstand. Trennschleifer endete vorher
     # im Schnitt bei 10,51 s (Transporter), Wärmepumpe im Schnitt bei 5,31 s, CS ab 2,12 s, Koller-A bei 2,8 s ... jeweils gekürzt.
-    ("CS Metall",  CS_B,     2.20, 1.50, 0.45, "Schleifer mit Brille lacht an der Werkbank"),
-    # Noah 24.11.2026 abends: „wieso hast du jetzt aber von entenmann 2-3 videos rausgenommen … habe ich dir nicht gesagt!!“
-    # → die beiden Entenmann-Szenen wieder in alter Länge (mit Transporter-Koffer und Monteur vor dem Transporter), nur die Zange bleibt raus.
-    ("Entenmann",  ENT,      9.55, 1.40, 0.40, "Trennschleifer mit Funken am Rohr, dann Koffer am Transporter"),
-    ("Koller",     KOLLER_A, 0.10, 1.30, 0.28, "Zimmerer mit Akkuschrauber am Balken"),
-    ("Entenmann",  ENT,      4.34, 1.40, 0.60, "Wärmepumpe wird durch den Garten gebracht, dann Monteur mit Koffer"),
-    ("Koller",     KOLLER_C, 1.30, 1.25, 0.52, "Kappsäge, Zimmerer mit Gehörschutz schneidet den Balken"),
+    ("CS Metall",  CS_B,     2.20, 1.50, 0.45, "Schleifer mit Brille lacht an der Werkbank", 1.0),
+    # Noah 24.11.2026 abends (2): „akkuschrauber muss so zentriert werden, dass mans gescheit sieht, monteur länger, wärmepumpe
+    # bleibt auch drin und auch bisschen länger und funken muss rein“ → Koffer am Transporter raus. Im Headerfilm ist jede Aufnahme
+    # nur ~1,07 s lang (Schnitte bei 4,24 · 5,31 · 6,34 · 9,44 · 10,51), Rohmaterial liegt nicht vor → „länger“ = leicht verlangsamt
+    # (Tempo-Spalte), jede Szene endet vor dem nächsten Quellschnitt.
+    ("Entenmann",  ENT,      9.47, 1.00, 0.40, "Trennschleifer mit Funken am Rohr", 1.0),
+    ("Koller",     KOLLER_A, 0.10, 1.30, 0.21, "Zimmerer mit Akkuschrauber am Balken (Ausschnitt auf den Akkuschrauber)", 1.0),
+    ("Entenmann",  ENT,      4.27, 1.00, 0.60, "Wärmepumpe wird durch den Garten gebracht", 0.75),
+    ("Entenmann",  ENT,      5.34, 0.95, 0.46, "Monteur mit Koffer vor dem Transporter", 0.62),
+    ("Koller",     KOLLER_C, 1.30, 1.25, 0.52, "Kappsäge, Zimmerer mit Gehörschutz schneidet den Balken", 1.0),
 ]
-assert all(SZENEN[i][0] != SZENEN[i - 1][0] for i in range(len(SZENEN))), "zwei Szenen vom selben Betrieb hintereinander"
+# Wärmepumpe → Monteur: zwei Entenmann-Aufnahmen direkt hintereinander, so wie vorher im Film (Noah will beide länger).
 
 
-def filt(quelle, cx, i):
+def filt(quelle, cx, i, tempo=1.0):
+    pts = f"(PTS-STARTPTS)/{tempo}"
     if cx is None:
-        return f"[{i}:v]fps=25,setpts=PTS-STARTPTS,scale=600:800:flags=lanczos,setsar=1[v{i}]"
+        return f"[{i}:v]setpts={pts},fps=25,scale=600:800:flags=lanczos,setsar=1[v{i}]"
     ew = f"trunc(ih*3/4/2)*2"
-    return (f"[{i}:v]fps=25,setpts=PTS-STARTPTS,crop={ew}:ih:max(0\\,min(iw-{ew}\\,iw*{cx}-{ew}/2)):0,"
+    return (f"[{i}:v]setpts={pts},fps=25,crop={ew}:ih:max(0\\,min(iw-{ew}\\,iw*{cx}-{ew}/2)):0,"
             f"scale=600:800:flags=lanczos,setsar=1[v{i}]")
 
 
 def bauen():
     ein, f = [], []
-    for i, (_, q, ab, dauer, cx, _) in enumerate(SZENEN):
+    for i, (_, q, ab, dauer, cx, _, tempo) in enumerate(SZENEN):
         assert Path(q).exists(), q
         ein += ["-ss", str(ab), "-t", str(dauer), "-i", str(q)]
-        f.append(filt(q, cx, i))
+        f.append(filt(q, cx, i, tempo))
     n = len(SZENEN)
     f.append("".join(f"[v{i}]" for i in range(n)) + f"concat=n={n}:v=1,format=yuv420p[v]")
     tmp = ZIEL / "_drohnen-neu-d.mp4"
@@ -69,7 +73,7 @@ def bauen():
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(tmp), "-frames:v", "1", "-q:v", "4", str(ZIEL / "drohnen.jpg")], check=True)
     os.replace(tmp, ZIEL / "drohnen-d.mp4")
     os.replace(m, ZIEL / "drohnen-m.mp4")
-    print(f"{n} Szenen, {sum(s[3] for s in SZENEN):.2f} s")
+    print(f"{n} Szenen, {sum(s[3] / s[6] for s in SZENEN):.2f} s")
 
 
 if __name__ == "__main__":
