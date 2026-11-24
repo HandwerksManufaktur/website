@@ -34,10 +34,12 @@ SZENEN = [
     # (ffmpeg scene>0.25): keine Szene enthält einen Quellschnitt, Ende/Anfang mind. 0,08 s Abstand. Trennschleifer endete vorher
     # im Schnitt bei 10,51 s (Transporter), Wärmepumpe im Schnitt bei 5,31 s, CS ab 2,12 s, Koller-A bei 2,8 s ... jeweils gekürzt.
     ("CS Metall",  CS_B,     2.20, 1.50, 0.45, "Schleifer mit Brille lacht an der Werkbank"),
-    ("Entenmann",  ENT,      9.55, 0.85, 0.40, "Trennschleifer mit Funken am Rohr"),
-    ("Koller",     KOLLER_A, 0.10, 1.22, 0.28, "Zimmerer mit Akkuschrauber am Balken"),
-    ("Entenmann",  ENT,      4.30, 0.92, 0.60, "Wärmepumpe wird durch den Garten gebracht"),
-    ("Koller",     KOLLER_C, 1.30, 1.20, 0.52, "Kappsäge, Zimmerer mit Gehörschutz schneidet den Balken"),
+    # Noah 24.11.2026 abends: „wieso hast du jetzt aber von entenmann 2-3 videos rausgenommen … habe ich dir nicht gesagt!!“
+    # → die beiden Entenmann-Szenen wieder in alter Länge (mit Transporter-Koffer und Monteur vor dem Transporter), nur die Zange bleibt raus.
+    ("Entenmann",  ENT,      9.55, 1.40, 0.40, "Trennschleifer mit Funken am Rohr, dann Koffer am Transporter"),
+    ("Koller",     KOLLER_A, 0.10, 1.30, 0.28, "Zimmerer mit Akkuschrauber am Balken"),
+    ("Entenmann",  ENT,      4.34, 1.40, 0.60, "Wärmepumpe wird durch den Garten gebracht, dann Monteur mit Koffer"),
+    ("Koller",     KOLLER_C, 1.30, 1.25, 0.52, "Kappsäge, Zimmerer mit Gehörschutz schneidet den Balken"),
 ]
 assert all(SZENEN[i][0] != SZENEN[i - 1][0] for i in range(len(SZENEN))), "zwei Szenen vom selben Betrieb hintereinander"
 
