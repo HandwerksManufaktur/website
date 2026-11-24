@@ -842,11 +842,11 @@ s.ersetze('<span class="kicker">Wer dahinter steht</span><h2>Die Leute hinter de
 # Dann ist halt noch der Button ‚Mehr über uns‘“ — der Text steht nur noch auf /ueber-uns/.
 
 
-# Je Karte zwei Zeilen (Noah, 20.11.2026: „wir wollen überall 2 Zeilen“); Sussmann mit dem ersten Auftrag über 10.000 €,
+# Je Karte zwei Zeilen (Noah, 20.11.2026: „wir wollen überall 2 Zeilen“); Sussmann mit dem ersten Auftrag über 12.000 €,
 # Senftleben ohne „sechs Angebote“, dafür die Umkreis-Zeile
 ERG_TEXTE = [
     ('Alles in zwei Monaten, der erste Auftrag kam nach 18 Tagen. Inzwischen warten Kunden fast drei Wochen auf einen Termin.',
-     'Erster Auftrag über 10.000 € nach 18 Tagen. Kunden warten fast drei Wochen auf Termine.'),
+     'Erster Auftrag über 12.000 € nach 18 Tagen. Kunden warten fast drei Wochen auf Termine.'),
     ('Sechs Angebote sind schon raus. Dieses Jahr ist voll, die nächsten Bäder plant Senftleben schon fürs neue Jahr.',
      'Qualifizierte Anfragen aus dem 30-km-Umkreis, dieses Jahr ist schon voll.'),
     ('Gesucht war ein Anlagenmechaniker. Aufkleber auf dem Wagen und die Stelle auf der eigenen Seite hatten vorher kaum etwas gebracht.',
@@ -1545,7 +1545,7 @@ NEU_SEK = ('<section class="sek senft-sek" id="ergebnisse"><div class="wrap"><di
            '<h2>Ergebnisse unserer Kunden.</h2></div></div>'
            + _folge(1, "Erich Sussmann GmbH in Kirchheim", "Daraus 12 Termine vor Ort.", "/start-neu/bilder/sussmann-wagen-duo.webp",
                     "Patrick und Mirjana von Sussmann vor dem Firmenwagen", "37", "Bad-Anfragen",
-                    "Erster Auftrag über 10.000 € nach 18 Tagen. Kunden warten fast drei Wochen auf Termine.", pos="50% 30%", marke="sussmann")
+                    "Erster Auftrag über 12.000 € nach 18 Tagen. Kunden warten fast drei Wochen auf Termine.", pos="50% 30%", marke="sussmann")
            + _folge(2, "Senftleben Haustechnik in Ehingen", "Daraus 15 Termine vor Ort.", "", "", "45", "Bad-Anfragen",
                     "Qualifizierte Anfragen aus dem 30-km-Umkreis, dieses Jahr ist schon voll.", marke="senftleben", figur=_SENFT_FILM)
            + _folge(3, "Stimpfle Sanitär &amp; Heizung in Stadtbergen", "3 Termine vor Ort in den ersten 3 Tagen.", "/start-neu/bilder/stimpfle-werkstatt.webp",
@@ -1565,7 +1565,7 @@ hero_knopf(n, "/websites/#arbeiten", "#ergebnisse")
 n.ersetze('<section class="sek grund"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Fallstudie · Badsanierung</span>',
           '<section class="sek grund" id="ergebnisse"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Die Ergebnisse</span>')
 n.ersetze('<span class="nr" data-zahl="14">14</span><span class="fz-einheit">Bad-Anfragen</span></div><p>Daraus sieben Termine vor Ort und nach 18 Tagen der erste Auftrag.</p>',
-          '<span class="nr" data-zahl="37">37</span><span class="fz-einheit">Bad-Anfragen</span></div><p>Daraus zwölf Termine vor Ort, der erste Auftrag über 10.000 € war nach 18 Tagen unterschrieben.</p>')  # Stand wie Startseite (37 / 12)
+          '<span class="nr" data-zahl="37">37</span><span class="fz-einheit">Bad-Anfragen</span></div><p>Daraus zwölf Termine vor Ort, der erste Auftrag über 12.000 € war nach 18 Tagen unterschrieben.</p>')  # Stand wie Startseite (37 / 12)
 # Noah, 22.11.2026: „nicht Vorarbeiter, sonst einfach andere Möglichkeiten“ + „dass sich mehr Leute eintragen, wenn es persönlich ist“
 n.ersetze('Es hilft, weil ein Kunde vor einem großen Auftrag wissen will, wen er sich ins Haus holt. Pflicht ist es nicht — es geht auch mit deinem Vorarbeiter.',
           'Es hilft, weil sich mehr Leute eintragen, wenn es persönlich ist. Pflicht ist es nicht: Es geht auch mit deinem Team oder nur mit Bildern und Filmen von eurer Arbeit.', 2)
