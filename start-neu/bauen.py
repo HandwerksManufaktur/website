@@ -1549,9 +1549,9 @@ SENFT_CSS = ('<style>.senft-raster.gespiegelt,.senft-raster.folge{margin-top:cla
 # Senftleben behält das Interview-Video: die Figur trägt .erg, damit der Abspielknopf aus main.js greift (.erg .play).
 _SENFT_FILM = ('<figure class="senft-bild senft-film erg reveal"><div class="erg-film"><video playsinline preload="none" data-hand '
                "data-k='[[0.3582,0.1537,0.2824,0.4779]]' data-poster=\"/static/assets/img/fall/senftleben-testimonial-poster.jpg\" "
-               'src="/static/assets/vid/senftleben-testimonial.mp4?v=2511"></video><button class="play" type="button" '
+               'src="/static/assets/vid/senftleben-testimonial.mp4?v=2512"></video><button class="play" type="button" '
                'aria-label="Video abspielen: Senftleben Haustechnik · Ehingen"><span><svg viewBox="0 0 24 24"><path d="M7 5v14l11-7z"/></svg></span>'
-               '<small>2:14 · Benjamin Senftleben</small></button></div></figure>')
+               '<small>1:51 · Benjamin Senftleben</small></button></div></figure>')
 NEU_SEK = ('<section class="sek senft-sek" id="ergebnisse"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Die Ergebnisse</span>'
            '<h2>Ergebnisse unserer Kunden.</h2></div></div>'
            + _folge(1, "Erich Sussmann GmbH in Kirchheim", "Daraus 14 Termine vor Ort.", "/start-neu/bilder/sussmann-wagen-duo.webp",
