@@ -857,11 +857,15 @@ ERG_TEXTE = [
 SUS_FILM_KERN = '<video playsinline preload="none" data-hand data-poster="/start-neu/bilder/sussmann-wagen-duo.webp" src="/static/assets/vid/sussmann-testimonial.mp4" style="object-position:50% 30%"></video><button class="play" type="button" aria-label="Video abspielen: Erich Sussmann GmbH · Kirchheim"><span><svg viewBox="0 0 24 24"><path d="M7 5v14l11-7z"/></svg></span><small>2:57 · Patrick Wähnl</small></button>'
 
 
+FILM_FENSTER_CSS = '<style>/* Kundenfilm füllt beim Abspielen sein Fenster genau: Fenster nimmt 16:9 an, kein Rand, nichts beschnitten (Noah, 25.11.2026) */.erg.laeuft .erg-film{aspect-ratio:16/9}.erg.laeuft .erg-film video{object-fit:cover;background:var(--tinte)}</style>'
+
+
 def ergebnisse_aktuell(seite):
     """Kundenfotos + Stimpfle-Zahlen wie auf der SHK-Seite abgenommen (Noah, 14.11.2026 nachts): Sussmann Foto 6, Stimpfle Foto 3."""
     h = seite.h
     h = re.sub(r"<img data-k='[^']*' src=\"/static/assets/img/_800/fall/sussmann-team\.webp\" alt=\"\"",
                '<img src="/start-neu/bilder/sussmann-wagen-duo.webp" alt="Patrick und Mirjana von Sussmann vor dem Firmenwagen" style="object-position:50% 30%"', h)
+    if FILM_FENSTER_CSS not in h: h = h.replace('</head>', FILM_FENSTER_CSS + '</head>', 1)
     # Sussmann-Karte mit Kundenfilm (Interview Patrick Wähnl 24.11.2026; Noah, 25.11.2026: „mach das rein bei hwm seite und shk seite“)
     h = h.replace('<div class="erg-film"><img src="/start-neu/bilder/sussmann-wagen-duo.webp" alt="Patrick und Mirjana von Sussmann vor dem Firmenwagen" style="object-position:50% 30%" loading="lazy" decoding="async"></div>',
                   '<div class="erg-film">' + SUS_FILM_KERN + '</div>')
@@ -1560,7 +1564,7 @@ NEU_SEK = ('<section class="sek senft-sek" id="ergebnisse"><div class="wrap"><di
                     "Die Anzeigen laufen seit dem 29. Oktober im Umkreis von Stadtbergen.", pos="50% 30%", marke="stimpfle")
            + '</section>' + SENFT_CSS +
            '<style>.senft-film.erg{display:block;background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;flex:none;transform:none}'
-           '.senft-film .erg-film{position:relative;height:100%}.senft-film video{width:100%;height:100%;object-fit:cover;display:block}'
+           '.senft-film .erg-film{position:relative;height:100%}.senft-film video{width:100%;height:100%;object-fit:cover;display:block}.senft-film.erg.laeuft{aspect-ratio:16/9}.senft-film.erg.laeuft .erg-film{aspect-ratio:auto}.senft-film.erg.laeuft video{object-fit:cover}'
            # „45 Bad-Anfragen“ passt in der schmalen gespiegelten Spalte nicht in eine Zeile → hier beide Spalten gleich breit
            '@media (min-width:901px){.senft-sek .senft-raster.gespiegelt{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}</style>')
 
