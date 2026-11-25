@@ -119,7 +119,7 @@ STIMME_WER = {  # Google-Name → (Anzeige, Zeile darunter, weißes Logo in /sta
     "Maximilian Ruf": ("Maximilian Ruf", "Max Ruf Frischdienst", "logo-ruf-frischdienst.webp"),
     "Nico Wohner": ("Nico Wohner", "Wohner Elektrotechnik", "wohner_elektrotechnik_weiss_cropped.webp"),
     "Björn S.": ("Björn S.", "Schreinermeister Björn Schillinger", "logo-bjoern-schillinger.webp"),
-    "Chris": ("Chris", "Google-Bewertung", None),
+    "Chris": ("Chris", "CS Metalldesign", "logo-cs-metalldesign.webp"),  # Noah, 25.11.2026: „CS Metalldesign war das“
     "Ulrike Knappich": ("Ulrike Knappich", "Zimmerei Knappich", "logo-zimmerei-knappich.webp"),
     "Alexandra Rosenberg": ("Alexandra Rosenberg", "SD Hirsch", "logo-sd-hirsch-weiss.webp"),
     "Ralph Negele": ("Ralph Negele", "Allplast Laser", "logo-allplast-laser.webp"),
@@ -146,7 +146,8 @@ STIMME_WER = {  # Google-Name → (Anzeige, Zeile darunter, weißes Logo in /sta
     "Stefan Fritsch": ("Stefan Fritsch", "FlyIn BBQ", "logo-flyin-bbq-streetfood.webp"),
     "Dietmar Kreitner": ("Dietmar Kreitner", "Schreinerei Kreitner", "logo-schreinerei-kreitner.webp"),
     "Autohaus Ressle": ("Autohaus Ressle", "Autohaus", "logo-autohaus-ressle.webp"),
-    "Christoph Berger": ("Christoph Berger", "Textilreinigung Berger", None),
+    "Christoph Berger": ("Christoph Berger", "Textilreinigung Berger", "logo-textilreinigung-berger.webp"),
+    "Nimon Azemi": ("Nimon Azemi", "Haus &amp; Renovierungen", "logo-azemi-hausrenovierungen.webp"),  # Bewertung vom 23.11.2026
     "Michael Wagenknecht": ("Michael Wagenknecht", "Juwelier Wagenknecht", "logo-juwelier-wagenknecht-weiss.webp"),
     "I. Weber": ("I. Weber", "Kfz-Sachverständigenbüro Eggert", "logo-eggert-kfz-sachverstaendigenbuero.webp"),
     "Lanzinger GmbH": ("Lanzinger GmbH", "Heizung &amp; Sanitär", "logo-lanzinger-gmbh-weiss.webp"),
@@ -222,12 +223,12 @@ def stimmen_farblogos(h):
 def stimmen_alle():
     import json, html as _h
     alle = [r for r in json.loads(REZENSIONEN.read_text(encoding="utf-8"))["rezensionen"] if (r["text"] or "").strip()]
-    assert len(alle) == 52, len(alle)
+    assert len(alle) == 53, len(alle)   # 52 + Azemi (23.11.2026)
     # Noah, 18.11.2026 (2.): „möglichst … immer … mit Logo“ → nur Bewertungen mit Betriebslogo laufen durch. Ohne erkennbaren
     # Betrieb (Ehle, Berger, Chris, Burkart) und Noah Velte (bewertet für die eigene Firma, kein Handwerk) bleiben draußen,
     # Hohenester (ein Satz) fällt für gleich viele Karten je Reihe weg.
     alle = [r for r in alle if STIMME_WER[r["autor"]][2] and r["autor"] not in STIMME_RAUS]
-    assert len(alle) % 2 == 0, len(alle)
+    # Seit 25.11.2026 49 Karten (CS Metalldesign, Berger, Azemi dazu; Ehle, Burkart, Velte auf Noahs Ansage draußen): Reihen 25 / 24
     karten = []
     for r in alle:
         name, zeile, logo = STIMME_WER[r["autor"]]
@@ -242,7 +243,7 @@ def stimmen_alle():
                       f'<span class="stern" aria-label="{r["sterne"]} von 5 Sternen">{"★" * r["sterne"]}</span><p>„{stimme_text(r["autor"], r["text"])}“</p></div>')
     # Reihen mischen, damit nicht alle langen oben stehen: abwechselnd verteilen
     oben, unten = karten[0::2], karten[1::2]
-    assert len(oben) == len(unten), (len(oben), len(unten))
+    assert abs(len(oben) - len(unten)) <= 1, (len(oben), len(unten))
     # Tempo wie vorher (10 Karten in 90 s / 100 s), jetzt 26 Karten je Reihe
     return (f'<div class="bahn" aria-hidden="false" style="animation-duration:234s">{"".join(oben) * 2}</div>'
             f'<div class="bahn zurueck" style="animation-duration:260s">{"".join(unten) * 2}</div>'
@@ -258,7 +259,7 @@ def stimmen_alle():
             '@media (prefers-reduced-motion:reduce){.sek.stimmen .stimme{transition:none}}</style>')
 
 
-STIMME_FARBE = {'logo-elektro-langmajer.webp': 'langmajer', 'logo-schwaighofer-betontechnik-logo.webp': 'schwaighofer', 'logo-oswald-bau-weil.webp': 'oswald-bau', 'logo-planung-hindelang.webp': 'hindelang', 'logo-zimmerei-koller.webp': 'koller', 'logo-malermeister-mueller-weiss.webp': 'mueller', 'logo-gattinger-gmbh.webp': 'gattinger', 'logo-wegele-bau-gmbh-utting.webp': 'wegele-bau', 'logo-zimmerei-pfoederl.webp': 'pfoederl', 'logo-yannick-stimpfle-logo.webp': 'stimpfle', 'logo-ruf-frischdienst.webp': 'ruf-frischdienst', 'wohner_elektrotechnik_weiss_cropped.webp': 'wohner', 'logo-bjoern-schillinger.webp': 'schillinger', 'logo-zimmerei-knappich.webp': 'knappich', 'logo-sd-hirsch-weiss.webp': 'sdhirsch', 'logo-allplast-laser.webp': 'allplast-laser', 'logo-schreinerei-rupp.webp': 'schreinerei-rupp', 'logo-lagerhaus-graf.webp': 'lagerhaus-graf', 'logo-maser-tankschutz-logo.webp': 'maser', 'logo-kuechenhaus-hirschvogel.webp': 'hirschvogel', 'logo-eckru-cnc.webp': 'eckru-cnc', 'logo-zimmerei-rauschmair.webp': 'zimmerei-rauschmair', 'logo-metallbau-weiss.webp': 'metallbau-weiss', 'logo-hannes-schmidt-gmbh-weiss.webp': 'hannes-schmidt', 'logo-franz-musch.webp': 'franz-musch', 'logo-schreinerei-damnig.webp': 'schreinerei-damnig', 'logo-hohenester-zimmerei.webp': 'hohenester-zimmerei', 'logo-leonhard-rieger.webp': 'leonhard-rieger', 'logo-gutachter-hilbenz.webp': 'gutachter-hilbenz', 'logo-zimmerei-schuster.webp': 'zimmerei-schuster', 'logo-inna-illenseer.webp': 'inna-illenseer', 'logo-jirka-ausbau.webp': 'jirka-ausbau', 'logo-thomas-vogel-holzbau.webp': 'vogel', 'logo-suessmeier-heizungstechnik.webp': 'suessmeier', 'logo-franz-gallenberger.webp': 'gallenberger', 'logo-baustoffe-thaining-kirchner.webp': 'kirchner', 'logo-flyin-bbq-streetfood.webp': 'flyin-bbq', 'logo-schreinerei-kreitner.webp': 'kreitner', 'logo-autohaus-ressle.webp': 'autohaus-ressle', 'logo-juwelier-wagenknecht-weiss.webp': 'wagenknecht', 'logo-eggert-kfz-sachverstaendigenbuero.webp': 'eggert-kfz', 'logo-lanzinger-gmbh-weiss.webp': 'lanzinger', 'logo-doerfler-bau.webp': 'doerfler-bau', 'logo-senftleben-haustechnik.webp': 'senftleben', 'logo-schreinerei-die-fuehrmaenner.webp': 'fuehrmaenner', 'logo-zimmerei-schneider.webp': 'zimmerei-schneider', 'logo-happach-maschinenbau.webp': 'happach'}
+STIMME_FARBE = {'logo-cs-metalldesign.webp': 'cs-metalldesign', 'logo-textilreinigung-berger.webp': 'berger', 'logo-azemi-hausrenovierungen.webp': 'azemi', 'logo-elektro-langmajer.webp': 'langmajer', 'logo-schwaighofer-betontechnik-logo.webp': 'schwaighofer', 'logo-oswald-bau-weil.webp': 'oswald-bau', 'logo-planung-hindelang.webp': 'hindelang', 'logo-zimmerei-koller.webp': 'koller', 'logo-malermeister-mueller-weiss.webp': 'mueller', 'logo-gattinger-gmbh.webp': 'gattinger', 'logo-wegele-bau-gmbh-utting.webp': 'wegele-bau', 'logo-zimmerei-pfoederl.webp': 'pfoederl', 'logo-yannick-stimpfle-logo.webp': 'stimpfle', 'logo-ruf-frischdienst.webp': 'ruf-frischdienst', 'wohner_elektrotechnik_weiss_cropped.webp': 'wohner', 'logo-bjoern-schillinger.webp': 'schillinger', 'logo-zimmerei-knappich.webp': 'knappich', 'logo-sd-hirsch-weiss.webp': 'sdhirsch', 'logo-allplast-laser.webp': 'allplast-laser', 'logo-schreinerei-rupp.webp': 'schreinerei-rupp', 'logo-lagerhaus-graf.webp': 'lagerhaus-graf', 'logo-maser-tankschutz-logo.webp': 'maser', 'logo-kuechenhaus-hirschvogel.webp': 'hirschvogel', 'logo-eckru-cnc.webp': 'eckru-cnc', 'logo-zimmerei-rauschmair.webp': 'zimmerei-rauschmair', 'logo-metallbau-weiss.webp': 'metallbau-weiss', 'logo-hannes-schmidt-gmbh-weiss.webp': 'hannes-schmidt', 'logo-franz-musch.webp': 'franz-musch', 'logo-schreinerei-damnig.webp': 'schreinerei-damnig', 'logo-hohenester-zimmerei.webp': 'hohenester-zimmerei', 'logo-leonhard-rieger.webp': 'leonhard-rieger', 'logo-gutachter-hilbenz.webp': 'gutachter-hilbenz', 'logo-zimmerei-schuster.webp': 'zimmerei-schuster', 'logo-inna-illenseer.webp': 'inna-illenseer', 'logo-jirka-ausbau.webp': 'jirka-ausbau', 'logo-thomas-vogel-holzbau.webp': 'vogel', 'logo-suessmeier-heizungstechnik.webp': 'suessmeier', 'logo-franz-gallenberger.webp': 'gallenberger', 'logo-baustoffe-thaining-kirchner.webp': 'kirchner', 'logo-flyin-bbq-streetfood.webp': 'flyin-bbq', 'logo-schreinerei-kreitner.webp': 'kreitner', 'logo-autohaus-ressle.webp': 'autohaus-ressle', 'logo-juwelier-wagenknecht-weiss.webp': 'wagenknecht', 'logo-eggert-kfz-sachverstaendigenbuero.webp': 'eggert-kfz', 'logo-lanzinger-gmbh-weiss.webp': 'lanzinger', 'logo-doerfler-bau.webp': 'doerfler-bau', 'logo-senftleben-haustechnik.webp': 'senftleben', 'logo-schreinerei-die-fuehrmaenner.webp': 'fuehrmaenner', 'logo-zimmerei-schneider.webp': 'zimmerei-schneider', 'logo-happach-maschinenbau.webp': 'happach'}
 STIMME_ALIAS = {"Hannes Schmidt GmbH": "Hannes Schmidt", "Fa. Senftleben": "Be Se", "Franz Gallenberger": "F. G.", "Jirka": "Jirka Ihr Hotelsanierer"}
 
 
