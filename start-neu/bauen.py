@@ -1549,8 +1549,8 @@ _SENFT_FILM = ('<figure class="senft-bild senft-film erg reveal"><div class="erg
                '<small>2:14 · Benjamin Senftleben</small></button></div></figure>')
 NEU_SEK = ('<section class="sek senft-sek" id="ergebnisse"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Die Ergebnisse</span>'
            '<h2>Ergebnisse unserer Kunden.</h2></div></div>'
-           + _folge(1, "Erich Sussmann GmbH in Kirchheim", "Daraus 12 Termine vor Ort.", "/start-neu/bilder/sussmann-wagen-duo.webp",
-                    "Patrick und Mirjana von Sussmann vor dem Firmenwagen", "37", "Bad-Anfragen",
+           + _folge(1, "Erich Sussmann GmbH in Kirchheim", "Daraus 14 Termine vor Ort.", "/start-neu/bilder/sussmann-wagen-duo.webp",
+                    "Patrick und Mirjana von Sussmann vor dem Firmenwagen", "39", "Bad-Anfragen",
                     "Erster Auftrag über 12.000 € nach 18 Tagen. Kunden warten fast drei Wochen auf Termine.", pos="50% 30%", marke="sussmann",
                     figur='<figure class="senft-bild senft-film erg reveal"><div class="erg-film">' + SUS_FILM_KERN + '</div></figure>')
            + _folge(2, "Senftleben Haustechnik in Ehingen", "Daraus 15 Termine vor Ort.", "", "", "45", "Bad-Anfragen",
@@ -1572,7 +1572,7 @@ hero_knopf(n, "/websites/#arbeiten", "#ergebnisse")
 n.ersetze('<section class="sek grund"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Fallstudie · Badsanierung</span>',
           '<section class="sek grund" id="ergebnisse"><div class="wrap"><div class="kopfzeile reveal"><span class="kicker">Die Ergebnisse</span>')
 n.ersetze('<span class="nr" data-zahl="14">14</span><span class="fz-einheit">Bad-Anfragen</span></div><p>Daraus sieben Termine vor Ort und nach 18 Tagen der erste Auftrag.</p>',
-          '<span class="nr" data-zahl="37">37</span><span class="fz-einheit">Bad-Anfragen</span></div><p>Daraus zwölf Termine vor Ort, der erste Auftrag über 12.000 € war nach 18 Tagen unterschrieben.</p>')  # Stand wie Startseite (37 / 12)
+          '<span class="nr" data-zahl="39">39</span><span class="fz-einheit">Bad-Anfragen</span></div><p>Daraus vierzehn Termine vor Ort, der erste Auftrag über 12.000 € war nach 18 Tagen unterschrieben.</p>')  # Stand wie Startseite (39 / 14, Perspective 25.11.2026)
 # Noah, 22.11.2026: „nicht Vorarbeiter, sonst einfach andere Möglichkeiten“ + „dass sich mehr Leute eintragen, wenn es persönlich ist“
 n.ersetze('Es hilft, weil ein Kunde vor einem großen Auftrag wissen will, wen er sich ins Haus holt. Pflicht ist es nicht — es geht auch mit deinem Vorarbeiter.',
           'Es hilft, weil sich mehr Leute eintragen, wenn es persönlich ist. Pflicht ist es nicht: Es geht auch mit deinem Team oder nur mit Bildern und Filmen von eurer Arbeit.', 2)
