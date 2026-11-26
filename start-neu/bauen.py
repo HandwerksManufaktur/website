@@ -855,6 +855,8 @@ ERG_TEXTE = [
 ]
 
 
+# Schalter Sussmann-Kundenfilm. Noah, 26.11.2026: „nimm nochmal ganz kurz das video von patrick … runter, solang ich dir sage“ — True = wieder drin.
+SUSSMANN_FILM = False
 SUS_FILM_KERN = '<video playsinline preload="none" data-hand data-poster="/start-neu/bilder/sussmann-wagen-duo.webp" src="/static/assets/vid/sussmann-testimonial.mp4" style="object-position:50% 30%"></video><button class="play" type="button" aria-label="Video abspielen: Erich Sussmann GmbH · Kirchheim"><span><svg viewBox="0 0 24 24"><path d="M7 5v14l11-7z"/></svg></span><small>2:57 · Patrick Wähnl</small></button>'
 
 
@@ -868,8 +870,9 @@ def ergebnisse_aktuell(seite):
                '<img src="/start-neu/bilder/sussmann-wagen-duo.webp" alt="Patrick und Mirjana von Sussmann vor dem Firmenwagen" style="object-position:50% 30%"', h)
     if FILM_FENSTER_CSS not in h: h = h.replace('</head>', FILM_FENSTER_CSS + '</head>', 1)
     # Sussmann-Karte mit Kundenfilm (Interview Patrick Wähnl 24.11.2026; Noah, 25.11.2026: „mach das rein bei hwm seite und shk seite“)
-    h = h.replace('<div class="erg-film"><img src="/start-neu/bilder/sussmann-wagen-duo.webp" alt="Patrick und Mirjana von Sussmann vor dem Firmenwagen" style="object-position:50% 30%" loading="lazy" decoding="async"></div>',
-                  '<div class="erg-film">' + SUS_FILM_KERN + '</div>')
+    if SUSSMANN_FILM:
+        h = h.replace('<div class="erg-film"><img src="/start-neu/bilder/sussmann-wagen-duo.webp" alt="Patrick und Mirjana von Sussmann vor dem Firmenwagen" style="object-position:50% 30%" loading="lazy" decoding="async"></div>',
+                      '<div class="erg-film">' + SUS_FILM_KERN + '</div>')
     h = h.replace('<img src="/static/assets/img/_800/fall/stimpfle-team.webp" alt="Drei Monteure von Stimpfle Sanitär und Heizung vor dem Firmenwagen" loading="lazy" decoding="async" style="object-position:50% 22%">',
                   '<img src="/start-neu/bilder/stimpfle-werkstatt.webp" alt="Das Team von Stimpfle Sanitär und Heizung in der Werkstatt" loading="lazy" decoding="async" style="object-position:50% 30%">')
     h = h.replace('<em>3 Bad-Anfragen</em><span>in den ersten 3 Tagen</span>', '<em>7 Bad-Anfragen</em><span>3 Vor-Ort-Termine in den ersten 3 Tagen</span>')
@@ -892,7 +895,7 @@ ergebnisse_aktuell(s)
 _a, _e = s.bereich('<section class="sek stimmen">')
 _sek = s.h[_a:_e]
 _sek2, _n = re.subn(r'<div class="bahn" aria-hidden="false">.*</div>(?=</section>)', lambda m: stimmen_alle(), _sek, count=1, flags=re.S)
-assert _n == 1 and _sek2.count('class="stimme ') == 92, _sek2.count('class="stimme ')  # 46 mit Logo, je Reihe doppelt
+assert _n == 1 and _sek2.count('class="stimme ') == 98, _sek2.count('class="stimme ')  # 49 mit Logo (seit 25.11.2026), je Reihe doppelt
 s.h = s.h[:_a] + _sek2 + s.h[_e:]
 assert s.h.count('<h2>So sehen unsere Seiten aus.</h2>') == 1
 s.h = s.h.replace('<h2>So sehen unsere Seiten aus.</h2>', '<h2>Bezugsfertig.</h2>')  # wie auf der Websites-Seite
@@ -1557,7 +1560,7 @@ NEU_SEK = ('<section class="sek senft-sek" id="ergebnisse"><div class="wrap"><di
            + _folge(1, "Erich Sussmann GmbH in Kirchheim", "Daraus 14 Termine vor Ort.", "/start-neu/bilder/sussmann-wagen-duo.webp",
                     "Patrick und Mirjana von Sussmann vor dem Firmenwagen", "39", "Bad-Anfragen",
                     "Erster Auftrag über 12.000 € nach 18 Tagen. Kunden warten fast drei Wochen auf Termine.", pos="50% 30%", marke="sussmann",
-                    figur='<figure class="senft-bild senft-film erg reveal"><div class="erg-film">' + SUS_FILM_KERN + '</div></figure>')
+                    figur=('<figure class="senft-bild senft-film erg reveal"><div class="erg-film">' + SUS_FILM_KERN + '</div></figure>') if SUSSMANN_FILM else None)
            + _folge(2, "Senftleben Haustechnik in Ehingen", "Daraus 15 Termine vor Ort.", "", "", "45", "Bad-Anfragen",
                     "Qualifizierte Anfragen aus dem 30-km-Umkreis, dieses Jahr ist schon voll.", marke="senftleben", figur=_SENFT_FILM)
            + _folge(3, "Stimpfle Sanitär &amp; Heizung in Stadtbergen", "3 Termine vor Ort in den ersten 3 Tagen.", "/start-neu/bilder/stimpfle-werkstatt.webp",
