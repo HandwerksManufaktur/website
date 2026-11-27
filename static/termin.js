@@ -224,9 +224,11 @@
     return stand.themen.map(function (k) { for (var i = 0; i < THEMEN.length; i++) if (THEMEN[i][0] === k) return THEMEN[i][1]; return k; }).join(', ');
   }
   function calUrl(einbetten) {
-    // Fragen der Terminart (seit 27.11.2026, wie Healthflow): a1 Betrieb · a2 Telefon · a3 Engpass · a4 Entscheider · a5 Sonstiges
+    // Fragen der Terminart (seit 27.11.2026, wie Healthflow): a1 Betrieb · a2 Telefon · a3 Engpass (ankreuzen) · a4 Entscheider · a5 Sonstiges
+    var ENGPASS = { kunden: 'Zu wenig passende Aufträge', mitarbeiter: 'Zu wenig gute Leute im Team', website: 'Website bringt nichts oder ist veraltet' };
     var a5 = 'Worum es geht: ' + themenText() + '\nGebucht über ' + location.hostname + location.pathname;
-    var q = { name: wert('name'), email: wert('email'), a1: wert('betrieb'), a3: themenText() + ': ', a5: a5, hide_gdpr_banner: '1', hide_event_type_details: '1', hide_landing_page_details: '1', utm_source: SEITE === 'shk' ? 'website-shk' : 'website-hwm', utm_medium: 'termin-dialog', utm_content: stand.themen.join('-') };
+    var q = { name: wert('name'), email: wert('email'), a1: wert('betrieb'), a5: a5, hide_gdpr_banner: '1', hide_event_type_details: '1', hide_landing_page_details: '1', utm_source: SEITE === 'shk' ? 'website-shk' : 'website-hwm', utm_medium: 'termin-dialog', utm_content: stand.themen.join('-') };
+    if (ENGPASS[stand.themen[0]]) q.a3 = ENGPASS[stand.themen[0]];
     if (einbetten) { q.embed_domain = location.hostname; q.embed_type = 'Inline'; }
     return CAL + '?' + Object.keys(q).map(function (k) { return k + '=' + encodeURIComponent(q[k]); }).join('&');
   }
