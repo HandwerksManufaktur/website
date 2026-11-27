@@ -152,6 +152,10 @@
       if (stand.tok) senden({ schritt: 'gebucht', tok: stand.tok, event_uri: uri });
       melden('termin_gebucht');
       zeigen(5);
+      // Danach auf die Danke-Seite mit kurzem Video (wie Healthflow, 27.11.2026)
+      var inv = (e.data.payload && e.data.payload.invitee && e.data.payload.invitee.uri) || '';
+      var uuid = inv.split('/').pop();
+      setTimeout(function () { location.href = '/termin-bestaetigt/' + (uuid ? '?invitee_uuid=' + encodeURIComponent(uuid) : ''); }, 1200);
     });
   }
 
@@ -220,8 +224,9 @@
     return stand.themen.map(function (k) { for (var i = 0; i < THEMEN.length; i++) if (THEMEN[i][0] === k) return THEMEN[i][1]; return k; }).join(', ');
   }
   function calUrl(einbetten) {
-    var a1 = 'Worum es geht: ' + themenText() + '\nBetrieb: ' + wert('betrieb') + '\nGebucht über ' + location.hostname + location.pathname;
-    var q = { name: wert('name'), email: wert('email'), a1: a1, hide_gdpr_banner: '1', hide_event_type_details: '1', hide_landing_page_details: '1', utm_source: SEITE === 'shk' ? 'website-shk' : 'website-hwm', utm_medium: 'termin-dialog', utm_content: stand.themen.join('-') };
+    // Fragen der Terminart (seit 27.11.2026, wie Healthflow): a1 Betrieb · a2 Telefon · a3 Engpass · a4 Entscheider · a5 Sonstiges
+    var a5 = 'Worum es geht: ' + themenText() + '\nGebucht über ' + location.hostname + location.pathname;
+    var q = { name: wert('name'), email: wert('email'), a1: wert('betrieb'), a3: themenText() + ': ', a5: a5, hide_gdpr_banner: '1', hide_event_type_details: '1', hide_landing_page_details: '1', utm_source: SEITE === 'shk' ? 'website-shk' : 'website-hwm', utm_medium: 'termin-dialog', utm_content: stand.themen.join('-') };
     if (einbetten) { q.embed_domain = location.hostname; q.embed_type = 'Inline'; }
     return CAL + '?' + Object.keys(q).map(function (k) { return k + '=' + encodeURIComponent(q[k]); }).join('&');
   }
