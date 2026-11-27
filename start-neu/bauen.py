@@ -655,6 +655,10 @@ def kontaktabzug_sek():
 
 # ── 1 · Startseite ────────────────────────────────────────────────────────────────────────────────
 s = Seite(LIVE_START)
+s.ersetze('<title>HandwerksManufaktur – Websites, Google & Anzeigen fürs Handwerk</title>',
+          '<title>Planbar mehr Anfragen & Bewerbungen für deinen Handwerksbetrieb</title>')
+s.ersetze('<meta property="og:title" content="HandwerksManufaktur – Websites, Google & Anzeigen fürs Handwerk">',
+          '<meta property="og:title" content="Planbar mehr Anfragen & Bewerbungen für deinen Handwerksbetrieb">')
 s.ersetze('<h1><span class="w">Mehr Aufträge.</span> <span class="w">Mehr Bewerber.</span> <span class="w">Aus deinem Umkreis.</span></h1>',
           '<h1><span class="w">Dein Handwerk.</span> <span class="w">Unsere Baustelle.</span></h1>')  # Noah, 15.11.2026: „genau passend, ist perfekt“
 s.ersetze('<p class="lead">Website, Fotos und Social-Media-Werbung für Handwerksbetriebe.</p>',
