@@ -42,11 +42,11 @@
 .pa-karte img.pa-logo{height:30px;width:auto;max-width:120px;object-fit:contain;object-position:left}
 .dk-hero{min-height:auto;align-items:stretch}
 .dk-hero::before{display:none}
-.dk-hero .wrap.dk-raster{padding:calc(var(--kopf) + 28px) 0 48px;display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.25fr);grid-template-areas:"kopf video" "karte video";column-gap:clamp(28px,4vw,56px);row-gap:22px;align-items:start}
+.dk-hero .wrap.dk-raster{padding:calc(var(--kopf) + 28px) 0 48px;display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.25fr);grid-template-areas:"kopf video" "karte video";column-gap:clamp(28px,4vw,56px);row-gap:22px;align-items:start}.dk-raster>.dk-video{align-self:stretch}
 .dk-kopf{grid-area:kopf;display:grid;gap:14px;align-content:start}
 .dk-kopf h1{margin:0;max-width:12ch;text-wrap:balance}
 .dk-kopf .lead{margin:0;max-width:34ch}
-.dk-video{grid-area:video;display:grid;gap:14px}
+.dk-video{grid-area:video;display:grid;gap:14px;align-self:stretch;align-content:space-between}
 .dk-karte-platz{grid-area:karte}
 .dk-film{position:relative;margin:0;aspect-ratio:16/9;border-radius:var(--radius);overflow:hidden;background:#1F1B14;box-shadow:0 0 0 1px rgba(250,247,241,.12)}
 .dk-film img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 26%;opacity:.8}
