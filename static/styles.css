@@ -2258,7 +2258,7 @@ a.team-karte{color:inherit;text-decoration:none}
 /* ---- Cookie-Hinweis: Ja links und vorausgewählt, Nein klein daneben (Runde 15) ---- */
 .cookie-hinweis .cookie-knoepfe{align-items:center;gap:4px}
 .cookie-hinweis .cookie-ja{gap:8px;padding:10px 22px 10px 16px;box-shadow:0 0 0 3px var(--papier),0 0 0 5px var(--bronze)}
-.cookie-hinweis .ck-haken{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--bronze);color:var(--tinte);font-size:12px;font-weight:800;line-height:1}
+.cookie-hinweis .ck-haken{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--bronze);color:var(--tinte);font-size:13px;font-weight:800;line-height:1}
 .cookie-hinweis .cookie-nein{min-height:44px;min-width:44px;padding:0 10px;font-size:13.5px;font-weight:500;color:var(--tinte-3);text-decoration:underline;text-underline-offset:3px;border-radius:8px}
 .cookie-hinweis .cookie-nein:hover{color:var(--tinte)}
 .cookie-hinweis .cookie-nein:active{opacity:.6}

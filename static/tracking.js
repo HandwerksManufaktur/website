@@ -97,7 +97,7 @@ function hinweis() {
   box = document.createElement('div');
   box.className = 'cookie-hinweis'; box.setAttribute('role', 'dialog'); box.setAttribute('aria-label', 'Cookie-Einstellungen');
   // 🔴 Noah, 27.09.2026: „wie dumm ist es das so zu erwähnen, einfach simpel cookies ja nein"
-  box.innerHTML = '<p><b class="keks-zeile"><span class="keks" aria-hidden="true">🍪</span> Cookies erlauben?</b><a href="/datenschutz/">Datenschutz</a></p>'
+  box.innerHTML = '<p><b class="keks-zeile">Cookies erlauben?</b><a href="/datenschutz/">Datenschutz</a></p>'
     // 🔴 Runde 15 (28.09.2026), Noah: „Ja links und Ja soll schon vorausgewählt sein. Das Nein kann klein daneben stehen."
     + '<div class="cookie-knoepfe"><button type="button" class="btn btn-tinte cookie-ja" data-wahl="accepted"><span class="ck-haken" aria-hidden="true">✓</span>Ja</button><button type="button" class="cookie-nein" data-wahl="declined">Nein</button></div>';
   document.body.appendChild(box);
