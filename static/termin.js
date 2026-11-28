@@ -152,10 +152,11 @@
       if (stand.tok) senden({ schritt: 'gebucht', tok: stand.tok, event_uri: uri });
       melden('termin_gebucht');
       zeigen(5);
-      // Danach auf die Danke-Seite mit kurzem Video (wie Healthflow, 27.11.2026)
+      // Danach auf die Danke-Seite (wie Healthflow). Calendly leitet selbst nach 3 s im Hauptfenster weiter und hängt Tag, Uhrzeit und Antworten an (Bundle geprüft 28.11.2026).
+      // Unser Sprung ist nur der Rückfall, falls Calendly nicht weiterleitet; früher (1,2 s) kam er zuvor und die Termin-Zeit fehlte.
       var inv = (e.data.payload && e.data.payload.invitee && e.data.payload.invitee.uri) || '';
       var uuid = inv.split('/').pop();
-      setTimeout(function () { location.href = '/termin-bestaetigt/' + (uuid ? '?invitee_uuid=' + encodeURIComponent(uuid) : ''); }, 1200);
+      setTimeout(function () { location.href = '/termin-bestaetigt/' + (uuid ? '?invitee_uuid=' + encodeURIComponent(uuid) : ''); }, 7000);
     });
   }
 
