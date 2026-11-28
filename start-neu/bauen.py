@@ -879,7 +879,7 @@ def ergebnisse_aktuell(seite):
                       '<div class="erg-film">' + SUS_FILM_KERN + '</div>')
     h = h.replace('<img src="/static/assets/img/_800/fall/stimpfle-team.webp" alt="Drei Monteure von Stimpfle Sanitär und Heizung vor dem Firmenwagen" loading="lazy" decoding="async" style="object-position:50% 22%">',
                   '<img src="/start-neu/bilder/stimpfle-werkstatt.webp" alt="Das Team von Stimpfle Sanitär und Heizung in der Werkstatt" loading="lazy" decoding="async" style="object-position:50% 30%">')
-    h = h.replace('<em>3 Bad-Anfragen</em><span>in den ersten 3 Tagen</span>', '<em>7 Bad-Anfragen</em><span>3 Vor-Ort-Termine in den ersten 3 Tagen</span>')
+    h = h.replace('<em>3 Bad-Anfragen</em><span>in den ersten 3 Tagen</span>', '<em>10 Bad-Anfragen</em><span>3 Projekte im Angebot, bis ca. 31.000&nbsp;€</span>')
     h = h.replace('Die Werbung läuft seit dem 29. Oktober im Umkreis von Stadtbergen.', 'Die Anzeigen laufen seit dem 29. Oktober im Umkreis von Stadtbergen.')
     # Ob Anzeigen pausieren oder ein Kunde weitermacht, steht nie auf der Seite (Noah, 19.11.2026: „das NIE erwähnen“)
     h = h.replace(', die Werbung pausiert deshalb bis Februar.', '.').replace(', die Anzeigen pausieren deshalb bis Februar.', '.')
